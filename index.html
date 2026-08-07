@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>U of T Mathematics · Course Guide Library</title>
-<link rel="stylesheet" href="assets/catalog.css?v=20260706-1">
+<link rel="stylesheet" href="assets/catalog.css?v=20260806-7">
 <script src="assets/theme.js"></script>
 </head>
 <body>
@@ -24,90 +24,52 @@
       <div><strong id="course-count">4</strong><span>catalog entries</span></div>
       <div><strong id="chapter-count">42</strong><span>detailed chapters</span></div>
       <div><strong id="guide-count">4</strong><span>complete guides</span></div>
+      <div><strong id="program-count">14</strong><span>programs mapped</span></div>
     </div>
   </header>
 
   <main>
-    <section class="pathway-section" aria-labelledby="selection-title">
+    <section class="program-section" aria-labelledby="program-title">
       <div class="section-heading">
         <div>
           <span class="section-number">01</span>
-          <h2 id="selection-title">Suggested Course Selection</h2>
+          <h2 id="program-title">Pick Your Program</h2>
         </div>
+        <p class="section-note">Everything below follows your choice.</p>
       </div>
-      <div class="pathway-scroll">
-        <table class="pathway-table">
-          <thead>
-            <tr><th>Year</th><th>Goal</th><th>Recommended picks</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>1</th>
-              <td>Enter the proof-based stream from day one. The library's four
-              complete guides cover exactly this year.</td>
-              <td><code>MAT158H1</code>+<code>MAT159H1</code> rather than
-              <code>MAT137H1</code> when possible ·
-              <code>MAT240H1</code> in fall (opens <code>MAT247H1</code>) ·
-              <code>CSC108H1</code> so <code>CSC148H1</code> is ready next year</td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Transcript credibility: hard analysis, hard algebra, and
-              theoretical probability.</td>
-              <td><code>MAT247H1</code> over <code>MAT224H1</code> ·
-              <code>MAT257Y1</code> over <code>MAT237Y1</code> ·
-              <code>MAT267H1</code> over <code>MAT244H1</code> ·
-              <code>STA257H1</code>+<code>STA261H1</code> ·
-              <code>CSC148H1</code> or equivalent</td>
-            </tr>
-            <tr>
-              <th>3</th>
-              <td>A coherent theory profile: topology and real analysis plus
-              upper-year probability, with enough applied statistics to stay
-              credible.</td>
-              <td><code>MAT327H1</code>+<code>MAT337H1</code>, add
-              <code>MAT357H1</code> if prepared ·
-              <code>MAT377H1</code> or <code>STA347H1</code>/<code>STA357H1</code> ·
-              <code>STA302H1</code> plus <code>STA355H1</code> or <code>STA365H1</code> ·
-              breadth: <code>MAT301H1</code>, <code>MAT334H1</code>,
-              <code>MAT332H1</code>/<code>MAT344H1</code>/<code>APM348H1</code></td>
-            </tr>
-            <tr>
-              <th>4</th>
-              <td>Signal research readiness: graduate-style mathematics and
-              strong research letters.</td>
-              <td><code>MAT457H1</code>+<code>MAT458H1</code> if analysis is a
-              strength · <code>MAT436H1</code> ·
-              <code>STA422H1</code>, <code>STA452H1</code>/<code>STA453H1</code>,
-              <code>STA447H1</code> ·
-              <code>STA410H1</code> or <code>STA414H1</code> ·
-              reading/research: <code>MAT497Y1</code>/<code>MAT499Y1</code>/<code>STA496H1</code>/<code>STA497H1</code></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="pathway-note"><strong>Planning note.</strong> The official degree
-      audit comes from Degree Explorer and the UofT Calendar. This suggested
-      course selection is strategic advice, not a guarantee: grades, letters,
-      research fit, writing, and faculty advocacy matter at least as much as the
-      course list for UofT, Princeton, Stanford, Berkeley, Chicago, Harvard, MIT,
-      and similar departments.</p>
+      <p class="program-lede">Fourteen programs across Mathematics and Statistical
+      Sciences. Pick one and you get the whole degree laid out year by year:
+      <b class="key-req">required</b> courses, the courses
+      <b class="key-opt">suggested</b> for the route you want, and the credits each
+      year costs. Every route is a real way to finish the program, so switch
+      between them to see what the harder path actually buys you. Your choice is
+      remembered on this device.</p>
+
+      <div id="program-paths" class="program-paths"></div>
+      <div id="program-panel" class="program-panel" hidden></div>
     </section>
 
     <section class="catalog-section" aria-labelledby="catalog-title">
       <div class="section-heading">
         <div>
           <span class="section-number">02</span>
-          <h2 id="catalog-title">Course Catalog by Year</h2>
+          <h2 id="catalog-title">Browse Every Course</h2>
         </div>
         <p id="result-count" aria-live="polite">Showing all courses, grouped by year.</p>
       </div>
+      <p class="program-lede">The full catalog, marked up for whichever program you
+      picked. Use this to look up a course or to see what else would count; the
+      plan above is the part you actually need.</p>
 
       <div class="catalog-tools">
         <label for="course-search">Search courses and topics</label>
         <input id="course-search" type="search" autocomplete="off"
           placeholder="Try Year 3, probability, topology, ROP, or STA452">
         <div id="course-filters" class="filters" aria-label="Filter by subject"></div>
+        <label id="program-only-wrap" class="only-toggle" hidden>
+          <input id="program-only" type="checkbox">
+          <span>Show only program courses</span>
+        </label>
       </div>
 
       <div id="course-grid" class="course-results"></div>
@@ -155,7 +117,10 @@
       <h2 id="add-title">Adding A Future Course</h2>
       <p>Create its folder and course pages, then add one object to
       <code>assets/courses.js</code>. The catalog automatically adds the card,
-      subject filter, search terms, and updated totals.</p>
+      subject filter, search terms, and updated totals. Program requirements live
+      separately in <code>assets/programs.js</code>; a course only lights up for a
+      path once its code appears in that program's required or options list, and a
+      route only suggests it once it appears in that route's picks.</p>
     </section>
   </main>
 
@@ -166,6 +131,7 @@
 </div>
 
 <script src="assets/courses.js"></script>
+<script src="assets/programs.js"></script>
 <script src="assets/catalog.js"></script>
 </body>
 </html>
