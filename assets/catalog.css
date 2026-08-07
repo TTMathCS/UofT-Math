@@ -8,6 +8,7 @@
   --line:#d8dbe1;--line-soft:#e7e9ed;--grid:rgba(42,92,174,.09);
   --blue:#2a5cae;--indigo:#46409f;--green:#2e7d4f;--red:#c03b2d;
   --tint-blue:#eaf1fa;
+  --req:#2a5cae;--req-tint:#e8f0fb;--opt:#8a5a12;--opt-tint:#fbf2e0;
   --shadow-card:0 1px 3px rgba(15,23,42,.07);
   --shadow-lift:0 1px 2px rgba(15,23,42,.05),0 12px 32px rgba(15,23,42,.10);
 }
@@ -17,6 +18,7 @@
   --line:#353b46;--line-soft:#272c35;--grid:rgba(125,167,232,.08);
   --blue:#7da7e8;--indigo:#a3a0e6;--green:#6cbd8e;--red:#e08272;
   --tint-blue:#1c2531;
+  --req:#7da7e8;--req-tint:#1b2430;--opt:#d9ab5c;--opt-tint:#2b2419;
   --shadow-card:0 1px 3px rgba(0,0,0,.4);
   --shadow-lift:0 1px 2px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.5);
 }
@@ -64,7 +66,7 @@ h1 em{color:var(--blue);font-style:italic}
 .lede{max-width:70ch;margin-bottom:1.6rem;color:var(--muted);
   font-size:clamp(1rem,1.6vw,1.1rem)}
 
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:920px;
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:920px;
   border:1px solid var(--line);border-radius:8px;background:var(--sheet);
   box-shadow:var(--shadow-card);overflow:hidden}
 .stats div{padding:.85rem 1rem}
@@ -74,7 +76,7 @@ h1 em{color:var(--blue);font-style:italic}
   font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-ui,sans-serif;font-weight:650}
 .stats span{color:var(--muted);font-size:.8rem}
 
-.catalog-section,.reference-section,.pathway-section,.add-section{
+.catalog-section,.reference-section,.add-section,.program-section{
   padding:clamp(1.5rem,3vw,2.3rem) 0;border-bottom:1px solid var(--line)}
 .section-heading{display:flex;align-items:end;justify-content:space-between;
   gap:2rem;margin-bottom:1.4rem}
@@ -100,6 +102,157 @@ h2{margin-bottom:0;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-
   border-color:var(--blue);color:var(--sheet);background:var(--blue)}
 [data-theme="dark"] .filters button:hover,
 [data-theme="dark"] .filters button[aria-pressed="true"]{color:var(--desk)}
+
+/* ---------- program paths ---------- */
+.section-note{margin-bottom:0;color:var(--muted);font-size:.9rem}
+.program-lede{max-width:72ch;margin-bottom:1.3rem;color:var(--muted);font-size:.95rem}
+.key-req,.key-opt{padding:.05rem .3rem;border-radius:4px;font-weight:700}
+.key-req{color:var(--req);background:var(--req-tint)}
+.key-opt{color:var(--opt);background:var(--opt-tint)}
+
+/* Program index, ruled like the Calendar's own listing: code, name, credit load.
+   The 1px grid gaps show the container colour, so every rule lines up without
+   per-cell border arithmetic. */
+.program-paths{display:grid;gap:1.1rem}
+.path-group{display:grid;gap:.5rem}
+.path-kind{color:var(--muted);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+/* Two columns exactly: 10 specialists, 2 majors and 2 minors all divide evenly,
+   so no group ever ends on a half-empty row. */
+.path-list{display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;border:1px solid var(--line);border-radius:8px;background:var(--line-soft);
+  box-shadow:var(--shadow-card);overflow:hidden}
+.path-item{display:grid;grid-template-columns:5.6rem 1fr 4.6rem;align-items:baseline;
+  gap:.75rem;width:100%;padding:.6rem .85rem;border:0;color:var(--ink);
+  background:var(--sheet);text-align:left;cursor:pointer;
+  transition:background 120ms ease,color 120ms ease}
+.path-item b{color:var(--muted);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.66rem;font-weight:700;letter-spacing:.05em}
+.path-item span{font-size:.9rem;line-height:1.3}
+.path-item i{color:var(--muted);font-style:normal;text-align:right;white-space:nowrap;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+/* hover must not restyle the selected row: its background is already --req, and
+   painting the label --req too made the name vanish into it */
+.path-item:hover:not([aria-pressed="true"]){background:var(--well)}
+.path-item:hover:not([aria-pressed="true"]) b,
+.path-item:hover:not([aria-pressed="true"]) span{color:var(--req)}
+.path-item[aria-pressed="true"]:hover{filter:brightness(1.1)}
+.path-item[aria-pressed="true"]{background:var(--req);color:var(--sheet)}
+.path-item[aria-pressed="true"] b,
+.path-item[aria-pressed="true"] i{color:var(--sheet);opacity:.75}
+.path-item[aria-pressed="true"] span{font-weight:650}
+[data-theme="dark"] .path-item[aria-pressed="true"],
+[data-theme="dark"] .path-item[aria-pressed="true"] b,
+[data-theme="dark"] .path-item[aria-pressed="true"] i{color:var(--desk)}
+.path-clear{justify-self:start;padding:.4rem .7rem;border:1px dashed var(--line);
+  border-radius:6px;color:var(--muted);background:none;font-size:.78rem;cursor:pointer}
+.path-clear:hover:not(:disabled){border-color:var(--red);color:var(--red)}
+.path-clear:disabled{opacity:.4;cursor:default}
+
+.program-panel{margin-top:1.3rem;padding:1.2rem 1.3rem;border:1px solid var(--line);
+  border-left:3px solid var(--req);border-radius:8px;background:var(--sheet);
+  box-shadow:var(--shadow-card)}
+.panel-kind{color:var(--req);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.program-panel h3{margin:.3rem 0 .4rem;
+  font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+  font-size:1.3rem;font-weight:650;line-height:1.15}
+.panel-summary{margin-bottom:1rem;max-width:70ch;color:var(--muted);font-size:.95rem}
+/* route selector: which way through the choose-from lists */
+.track-wrap{margin-bottom:1.3rem;padding:.85rem .95rem;border:1px solid var(--line-soft);
+  border-radius:6px;background:var(--well)}
+.track-kind{display:block;margin-bottom:.5rem;color:var(--muted);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.track-row{display:flex;flex-wrap:wrap;gap:.4rem}
+.track-button{padding:.4rem .8rem;border:1px solid var(--line);border-radius:999px;
+  color:var(--muted);background:var(--sheet);font-size:.83rem;cursor:pointer}
+.track-button:hover{border-color:var(--opt);color:var(--opt)}
+.track-button[aria-pressed="true"]{border-color:var(--opt);color:var(--sheet);
+  background:var(--opt);font-weight:600}
+[data-theme="dark"] .track-button[aria-pressed="true"]{color:var(--desk)}
+.track-who{margin:.6rem 0 0;max-width:72ch;color:var(--muted);font-size:.88rem}
+
+/* The plan, set as a degree worksheet: years ruled into bands, one course per
+   line, credits accounted in a tabular column with a rule above the total.
+   Required courses carry a solid left rule, suggested ones a dashed rule, so
+   fixed-versus-chosen survives without relying on colour. */
+.plan-scroll{margin-bottom:.9rem;overflow-x:auto}
+.plan-table{width:100%;min-width:46rem;border-collapse:separate;border-spacing:0;
+  border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  background:var(--sheet)}
+.plan-table th,.plan-table td{padding:.55rem .75rem;text-align:left;vertical-align:top;
+  border-bottom:1px solid var(--line-soft)}
+.plan-table thead th{padding-top:.5rem;padding-bottom:.5rem;background:var(--well);
+  color:var(--muted);border-bottom:1px solid var(--line);
+  font:700 .63rem/1.4 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
+.plan-table thead th:nth-child(2){color:var(--req)}
+.plan-table thead th:nth-child(3){color:var(--opt)}
+/* hold the two course columns level so the years read as a grid, not as
+   content-sized cells that jump width whenever a route changes */
+.plan-table th:nth-child(2),.plan-table td:nth-child(2),
+.plan-table th:nth-child(3),.plan-table td:nth-child(3){width:44%}
+.plan-table thead th:last-child,.plan-credit-cell{text-align:right}
+.plan-table tbody tr:last-child th,.plan-table tbody tr:last-child td{border-bottom:0}
+
+.plan-year-cell{width:4.6rem;white-space:nowrap;color:var(--ink);
+  font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+  font-size:.95rem;font-weight:650}
+.plan-credit-cell{width:4.4rem;color:var(--ink);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.78rem;font-weight:700;font-variant-numeric:tabular-nums}
+.plan-none{color:var(--muted)}
+
+/* one course per line: code, title, credit value */
+.plan-course{display:grid;grid-template-columns:5.6rem 1fr 2.1rem;align-items:baseline;
+  gap:.55rem;padding:.22rem .5rem;text-decoration:none;color:inherit}
+.plan-course+.plan-course{margin-top:.1rem}
+.plan-course b{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.67rem;font-weight:700;letter-spacing:.04em}
+.plan-course span{font-size:.87rem;line-height:1.35}
+.plan-course i{color:var(--muted);font-style:normal;text-align:right;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+.plan-course.is-outside{grid-template-columns:1fr 2.1rem;color:var(--muted)}
+.plan-course.is-outside span{font-size:.84rem}
+.plan-course.req{border-left:3px solid var(--req);background:var(--req-tint)}
+.plan-course.req b{color:var(--req)}
+.plan-course.pick{border-left:3px dashed var(--opt);background:var(--opt-tint)}
+.plan-course.pick b{color:var(--opt)}
+a.plan-course.has-guide span{text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:var(--line)}
+a.plan-course:hover span{text-decoration-color:currentColor}
+
+/* the ledger foot */
+.plan-table tfoot th,.plan-table tfoot td{border-bottom:0;background:var(--well);
+  border-top:2px solid var(--ink)}
+.plan-total{color:var(--muted);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  font-variant-numeric:tabular-nums}
+.plan-foot{margin:0 0 1.1rem;max-width:74ch;color:var(--muted);font-size:.88rem}
+.plan-foot b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+.panel-outside h4{margin:0 0 .45rem;color:var(--opt);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.panel-outside ul{margin:0 0 1rem;padding-left:1.2rem;color:var(--muted);font-size:.9rem}
+.panel-outside li{margin:.25rem 0;max-width:72ch}
+.panel-link{color:var(--req);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none}
+.panel-link:hover{text-decoration:underline}
+
+.only-toggle{display:flex;align-items:center;gap:.5rem;grid-column:1/-1;
+  color:var(--muted);font-size:.88rem;cursor:pointer;
+  font-family:inherit;letter-spacing:normal;text-transform:none;font-weight:400}
+.only-toggle input{width:1rem;height:1rem;accent-color:var(--req);cursor:pointer}
 
 .course-results{display:grid;gap:1.6rem}
 .course-year-group{display:grid;gap:.85rem}
@@ -129,6 +282,23 @@ a.course-row:hover .row-title{color:var(--blue)}
   border:1px solid var(--line-soft);border-radius:4px;background:var(--well)}
 .row-meta{justify-self:start;color:var(--muted);font-size:.78rem;text-align:left;white-space:nowrap}
 a.course-row .row-meta{color:var(--blue)}
+
+/* program markup: only present once a path is selected */
+.has-program .course-row{
+  grid-template-columns:5.5rem minmax(10rem,18rem) minmax(8rem,13rem) 4.6rem max-content}
+.role-tag{justify-self:start;color:var(--muted);white-space:nowrap;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.course-row.is-required{border-left:3px solid var(--req);background:var(--req-tint)}
+.course-row.is-pick{border-left:3px solid var(--opt);background:var(--opt-tint)}
+.course-row.is-option{border-left:3px solid var(--line)}
+.course-row.is-required .role-tag{color:var(--req)}
+.course-row.is-pick .role-tag{color:var(--opt)}
+.course-row.is-required .row-title,.course-row.is-pick .row-title{font-weight:650}
+.has-program .course-row:not(.is-required):not(.is-pick):not(.is-option){opacity:.45}
+a.course-row.is-required:hover,a.course-row.is-pick:hover{filter:brightness(.97)}
+[data-theme="dark"] a.course-row.is-required:hover,
+[data-theme="dark"] a.course-row.is-pick:hover{filter:brightness(1.25)}
 .empty-state{grid-column:1/-1;padding:3rem;border:1px dashed var(--line);
   border-radius:8px;color:var(--muted);background:var(--well);text-align:center}
 .noscript-list{display:grid;gap:.6rem;padding:1.5rem;border:1px solid var(--line);
@@ -145,25 +315,6 @@ a.course-row .row-meta{color:var(--blue)}
 .reference-grid strong{display:block;margin:.25rem 0;font-size:1.15rem;
   font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-ui,sans-serif;font-weight:600}
 .reference-grid p{margin-bottom:0;color:var(--muted)}
-
-.pathway-scroll{overflow-x:auto}
-.pathway-table{width:100%;border-collapse:separate;border-spacing:0;
-  border:1px solid var(--line);border-radius:8px;background:var(--sheet);
-  box-shadow:var(--shadow-card);overflow:hidden;font-size:.9rem;line-height:1.5}
-.pathway-table th,.pathway-table td{padding:.55rem .75rem;text-align:left;
-  vertical-align:top;border-bottom:1px solid var(--line-soft)}
-.pathway-table tbody tr:last-child th,
-.pathway-table tbody tr:last-child td{border-bottom:0}
-.pathway-table thead th{color:var(--muted);background:var(--well);
-  font:700 .66rem/1.3 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
-  letter-spacing:.08em;text-transform:uppercase}
-.pathway-table tbody th{width:2.6rem;color:var(--green);font-weight:700}
-.pathway-table td:nth-child(2){width:30%;color:var(--muted)}
-.pathway-table code{white-space:nowrap}
-.pathway-note{margin:1rem 0 0;padding:1rem 1.1rem;border:1px solid var(--line-soft);
-  border-left:3px solid var(--blue);border-radius:8px;background:var(--tint-blue);
-  color:var(--muted);font-size:.95rem}
-.pathway-note strong{color:var(--ink)}
 
 .add-section{max-width:1000px}
 .add-section h2{margin:.4rem 0 .7rem}
@@ -231,7 +382,15 @@ footer{display:flex;justify-content:space-between;gap:1rem;padding:1.3rem 0 2rem
   .subject-tag{grid-area:tag}
   .row-meta{grid-area:meta}
   .row-title{grid-area:title;white-space:normal}
-  .pathway-table{min-width:34rem}
+  .has-program .course-row{grid-template-columns:max-content 1fr max-content;
+    grid-template-areas:"code tag meta" "title title title" "role role role"}
+  .role-tag{grid-area:role}
+  .path-list{grid-template-columns:1fr}
+  .path-item{grid-template-columns:5.2rem 1fr 3.2rem;gap:.5rem;padding:.55rem .7rem}
+  .track-button{flex:1 1 100%;border-radius:6px}
+  .program-panel{padding:1rem .9rem}
+  .plan-table{min-width:38rem}
+  .plan-course{grid-template-columns:5.2rem 1fr 1.8rem;gap:.35rem}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

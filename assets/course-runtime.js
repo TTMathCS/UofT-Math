@@ -14,64 +14,155 @@ function createMathElement(tag, text, attributes) {
 const mathSymbols = {
   alpha: ["mi", "α"],
   beta: ["mi", "β"],
+  chi: ["mi", "χ"],
   delta: ["mi", "δ"],
   Delta: ["mi", "Δ"],
   emptyset: ["mi", "∅"],
+  epsilon: ["mi", "ε"],
   eta: ["mi", "η"],
   gamma: ["mi", "γ"],
+  Gamma: ["mi", "Γ"],
+  kappa: ["mi", "κ"],
   lambda: ["mi", "λ"],
+  Lambda: ["mi", "Λ"],
+  mu: ["mi", "μ"],
+  nu: ["mi", "ν"],
+  omega: ["mi", "ω"],
+  Omega: ["mi", "Ω"],
+  phi: ["mi", "φ"],
+  Phi: ["mi", "Φ"],
   pi: ["mi", "π"],
+  Pi: ["mi", "Π"],
+  psi: ["mi", "ψ"],
+  Psi: ["mi", "Ψ"],
+  rho: ["mi", "ρ"],
+  sigma: ["mi", "σ"],
+  Sigma: ["mi", "Σ"],
+  tau: ["mi", "τ"],
   theta: ["mi", "θ"],
+  Theta: ["mi", "Θ"],
   varepsilon: ["mi", "ε"],
   varphi: ["mi", "φ"],
+  xi: ["mi", "ξ"],
+  Xi: ["mi", "Ξ"],
+  zeta: ["mi", "ζ"],
+  ell: ["mi", "ℓ"],
+  nabla: ["mi", "∇"],
+  partial: ["mi", "∂"],
   approx: ["mo", "≈"],
+  ast: ["mo", "∗"],
   cap: ["mo", "∩"],
   cdot: ["mo", "⋅"],
   circ: ["mo", "∘"],
+  cong: ["mo", "≅"],
   cup: ["mo", "∪"],
+  dagger: ["mo", "†"],
   downarrow: ["mo", "↓"],
   equiv: ["mo", "≡"],
   exists: ["mo", "∃"],
   forall: ["mo", "∀"],
   ge: ["mo", "≥"],
+  geq: ["mo", "≥"],
+  gg: ["mo", "≫"],
+  iff: ["mo", "⟺"],
   in: ["mo", "∈"],
   infty: ["mo", "∞"],
   land: ["mo", "∧"],
+  langle: ["mo", "⟨"],
+  lceil: ["mo", "⌈"],
   le: ["mo", "≤"],
+  leftarrow: ["mo", "←"],
+  leftrightarrow: ["mo", "↔"],
   Leftarrow: ["mo", "⇐"],
   Leftrightarrow: ["mo", "⇔"],
+  leq: ["mo", "≤"],
+  lfloor: ["mo", "⌊"],
+  ll: ["mo", "≪"],
   Longleftrightarrow: ["mo", "⟺"],
   Longrightarrow: ["mo", "⟹"],
   longrightarrow: ["mo", "⟶"],
+  lor: ["mo", "∨"],
   mapsto: ["mo", "↦"],
+  mid: ["mo", "∣"],
   ne: ["mo", "≠"],
   neg: ["mo", "¬"],
+  neq: ["mo", "≠"],
   notin: ["mo", "∉"],
+  odot: ["mo", "⊙"],
+  oplus: ["mo", "⊕"],
+  otimes: ["mo", "⊗"],
   parallel: ["mo", "∥"],
   perp: ["mo", "⟂"],
   pm: ["mo", "±"],
+  propto: ["mo", "∝"],
+  rangle: ["mo", "⟩"],
+  rceil: ["mo", "⌉"],
+  rfloor: ["mo", "⌋"],
   Rightarrow: ["mo", "⇒"],
+  setminus: ["mo", "∖"],
+  sim: ["mo", "∼"],
+  simeq: ["mo", "≃"],
   subset: ["mo", "⊂"],
   subseteq: ["mo", "⊆"],
+  subsetneq: ["mo", "⊊"],
+  supset: ["mo", "⊃"],
+  supseteq: ["mo", "⊇"],
   times: ["mo", "×"],
   to: ["mo", "→"],
+  triangleq: ["mo", "≜"],
+  uparrow: ["mo", "↑"],
+  vee: ["mo", "∨"],
+  wedge: ["mo", "∧"],
   cdots: ["mo", "⋯"],
   dots: ["mo", "…"],
   ldots: ["mo", "…"],
-  lceil: ["mo", "⌈"],
-  rceil: ["mo", "⌉"]
+  vdots: ["mo", "⋮"],
+  ddots: ["mo", "⋱"]
 };
 
 const mathFunctions = new Set([
-  "arccos", "arcsin", "arctan", "cos", "deg", "det", "dim", "exp", "gcd",
-  "inf", "ln", "log", "max", "min", "sec", "sin", "sup", "tan"
+  "arccos", "arcsin", "arctan", "arg", "cos", "cosh", "cot", "csc", "deg",
+  "det", "dim", "exp", "gcd", "inf", "ker", "lcm", "ln", "log", "max", "min",
+  "Pr", "rank", "sec", "sin", "sinh", "sup", "tan", "tanh", "tr"
 ]);
 
 const largeOperators = {
+  bigcap: "⋂",
+  bigcup: "⋃",
+  bigoplus: "⨁",
+  iint: "∬",
+  iiint: "∭",
   int: "∫",
   lim: "lim",
+  liminf: "lim inf",
+  limsup: "lim sup",
+  oint: "∮",
   prod: "∏",
   sum: "∑"
+};
+
+// Accents that sit above their argument, as \hat x or \vec v.
+const mathAccents = {
+  bar: "¯",
+  overline: "¯",
+  hat: "^",
+  widehat: "^",
+  tilde: "~",
+  widetilde: "~",
+  vec: "→",
+  dot: "˙",
+  ddot: "¨"
+};
+
+// Font commands, mapped to the MathML mathvariant they set.
+const mathVariants = {
+  mathbb: "double-struck",
+  mathbf: "bold",
+  mathcal: "script",
+  mathfrak: "fraktur",
+  mathit: "italic",
+  mathrm: "normal",
+  mathsf: "sans-serif"
 };
 
 class LatexMathParser {
@@ -244,6 +335,11 @@ class LatexMathParser {
 
     if (command === "{" || command === "}") return createMathElement("mo", command);
 
+    // \| is the norm delimiter; \lVert and \rVert spell out the same bars.
+    if (command === "|" || command === "lVert" || command === "rVert") {
+      return createMathElement("mo", "‖");
+    }
+
     if (command === "frac" || command === "dfrac" || command === "tfrac") {
       const fraction = createMathElement("mfrac");
       fraction.append(this.parseArgument(), this.parseArgument());
@@ -270,12 +366,24 @@ class LatexMathParser {
       return root;
     }
 
-    if (command === "mathbb" || command === "mathbf") {
+    if (mathVariants[command]) {
       const style = createMathElement("mstyle", undefined, {
-        mathvariant: command === "mathbb" ? "double-struck" : "bold"
+        mathvariant: mathVariants[command]
       });
       style.append(this.parseArgument());
       return style;
+    }
+
+    if (command === "binom") {
+      const stack = createMathElement("mfrac", undefined, {linethickness: "0"});
+      stack.append(this.parseArgument(), this.parseArgument());
+      const row = createMathElement("mrow");
+      row.append(
+        createMathElement("mo", "("),
+        stack,
+        createMathElement("mo", ")")
+      );
+      return row;
     }
 
     if (command === "text") {
@@ -286,9 +394,9 @@ class LatexMathParser {
       return createMathElement("mi", this.readRawGroup(), {mathvariant: "normal"});
     }
 
-    if (command === "bar") {
+    if (mathAccents[command]) {
       const over = createMathElement("mover", undefined, {accent: "true"});
-      over.append(this.parseArgument(), createMathElement("mo", "¯"));
+      over.append(this.parseArgument(), createMathElement("mo", mathAccents[command]));
       return over;
     }
 
