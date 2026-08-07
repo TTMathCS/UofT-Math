@@ -199,14 +199,14 @@ final units.</p>
   <p class="prac-intro">Use these after the main practice set. They are designed to force definition-level reasoning, theorem selection, and mixed application rather than routine calculation only.</p>
   <div class="prac">
     <div class="q"><div class="ql">Extension 1 · Epsilon proof</div>
-      <p>Prove $1/n	o0$.</p>
+      <p>Prove $1/n\to0$.</p>
       <details><summary>Guide</summary><div class="ans">Given $\epsilon>0$, choose $N>1/\epsilon$. If $n\ge N$, then $|1/n-0|\le1/N&lt;\epsilon$.</div></details></div>
     <div class="q"><div class="ql">Extension 2 · Monotone bounded</div>
       <p>Show $a_n=1-1/n$ converges using monotone bounded convergence.</p>
       <details><summary>Guide</summary><div class="ans">The sequence increases and is bounded above by $1$, so it converges. Directly, the limit is $1$.</div></details></div>
     <div class="q"><div class="ql">Extension 3 · Cauchy</div>
       <p>Explain why every convergent sequence is Cauchy.</p>
-      <details><summary>Guide</summary><div class="ans">If $a_n	o L$, make $|a_n-L|&lt;\epsilon/2$ and $|a_m-L|&lt;\epsilon/2$ for large $m,n$; then use the triangle inequality.</div></details></div>
+      <details><summary>Guide</summary><div class="ans">If $a_n\to L$, make $|a_n-L|&lt;\epsilon/2$ and $|a_m-L|&lt;\epsilon/2$ for large $m,n$; then use the triangle inequality.</div></details></div>
     <div class="q"><div class="ql">Extension 4 · Recursive caution</div>
       <p>If $a_{n+1}=\sqrt{2+a_n}$ and $a_1=1$, what must be proved before solving $L=\sqrt{2+L}$?</p>
       <details><summary>Guide</summary><div class="ans">You must prove convergence, usually by showing the sequence is increasing and bounded above by $2$. Then the fixed-point equation gives $L=2$.</div></details></div>
