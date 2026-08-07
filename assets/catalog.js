@@ -3,6 +3,18 @@
 
   var courses = Array.isArray(window.UOFT_COURSES) ? window.UOFT_COURSES : [];
   var programs = Array.isArray(window.UOFT_PROGRAMS) ? window.UOFT_PROGRAMS : [];
+  var enrolled = window.UOFT_ENROLLED && window.UOFT_ENROLLED.terms.length
+    ? window.UOFT_ENROLLED
+    : null;
+  var taken = {};
+
+  if (enrolled) {
+    enrolled.terms.forEach(function (term) {
+      term.courses.forEach(function (course) {
+        taken[course.code] = course;
+      });
+    });
+  }
   var grid = document.getElementById("course-grid");
   var filters = document.getElementById("course-filters");
   var search = document.getElementById("course-search");
@@ -134,6 +146,9 @@
     if (course) {
       line.title = course.description;
     }
+    if (taken[code]) {
+      line.classList.add("is-taken");
+    }
     line.append(
       element("b", "", code),
       element("span", "", course ? course.title : ""),
@@ -142,10 +157,27 @@
     return line;
   }
 
+  // "CSC108H1 + CSC148H1, or CSC110Y1" is satisfied once every code in any one
+  // of its alternatives is registered for
+  function needMet(item) {
+    if (!enrolled) {
+      return false;
+    }
+    return item.text.split(/,? or /).some(function (option) {
+      var codes = option.match(/\b[A-Z]{3}\d{3}[HY]\d\b/g);
+      return codes && codes.length && codes.every(function (code) {
+        return Boolean(taken[code]);
+      });
+    });
+  }
+
   // a requirement from another department: no catalog entry to link, so the
   // description takes the code column and only the credit value stays aligned
   function planNeed(item) {
     var line = element("span", "plan-course req is-outside");
+    if (needMet(item)) {
+      line.classList.add("is-taken");
+    }
     line.append(
       element("span", "", item.text),
       element("i", "", item.credits.toFixed(1))
@@ -257,6 +289,87 @@
     host.append(note);
   }
 
+  // How a registered course sits against the program you are looking at. A
+  // course can be a real requirement here and pure breadth somewhere else, so
+  // this is recomputed whenever the program or route changes.
+  function standingOf(code) {
+    if (!activeProgram) {
+      return "";
+    }
+    if (activeProgram.required.indexOf(code) !== -1) {
+      return "required";
+    }
+    if (trackPicks().indexOf(code) !== -1) {
+      return "on this route";
+    }
+    if (activeProgram.options.indexOf(code) !== -1) {
+      return "counts";
+    }
+    // last chance: named inside one of the other-department requirements
+    var wanted = activeProgram.outside.some(function (item) {
+      return item && item.year && item.text.indexOf(code) !== -1;
+    });
+    return wanted ? "counts" : "elective";
+  }
+
+  function renderEnrolled(host) {
+    if (!enrolled) {
+      return;
+    }
+    var block = element("div", "enrolled");
+    var head = element("div", "enrolled-head");
+    var counted = 0;
+    var total = 0;
+
+    enrolled.terms.forEach(function (term) {
+      var termBlock = element("div", "enrolled-term");
+      var termHead = element("div", "enrolled-term-head");
+      var list = element("div", "enrolled-list");
+
+      termHead.append(element("b", "", term.name));
+      if (term.span) {
+        termHead.append(element("span", "enrolled-span", term.span));
+      }
+
+      term.courses.forEach(function (course) {
+        var standing = standingOf(course.code);
+        var row = element("span", "enrolled-course");
+        var catalogEntry = byCode[course.code];
+        var name = catalogEntry && hasLocalGuide(catalogEntry)
+          ? element("a", "enrolled-link")
+          : element("span", "");
+
+        if (catalogEntry && hasLocalGuide(catalogEntry)) {
+          name.href = catalogEntry.path;
+        }
+        name.textContent = course.title;
+        total += course.credits;
+        if (standing !== "elective") {
+          counted += course.credits;
+        }
+        row.classList.add(standing === "elective" ? "is-elective" : "is-counted");
+        row.append(
+          element("b", "", course.code),
+          name,
+          element("em", "", standing),
+          element("i", "", course.credits.toFixed(1))
+        );
+        list.append(row);
+      });
+
+      termBlock.append(termHead, list);
+      block.append(termBlock);
+    });
+
+    head.append(
+      element("h4", "", "Registered · " + enrolled.label),
+      element("span", "enrolled-tally", counted.toFixed(1) + " of " +
+        total.toFixed(1) + " credits count toward " +
+        (activeProgram ? activeProgram.code : "a program"))
+    );
+    host.append(head, block);
+  }
+
   function renderTracks(host) {
     if (!activeProgram.tracks.length) {
       return;
@@ -299,6 +412,7 @@
     );
     panel.append(head);
 
+    renderEnrolled(panel);
     renderTracks(panel);
     renderPlan(panel);
 

@@ -234,14 +234,14 @@
         "STA452H1", "STA453H1", "STA437H1", "STA442H1", "STA447H1", "STA465H1",
         "STA410H1", "APM346H1", "MAT351Y1", "APM462H1"]),
       [track("Graduate school", "Proof-based analysis, measure-theoretic probability and mathematical statistics.",
-         ["MAT158H1", "MAT159H1", "MAT257Y1", "MAT247H1", "MAT267H1", "STA257H1",
-          "STA261H1", "MAT377H1", "STA452H1", "STA453H1", "STA447H1", "MAT351Y1"]),
+         ["MAT158H1", "MAT159H1", "MAT257Y1", "MAT240H1", "MAT247H1", "MAT267H1",
+          "STA257H1", "STA261H1", "MAT377H1", "STA452H1", "STA453H1", "STA447H1"]),
        track("Balanced", "Theory probability with applied multivariate methods on top.",
          ["MAT158H1", "MAT159H1", "MAT237Y1", "MAT240H1", "MAT244H1", "STA257H1",
           "STA261H1", "STA347H1", "STA437H1", "STA442H1", "APM346H1", "STA355H1"]),
        track("Industry", "Lightest mathematics the program allows, with computation and modelling.",
-         ["MAT137", "MAT246H1", "MAT237Y1", "MAT223H1", "MAT244H1", "STA237H1",
-          "STA238H1", "MAT370H1", "STA410H1", "STA442H1", "APM462H1", "MAT344H1"])],
+         ["MAT137", "MAT246H1", "MAT237Y1", "MAT223H1", "MAT224H1", "MAT244H1",
+          "STA237H1", "STA238H1", "MAT370H1", "STA410H1", "STA442H1", "MAT344H1"])],
       [need("Year 1", "CSC108H1 + CSC148H1, or CSC110Y1", 1), ALT_CALC, ETHICS,
        "1.0 credit of 300+ level APM/MAT advanced topics"]
     ),
@@ -352,5 +352,5 @@
     )
   ]);
 
-  window.UOFT_DEFAULT_PROGRAM = "stats-theory-methods";
+  window.UOFT_DEFAULT_PROGRAM = "mia-probstat";
 }());
