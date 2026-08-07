@@ -105,13 +105,39 @@ h2{margin-bottom:0;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-
 [data-theme="dark"] .filters button:hover,
 [data-theme="dark"] .filters button[aria-pressed="true"]{color:var(--desk)}
 
+/* ---------- 00 structure tree ---------- */
+.structure-section{padding:clamp(1.5rem,3vw,2.3rem) 0;border-bottom:1px solid var(--line)}
+.structure-tree{padding:1rem 1.2rem;margin-bottom:1.1rem;border:1px solid var(--line);
+  border-radius:8px;background:var(--sheet);box-shadow:var(--shadow-card);overflow-x:auto}
+.tree-list{margin:0;padding:0;list-style:none}
+.tree-list .tree-list{margin-left:.55rem;padding-left:1.1rem;
+  border-left:1px solid var(--line-soft)}
+.tree-node{position:relative}
+.tree-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
+  padding:.24rem .4rem;border-radius:4px}
+.tree-list .tree-list .tree-row::before{position:absolute;left:-1.1rem;
+  width:.75rem;height:1px;margin-top:.72rem;background:var(--line-soft);content:""}
+.tree-name{font-size:.92rem;font-weight:600}
+.tree-tag{padding:.05rem .38rem;border:1px solid var(--line-soft);border-radius:4px;
+  color:var(--muted);background:var(--well);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  white-space:nowrap}
+.tree-note{color:var(--muted);font-size:.82rem}
+/* the branch the offer actually lands on */
+.tree-node.on-path>.tree-row{background:var(--req-tint);
+  box-shadow:inset 3px 0 0 var(--req)}
+.tree-node.on-path>.tree-row .tree-name{color:var(--req);font-weight:700}
+.tree-node.on-path>.tree-row .tree-tag{border-color:var(--req);color:var(--req)}
+.structure-foot{margin-bottom:0}
+
 /* ---------- 01 program index ---------- */
 .section-note{margin-bottom:0;color:var(--muted);font-size:.9rem}
 .program-lede{max-width:74ch;margin-bottom:1.3rem;color:var(--muted);font-size:.95rem}
 .program-lede a{color:var(--blue)}
 
 .program-table-wrap{overflow-x:auto}
-.program-table{width:100%;min-width:40rem;border-collapse:separate;border-spacing:0;
+.program-table{width:100%;min-width:46rem;border-collapse:separate;border-spacing:0;
   border:1px solid var(--line);border-radius:8px;background:var(--sheet);
   box-shadow:var(--shadow-card);overflow:hidden}
 .program-table th,.program-table td{padding:.5rem .8rem;text-align:left;
@@ -129,6 +155,12 @@ h2{margin-bottom:0;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-
 .program-summary{display:block;max-width:56ch;margin-top:.1rem;color:var(--muted);
   font-size:.85rem;line-height:1.45}
 .program-kind{width:6.5rem;color:var(--muted);font-size:.82rem;white-space:nowrap}
+.program-entry{width:5.5rem}
+.entry-open,.entry-limited{padding:.08rem .42rem;border-radius:4px;white-space:nowrap;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.entry-open{color:var(--done);background:var(--done-tint)}
+.entry-limited{color:var(--opt);background:var(--opt-tint)}
 .program-credits{width:5.5rem;text-align:right;color:var(--muted);white-space:nowrap;
   font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   font-size:.76rem;font-weight:700;font-variant-numeric:tabular-nums}
@@ -340,6 +372,9 @@ footer{display:flex;justify-content:space-between;gap:1rem;padding:1.3rem 0 2rem
   .focus-year-body{grid-template-columns:1fr}
   .plan-course{grid-template-columns:5.2rem 1fr 1.8rem;gap:.35rem}
   .plan-guide{display:none}
+  .tree-row{gap:.3rem}
+  .tree-note{width:100%;font-size:.78rem}
+  .structure-tree{padding:.8rem .7rem}
 }
 
 @media (prefers-reduced-motion:reduce){

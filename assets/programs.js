@@ -30,6 +30,11 @@
   var ETHICS = "0.5 credit in ethics and social responsibility (CSC300H1, ENV200H1, PHL265H1, PHL271H1, ETH200-level, and others)";
   var ALT_CALC = "MAT157Y1, or MAT148H1 + MAT149H1, also satisfy the calculus requirement";
 
+  // Verified against each calendar entry. Open means 4.0 credits and you are in;
+  // limited means you compete on grades. Every Mathematics-department program
+  // here is open; the Statistical Sciences ones are not.
+  var LIMITED = ["ASSPE2290", "ASSPE2270", "ASMAJ2289"];
+
   function track(name, who, picks) {
     return Object.freeze({ name: name, who: who, picks: Object.freeze(picks) });
   }
@@ -51,6 +56,7 @@
       credits: credits,
       summary: summary,
       url: "https://artsci.calendar.utoronto.ca/program/" + code,
+      entry: LIMITED.indexOf(code) === -1 ? "Open" : "Limited",
       required: Object.freeze(required),
       options: Object.freeze(options),
       tracks: Object.freeze(tracks),
