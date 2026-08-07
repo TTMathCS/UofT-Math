@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 5 — Hermitian, Symmetric &amp; Normal Operators · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 5</div>
+<div class="unit-no reveal">Unit 5 · Algebra II</div>
+<h1 class="ch-title reveal">Hermitian, Symmetric &amp; Normal Operators</h1>
+<p class="ch-intro reveal">Unit 4 studied $T^*T=I$. Now the weaker condition
+$T^*T=TT^*$ — merely that $T$ commutes with its adjoint. That is exactly the
+hypothesis the spectral theorem needs, and self-adjoint operators are the
+special case where the eigenvalues come out real.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Define self-adjoint and normal, and place the standard classes in the
+    hierarchy.</li>
+    <li>Prove a self-adjoint operator has real eigenvalues.</li>
+    <li>Prove eigenvectors of a normal operator for distinct eigenvalues are
+    orthogonal.</li>
+    <li>Show every operator on a complex space has an eigenvalue, and that a
+    self-adjoint one on a real space does too.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>MAT240H1 left diagonalizability as a delicate condition that often fails.
+    Adding one hypothesis about the adjoint makes it automatic — and gives an
+    <em>orthonormal</em> eigenbasis, not just any basis. Normality is the exact
+    boundary of that guarantee.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Covariance matrices are symmetric, which is why principal component
+    analysis always works. Quantum observables are self-adjoint precisely so that
+    measured values — the eigenvalues — are real numbers. The adjacency matrix
+    of an undirected graph is symmetric, and its spectrum governs connectivity
+    and random walks.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Hermite studied these forms in the 1850s. The name "normal" is Toeplitz's,
+    from 1918, and reflects that this is the natural class rather than a
+    contrived one. In infinite dimensions the spectral theorem for normal
+    operators is a cornerstone of functional analysis (MAT436H1).</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The definitions and the hierarchy</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Let $T$ be a linear operator on a finite-dimensional inner product
+    space.</p>
+    <div class="step">$T$ is <em>self-adjoint</em> (Hermitian over $\mathbb{C}$,
+    symmetric over $\mathbb{R}$) if $T^*=T$.</div>
+    <div class="step">$T$ is <em>skew-adjoint</em> if $T^*=-T$.</div>
+    <div class="step">$T$ is <em>normal</em> if $T^*T=TT^*$.</div>
+    <p>In matrix terms over an orthonormal basis: $A^*=A$, $A^*=-A$, and
+    $A^*A=AA^*$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Everything familiar is normal</b></div>
+    <p>Self-adjoint, skew-adjoint and unitary operators are all normal.</p>
+    <p>If $T^*=T$ then $T^*T=T^2=TT^*$. If $T^*=-T$ then
+    $T^*T=-T^2=TT^*$. If $T^*T=I=TT^*$ then the two products are equal
+    by definition. So normality is the common generalisation.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The hierarchy is strict</b></div>
+    <div class="step"><em>Normal, not self-adjoint:</em>
+    $A=\left(\begin{smallmatrix}i&0\\0&-i\end{smallmatrix}\right)$. Here
+    $A^*=-A$, so $A^*A=AA^*=I$, but $A^*\ne A$.</div>
+    <div class="step"><em>Normal, not unitary:</em> $2I$ satisfies
+    $A^*A=AA^*=4I\ne I$.</div>
+    <div class="step"><em>Not normal:</em>
+    $A=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)$. Then
+    $A^*A=\left(\begin{smallmatrix}1&1\\1&2\end{smallmatrix}\right)$ but
+    $AA^*=\left(\begin{smallmatrix}2&1\\1&1\end{smallmatrix}\right)$. This is
+    the defective matrix from MAT240H1 — and its failure to be normal is exactly
+    why it would not diagonalize.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Consequences of self-adjointness</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Real eigenvalues</b></div>
+    <p>If $T$ is self-adjoint, every eigenvalue is real.</p>
+    <p>Let $Tv=\lambda v$ with $v\ne0$. Then
+    $\lambda\|v\|^2=\langle Tv,v\rangle=\langle v,Tv\rangle
+    =\overline{\lambda}\|v\|^2$, using $T^*=T$. Dividing by
+    $\|v\|^2\ne0$ gives $\lambda=\overline{\lambda}$. &#8718;</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>$\langle Tv,v\rangle$ is real</b></div>
+    <p>$T$ is self-adjoint iff $\langle Tv,v\rangle\in\mathbb{R}$ for every
+    $v$ — over $\mathbb{C}$. One direction is the computation above; the converse
+    uses a polarization argument. Over $\mathbb{R}$ the statement is vacuous, and
+    indeed the converse fails there: a rotation has
+    $\langle Tv,v\rangle$ real but is not symmetric.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>A real symmetric operator has a real eigenvalue</b></div>
+    <p>This is not automatic — the rotation in Unit 4 had none. Symmetry is what
+    rescues it.</p>
+    <div class="step">Pick an orthonormal basis and let $A=[T]$, a real
+    symmetric matrix. Regard $A$ as acting on $\mathbb{C}^n$; the fundamental
+    theorem of algebra gives an eigenvalue $\lambda\in\mathbb{C}$ with
+    eigenvector $v\in\mathbb{C}^n$.</div>
+    <div class="step">Since $A$ is real symmetric it is self-adjoint on
+    $\mathbb{C}^n$, so by the previous theorem $\lambda$ is real. Then
+    $A-\lambda I$ is a real singular matrix, so it has a nonzero real null
+    vector. &#8718;</div>
+  </div>
+  <div class="checkpoint"><b>This is the bridge.</b>
+    Over $\mathbb{C}$ eigenvalues exist for free. Over $\mathbb{R}$ they do not,
+    and this theorem is what lets the real spectral theorem get started. It is
+    the one place the fundamental theorem of algebra enters the course.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Consequences of normality</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Norms agree</b></div>
+    <p>$T$ is normal iff $\|Tv\|=\|T^*v\|$ for all $v$.</p>
+    <p>$\|Tv\|^2-\|T^*v\|^2=\langle Tv,Tv\rangle-\langle T^*v,T^*v\rangle
+    =\langle (T^*T-TT^*)v,v\rangle$. If $T$ is normal this is $0$. Conversely,
+    $T^*T-TT^*$ is self-adjoint and has $\langle Sv,v\rangle=0$ for all $v$,
+    which forces $S=0$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Shared eigenvectors</b></div>
+    <p>If $T$ is normal and $Tv=\lambda v$, then $T^*v=\overline{\lambda}v$.</p>
+    <p>Apply the previous theorem to $T-\lambda I$, which is also normal:
+    $\|(T-\lambda I)v\|=\|(T-\lambda I)^*v\|=\|(T^*-\overline{\lambda}I)v\|$. The
+    left side is $0$, so the right side is too.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Orthogonal eigenspaces</b></div>
+    <p>If $T$ is normal and $Tu=\lambda u$, $Tv=\mu v$ with $\lambda\ne\mu$, then
+    $u\perp v$.</p>
+    <div class="step">$\lambda\langle u,v\rangle=\langle Tu,v\rangle
+    =\langle u,T^*v\rangle=\langle u,\overline{\mu}v\rangle=\mu\langle u,v\rangle$,
+    where the third equality is the previous theorem.</div>
+    <div class="step">So $(\lambda-\mu)\langle u,v\rangle=0$ and
+    $\lambda\ne\mu$ forces $\langle u,v\rangle=0$. &#8718;</div>
+    <p>MAT240H1 proved such eigenvectors are <em>independent</em>. Normality
+    upgrades that to <em>orthogonal</em> — which is precisely the extra strength
+    the spectral theorem delivers.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why non-normal fails</b></div>
+    <p>For $A=\left(\begin{smallmatrix}2&1\\0&3\end{smallmatrix}\right)$ from
+    MAT240H1, the eigenvectors were $(1,0)$ and $(1,1)$ — independent but not
+    orthogonal, since $\langle(1,0),(1,1)\rangle=1$. Consistent: $A$ is not
+    normal.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Assuming self-adjoint means real entries. A Hermitian matrix can have
+  complex off-diagonal entries; it is the <em>diagonal</em> entries that must be
+  real.<br>
+  &bull; Assuming normal implies self-adjoint. It does not — unitary operators
+  are normal with non-real eigenvalues.<br>
+  &bull; Using $T^*v=\overline{\lambda}v$ without normality. For a general
+  operator, an eigenvector of $T$ need not be one of $T^*$ at all.<br>
+  &bull; Forgetting the field when quoting "normal implies diagonalizable". Over
+  $\mathbb{R}$ that is false; a rotation is normal and not
+  diagonalizable.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Classify</div>
+      <p>Is $A=\left(\begin{smallmatrix}2&1+i\\1-i&3\end{smallmatrix}\right)$
+      Hermitian?</p>
+      <details><summary>Answer</summary><div class="ans">Yes. The diagonal
+      entries $2,3$ are real and the off-diagonal pair are conjugates:
+      $\overline{1+i}=1-i$. So $A^*=A$, and its eigenvalues must be
+      real.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Normality test</div>
+      <p>Is $A=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$
+      normal over $\mathbb{R}$?</p>
+      <details><summary>Answer</summary><div class="ans">Yes: $A^t=-A$, so it is
+      skew-symmetric and hence normal, with $A^tA=AA^t=I$. It is also orthogonal
+      — the rotation by $\pi/2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Real eigenvalues</div>
+      <p>Prove a Hermitian matrix has real eigenvalues.</p>
+      <details><summary>Solution</summary><div class="ans">From $Av=\lambda v$
+      with $v\ne0$, $\lambda\|v\|^2=\langle Av,v\rangle=\langle v,Av\rangle
+      =\overline{\lambda}\|v\|^2$, so $\lambda=\overline{\lambda}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Skew eigenvalues</div>
+      <p>Show a skew-adjoint operator has purely imaginary eigenvalues.</p>
+      <details><summary>Solution</summary><div class="ans">If $T^*=-T$ and
+      $Tv=\lambda v$, then $\lambda\|v\|^2=\langle Tv,v\rangle
+      =\langle v,T^*v\rangle=-\langle v,Tv\rangle=-\overline{\lambda}\|v\|^2$.
+      So $\lambda=-\overline{\lambda}$, meaning $\lambda$ is purely imaginary
+      (possibly $0$).</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Orthogonal eigenvectors</div>
+      <p>Prove eigenvectors of a normal operator for distinct eigenvalues are
+      orthogonal.</p>
+      <details><summary>Solution</summary><div class="ans">Use
+      $T^*v=\overline{\mu}v$ to get
+      $\lambda\langle u,v\rangle=\langle Tu,v\rangle=\langle u,T^*v\rangle
+      =\mu\langle u,v\rangle$, then divide by $\lambda-\mu\ne0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Building normal operators</div>
+      <p>Show $T^*T$ is self-adjoint for any $T$, and its eigenvalues are
+      non-negative.</p>
+      <details><summary>Solution</summary><div class="ans">$(T^*T)^*=T^*(T^*)^*
+      =T^*T$. If $T^*Tv=\lambda v$ with $\|v\|=1$ then
+      $\lambda=\langle T^*Tv,v\rangle=\|Tv\|^2\ge0$. This is the fact Unit 7
+      builds the singular value decomposition on.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Sum of normals</div>
+      <p>Is the sum of two normal operators normal?</p>
+      <details><summary>Solution</summary><div class="ans">Not in general. Take
+      $A=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ and
+      $B=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$, both
+      normal. Their sum $\left(\begin{smallmatrix}0&2\\0&0\end{smallmatrix}
+      \right)$ satisfies $A^*A\ne AA^*$, so it is not normal. Normality is not
+      preserved by addition.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Decomposition</div>
+      <p>Show every operator splits as $T=A+iB$ with $A,B$ self-adjoint, and that
+      $T$ is normal iff $A$ and $B$ commute.</p>
+      <details><summary>Solution</summary><div class="ans">Put
+      $A=\tfrac12(T+T^*)$ and $B=\tfrac{1}{2i}(T-T^*)$; both are self-adjoint and
+      $T=A+iB$. Expanding $T^*T-TT^*$ gives $2i(AB-BA)$, so normality is exactly
+      commuting. This is the operator analogue of writing a complex number as
+      real plus imaginary part.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Definitions.</strong> Self-adjoint, skew-adjoint, unitary and
+    normal, with the containments among them.</li>
+    <li><strong>Real spectrum.</strong> Prove self-adjoint operators have real
+    eigenvalues, and skew-adjoint ones purely imaginary.</li>
+    <li><strong>Existence over $\mathbb{R}$.</strong> A real symmetric operator
+    has a real eigenvalue.</li>
+    <li><strong>Normality consequences.</strong> $\|Tv\|=\|T^*v\|$, shared
+    eigenvectors, orthogonal eigenspaces.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Normality gives $T^*v=\overline{\lambda}v$, which gives orthogonal
+    eigenspaces, which is the engine of the spectral theorem in Unit 6.
+    Self-adjointness adds real eigenvalues and existence over
+    $\mathbb{R}$.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every operator you meet, compute $T^*T$ and $TT^*$ before anything else.
+    Whether they agree determines which theorems are available.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Normal condition</div>
+      <p>State the defining condition for normality.</p>
+      <details><summary>Guide</summary><div class="ans">$T^*T=TT^*$: the
+      operator commutes with its own adjoint.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Spectrum by class</div>
+      <p>Where do the eigenvalues live for self-adjoint, skew-adjoint and unitary
+      operators?</p>
+      <details><summary>Guide</summary><div class="ans">On the real axis, on the
+      imaginary axis, and on the unit circle respectively. All three are
+      normal, and the class shows up as a constraint on where the spectrum
+      sits.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Independence versus orthogonality</div>
+      <p>What does normality add to MAT240H1's eigenvector theorem?</p>
+      <details><summary>Guide</summary><div class="ans">MAT240H1 gave
+      independence for distinct eigenvalues. Normality upgrades it to
+      orthogonality, which is what makes the diagonalizing matrix
+      unitary.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Diagnosing a defect</div>
+      <p>An operator fails to diagonalize. What does that say about
+      normality?</p>
+      <details><summary>Guide</summary><div class="ans">Over $\mathbb{C}$ it
+      cannot be normal, since Unit 6 shows every complex normal operator
+      diagonalizes. Over $\mathbb{R}$ the argument does not apply — a rotation is
+      normal and still fails.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit04.html">← Unit 04<span>Isometries</span></a>
+  <a href="unit06.html">Unit 06 →<span>The spectral theorem</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>MAT247H1 — Algebra II · Course Guide</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="side">
+  <div class="brand"><span>MAT247H1</span></div>
+  <div class="sub">ALGEBRA II · WINTER<br>COURSE GUIDE</div>
+  <a href="../index.html">All Courses</a>
+  <a href="#about" data-t>About</a>
+  <a href="#units" data-t>Chapters</a>
+  <a href="#textbook" data-t>Textbook Spine</a>
+  <a href="#practice" data-t>Practice Plan</a>
+  <a href="#resources" data-t>Resources</a>
+  <div class="foot">INNER PRODUCTS &amp; FORMS<br>TEXT: FRIEDBERG<br>SEQUEL TO MAT240H1</div>
+</nav>
+
+<main>
+<header class="hero reveal">
+  <svg class="curve" viewBox="0 0 230 150" aria-hidden="true">
+    <line class="axis" x1="14" y1="135" x2="220" y2="135"/>
+    <line class="axis" x1="20" y1="8" x2="20" y2="142"/>
+    <path d="M20,135 L150,40"/>
+    <path d="M20,135 L190,110"/>
+    <circle cx="150" cy="40" r="4.5"/>
+    <circle cx="190" cy="110" r="4.5"/>
+  </svg>
+  <div class="kicker">U of T · Algebra II · Winter</div>
+  <h1>MAT247H1: length, angle, and <em>canonical form</em>.</h1>
+  <p class="lede">MAT240H1 asked what a linear map does. This course adds geometry
+  — an inner product gives vectors length and angle — and then finishes the
+  classification MAT240H1 started: every operator has a canonical form, even the
+  ones that refuse to diagonalize.</p>
+</header>
+
+<div class="note reveal" id="about">
+  <div class="tag">About this course</div>
+  <h3>Where linear algebra becomes geometry.</h3>
+  <p>MAT247H1 "Algebra II": real and complex inner product spaces, isometries,
+  orthogonal and unitary matrices and transformations, the adjoint, Hermitian and
+  symmetric transformations, the spectral theorem for symmetric and normal
+  transformations, the polar representation theorem, the primary decomposition
+  theorem, rational and Jordan canonical forms, and additional topics including
+  dual spaces, quotient spaces, bilinear forms and quadratic surfaces. Follows
+  <a href="../MAT240H1/index.html">MAT240H1</a>; co-requisite
+  <a href="../MAT158H1/index.html">MAT158H1</a> +
+  <a href="../MAT159H1/index.html">MAT159H1</a>. This guide uses Friedberg, Insel
+  &amp; Spence as a companion text.</p>
+</div>
+
+<section id="units" class="reveal">
+  <div class="sec-head"><span class="no">01</span><h2>Chapters</h2></div>
+  <p class="sec-sub">In course order. Each page has definitions, theorems, worked
+  proofs, pitfalls, and practice.</p>
+
+  <div class="chips">
+    <span class="chip teal"><b>MAT247H1</b><small>Algebra II · Winter</small></span>
+    <span class="chip teal"><b>MAT240H1</b><small>Algebra I · prerequisite</small></span>
+    <span class="chip"><b>Co-req</b><small>MAT158H1 + MAT159H1</small></span>
+  </div>
+
+  <ol class="units">
+    <li><a href="unit01.html"><div><h4>Inner product spaces</h4>
+      <p>Real and complex inner products, norms, Cauchy&ndash;Schwarz.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit02.html"><div><h4>Orthogonality &amp; Gram&ndash;Schmidt</h4>
+      <p>Orthonormal bases, orthogonal complements, projections.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit03.html"><div><h4>The adjoint</h4>
+      <p>Riesz representation, $T^*$, and least squares.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit04.html"><div><h4>Isometries: orthogonal &amp; unitary operators</h4>
+      <p>Maps that preserve length, and what they look like.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit05.html"><div><h4>Hermitian, symmetric &amp; normal operators</h4>
+      <p>Self-adjointness and the normal condition $TT^*=T^*T$.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit06.html"><div><h4>The spectral theorem</h4>
+      <p>Orthonormal eigenbases for normal and symmetric operators.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit07.html"><div><h4>Polar &amp; singular value decomposition</h4>
+      <p>$T=UP$, and the singular values of any map.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit08.html"><div><h4>Dual spaces &amp; quotient spaces</h4>
+      <p>Functionals, annihilators, and $V/W$.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit09.html"><div><h4>Primary decomposition &amp; Jordan form</h4>
+      <p>Generalized eigenvectors and the Jordan canonical form.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit10.html"><div><h4>Rational form, bilinear &amp; quadratic forms</h4>
+      <p>Canonical form over any field; quadratic surfaces.</p></div><span class="go">Open →</span></a></li>
+  </ol>
+</section>
+
+<section id="textbook" class="reveal">
+  <div class="sec-head"><span class="no">02</span><h2>Textbook Spine</h2></div>
+  <p class="sec-sub">The public calendar lists MAT247H1's topics in the order used
+  here. This guide uses Friedberg, Insel &amp; Spence, <em>Linear Algebra</em>,
+  as the companion text, because its chapters on inner product spaces and
+  canonical forms follow the same route. Check the current syllabus for the exact
+  edition and assigned problems.</p>
+
+  <div class="context">
+    <div class="ctxh">Unit-to-textbook alignment</div>
+    <div class="ci"><div class="cl">Geometry arrives</div>
+      <p>Units 1-3 pair with the text's inner product space chapter: inner
+      products, norms, orthonormal bases, Gram&ndash;Schmidt, orthogonal
+      complements, and the adjoint. This is the material with no MAT240H1
+      analogue at all.</p></div>
+    <div class="ci"><div class="cl">Operators with structure</div>
+      <p>Units 4-7 pair with the sections on isometries, normal and self-adjoint
+      operators, the spectral theorem, and the polar and singular value
+      decompositions. The theme: an extra hypothesis buys an orthonormal
+      eigenbasis.</p></div>
+    <div class="ci"><div class="cl">Classification without geometry</div>
+      <p>Units 8-10 pair with dual spaces, quotients, and the canonical form
+      chapters. Here the inner product goes away again and the question is what
+      an operator looks like over any field.</p></div>
+  </div>
+
+  <div class="bp">
+    <div class="card"><div class="n">CONJUGATE</div><h4>Watch which slot</h4>
+      <p>Complex inner products are linear in one argument and conjugate-linear
+      in the other. Fix your convention on day one and never drift; half of all
+      MAT247 sign errors start here.</p></div>
+    <div class="card"><div class="n">ADJOIN</div><h4>Translate to $T^*$</h4>
+      <p>Most theorems in this course are a statement about how $T$ and $T^*$
+      interact. Before proving anything, write the hypothesis as an equation
+      relating them.</p></div>
+    <div class="card"><div class="n">DECOMPOSE</div><h4>Split the space</h4>
+      <p>Spectral theorem, primary decomposition, and Jordan form are all the
+      same instinct: break $V$ into pieces the operator preserves, then look at
+      it one piece at a time.</p></div>
+    <div class="card"><div class="n">COMPARE</div><h4>Real versus complex</h4>
+      <p>Over $\mathbb{C}$ every normal operator diagonalizes; over $\mathbb{R}$
+      you need symmetry. Keep a running list of which theorems need which
+      field.</p></div>
+  </div>
+</section>
+
+<section id="practice" class="reveal">
+  <div class="sec-head"><span class="no">03</span><h2>Practice Plan</h2></div>
+  <p class="sec-sub">MAT247 rewards knowing which structural hypothesis you are
+  standing on. The unit pages give guided questions; use this course-level mix to
+  build exam readiness.</p>
+
+  <div class="bp">
+    <div class="card"><div class="n">01</div><h4>Hypothesis tracking</h4>
+      <p>For every theorem, write down whether it needs an inner product, needs
+      $\mathbb{C}$, or needs self-adjointness. Most exam errors are a theorem
+      applied one hypothesis short.</p></div>
+    <div class="card"><div class="n">02</div><h4>Gram&ndash;Schmidt by hand</h4>
+      <p>Run the algorithm on small explicit sets until it is automatic,
+      including in a function space with an integral inner product.</p></div>
+    <div class="card"><div class="n">03</div><h4>Canonical form drills</h4>
+      <p>Given a characteristic and a minimal polynomial, list every possible
+      Jordan form. This is the single most testable computation in the
+      course.</p></div>
+    <div class="card"><div class="n">04</div><h4>Counterexample sets</h4>
+      <p>Keep examples of: a normal operator that is not self-adjoint, a real
+      matrix with no real eigenvalue, and two matrices with the same
+      characteristic polynomial but different Jordan forms.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Course-wide challenge bank</h3>
+    <p class="prac-intro">These mix proof and computation in the style expected
+    from a theoretical linear algebra course.</p>
+    <div class="prac">
+      <div class="q"><div class="ql">Challenge 1 · Cauchy&ndash;Schwarz sharpness</div>
+        <p>Prove $|\langle u,v\rangle|\le\|u\|\,\|v\|$ with equality exactly when
+        $u$ and $v$ are dependent.</p>
+        <details><summary>Solution sketch</summary><div class="ans">If $v=0$ both
+        sides vanish. Otherwise put $c=\langle u,v\rangle/\|v\|^2$ and expand
+        $0\le\|u-cv\|^2=\|u\|^2-|\langle u,v\rangle|^2/\|v\|^2$. Equality forces
+        $u-cv=0$, so $u$ is a multiple of $v$.</div></details></div>
+      <div class="q"><div class="ql">Challenge 2 · Adjoint of a projection</div>
+        <p>Let $P$ be the orthogonal projection onto a subspace $W$. Prove
+        $P^*=P$ and $P^2=P$.</p>
+        <details><summary>Solution sketch</summary><div class="ans">Write
+        $u=u_W+u_{W^\perp}$. Then $\langle Pu,v\rangle=\langle u_W,v_W\rangle
+        =\langle u,Pv\rangle$, so $P^*=P$; and $Pu\in W$ already, so
+        $P(Pu)=Pu$.</div></details></div>
+      <div class="q"><div class="ql">Challenge 3 · Normal but not self-adjoint</div>
+        <p>Give a normal operator on $\mathbb{C}^2$ that is not self-adjoint, and
+        confirm the spectral theorem still applies.</p>
+        <details><summary>Solution sketch</summary><div class="ans">Take
+        $A=\left(\begin{smallmatrix}i&0\\0&-i\end{smallmatrix}\right)$. Then
+        $A^*=-A$, so $AA^*=A^*A=I$ and $A$ is normal but $A^*\ne A$. It is
+        already diagonal with eigenvalues $\pm i$ — non-real, which is exactly
+        why it is not self-adjoint.</div></details></div>
+      <div class="q"><div class="ql">Challenge 4 · Jordan from polynomials</div>
+        <p>An operator on a $4$-dimensional space has characteristic polynomial
+        $(t-3)^4$ and minimal polynomial $(t-3)^2$. List the possible Jordan
+        forms.</p>
+        <details><summary>Solution sketch</summary><div class="ans">Blocks all
+        have eigenvalue $3$, the largest is $2\times2$ (minimal polynomial), and
+        sizes sum to $4$. So either $2+2$, or $2+1+1$. Two possibilities; the
+        eigenspace dimension ($2$ or $3$) tells them apart.</div></details></div>
+    </div>
+  </div>
+</section>
+
+<section id="resources" class="reveal">
+  <div class="sec-head"><span class="no">04</span><h2>Resources</h2></div>
+  <p class="src">
+    <a href="https://artsci.calendar.utoronto.ca/course/mat247h1">MAT247H1 — official calendar listing</a><br>
+    <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">3Blue1Brown — Essence of Linear Algebra (intuition)</a>
+  </p>
+  <p class="lic">Companion text used by this guide: Friedberg, Insel &amp; Spence,
+  <em>Linear Algebra</em>. The public calendar confirms the MAT247H1 topic list
+  but does not publish a current instructor textbook. Verify the assigned text,
+  edition, and problem numbers against the active syllabus each year.</p>
+</section>
+
+<footer class="end">
+  <span>MAT247H1 · ALGEBRA II · U OF T</span>
+  <span>PREREQUISITE: MAT240H1</span>
+</footer>
+</main>
+</div>
+
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 7 — Polar &amp; Singular Value Decomposition · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 7</div>
+<div class="unit-no reveal">Unit 7 · Algebra II</div>
+<h1 class="ch-title reveal">Polar &amp; Singular Value Decomposition</h1>
+<p class="ch-intro reveal">The spectral theorem needs a hypothesis. This unit
+removes it. Every operator &mdash; normal or not, square or not &mdash; factors as
+a rotation composed with a stretch. The price is two different orthonormal bases
+instead of one.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Show $T^*T$ is positive semi-definite and extract $|T|=\sqrt{T^*T}$.</li>
+    <li>State and prove the polar decomposition $T=U|T|$.</li>
+    <li>Compute a singular value decomposition of a small matrix.</li>
+    <li>Explain why the singular values, not the eigenvalues, measure size.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Eigenvalues describe an operator badly when it is not normal, and are not
+    defined at all when the matrix is rectangular. Singular values are defined
+    for every matrix, are always real and non-negative, and behave well under
+    perturbation &mdash; they are the honest measure of size.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Truncating an SVD gives the best low-rank approximation of a matrix, which
+    is the mathematics behind image compression, latent semantic analysis, and
+    recommender systems. The condition number that decides whether a linear
+    system is numerically safe is the ratio of largest to smallest singular
+    value.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Beltrami and Jordan found the SVD independently in the 1870s for bilinear
+    forms; it was rediscovered repeatedly before numerical analysts made it
+    central in the 1960s. The polar decomposition is the matrix version of
+    writing a complex number as $re^{i\theta}$.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Positive operators and the square root</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A self-adjoint operator $P$ is <em>positive semi-definite</em> if
+    $\langle Pv,v\rangle\ge0$ for all $v$, and <em>positive definite</em> if the
+    inequality is strict for $v\ne0$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Characterisation</b></div>
+    <p>A self-adjoint $P$ is positive semi-definite iff all its eigenvalues are
+    $\ge0$.</p>
+    <p>By the spectral theorem take an orthonormal eigenbasis. Then
+    $\langle Pv,v\rangle=\sum_i\lambda_i|\langle v,e_i\rangle|^2$, which is
+    $\ge0$ for all $v$ exactly when every $\lambda_i\ge0$ &mdash; test with
+    $v=e_i$ for the converse.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Unique positive square root</b></div>
+    <p>Every positive semi-definite $P$ has a unique positive semi-definite
+    square root $\sqrt P$, and it is a polynomial in $P$.</p>
+    <p>Existence: from the spectral resolution $P=\sum\lambda_iP_i$, set
+    $\sqrt P=\sum\sqrt{\lambda_i}P_i$, legitimate since $\lambda_i\ge0$.
+    Uniqueness needs that any positive square root must act as
+    $\sqrt{\lambda_i}$ on each eigenspace of $P$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>$T^*T$ is always positive</b></div>
+    <p>For any $T$, the operator $T^*T$ is self-adjoint and positive
+    semi-definite, since $(T^*T)^*=T^*T$ and
+    $\langle T^*Tv,v\rangle=\langle Tv,Tv\rangle=\|Tv\|^2\ge0$.</p>
+    <p>Define $|T|=\sqrt{T^*T}$. It satisfies $\||T|v\|=\|Tv\|$ for every $v$:
+    both squares equal $\langle T^*Tv,v\rangle$.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Polar decomposition</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Polar decomposition</b></div>
+    <p>Every operator $T$ on a finite-dimensional inner product space factors as
+    $T=U|T|$ with $U$ unitary and $|T|=\sqrt{T^*T}$ positive semi-definite. If
+    $T$ is invertible, $U$ is unique.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Define $U$ on the image first</b></div>
+    <div class="step">The rule $U(|T|v)=Tv$ is well defined: if
+    $|T|v=|T|w$ then $\||T|(v-w)\|=0$, so $\|T(v-w)\|=0$ and $Tv=Tw$.</div>
+    <div class="step">On $R(|T|)$ this $U$ preserves norms, since
+    $\|U(|T|v)\|=\|Tv\|=\||T|v\|$. So it is an isometry from $R(|T|)$ onto
+    $R(T)$.</div>
+    <div class="step">These two subspaces have equal dimension, so their
+    orthogonal complements do too. Extend $U$ by any isometry
+    $R(|T|)^\perp\to R(T)^\perp$; the result is unitary on all of $V$ and
+    satisfies $T=U|T|$. &#8718;</div>
+  </div>
+  <div class="checkpoint"><b>The complex number analogy is exact.</b>
+    $z=re^{i\theta}$ splits a complex number into a non-negative magnitude and a
+    unit-modulus phase. Here $|T|$ is the magnitude &mdash; positive
+    semi-definite &mdash; and $U$ is the phase &mdash; unitary. Both
+    decompositions are unique exactly when the object is
+    invertible.</div>
+  <div class="box eg"><div class="bl">Example <b>A small polar decomposition</b></div>
+    <p>$A=\left(\begin{smallmatrix}0&2\\0&0\end{smallmatrix}\right)$.</p>
+    <div class="step">$A^*A=\left(\begin{smallmatrix}0&0\\0&4\end{smallmatrix}
+    \right)$, so $|A|=\left(\begin{smallmatrix}0&0\\0&2\end{smallmatrix}
+    \right)$.</div>
+    <div class="step">$U$ must send $(0,2)\mapsto(2,0)$, that is the second
+    standard vector to the first. Taking
+    $U=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ gives
+    $U|A|=\left(\begin{smallmatrix}0&2\\0&0\end{smallmatrix}\right)=A$.
+    ✓</div>
+    <div class="step">Note $A$ is not invertible and indeed $U$ is not unique:
+    $\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$ works
+    too.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Singular value decomposition</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>The <em>singular values</em> of $T$ are the eigenvalues of $|T|$, that is
+    the non-negative square roots of the eigenvalues of $T^*T$, listed with
+    multiplicity in decreasing order
+    $\sigma_1\ge\sigma_2\ge\cdots\ge\sigma_n\ge0$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Singular value decomposition</b></div>
+    <p>For any linear $T:V\to W$ between finite-dimensional inner product spaces
+    there are orthonormal bases $\{v_1,\dots,v_n\}$ of $V$ and
+    $\{u_1,\dots,u_m\}$ of $W$ and scalars $\sigma_1\ge\cdots\ge\sigma_r&gt;0$
+    with</p>
+    <div class="step">$Tv_i=\sigma_iu_i$ for $i\le r$, and $Tv_i=0$ for
+    $i&gt;r$, where $r=\operatorname{rank}(T)$.</div>
+    <p>In matrix terms, $A=U\Sigma V^*$ with $U,V$ unitary and $\Sigma$
+    rectangular diagonal carrying the singular values.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Spectral theorem on $T^*T$</b></div>
+    <div class="step">$T^*T$ is positive semi-definite, so the spectral theorem
+    gives an orthonormal eigenbasis $\{v_i\}$ of $V$ with eigenvalues
+    $\sigma_i^2\ge0$, ordered decreasingly.</div>
+    <div class="step">For $i\le r$ set $u_i=Tv_i/\sigma_i$. These are
+    orthonormal: $\langle u_i,u_j\rangle
+    =\dfrac{\langle Tv_i,Tv_j\rangle}{\sigma_i\sigma_j}
+    =\dfrac{\langle T^*Tv_i,v_j\rangle}{\sigma_i\sigma_j}
+    =\dfrac{\sigma_i^2\langle v_i,v_j\rangle}{\sigma_i\sigma_j}$, which is $1$
+    when $i=j$ and $0$ otherwise.</div>
+    <div class="step">For $i&gt;r$, $\|Tv_i\|^2=\sigma_i^2=0$, so $Tv_i=0$.
+    Extend $\{u_i\}$ to an orthonormal basis of $W$. &#8718;</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Compute an SVD</b></div>
+    <p>$A=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)$, which is
+    not normal.</p>
+    <div class="step">$A^*A=\left(\begin{smallmatrix}1&1\\1&2\end{smallmatrix}
+    \right)$ with characteristic polynomial $t^2-3t+1$, so the eigenvalues are
+    $(3\pm\sqrt5)/2$ and the singular values are their square roots:
+    $\sigma_1\approx1.618$, $\sigma_2\approx0.618$.</div>
+    <div class="step">Their product is $\sigma_1\sigma_2=\sqrt{\det(A^*A)}
+    =|\det A|=1$, a useful check.</div>
+    <div class="step">The eigenvalues of $A$ itself are both $1$ &mdash; which
+    tells you nothing about how much $A$ stretches. The singular values do:
+    the worst-case stretch is about $1.618$.</div>
+  </div>
+  <div class="box thm"><div class="bl">Theorem <b>What singular values compute</b></div>
+    <p>$\sigma_1=\max_{\|v\|=1}\|Tv\|$, the operator norm;
+    $\operatorname{rank}(T)$ is the number of nonzero singular values; and
+    $\sigma_1/\sigma_n$ is the condition number when $T$ is invertible.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Confusing singular values with eigenvalues. They coincide only when
+  $T$ is positive semi-definite; in general
+  $\sigma_i=\sqrt{\lambda_i(T^*T)}$.<br>
+  &bull; Forgetting singular values are non-negative and real, even when the
+  eigenvalues are complex or the matrix is rectangular.<br>
+  &bull; Assuming $U=V$ in $A=U\Sigma V^*$. Two different bases are needed unless
+  $A$ is positive semi-definite.<br>
+  &bull; Expecting uniqueness. $\Sigma$ is unique, but $U$ and $V$ are not when
+  singular values repeat or vanish.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Singular values</div>
+      <p>Find the singular values of
+      $\left(\begin{smallmatrix}3&0\\0&-2\end{smallmatrix}\right)$.</p>
+      <details><summary>Answer</summary><div class="ans">$A^*A
+      =\left(\begin{smallmatrix}9&0\\0&4\end{smallmatrix}\right)$, so the
+      singular values are $3$ and $2$ &mdash; the absolute values of the
+      eigenvalues, as always for a diagonal matrix.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Rectangular</div>
+      <p>Find the singular values of the $2\times1$ matrix with entries $3$ and
+      $4$.</p>
+      <details><summary>Answer</summary><div class="ans">$A^*A=(25)$, a
+      $1\times1$ matrix, so the only singular value is $5$. Eigenvalues are not
+      even defined here, which is the point.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Positive check</div>
+      <p>Is $\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)$ positive
+      definite?</p>
+      <details><summary>Answer</summary><div class="ans">Yes. It is symmetric
+      with eigenvalues $3$ and $1$, both positive.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Square root</div>
+      <p>Find $\sqrt A$ for
+      $A=\left(\begin{smallmatrix}4&0\\0&9\end{smallmatrix}\right)$.</p>
+      <details><summary>Answer</summary><div class="ans">
+      $\left(\begin{smallmatrix}2&0\\0&3\end{smallmatrix}\right)$. It is the
+      unique <em>positive</em> square root; sign changes on the diagonal give
+      other square roots that are not positive.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Polar</div>
+      <p>Polar decompose
+      $A=\left(\begin{smallmatrix}0&3\\-3&0\end{smallmatrix}\right)$.</p>
+      <details><summary>Solution</summary><div class="ans">$A^*A=9I$, so
+      $|A|=3I$ and $U=\tfrac13A
+      =\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$, which is
+      orthogonal. So $A=U\cdot3I$: a rotation composed with a uniform scaling by
+      $3$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Determinant identity</div>
+      <p>Show $|\det A|=\prod_i\sigma_i$.</p>
+      <details><summary>Solution</summary><div class="ans">From $A=U\Sigma V^*$,
+      $|\det A|=|\det U||\det\Sigma||\det V^*|=\det\Sigma=\prod\sigma_i$, since
+      unitary matrices have determinant of modulus $1$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Operator norm</div>
+      <p>Prove $\max_{\|v\|=1}\|Tv\|=\sigma_1$.</p>
+      <details><summary>Solution</summary><div class="ans">Expand $v$ in the
+      orthonormal basis $\{v_i\}$ from the SVD: $\|Tv\|^2
+      =\sum_i\sigma_i^2|c_i|^2\le\sigma_1^2\sum_i|c_i|^2=\sigma_1^2$, with
+      equality at $v=v_1$.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · When they coincide</div>
+      <p>For which operators do the singular values equal the moduli of the
+      eigenvalues?</p>
+      <details><summary>Solution</summary><div class="ans">Exactly the normal
+      ones. If $T=UDU^*$ then $T^*T=U|D|^2U^*$, so
+      $\sigma_i=|\lambda_i|$. Conversely equality forces normality &mdash; which
+      is why non-normal matrices like
+      $\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)$ have
+      eigenvalues $1,1$ but singular values far from $1$.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Positive operators.</strong> Characterise them by their spectrum
+    and construct the unique positive square root.</li>
+    <li><strong>Polar decomposition.</strong> Prove $T=U|T|$ and identify when
+    $U$ is unique.</li>
+    <li><strong>SVD.</strong> Derive it from the spectral theorem applied to
+    $T^*T$ and compute small examples.</li>
+    <li><strong>Interpretation.</strong> Relate $\sigma_1$ to the operator norm
+    and the count of nonzero singular values to rank.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>$T^*T$ positive gives $|T|$; $|T|$ gives the polar decomposition; the
+    spectral theorem on $T^*T$ gives the SVD. Everything here is the spectral
+    theorem applied to an operator manufactured to satisfy its
+    hypothesis.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Check every SVD with $\prod\sigma_i=|\det A|$ and with the count of nonzero
+    singular values against the rank. Both catch arithmetic slips
+    immediately.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Definition</div>
+      <p>How are singular values defined?</p>
+      <details><summary>Guide</summary><div class="ans">As the non-negative
+      square roots of the eigenvalues of $T^*T$, equivalently the eigenvalues of
+      $|T|=\sqrt{T^*T}$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Why they always exist</div>
+      <p>Why does every matrix have singular values, even non-square ones?</p>
+      <details><summary>Guide</summary><div class="ans">$T^*T$ is always a
+      square, self-adjoint, positive semi-definite operator on the domain, so the
+      spectral theorem always applies to it regardless of the shape of
+      $T$.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Polar uniqueness</div>
+      <p>When is the unitary factor in $T=U|T|$ unique?</p>
+      <details><summary>Guide</summary><div class="ans">Exactly when $T$ is
+      invertible. Otherwise $U$ is only determined on $R(|T|)$ and can be
+      anything isometric on the complement.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Low rank approximation</div>
+      <p>How does the SVD give the best rank-$k$ approximation?</p>
+      <details><summary>Guide</summary><div class="ans">Keep the $k$ largest
+      singular values and zero the rest. The error is $\sigma_{k+1}$ in operator
+      norm, and no rank-$k$ matrix does better &mdash; the Eckart&ndash;Young
+      theorem.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit06.html">← Unit 06<span>The spectral theorem</span></a>
+  <a href="unit08.html">Unit 08 →<span>Dual &amp; quotient spaces</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

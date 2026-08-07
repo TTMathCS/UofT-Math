@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 4 — Isometries: Orthogonal &amp; Unitary Operators · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 4</div>
+<div class="unit-no reveal">Unit 4 · Algebra II</div>
+<h1 class="ch-title reveal">Isometries: Orthogonal &amp; Unitary Operators</h1>
+<p class="ch-intro reveal">The first structural class: operators that preserve
+length. It turns out preserving length forces preserving angle, forces
+$T^*T=I$, and forces the columns of the matrix to be an orthonormal basis. Four
+different-looking conditions, all the same condition.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Prove the equivalence of the four characterisations of an isometry.</li>
+    <li>Recognise orthogonal and unitary matrices and invert them by
+    transposing.</li>
+    <li>Show every eigenvalue of a unitary operator has modulus $1$.</li>
+    <li>Classify the $2\times2$ real orthogonal matrices.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>These are the changes of coordinates that do not distort geometry. If you
+    want to move to a nicer basis without changing lengths or angles — which is
+    exactly what the spectral theorem does — the change-of-basis matrix must be
+    unitary.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Rotation matrices in graphics and robotics are orthogonal. Quantum time
+    evolution is unitary, which is what conserves total probability. The discrete
+    Fourier transform is unitary after normalising, which is why it preserves
+    energy — Parseval's theorem in signal processing.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The orthogonal group $O(n)$ and unitary group $U(n)$ are the first
+    examples of Lie groups, the objects that organise modern physics. Their
+    representation theory (MAT445H1) classifies the symmetries of quantum
+    systems.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Four equivalent conditions</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A linear $T:V\to V$ is an <em>isometry</em> if $\|Tv\|=\|v\|$ for all $v$.
+    Over $\mathbb{R}$ such a $T$ is called <em>orthogonal</em>; over $\mathbb{C}$
+    it is called <em>unitary</em>.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Equivalences</b></div>
+    <p>For linear $T$ on a finite-dimensional inner product space, the following
+    are equivalent:</p>
+    <div class="step">(1) $\|Tv\|=\|v\|$ for all $v$ — lengths preserved.</div>
+    <div class="step">(2) $\langle Tu,Tv\rangle=\langle u,v\rangle$ for all
+    $u,v$ — inner products preserved.</div>
+    <div class="step">(3) $T^*T=I$, equivalently $T^*=T^{-1}$.</div>
+    <div class="step">(4) $T$ carries some (hence every) orthonormal basis to an
+    orthonormal basis.</div></div>
+  <div class="box eg"><div class="bl">Proof <b>The cycle</b></div>
+    <div class="step"><em>(2) &rArr; (1):</em> take $u=v$.</div>
+    <div class="step"><em>(1) &rArr; (2):</em> the polarization identity
+    recovers the inner product from the norm, so preserving all norms preserves
+    all inner products. Over $\mathbb{R}$,
+    $\langle u,v\rangle=\tfrac14(\|u+v\|^2-\|u-v\|^2)$, and each norm on the
+    right is preserved.</div>
+    <div class="step"><em>(2) &hArr; (3):</em> condition (2) says
+    $\langle u,v\rangle=\langle Tu,Tv\rangle=\langle u,T^*Tv\rangle$ for all
+    $u,v$, that is $\langle u,(T^*T-I)v\rangle=0$ for all $u$, which forces
+    $T^*T=I$.</div>
+    <div class="step"><em>(3) &hArr; (4):</em> in an orthonormal basis
+    $\{e_i\}$, the $(i,j)$ entry of $[T]^*[T]$ is $\langle Te_j,Te_i\rangle$.
+    That matrix is $I$ exactly when the vectors $Te_i$ are orthonormal.
+    &#8718;</div>
+  </div>
+  <div class="checkpoint"><b>Why finite dimension matters.</b>
+    $T^*T=I$ says $T$ is injective. In finite dimensions injective implies
+    surjective, so $T$ is invertible and $TT^*=I$ too. In infinite dimensions
+    the one-sided shift satisfies $T^*T=I$ but is not surjective — an isometry
+    that is not unitary.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Orthogonal and unitary matrices</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$A\in M_n(\mathbb{R})$ is <em>orthogonal</em> if $A^tA=I$; $A\in
+    M_n(\mathbb{C})$ is <em>unitary</em> if $A^*A=I$. Equivalently the columns
+    form an orthonormal basis — and since $A^*A=I$ gives $AA^*=I$, so do the
+    rows.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Eigenvalues sit on the unit circle</b></div>
+    <p>If $T$ is unitary and $Tv=\lambda v$ with $v\ne0$, then $|\lambda|=1$.</p>
+    <p>$\|v\|=\|Tv\|=\|\lambda v\|=|\lambda|\,\|v\|$, and $\|v\|\ne0$.</p>
+    <p>Consequently $|\det T|=1$: the determinant is the product of the
+    eigenvalues over $\mathbb{C}$. For a real orthogonal matrix
+    $\det T=\pm1$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>All $2\times2$ real orthogonal matrices</b></div>
+    <div class="step">The first column is a unit vector, so it is
+    $(\cos\theta,\sin\theta)$ for some $\theta$. The second is a unit vector
+    orthogonal to it, so it is $\pm(-\sin\theta,\cos\theta)$.</div>
+    <div class="step">With $+$: $R_\theta
+    =\left(\begin{smallmatrix}\cos\theta&-\sin\theta\\
+    \sin\theta&\cos\theta\end{smallmatrix}\right)$, determinant $+1$ — a
+    <em>rotation</em>.</div>
+    <div class="step">With $-$: determinant $-1$, and the matrix is a
+    <em>reflection</em> in the line at angle $\theta/2$. So every plane isometry
+    fixing the origin is a rotation or a reflection, and the determinant tells
+    you which.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>A unitary that is not orthogonal</b></div>
+    <p>$U=\left(\begin{smallmatrix}0&i\\i&0\end{smallmatrix}\right)$ satisfies
+    $U^*U=I$, so it is unitary. Its entries are not real, so it is not an
+    orthogonal matrix; its eigenvalues are $\pm i$, both of modulus
+    $1$.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Structure of the isometry groups</h3>
+  <div class="box thm"><div class="bl">Theorem <b>They form groups</b></div>
+    <p>Products and inverses of unitary operators are unitary, so they form a
+    group $U(n)$ under composition; the real case gives $O(n)$. The elements of
+    determinant $1$ form the subgroups $SU(n)$ and $SO(n)$.</p>
+    <p>If $S^*S=I$ and $T^*T=I$ then $(ST)^*(ST)=T^*S^*ST=T^*T=I$; and
+    $(T^{-1})^*T^{-1}=(T^*)^*T^*=TT^*=I$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Unitary change of basis</b></div>
+    <p>If $\beta$ and $\gamma$ are both orthonormal bases, the change-of-basis
+    matrix from $\beta$ to $\gamma$ is unitary. This is why "orthogonally
+    diagonalizable" in Unit 6 means $A=UDU^*$ rather than $A=PDP^{-1}$ — the
+    conjugating matrix can be taken unitary, and then $P^{-1}$ costs nothing to
+    compute.</p></div>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$A$ and $B$ are <em>unitarily equivalent</em> if $B=U^*AU$ for some
+    unitary $U$. This is stronger than similarity: it preserves the inner
+    product structure as well as the operator. Unitarily equivalent matrices
+    have the same eigenvalues <em>and</em> the same
+    $\operatorname{tr}(A^*A)$.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Calling a matrix orthogonal because its columns are pairwise
+  orthogonal. They must also be <em>unit</em> vectors; "orthogonal matrix"
+  really means orthonormal columns.<br>
+  &bull; Using $A^t$ instead of $A^*$ over $\mathbb{C}$. The transpose alone does
+  not give the inverse of a unitary matrix.<br>
+  &bull; Concluding $\det T=1$. It is $\pm1$ in the real case and any unit
+  complex number in general.<br>
+  &bull; Assuming an isometry is diagonalizable over $\mathbb{R}$. A rotation by
+  $\theta\ne0,\pi$ has no real eigenvalue at all.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Verify orthogonality</div>
+      <p>Is $\tfrac{1}{5}\left(\begin{smallmatrix}3&-4\\4&3\end{smallmatrix}
+      \right)$ orthogonal?</p>
+      <details><summary>Answer</summary><div class="ans">Yes. Each column has
+      norm $\tfrac15\sqrt{9+16}=1$ and their dot product is
+      $\tfrac{1}{25}(-12+12)=0$. Determinant $\tfrac{1}{25}(9+16)=1$, so it is a
+      rotation.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Identify the isometry</div>
+      <p>Describe the map with matrix
+      $\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$.</p>
+      <details><summary>Answer</summary><div class="ans">Orthogonal with
+      determinant $-1$: a reflection, in the line $y=x$. Its eigenvalues are
+      $1$ (along $y=x$) and $-1$ (along $y=-x$).</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Eigenvalue modulus</div>
+      <p>Prove every eigenvalue of a unitary operator has $|\lambda|=1$.</p>
+      <details><summary>Solution</summary><div class="ans">From $Tv=\lambda v$
+      with $v\ne0$, $\|v\|=\|Tv\|=|\lambda|\|v\|$, so $|\lambda|=1$ after
+      dividing by $\|v\|\ne0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Products</div>
+      <p>Show the product of two unitary matrices is unitary.</p>
+      <details><summary>Solution</summary><div class="ans">$(UV)^*(UV)
+      =V^*U^*UV=V^*IV=V^*V=I$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Preserving angles</div>
+      <p>Show an isometry maps orthogonal vectors to orthogonal vectors.</p>
+      <details><summary>Solution</summary><div class="ans">By characterisation
+      (2), $\langle Tu,Tv\rangle=\langle u,v\rangle=0$ whenever $u\perp v$. Angle
+      is preserved because both the inner product and the norms
+      are.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Reflection formula</div>
+      <p>For a unit vector $u$, show $T(v)=v-2\langle v,u\rangle u$ is orthogonal
+      and describe it.</p>
+      <details><summary>Solution</summary><div class="ans">Compute
+      $\|Tv\|^2=\|v\|^2-4\langle v,u\rangle^2+4\langle v,u\rangle^2\|u\|^2
+      =\|v\|^2$ using $\|u\|=1$. It fixes $u^\perp$ pointwise and sends $u$ to
+      $-u$: reflection in the hyperplane $u^\perp$. These are the Householder
+      reflections used in numerical QR.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · No real eigenvalues</div>
+      <p>Show $R_{\pi/2}$ has no real eigenvalue but is orthogonal.</p>
+      <details><summary>Solution</summary><div class="ans">Its matrix is
+      $\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)$ with
+      characteristic polynomial $t^2+1$, which has no real root. It is still
+      orthogonal — being an isometry says nothing about having
+      eigenvectors over $\mathbb{R}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Unitary invariant</div>
+      <p>Show $\operatorname{tr}(A^*A)$ is unchanged under $A\mapsto U^*AU$ for
+      unitary $U$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $(U^*AU)^*(U^*AU)=U^*A^*UU^*AU=U^*A^*AU$, and trace is invariant under
+      similarity. So the sum of squared moduli of the entries is a unitary
+      invariant — the Frobenius norm.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Isometry characterisations.</strong> Prove all four conditions
+    equivalent and know which implication uses polarization.</li>
+    <li><strong>Matrix criterion.</strong> Recognise orthogonal and unitary
+    matrices by their columns and invert them by conjugate transpose.</li>
+    <li><strong>Spectral facts.</strong> Eigenvalues have modulus $1$ and
+    $|\det|=1$.</li>
+    <li><strong>Classification in the plane.</strong> Rotations versus
+    reflections by determinant.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Length preserved &rArr; inner products preserved &rArr; $T^*T=I$ &rArr;
+    orthonormal columns. Each arrow is one short computation, and the chain is
+    the whole unit.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Given any concrete matrix, check unitarity by multiplying $A^*A$ rather than
+    inspecting columns individually. It is faster and catches normalisation
+    errors.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Matrix condition</div>
+      <p>State the matrix condition for unitarity.</p>
+      <details><summary>Guide</summary><div class="ans">$A^*A=I$, equivalently
+      $A^{-1}=A^*$, equivalently the columns form an orthonormal
+      basis.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Determinant</div>
+      <p>What values can $\det$ take for a real orthogonal matrix?</p>
+      <details><summary>Guide</summary><div class="ans">Only $\pm1$. From
+      $A^tA=I$, $(\det A)^2=1$. Determinant $+1$ means a rotation, $-1$ means
+      orientation is reversed.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Which implication needs polarization</div>
+      <p>Which step of the equivalence proof is not immediate?</p>
+      <details><summary>Guide</summary><div class="ans">Norms preserved &rArr;
+      inner products preserved. It needs the polarization identity to recover
+      $\langle u,v\rangle$ from norms alone.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Unitary equivalence versus similarity</div>
+      <p>How do they differ?</p>
+      <details><summary>Guide</summary><div class="ans">Similarity allows any
+      invertible $P$; unitary equivalence requires $P$ unitary, so it preserves
+      the inner product too. Unitarily equivalent matrices share the Frobenius
+      norm, which merely similar ones need not.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit03.html">← Unit 03<span>The adjoint</span></a>
+  <a href="unit05.html">Unit 05 →<span>Hermitian &amp; normal operators</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

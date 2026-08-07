@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 6 — The Spectral Theorem · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 6</div>
+<div class="unit-no reveal">Unit 6 · Algebra II</div>
+<h1 class="ch-title reveal">The Spectral Theorem</h1>
+<p class="ch-intro reveal">The high point of the course. Over $\mathbb{C}$, normal
+is exactly the right hypothesis: a normal operator has an orthonormal basis of
+eigenvectors, full stop. Over $\mathbb{R}$ the same is true for symmetric
+operators. Every diagonalization failure from MAT240H1 was a failure of this
+hypothesis.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State both versions and say exactly which field each needs.</li>
+    <li>Prove the complex case via Schur's theorem.</li>
+    <li>Orthogonally diagonalize a symmetric matrix by hand.</li>
+    <li>Write the spectral resolution $T=\sum\lambda_iP_i$ and use it.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>MAT240H1 could diagonalize when it got lucky. This theorem replaces luck
+    with a checkable hypothesis, and pays a bonus: the eigenbasis is orthonormal,
+    so the change-of-basis matrix is unitary and its inverse is free.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Principal component analysis is the spectral theorem applied to a
+    covariance matrix. The normal modes of a vibrating structure are its
+    eigenvectors. In quantum mechanics the theorem is the reason an observable
+    has a complete set of states with real measured values.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Cauchy proved the real symmetric case in 1829 while studying quadratic
+    surfaces. Hilbert coined "spectrum" around 1904 for the infinite-dimensional
+    analogue — before quantum mechanics gave the word its physical meaning, which
+    he later called a lucky accident.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Schur's theorem</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Schur</b></div>
+    <p>Let $T$ be an operator on a finite-dimensional complex inner product
+    space. Then there is an orthonormal basis in which $[T]$ is upper
+    triangular. Equivalently, every complex square matrix is unitarily equivalent
+    to an upper triangular one: $A=UTU^*$ with $U$ unitary.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Induction on dimension</b></div>
+    <div class="step">Over $\mathbb{C}$ the characteristic polynomial of $T^*$
+    has a root, so $T^*$ has an eigenvector: $T^*w=\mu w$ with
+    $\|w\|=1$.</div>
+    <div class="step">Let $W=\operatorname{span}\{w\}$ and consider $W^\perp$,
+    of dimension $n-1$. It is $T$-invariant: for $v\in W^\perp$,
+    $\langle Tv,w\rangle=\langle v,T^*w\rangle=\langle v,\mu w\rangle
+    =\overline{\mu}\langle v,w\rangle=0$.</div>
+    <div class="step">By induction $T|_{W^\perp}$ has an orthonormal basis
+    making it upper triangular. Appending $w$ gives an orthonormal basis of $V$
+    in which $[T]$ is upper triangular, since the first column has zeros below
+    the diagonal by construction. &#8718;</div>
+  </div>
+  <div class="checkpoint"><b>Why start with $T^*$, not $T$.</b>
+    Taking an eigenvector of $T^*$ makes $W^\perp$ invariant under $T$, which is
+    the direction the induction needs. Starting from an eigenvector of $T$ makes
+    $W$ invariant instead, and $W^\perp$ need not be.</div>
+</div>
+
+<div class="block reveal">
+  <h3>The complex spectral theorem</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Spectral theorem, complex case</b></div>
+    <p>Let $T$ be an operator on a finite-dimensional <em>complex</em> inner
+    product space. Then $T$ is normal if and only if $V$ has an orthonormal basis
+    of eigenvectors of $T$. In matrix terms: $A$ is normal iff $A=UDU^*$ with $U$
+    unitary and $D$ diagonal.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Schur plus normality</b></div>
+    <div class="step"><em>(&lArr;)</em> If $[T]=D$ is diagonal in an orthonormal
+    basis then $[T^*]=\overline{D}$, and diagonal matrices commute, so $T$ is
+    normal.</div>
+    <div class="step"><em>(&rArr;)</em> By Schur, take an orthonormal basis with
+    $A=[T]$ upper triangular. Compare the $(1,1)$ entries of $A^*A$ and $AA^*$:
+    the first is $|A_{11}|^2$, the second is
+    $\sum_j|A_{1j}|^2$.</div>
+    <div class="step">Normality forces these equal, so $A_{1j}=0$ for all
+    $j&gt;1$: the first row is zero off the diagonal. Repeating with the
+    $(2,2)$ entries kills the second row, and so on. The triangular matrix is
+    diagonal. &#8718;</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Diagonalize a unitary</b></div>
+    <p>$U=\left(\begin{smallmatrix}0&i\\i&0\end{smallmatrix}\right)$ is unitary,
+    hence normal.</p>
+    <div class="step">$f(t)=t^2+1$, so the eigenvalues are $\pm i$ — on the unit
+    circle, as Unit 4 requires.</div>
+    <div class="step">Eigenvectors: $(1,1)$ for $i$ and $(1,-1)$ for $-i$. They
+    are orthogonal, as normality guarantees. Normalising and using them as
+    columns of $U_0$ gives $U_0^*UU_0
+    =\left(\begin{smallmatrix}i&0\\0&-i\end{smallmatrix}\right)$.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>The real spectral theorem</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Spectral theorem, real case</b></div>
+    <p>Let $T$ be an operator on a finite-dimensional <em>real</em> inner product
+    space. Then $T$ is self-adjoint if and only if $V$ has an orthonormal basis
+    of eigenvectors. In matrix terms: a real matrix is orthogonally
+    diagonalizable iff it is symmetric, $A=QDQ^t$ with $Q$ orthogonal and $D$
+    real diagonal.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Induction, using Unit 5</b></div>
+    <div class="step">Unit 5 gave a real eigenvalue $\lambda$ with a real unit
+    eigenvector $v$.</div>
+    <div class="step">$\{v\}^\perp$ is $T$-invariant: for $w\perp v$,
+    $\langle Tw,v\rangle=\langle w,Tv\rangle=\lambda\langle w,v\rangle=0$, using
+    $T=T^*$.</div>
+    <div class="step">The restriction of $T$ to $\{v\}^\perp$ is still
+    self-adjoint, so induction gives an orthonormal eigenbasis there. Adjoining
+    $v$ finishes. &#8718;</div>
+  </div>
+  <div class="box warn"><div class="bl">Normal is not enough over $\mathbb{R}$</div>
+    <p>The rotation $\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)$
+    is normal — indeed orthogonal — but has no real eigenvalue, so no real
+    eigenbasis exists. Over $\mathbb{R}$ the correct hypothesis is symmetry, not
+    normality. The real classification of normal operators instead gives a block
+    form with $2\times2$ rotation blocks.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Orthogonally diagonalize by hand</b></div>
+    <p>$A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)$, symmetric.</p>
+    <div class="step">$f(t)=(2-t)^2-1=t^2-4t+3$, so eigenvalues $3$ and
+    $1$.</div>
+    <div class="step">$E_3=\operatorname{span}\{(1,1)\}$,
+    $E_1=\operatorname{span}\{(1,-1)\}$ — orthogonal, as the theorem
+    promises.</div>
+    <div class="step">Normalise into
+    $Q=\tfrac{1}{\sqrt2}\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}
+    \right)$. Then $Q^tAQ=\left(\begin{smallmatrix}3&0\\0&1\end{smallmatrix}
+    \right)$, and $Q^t$ is the inverse for free.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Spectral resolution</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Let $T$ be normal (complex) or self-adjoint (real) with distinct
+    eigenvalues $\lambda_1,\dots,\lambda_k$ and eigenspaces
+    $E_1,\dots,E_k$. Writing $P_i$ for the orthogonal projection onto $E_i$, the
+    <em>spectral resolution</em> is</p>
+    <div class="step">$T=\sum_{i=1}^k\lambda_iP_i$, with
+    $\sum_iP_i=I$, $P_iP_j=0$ for $i\ne j$, and $P_i^*=P_i=P_i^2$.</div>
+    <p>Equivalently $V=E_1\oplus\cdots\oplus E_k$, an orthogonal direct
+    sum.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Functions of an operator</b></div>
+    <p>For any polynomial $p$, $p(T)=\sum_i p(\lambda_i)P_i$. More generally this
+    defines $f(T)$ for any function $f$ on the spectrum — including
+    $\sqrt{T}$ when the eigenvalues are non-negative, which Unit 7 needs.</p>
+    <p>Since $P_iP_j=0$ for $i\ne j$ and $P_i^2=P_i$, powers telescope:
+    $T^m=\sum_i\lambda_i^mP_i$. Extend by linearity.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Resolve the last example</b></div>
+    <p>For $A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)$ with
+    eigenvalues $3,1$:</p>
+    <div class="step">$P_3=\tfrac12\left(\begin{smallmatrix}1&1\\1&1
+    \end{smallmatrix}\right)$ and
+    $P_1=\tfrac12\left(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right)$.
+    Check $P_3+P_1=I$ and $P_3P_1=0$. ✓</div>
+    <div class="step">$3P_3+1\cdot P_1
+    =\tfrac12\left(\begin{smallmatrix}3+1&3-1\\3-1&3+1\end{smallmatrix}\right)
+    =\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)=A$. ✓</div>
+    <div class="step">And $\sqrt{A}=\sqrt3P_3+P_1$, whose square is $A$ — a
+    square root obtained without solving any equations.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Quoting "normal implies diagonalizable" over $\mathbb{R}$. Only
+  symmetry works there.<br>
+  &bull; Forgetting to normalise the eigenvectors. $Q$ must be orthogonal, so
+  its columns need norm $1$; otherwise $Q^t\ne Q^{-1}$.<br>
+  &bull; Assuming eigenvectors within a single eigenspace are automatically
+  orthogonal. Vectors from <em>distinct</em> eigenvalues are; inside a repeated
+  eigenspace you must run Gram&ndash;Schmidt yourself.<br>
+  &bull; Writing $A=QDQ^{-1}$ and stopping. The content of the theorem is that
+  $Q$ can be taken orthogonal or unitary, so $Q^{-1}=Q^*$.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Orthogonal diagonalization</div>
+      <p>Orthogonally diagonalize
+      $\left(\begin{smallmatrix}3&1\\1&3\end{smallmatrix}\right)$.</p>
+      <details><summary>Answer</summary><div class="ans">Eigenvalues $4$ and $2$
+      with eigenvectors $(1,1)$ and $(1,-1)$. With
+      $Q=\tfrac{1}{\sqrt2}\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}
+      \right)$, $Q^tAQ=\left(\begin{smallmatrix}4&0\\0&2\end{smallmatrix}
+      \right)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Repeated eigenvalue</div>
+      <p>Orthogonally diagonalize the $3\times3$ matrix with all entries
+      $1$.</p>
+      <details><summary>Solution</summary><div class="ans">Eigenvalue $3$ with
+      eigenvector $(1,1,1)$, and eigenvalue $0$ with the plane
+      $x+y+z=0$. Run Gram&ndash;Schmidt inside that plane on
+      $(1,-1,0)$ and $(1,0,-1)$ to get an orthonormal pair, then normalise
+      $(1,1,1)$. The repeated eigenvalue is where the extra work
+      lives.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Which theorem applies</div>
+      <p>Can $\left(\begin{smallmatrix}0&-2\\2&0\end{smallmatrix}\right)$ be
+      orthogonally diagonalized over $\mathbb{R}$?</p>
+      <details><summary>Answer</summary><div class="ans">No. It is normal but not
+      symmetric, and its characteristic polynomial $t^2+4$ has no real root. Over
+      $\mathbb{C}$ it is unitarily diagonalizable with eigenvalues
+      $\pm2i$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Schur by hand</div>
+      <p>Find a unitary $U$ making
+      $A=\left(\begin{smallmatrix}1&1\\0&2\end{smallmatrix}\right)$ upper
+      triangular.</p>
+      <details><summary>Solution</summary><div class="ans">It already is upper
+      triangular, so $U=I$ works. Note $A$ is not normal, so no unitary makes it
+      <em>diagonal</em> — Schur is strictly weaker than the spectral
+      theorem.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Spectral resolution</div>
+      <p>Write the spectral resolution of
+      $\left(\begin{smallmatrix}5&0\\0&5\end{smallmatrix}\right)$.</p>
+      <details><summary>Solution</summary><div class="ans">One eigenvalue $5$
+      with $E_5=\mathbb{R}^2$, so $P_1=I$ and $T=5I$. A single term — scalar
+      operators are the degenerate case.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Square root</div>
+      <p>Find a self-adjoint square root of
+      $A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)$.</p>
+      <details><summary>Solution</summary><div class="ans">From the resolution
+      $A=3P_3+P_1$, take $\sqrt A=\sqrt3P_3+P_1
+      =\tfrac12\left(\begin{smallmatrix}\sqrt3+1&\sqrt3-1\\
+      \sqrt3-1&\sqrt3+1\end{smallmatrix}\right)$. Squaring returns
+      $A$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Converse direction</div>
+      <p>Prove that if $A=UDU^*$ with $U$ unitary and $D$ diagonal then $A$ is
+      normal.</p>
+      <details><summary>Solution</summary><div class="ans">$A^*=UD^*U^*$, so
+      $A^*A=UD^*DU^*$ and $AA^*=UDD^*U^*$. Diagonal matrices commute, so
+      $D^*D=DD^*$ and the two agree.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Commuting operators</div>
+      <p>If $S$ and $T$ are commuting self-adjoint operators, show they are
+      simultaneously orthogonally diagonalizable.</p>
+      <details><summary>Solution</summary><div class="ans">Each eigenspace $E_i$
+      of $T$ is $S$-invariant: if $Tv=\lambda v$ then
+      $T(Sv)=S(Tv)=\lambda Sv$. Restrict $S$ to each $E_i$, where it is still
+      self-adjoint, and apply the spectral theorem inside. Collecting the bases
+      gives one orthonormal basis diagonalizing both.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Schur's theorem.</strong> Prove unitary triangularization over
+    $\mathbb{C}$ and see why it precedes the spectral theorem.</li>
+    <li><strong>Complex case.</strong> Normal iff unitarily diagonalizable.</li>
+    <li><strong>Real case.</strong> Symmetric iff orthogonally diagonalizable,
+    and why normality is insufficient.</li>
+    <li><strong>Spectral resolution.</strong> Write $T=\sum\lambda_iP_i$ and use
+    it to define $p(T)$ and $\sqrt T$.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Schur triangularizes any complex operator; normality then forces the
+    triangle to be diagonal. Over $\mathbb{R}$, Unit 5's existence result plus
+    invariance of $v^\perp$ runs the same induction for symmetric
+    operators.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    After every orthogonal diagonalization, verify $Q^tQ=I$ and recompute
+    $QDQ^t$. Both checks are quick and catch the normalisation slip that costs
+    the most marks.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Hypothesis by field</div>
+      <p>What hypothesis does the spectral theorem need over $\mathbb{C}$, and
+      over $\mathbb{R}$?</p>
+      <details><summary>Guide</summary><div class="ans">Normal over $\mathbb{C}$;
+      self-adjoint over $\mathbb{R}$. Normality alone is not enough over
+      $\mathbb{R}$, as rotations show.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Role of Schur</div>
+      <p>Why prove Schur's theorem first?</p>
+      <details><summary>Guide</summary><div class="ans">It supplies an
+      orthonormal basis with $[T]$ upper triangular for <em>any</em> complex
+      operator. Normality is then only needed to knock out the entries above the
+      diagonal.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Matrix statement</div>
+      <p>Write the theorem as a factorization.</p>
+      <details><summary>Guide</summary><div class="ans">$A=UDU^*$ with $U$
+      unitary, $D$ diagonal, over $\mathbb{C}$ for normal $A$; and $A=QDQ^t$ with
+      $Q$ orthogonal, $D$ real diagonal, over $\mathbb{R}$ for symmetric
+      $A$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Using the resolution</div>
+      <p>Given $T=\sum\lambda_iP_i$, what is $T^{10}$?</p>
+      <details><summary>Guide</summary><div class="ans">$\sum\lambda_i^{10}P_i$.
+      The projections are orthogonal idempotents, so cross terms vanish and only
+      the eigenvalues get raised to the power.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit05.html">← Unit 05<span>Hermitian &amp; normal operators</span></a>
+  <a href="unit07.html">Unit 07 →<span>Polar &amp; singular value decomposition</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

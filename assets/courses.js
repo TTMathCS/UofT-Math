@@ -85,7 +85,16 @@
     planned("MAT244H1", "Introduction to Ordinary Differential Equations", "Applied Math", "Year 2", "Applied ODEs, modelling, solution methods, and phase-plane analysis.", ["ODEs", "Modelling", "Systems"]),
     planned("MAT245H1", "Mathematical Methods in Data Science", "Data Science", "Year 2", "Mathematical tools for data science pathways.", ["Linear algebra", "Data science", "Methods"]),
     planned("MAT246H1", "Concepts in Abstract Mathematics", "Foundation", "Year 2", "Bridge course for abstract proof, sets, relations, and mathematical structures.", ["Proofs", "Sets", "Abstract structures"]),
-    planned("MAT247H1", "Algebra II", "Algebra", "Year 2", "Theoretical linear algebra: inner products, adjoints, spectral theorem, and canonical forms.", ["Inner products", "Adjoints", "Canonical forms"]),
+    guide(
+      "MAT247H1",
+      "Algebra II",
+      "MAT247H1/index.html",
+      "Algebra",
+      "Year 2",
+      10,
+      "Theoretical linear algebra: inner products, adjoints, the spectral theorem, and canonical forms.",
+      ["Inner products", "Adjoints", "Spectral theorem", "Jordan form", "Quadratic forms"]
+    ),
     planned("MAT257Y1", "Analysis II", "Analysis", "Year 2", "Specialist multivariable analysis, manifolds, integration, and Stokes' theorem.", ["Topology", "Manifolds", "Stokes theorem"]),
     planned("MAT267H1", "Advanced Ordinary Differential Equations", "Applied Math", "Year 2", "Theoretical ODEs, existence/uniqueness, power series, and qualitative theory.", ["ODE theory", "Stability", "Power series"]),
 
