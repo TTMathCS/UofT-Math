@@ -17,6 +17,10 @@ def supported(runtime_path):
     # \ln, \sup, \sec ... render through the mathFunctions set, not a table
     fn = src.index("mathFunctions = new Set([")
     names |= set(re.findall(r'"([A-Za-z]+)"', src[fn:src.index("]);", fn)]))
+    # \binom, \frac, \sqrt ... are explicit branches: pick them up from the
+    # source so this list never drifts from the runtime again
+    names |= set(re.findall(r'command === "([A-Za-z]+)"', src))
+    names |= set(re.findall(r'command\.startsWith\("([A-Za-z]+)"', src))
     # handled by explicit branches rather than a lookup table
     names |= {
         "operatorname", "frac", "dfrac", "tfrac", "sqrt", "text", "det", "dim",

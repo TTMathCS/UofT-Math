@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 3 — The Adjoint · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 3</div>
+<div class="unit-no reveal">Unit 3 · Algebra II</div>
+<h1 class="ch-title reveal">The Adjoint</h1>
+<p class="ch-intro reveal">Every operator on an inner product space has a partner
+that moves it across the inner product: $\langle Tu,v\rangle=\langle u,T^*v\rangle$.
+Almost every theorem in the rest of the course is a statement about how $T$ and
+$T^*$ relate, so this is the pivot of the whole term.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State and prove the Riesz representation theorem.</li>
+    <li>Construct $T^*$ and show it is unique and linear.</li>
+    <li>Compute the matrix of $T^*$ as the conjugate transpose.</li>
+    <li>Derive the normal equations and solve a least-squares problem.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Transposing a matrix is a formula with no obvious meaning. The adjoint
+    gives it one: $A^*$ is the unique operator that lets you slide $A$ from one
+    side of the inner product to the other. Every structural class in this
+    course — self-adjoint, unitary, normal — is defined by a relation between
+    $T$ and $T^*$.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>The normal equations $A^*Ax=A^*b$ are how regression is actually
+    computed. In quantum mechanics observables are self-adjoint operators, and
+    the adjoint of the derivative operator (integration by parts) is what makes
+    the whole formalism work.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Riesz proved his representation theorem in 1907 for function spaces; the
+    finite-dimensional case here is a shadow of it. In infinite dimensions the
+    adjoint needs care about domains, and unbounded self-adjoint operators are
+    the technical heart of quantum theory.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Riesz representation</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>linear functional</em> on $V$ is a linear map $f:V\to F$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Riesz representation</b></div>
+    <p>Let $V$ be a finite-dimensional inner product space and $f$ a linear
+    functional on $V$. Then there is a <em>unique</em> $y\in V$ with
+    $f(v)=\langle v,y\rangle$ for all $v$.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Build $y$ from an orthonormal basis</b></div>
+    <div class="step">Take an orthonormal basis $\{e_1,\dots,e_n\}$ (Unit 2) and
+    set $y=\sum_i\overline{f(e_i)}\,e_i$.</div>
+    <div class="step">Then $\langle e_j,y\rangle
+    =\sum_i\overline{\overline{f(e_i)}}\,\langle e_j,e_i\rangle=f(e_j)$, using
+    conjugate-linearity in the second slot. Two linear maps agreeing on a basis
+    are equal, so $f(v)=\langle v,y\rangle$ for all $v$.</div>
+    <div class="step">Uniqueness: if $\langle v,y\rangle=\langle v,y'\rangle$ for
+    all $v$, then $\langle v,y-y'\rangle=0$ for all $v$; take $v=y-y'$ to get
+    $\|y-y'\|^2=0$. &#8718;</div>
+  </div>
+  <div class="checkpoint"><b>The conjugate in $y$ is not decoration.</b>
+    Because the second slot is conjugate-linear, the coefficients must be
+    conjugated for $\langle\cdot,y\rangle$ to come out linear. Drop the bar and
+    the theorem is false over $\mathbb{C}$.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Existence of the adjoint</h3>
+  <div class="box thm"><div class="bl">Theorem <b>The adjoint exists and is unique</b></div>
+    <p>For every linear $T:V\to V$ on a finite-dimensional inner product space
+    there is a unique linear $T^*:V\to V$ with</p>
+    <div class="step">$\langle Tu,v\rangle=\langle u,T^*v\rangle$ for all
+    $u,v\in V$.</div></div>
+  <div class="box eg"><div class="bl">Proof <b>One Riesz application per $v$</b></div>
+    <div class="step">Fix $v$. The map $u\mapsto\langle Tu,v\rangle$ is a linear
+    functional on $V$, so Riesz gives a unique vector — call it $T^*v$ — with
+    $\langle Tu,v\rangle=\langle u,T^*v\rangle$ for all $u$.</div>
+    <div class="step">That defines $T^*$ as a function. It is linear: for
+    all $u$,
+    $\langle u,T^*(v+cw)\rangle=\langle Tu,v+cw\rangle
+    =\langle Tu,v\rangle+\overline{c}\langle Tu,w\rangle
+    =\langle u,T^*v+cT^*w\rangle$, and a vector determined by all its inner
+    products is unique. &#8718;</div>
+  </div>
+  <div class="box thm"><div class="bl">Theorem <b>Properties</b></div>
+    <p>$(T+U)^*=T^*+U^*$; $(cT)^*=\overline{c}\,T^*$; $(TU)^*=U^*T^*$;
+    $(T^*)^*=T$; and $I^*=I$. Each follows by sliding across the inner product
+    and using uniqueness.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Order reverses</b></div>
+    <p>For $(TU)^*$: $\langle TUu,v\rangle=\langle Uu,T^*v\rangle
+    =\langle u,U^*T^*v\rangle$. Since the adjoint is unique,
+    $(TU)^*=U^*T^*$ — the same reversal as for matrix transpose, and for the
+    same reason.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The matrix of the adjoint</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Conjugate transpose</b></div>
+    <p>If $\beta$ is an <em>orthonormal</em> basis and $A=[T]_\beta$, then
+    $[T^*]_\beta=A^*$, the conjugate transpose: $(A^*)_{ij}=\overline{A_{ji}}$.</p>
+    <p>In an orthonormal basis the entries are recovered by
+    $A_{ij}=\langle Te_j,e_i\rangle$. So
+    $[T^*]_{ij}=\langle T^*e_j,e_i\rangle=\overline{\langle e_i,T^*e_j\rangle}
+    =\overline{\langle Te_i,e_j\rangle}=\overline{A_{ji}}$.</p></div>
+  <div class="box warn"><div class="bl">Only in an orthonormal basis</div>
+    <p>In a general basis the matrix of $T^*$ is <em>not</em> the conjugate
+    transpose of $[T]$. The formula $A_{ij}=\langle Te_j,e_i\rangle$ used above
+    already assumed orthonormality. This is the most common source of wrong
+    answers in this unit.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Compute one</b></div>
+    <p>On $\mathbb{C}^2$ with the standard basis (orthonormal), let
+    $A=\left(\begin{smallmatrix}1&i\\0&2\end{smallmatrix}\right)$. Then
+    $A^*=\left(\begin{smallmatrix}1&0\\-i&2\end{smallmatrix}\right)$.</p>
+    <div class="step">Check with $u=(1,0)$, $v=(0,1)$:
+    $\langle Au,v\rangle=\langle(1,0),(0,1)\rangle=0$, and
+    $\langle u,A^*v\rangle=\langle(1,0),(0,2)\rangle=0$. ✓</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Four subspaces and least squares</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Range and null space</b></div>
+    <p>$N(T^*)=R(T)^\perp$ and $R(T^*)=N(T)^\perp$.</p>
+    <p>For the first: $v\in N(T^*)$ iff $T^*v=0$ iff $\langle u,T^*v\rangle=0$
+    for all $u$ iff $\langle Tu,v\rangle=0$ for all $u$ iff $v\perp R(T)$. The
+    second follows by replacing $T$ with $T^*$ and using $(T^*)^*=T$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Normal equations</b></div>
+    <p>Let $A$ be an $m\times n$ real or complex matrix and $b\in F^m$. A vector
+    $x$ minimises $\|Ax-b\|$ if and only if $A^*Ax=A^*b$. If the columns of $A$
+    are independent then $A^*A$ is invertible and the minimiser is unique.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>It is the projection theorem</b></div>
+    <div class="step">$Ax$ ranges over the column space $R(A)$. By Unit 2 the
+    closest point of $R(A)$ to $b$ is $P_{R(A)}b$, characterised by the residual
+    being orthogonal to $R(A)$: $b-Ax\in R(A)^\perp$.</div>
+    <div class="step">By the previous theorem $R(A)^\perp=N(A^*)$, so the
+    condition is $A^*(b-Ax)=0$, that is $A^*Ax=A^*b$.</div>
+    <div class="step">If the columns are independent, $Ax=0$ forces $x=0$; then
+    $A^*Ax=0$ gives $\|Ax\|^2=\langle A^*Ax,x\rangle=0$, so $x=0$ and $A^*A$ is
+    invertible. &#8718;</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Fit a line</b></div>
+    <p>Fit $y=c_0+c_1t$ to the points $(0,1),(1,2),(2,4)$.</p>
+    <div class="step">$A$ has rows $(1,0),(1,1),(1,2)$ and $b=(1,2,4)$. Then
+    $A^*A=\left(\begin{smallmatrix}3&3\\3&5\end{smallmatrix}\right)$ and
+    $A^*b=(7,10)$.</div>
+    <div class="step">Solving gives $c_1=\tfrac32$ and $c_0=\tfrac56$: the least
+    squares line is $y=\tfrac56+\tfrac32t$.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Using the conjugate transpose in a non-orthonormal basis. The
+  identity $[T^*]=[T]^*$ requires orthonormality.<br>
+  &bull; Writing $(cT)^*=cT^*$. The scalar conjugates: $(cT)^*=\overline{c}T^*$.<br>
+  &bull; Writing $(TU)^*=T^*U^*$. The order reverses.<br>
+  &bull; Assuming $T^*$ exists in infinite dimensions without checking
+  boundedness. In this course $V$ is finite-dimensional, so Riesz always
+  applies.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Compute an adjoint</div>
+      <p>Find $A^*$ for
+      $A=\left(\begin{smallmatrix}2&1-i\\0&3i\end{smallmatrix}\right)$ on
+      $\mathbb{C}^2$.</p>
+      <details><summary>Answer</summary><div class="ans">Transpose and conjugate:
+      $A^*=\left(\begin{smallmatrix}2&0\\1+i&-3i\end{smallmatrix}\right)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Riesz vector</div>
+      <p>On $\mathbb{R}^3$, let $f(v)=v_1+2v_2-v_3$. Find the $y$ with
+      $f(v)=\langle v,y\rangle$.</p>
+      <details><summary>Answer</summary><div class="ans">$y=(1,2,-1)$. Over
+      $\mathbb{C}$ the coefficients would be conjugated.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Adjoint of a projection</div>
+      <p>Prove that the orthogonal projection $P_W$ satisfies $P_W^*=P_W$.</p>
+      <details><summary>Solution</summary><div class="ans">Split
+      $u=u_W+u_\perp$ and $v=v_W+v_\perp$. Then
+      $\langle P_Wu,v\rangle=\langle u_W,v_W+v_\perp\rangle=\langle u_W,v_W\rangle$
+      since $u_W\perp v_\perp$, and symmetrically
+      $\langle u,P_Wv\rangle=\langle u_W,v_W\rangle$. They agree, so
+      $P_W^*=P_W$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Order reversal</div>
+      <p>Prove $(TU)^*=U^*T^*$ directly from the defining identity.</p>
+      <details><summary>Solution</summary><div class="ans">$\langle TUu,v\rangle
+      =\langle Uu,T^*v\rangle=\langle u,U^*T^*v\rangle$ for all $u,v$. The
+      adjoint of $TU$ is the unique operator with this property, so it equals
+      $U^*T^*$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Null space identity</div>
+      <p>Prove $N(T^*T)=N(T)$.</p>
+      <details><summary>Solution</summary><div class="ans">If $Tx=0$ then
+      $T^*Tx=0$. Conversely if $T^*Tx=0$ then
+      $0=\langle T^*Tx,x\rangle=\langle Tx,Tx\rangle=\|Tx\|^2$, so $Tx=0$. This
+      is exactly why $A^*A$ is invertible when $A$ has independent
+      columns.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Least squares</div>
+      <p>Fit a line to $(0,0),(1,1),(2,3)$.</p>
+      <details><summary>Solution</summary><div class="ans">$A$ has rows
+      $(1,0),(1,1),(1,2)$ and $b=(0,1,3)$, so
+      $A^*A=\left(\begin{smallmatrix}3&3\\3&5\end{smallmatrix}\right)$ and
+      $A^*b=(4,7)$. Solving: $c_1=\tfrac32$, $c_0=-\tfrac16$, giving
+      $y=-\tfrac16+\tfrac32t$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Trace and adjoint</div>
+      <p>Show $\langle A,B\rangle=\operatorname{tr}(B^*A)$ makes
+      $\operatorname{tr}(A^*)=\overline{\operatorname{tr}(A)}$.</p>
+      <details><summary>Solution</summary><div class="ans">The diagonal entries
+      of $A^*$ are $\overline{A_{ii}}$, so their sum is the conjugate of
+      $\sum A_{ii}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Basis warning</div>
+      <p>Give a basis of $\mathbb{R}^2$ and an operator where $[T^*]\ne[T]^{\,t}$.</p>
+      <details><summary>Solution</summary><div class="ans">Use the
+      non-orthonormal basis $\beta=\{(1,0),(1,1)\}$ and let $T$ be the identity.
+      Then $[T]_\beta=I$ and $[T^*]_\beta=I$, which happens to agree — so try
+      $T(x,y)=(y,0)$. Computing $[T]_\beta$ and $[T^*]_\beta$ separately shows
+      they are not transposes: the change-of-basis matrix is not unitary, and the
+      transpose rule is lost.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Riesz representation.</strong> Prove every linear functional is
+    an inner product against a fixed vector.</li>
+    <li><strong>Existence of $T^*$.</strong> Construct it and prove uniqueness
+    and linearity.</li>
+    <li><strong>Matrix form.</strong> Show $[T^*]=[T]^*$ in an orthonormal basis,
+    and know why orthonormality is required.</li>
+    <li><strong>Consequences.</strong> Derive $N(T^*)=R(T)^\perp$ and the normal
+    equations.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Riesz gives the adjoint; the adjoint gives the four-subspace relations;
+    those give least squares. From Unit 4 onward every operator class is a
+    condition on $T$ versus $T^*$.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Whenever a hypothesis mentions $T^*$, immediately rewrite it as an inner
+    product identity. Most proofs in this course are one such rewrite away from
+    finishing.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Defining identity</div>
+      <p>State the equation that defines $T^*$.</p>
+      <details><summary>Guide</summary><div class="ans">$\langle Tu,v\rangle
+      =\langle u,T^*v\rangle$ for all $u,v\in V$. Everything else is a
+      consequence.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Scalar rule</div>
+      <p>What is $(cT)^*$?</p>
+      <details><summary>Guide</summary><div class="ans">$\overline{c}\,T^*$ —
+      the scalar moves out of the first slot and into the second, conjugating on
+      the way.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Orthogonality of subspaces</div>
+      <p>Express $R(T)^\perp$ in terms of $T^*$.</p>
+      <details><summary>Guide</summary><div class="ans">$R(T)^\perp=N(T^*)$.
+      Dually $N(T)^\perp=R(T^*)$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · When least squares is exact</div>
+      <p>When does the least-squares solution actually solve $Ax=b$?</p>
+      <details><summary>Guide</summary><div class="ans">Exactly when
+      $b\in R(A)$, so the projection of $b$ onto the column space is $b$ itself
+      and the residual is zero.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit02.html">← Unit 02<span>Orthogonality &amp; Gram&ndash;Schmidt</span></a>
+  <a href="unit04.html">Unit 04 →<span>Isometries</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 2 — Orthogonality &amp; Gram&ndash;Schmidt · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 2</div>
+<div class="unit-no reveal">Unit 2 · Algebra II</div>
+<h1 class="ch-title reveal">Orthogonality &amp; Gram&ndash;Schmidt</h1>
+<p class="ch-intro reveal">Bases in MAT240H1 were all equally good. With an inner
+product they stop being equal: orthonormal bases make every computation
+collapse to a dot product. Gram&ndash;Schmidt says you can always build one.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Prove an orthogonal set of nonzero vectors is independent.</li>
+    <li>Run Gram&ndash;Schmidt in $\mathbb{R}^n$ and in a function space.</li>
+    <li>Compute coordinates in an orthonormal basis by inner products alone.</li>
+    <li>Use $V=W\oplus W^\perp$ and the orthogonal projection onto $W$.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Finding coordinates in a general basis means solving a linear system. In
+    an orthonormal basis the $i$-th coordinate is just $\langle v,e_i\rangle$ —
+    no system, no inversion. That single simplification is why orthonormal bases
+    are worth the effort of constructing.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>The QR factorization used by every least-squares solver is
+    Gram&ndash;Schmidt in matrix form. Fourier series are coordinates in an
+    orthonormal basis of a function space. JPEG compression is a change to an
+    orthonormal cosine basis, keeping the large coordinates.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Laplace used the procedure before either namesake; Gram published in 1883
+    and Schmidt in 1907. Naive Gram&ndash;Schmidt is numerically unstable — small
+    rounding errors destroy orthogonality — so numerical linear algebra uses a
+    modified version or Householder reflections instead.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Orthogonal and orthonormal sets</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Vectors $u,v$ are <em>orthogonal</em> if $\langle u,v\rangle=0$, written
+    $u\perp v$. A set is <em>orthogonal</em> if distinct members are pairwise
+    orthogonal, and <em>orthonormal</em> if in addition every member has norm
+    $1$. An <em>orthonormal basis</em> is a basis that is an orthonormal
+    set.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Orthogonal implies independent</b></div>
+    <p>An orthogonal set of <em>nonzero</em> vectors is linearly
+    independent.</p>
+    <p>Suppose $\sum_i c_iv_i=0$. Take the inner product with $v_j$: every term
+    with $i\ne j$ dies by orthogonality, leaving $c_j\|v_j\|^2=0$. Since
+    $v_j\ne0$, $c_j=0$. &#8718;</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Coordinates are free</b></div>
+    <p>If $\{e_1,\dots,e_n\}$ is an orthonormal basis of $V$, then every $v\in V$
+    satisfies $v=\sum_{i=1}^n\langle v,e_i\rangle e_i$, and
+    $\|v\|^2=\sum_i|\langle v,e_i\rangle|^2$ (<em>Parseval</em>).</p>
+    <p>Write $v=\sum c_ie_i$ and pair with $e_j$: orthonormality leaves
+    $\langle v,e_j\rangle=c_j$. The norm identity follows by expanding
+    $\langle v,v\rangle$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The gain, concretely</b></div>
+    <div class="step">In the basis $\{(1,1),(1,2)\}$ of $\mathbb{R}^2$, writing
+    $(5,8)$ in coordinates means solving a $2\times2$ system.</div>
+    <div class="step">In the orthonormal basis
+    $e_1=\tfrac{1}{\sqrt2}(1,1)$, $e_2=\tfrac{1}{\sqrt2}(1,-1)$, the coordinates
+    are $\langle(5,8),e_1\rangle=13/\sqrt2$ and
+    $\langle(5,8),e_2\rangle=-3/\sqrt2$. Two dot products, no
+    system.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Gram&ndash;Schmidt</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Gram&ndash;Schmidt</b></div>
+    <p>Every finite-dimensional inner product space has an orthonormal basis.
+    Given independent $v_1,\dots,v_n$, define</p>
+    <div class="step">$w_1=v_1$, and for $k\ge2$,
+    $w_k=v_k-\sum_{j=1}^{k-1}\dfrac{\langle v_k,w_j\rangle}{\|w_j\|^2}\,w_j$.</div>
+    <div class="step">Then $\{w_1,\dots,w_n\}$ is orthogonal, each $w_k\ne0$, and
+    $\operatorname{span}\{w_1,\dots,w_k\}=\operatorname{span}\{v_1,\dots,v_k\}$
+    for every $k$. Normalising, $e_k=w_k/\|w_k\|$, gives an orthonormal
+    basis.</div></div>
+  <div class="box eg"><div class="bl">Proof <b>Why $w_k\perp w_i$ for $i&lt;k$</b></div>
+    <div class="step">Induct on $k$. Assume $w_1,\dots,w_{k-1}$ are pairwise
+    orthogonal. Pair $w_k$ with $w_i$ for some $i&lt;k$:</div>
+    <div class="step">$\langle w_k,w_i\rangle=\langle v_k,w_i\rangle
+    -\sum_{j&lt;k}\dfrac{\langle v_k,w_j\rangle}{\|w_j\|^2}\langle w_j,w_i\rangle$.
+    By the inductive hypothesis only $j=i$ survives the sum, giving
+    $\langle v_k,w_i\rangle-\langle v_k,w_i\rangle=0$.</div>
+    <div class="step">And $w_k\ne0$: if it were $0$ then $v_k$ would lie in the
+    span of $w_1,\dots,w_{k-1}$, which equals the span of
+    $v_1,\dots,v_{k-1}$ — contradicting independence. &#8718;</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Run it in $\mathbb{R}^3$</b></div>
+    <p>Take $v_1=(1,1,0)$, $v_2=(1,0,1)$.</p>
+    <div class="step">$w_1=(1,1,0)$, $\|w_1\|^2=2$.</div>
+    <div class="step">$\langle v_2,w_1\rangle=1$, so
+    $w_2=(1,0,1)-\tfrac12(1,1,0)=(\tfrac12,-\tfrac12,1)$. Check:
+    $\langle w_2,w_1\rangle=\tfrac12-\tfrac12+0=0$. ✓</div>
+    <div class="step">Normalise: $e_1=\tfrac{1}{\sqrt2}(1,1,0)$ and
+    $e_2=\sqrt{\tfrac23}(\tfrac12,-\tfrac12,1)$.</div>
+  </div>
+  <div class="checkpoint"><b>Read the formula as a subtraction.</b>
+    Each step takes $v_k$ and removes its shadow on everything built so far. The
+    sum being subtracted is exactly the orthogonal projection of $v_k$ onto
+    $\operatorname{span}\{w_1,\dots,w_{k-1}\}$ — which is the next
+    section.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Orthogonal complements and projections</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For a subset $S\subseteq V$, the <em>orthogonal complement</em> is
+    $S^\perp=\{v\in V:\langle v,s\rangle=0\text{ for all }s\in S\}$. It is always
+    a subspace, even when $S$ is not.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Orthogonal decomposition</b></div>
+    <p>If $W$ is a finite-dimensional subspace of $V$, then $V=W\oplus W^\perp$:
+    every $v$ splits uniquely as $v=w+w'$ with $w\in W$ and $w'\in W^\perp$. The
+    map $P_W(v)=w$ is the <em>orthogonal projection</em> onto $W$, and in an
+    orthonormal basis $\{e_1,\dots,e_k\}$ of $W$,</p>
+    <div class="step">$P_W(v)=\sum_{i=1}^k\langle v,e_i\rangle e_i$.</div>
+    <p>For existence, define $w$ by that formula and set $w'=v-w$; a direct check
+    gives $\langle w',e_j\rangle=\langle v,e_j\rangle-\langle v,e_j\rangle=0$ for
+    each $j$, so $w'\in W^\perp$. For uniqueness, a vector in $W\cap W^\perp$ is
+    orthogonal to itself, hence $0$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Best approximation</b></div>
+    <p>$P_W(v)$ is the unique closest point of $W$ to $v$: for every $w\in W$
+    with $w\ne P_W(v)$, $\|v-P_W(v)\|&lt;\|v-w\|$.</p>
+    <p>Write $v-w=(v-P_W v)+(P_W v-w)$. The first term is in $W^\perp$ and the
+    second in $W$, so they are orthogonal and Pythagoras gives
+    $\|v-w\|^2=\|v-P_Wv\|^2+\|P_Wv-w\|^2$. The second term is positive unless
+    $w=P_Wv$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Dimensions add</b></div>
+    <p>In $\mathbb{R}^3$, let $W=\operatorname{span}\{(1,1,0)\}$. Then $W^\perp$
+    is the plane $x+y=0$, spanned by $(1,-1,0)$ and $(0,0,1)$. Indeed
+    $\dim W+\dim W^\perp=1+2=3$, and $(W^\perp)^\perp=W$.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting to normalise. The projection formula
+  $\sum\langle v,e_i\rangle e_i$ needs an <em>orthonormal</em> basis; with merely
+  orthogonal vectors divide by $\|w_i\|^2$.<br>
+  &bull; Applying Gram&ndash;Schmidt to a dependent list. Some $w_k$ becomes $0$
+  and the division blows up — the process assumes independence.<br>
+  &bull; Writing $W^\perp$ without saying which inner product. Change the inner
+  product and the complement changes.<br>
+  &bull; Assuming $(W^\perp)^\perp=W$ in infinite dimensions. It needs $W$ closed;
+  in finite dimensions it is automatic.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Basic run</div>
+      <p>Apply Gram&ndash;Schmidt to $(1,1)$, $(2,0)$ in $\mathbb{R}^2$.</p>
+      <details><summary>Answer</summary><div class="ans">$w_1=(1,1)$;
+      $\langle(2,0),w_1\rangle=2$ and $\|w_1\|^2=2$, so
+      $w_2=(2,0)-(1,1)=(1,-1)$. Normalised:
+      $\tfrac{1}{\sqrt2}(1,1)$ and $\tfrac{1}{\sqrt2}(1,-1)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Coordinates</div>
+      <p>Using that orthonormal basis, write $(3,5)$ in coordinates.</p>
+      <details><summary>Answer</summary><div class="ans">$\langle(3,5),e_1\rangle
+      =8/\sqrt2$ and $\langle(3,5),e_2\rangle=-2/\sqrt2$. Check:
+      $\tfrac{8}{\sqrt2}\cdot\tfrac{1}{\sqrt2}(1,1)
+      -\tfrac{2}{\sqrt2}\cdot\tfrac{1}{\sqrt2}(1,-1)=(4,4)-(1,-1)=(3,5)$.
+      ✓</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Legendre</div>
+      <p>In $P_2(\mathbb{R})$ with $\langle f,g\rangle=\int_{-1}^1 fg$, apply
+      Gram&ndash;Schmidt to $1,t,t^2$.</p>
+      <details><summary>Solution</summary><div class="ans">$w_1=1$ with
+      $\|w_1\|^2=2$. Since $\int_{-1}^1 t\,dt=0$, $w_2=t$ already. For $t^2$:
+      $\int_{-1}^1t^2\,dt=\tfrac23$ and $\int_{-1}^1t^3\,dt=0$, so
+      $w_3=t^2-\tfrac{2/3}{2}\cdot1=t^2-\tfrac13$. These are the Legendre
+      polynomials up to scaling.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Projection</div>
+      <p>Find the orthogonal projection of $(1,2,3)$ onto
+      $W=\operatorname{span}\{(1,0,0),(0,1,0)\}$.</p>
+      <details><summary>Answer</summary><div class="ans">The spanning set is
+      already orthonormal, so $P_W(v)=1\cdot(1,0,0)+2\cdot(0,1,0)=(1,2,0)$. The
+      residual $(0,0,3)$ is in $W^\perp$. ✓</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Complement</div>
+      <p>Find $W^\perp$ for $W=\operatorname{span}\{(1,2,1)\}$ in
+      $\mathbb{R}^3$.</p>
+      <details><summary>Solution</summary><div class="ans">$W^\perp$ is the plane
+      $x+2y+z=0$, a $2$-dimensional subspace with basis
+      $\{(2,-1,0),(1,0,-1)\}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Dimension count</div>
+      <p>Prove $\dim W+\dim W^\perp=\dim V$ for finite-dimensional $V$.</p>
+      <details><summary>Solution</summary><div class="ans">By the decomposition
+      theorem $V=W\oplus W^\perp$, and dimensions add over a direct sum. Or: pick
+      an orthonormal basis of $W$, extend to one of $V$, and the added vectors
+      form a basis of $W^\perp$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Best approximation</div>
+      <p>Find the polynomial of degree $\le1$ closest to $t^2$ on $[-1,1]$ in the
+      integral inner product.</p>
+      <details><summary>Solution</summary><div class="ans">Project $t^2$ onto
+      $\operatorname{span}\{1,t\}$. From Practice 3,
+      $\langle t^2,1\rangle=\tfrac23$ with $\|1\|^2=2$, and
+      $\langle t^2,t\rangle=0$. So the projection is $\tfrac13$ — the constant
+      $1/3$, and the error $t^2-\tfrac13$ is orthogonal to every linear
+      polynomial.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Pythagoras</div>
+      <p>Prove that if $u\perp v$ then $\|u+v\|^2=\|u\|^2+\|v\|^2$, and show the
+      converse can fail over $\mathbb{C}$.</p>
+      <details><summary>Solution</summary><div class="ans">Expanding,
+      $\|u+v\|^2=\|u\|^2+2\operatorname{Re}\langle u,v\rangle+\|v\|^2$, so the
+      identity holds iff $\operatorname{Re}\langle u,v\rangle=0$. Over
+      $\mathbb{R}$ that is orthogonality; over $\mathbb{C}$ take $u=(1,0)$,
+      $v=(i,0)$, where $\langle u,v\rangle=-i$ is purely imaginary — Pythagoras
+      holds but the vectors are not orthogonal.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Orthogonal sets.</strong> Prove independence and use Parseval's
+    identity.</li>
+    <li><strong>Gram&ndash;Schmidt.</strong> Execute the algorithm and prove it
+    produces an orthogonal set spanning the same flags of subspaces.</li>
+    <li><strong>Orthogonal complements.</strong> Establish $V=W\oplus W^\perp$
+    and the dimension count.</li>
+    <li><strong>Projection and approximation.</strong> Compute $P_W$ and prove it
+    minimises distance.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Orthogonal sets are independent; Gram&ndash;Schmidt manufactures them;
+    an orthonormal basis of $W$ builds $P_W$; and $P_W$ solves the best
+    approximation problem. Every later projection argument in the course reuses
+    this chain.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    After every Gram&ndash;Schmidt run, verify orthogonality by computing the
+    inner products. The arithmetic is error-prone and the check is two
+    lines.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why normalise</div>
+      <p>What changes in the projection formula if the basis is orthogonal but
+      not orthonormal?</p>
+      <details><summary>Guide</summary><div class="ans">Each term picks up a
+      denominator: $P_W(v)=\sum_i\frac{\langle v,w_i\rangle}{\|w_i\|^2}w_i$.
+      Normalising makes the denominators $1$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Failure mode</div>
+      <p>What happens if Gram&ndash;Schmidt is run on a dependent list?</p>
+      <details><summary>Guide</summary><div class="ans">The first $v_k$ lying in
+      the span of its predecessors produces $w_k=0$, and normalising divides by
+      zero. Discarding those zero vectors turns the process into a way of
+      extracting a basis from a spanning set.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Complement of a complement</div>
+      <p>Is $(W^\perp)^\perp=W$ always?</p>
+      <details><summary>Guide</summary><div class="ans">In finite dimensions,
+      yes — both have the same dimension and $W\subseteq(W^\perp)^\perp$ is
+      immediate. In infinite dimensions it needs $W$ to be closed.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Least squares preview</div>
+      <p>Why does the best approximation theorem matter for fitting data?</p>
+      <details><summary>Guide</summary><div class="ans">Fitting is choosing the
+      point of a subspace (the column space of the design matrix) closest to the
+      data vector. The theorem says that point is the orthogonal projection, and
+      the residual is orthogonal to every column — the normal
+      equations.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit01.html">← Unit 01<span>Inner product spaces</span></a>
+  <a href="unit03.html">Unit 03 →<span>The adjoint</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

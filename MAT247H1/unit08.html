@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 8 — Dual Spaces &amp; Quotient Spaces · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 8</div>
+<div class="unit-no reveal">Unit 8 · Algebra II</div>
+<h1 class="ch-title reveal">Dual Spaces &amp; Quotient Spaces</h1>
+<p class="ch-intro reveal">The inner product goes away for the rest of the course.
+Two constructions replace it: the dual space, which collects all linear
+functionals, and the quotient, which collapses a subspace to zero. Both work over
+any field, and both are the standard tools for the canonical forms ahead.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Construct the dual basis and prove $\dim V^*=\dim V$.</li>
+    <li>Define the transpose $T^t:W^*\to V^*$ and compute its matrix.</li>
+    <li>Use annihilators and prove $\dim W+\dim W^0=\dim V$.</li>
+    <li>Build $V/W$ and apply the first isomorphism theorem.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Unit 3 used an inner product to turn functionals into vectors. Without one
+    there is no such identification, and the dual becomes a genuinely separate
+    space. Quotients let you factor out the part of a space you do not care
+    about &mdash; the algebraic analogue of $W^\perp$, available over any
+    field.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>In economics a price vector is a functional on the space of bundles. In
+    physics covectors are the dual objects to vectors, which is what upper and
+    lower indices track. In optimization, duality theory pairs a linear program
+    with a dual program living in the dual space.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The natural map $V\to V^{**}$ is an isomorphism in finite dimensions but
+    not in general &mdash; spaces where it is are called reflexive, a central
+    distinction in functional analysis. That failure in infinite dimensions is
+    why the finite-dimensional theory here is so clean.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The dual space</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>The <em>dual space</em> $V^*$ is the vector space of all linear
+    functionals $f:V\to F$, with pointwise operations. Its elements are also
+    called covectors.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>The dual basis</b></div>
+    <p>If $\beta=\{v_1,\dots,v_n\}$ is a basis of $V$, define $f_i\in V^*$ by
+    $f_i(v_j)=\delta_{ij}$, extended linearly. Then
+    $\beta^*=\{f_1,\dots,f_n\}$ is a basis of $V^*$, so $\dim V^*=\dim V$.</p>
+    <div class="step"><em>Spanning:</em> for $f\in V^*$ put
+    $c_i=f(v_i)$. Then $\sum_ic_if_i$ agrees with $f$ on every $v_j$, hence
+    equals $f$.</div>
+    <div class="step"><em>Independent:</em> if $\sum_ic_if_i=0$, evaluate at
+    $v_j$ to get $c_j=0$. &#8718;</div></div>
+  <div class="box eg"><div class="bl">Example <b>Coordinates are functionals</b></div>
+    <p>On $\mathbb{R}^3$ with the standard basis, $f_i$ is the map picking off
+    the $i$-th coordinate. A general functional is
+    $f(x)=a_1x_1+a_2x_2+a_3x_3$, so $V^*$ looks like row vectors while $V$ is
+    column vectors.</p></div>
+  <div class="box warn"><div class="bl">The dual basis depends on the whole basis</div>
+    <p>Changing even one $v_j$ changes every $f_i$, because the conditions
+    $f_i(v_j)=0$ involve all the other vectors. There is no basis-free way to
+    match up $V$ and $V^*$ &mdash; which is exactly what an inner product
+    supplies, via Riesz.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The transpose of a linear map</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For linear $T:V\to W$, the <em>transpose</em> (or dual map)
+    $T^t:W^*\to V^*$ is defined by $T^t(g)=g\circ T$. Note the direction
+    reverses.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Matrix of the transpose</b></div>
+    <p>If $A=[T]_\beta^\gamma$ then $[T^t]_{\gamma^*}^{\beta^*}=A^t$, the ordinary
+    transpose &mdash; with no conjugation and no orthonormality needed.</p>
+    <p>This is the honest source of the transpose operation. The conjugate
+    transpose of Unit 3 arises only when an inner product is used to identify
+    $V$ with $V^*$, and the conjugate comes from that identification, not from
+    the transpose itself.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Double dual</b></div>
+    <p>The map $\Psi:V\to V^{**}$ given by $\Psi(v)(f)=f(v)$ is an isomorphism
+    when $\dim V&lt;\infty$, and it requires no choice of basis.</p>
+    <p>It is linear and injective: if $v\ne0$, extend $v$ to a basis and take the
+    functional dual to it, which is nonzero on $v$. Since
+    $\dim V^{**}=\dim V^*=\dim V$, injectivity gives
+    surjectivity.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Annihilators</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For a subspace $W\subseteq V$, the <em>annihilator</em> is
+    $W^0=\{f\in V^*:f(w)=0\text{ for all }w\in W\}$, a subspace of $V^*$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Dimension count</b></div>
+    <p>$\dim W+\dim W^0=\dim V$.</p>
+    <div class="step">Take a basis $\{v_1,\dots,v_k\}$ of $W$ and extend to a
+    basis $\{v_1,\dots,v_n\}$ of $V$, with dual basis $\{f_1,\dots,f_n\}$.</div>
+    <div class="step">Claim $W^0=\operatorname{span}\{f_{k+1},\dots,f_n\}$. Each
+    of those kills every $v_i$ with $i\le k$, hence all of $W$. Conversely if
+    $f=\sum c_if_i$ annihilates $W$ then $0=f(v_j)=c_j$ for $j\le k$.</div>
+    <div class="step">So $\dim W^0=n-k$. &#8718;</div>
+    <p>This is the exact algebraic analogue of $\dim W+\dim W^\perp=\dim V$ from
+    Unit 2, with no inner product in sight.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A plane and its annihilator</b></div>
+    <p>In $\mathbb{R}^3$ let $W$ be the plane $z=0$, spanned by $e_1,e_2$. Then
+    $W^0$ is spanned by $f_3$, the functional $x\mapsto x_3$ &mdash;
+    one-dimensional, as $3-2=1$ requires. Every functional vanishing on the plane
+    is a multiple of "read off the third coordinate".</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Quotient spaces</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For a subspace $W\subseteq V$, the coset of $v$ is $v+W=\{v+w:w\in W\}$.
+    The <em>quotient space</em> $V/W$ is the set of cosets, with</p>
+    <div class="step">$(u+W)+(v+W)=(u+v)+W$ and $c(v+W)=cv+W$.</div>
+    <p>These are well defined: if $u+W=u'+W$ and $v+W=v'+W$ then
+    $u-u'$ and $v-v'$ lie in $W$, so their sum does too. The zero element is
+    $0+W=W$ itself.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Dimension of a quotient</b></div>
+    <p>$\dim(V/W)=\dim V-\dim W$.</p>
+    <p>The quotient map $\pi:V\to V/W$, $\pi(v)=v+W$, is linear and surjective
+    with null space exactly $W$. Rank&ndash;nullity from MAT240H1 gives
+    $\dim V=\dim W+\dim(V/W)$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>First isomorphism theorem</b></div>
+    <p>For linear $T:V\to W$, the induced map
+    $\overline{T}:V/N(T)\to R(T)$ given by $\overline{T}(v+N(T))=T(v)$ is a
+    well-defined isomorphism.</p>
+    <div class="step"><em>Well defined:</em> if $v+N(T)=v'+N(T)$ then
+    $v-v'\in N(T)$, so $Tv=Tv'$.</div>
+    <div class="step"><em>Injective:</em> $\overline{T}(v+N(T))=0$ means
+    $Tv=0$, so $v\in N(T)$ and the coset is zero.</div>
+    <div class="step"><em>Surjective onto $R(T)$:</em> immediate. Comparing
+    dimensions recovers rank&ndash;nullity as a corollary. &#8718;</div></div>
+  <div class="box eg"><div class="bl">Example <b>Quotient by a line</b></div>
+    <p>In $\mathbb{R}^2$ let $W$ be the line $y=x$. The cosets of $W$ are the
+    lines parallel to it, and $\mathbb{R}^2/W$ is one-dimensional: a coset is
+    determined by which parallel line it is. Choosing the representative on the
+    $x$-axis identifies $\mathbb{R}^2/W$ with $\mathbb{R}$ &mdash; but that
+    choice is not canonical, which is the recurring theme of this
+    unit.</p></div>
+  <div class="checkpoint"><b>Quotient versus complement.</b>
+    With an inner product you can realise $V/W$ concretely as $W^\perp$. Without
+    one, there are many complements to $W$ and none is preferred, so the quotient
+    is the canonical construction. That is why it survives into the
+    field-agnostic canonical form theory of Units 9 and 10.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Treating $V^*$ as equal to $V$. They have the same dimension, hence
+  are isomorphic, but not canonically &mdash; the isomorphism depends on a basis
+  or an inner product.<br>
+  &bull; Getting the direction of $T^t$ wrong. If $T:V\to W$ then
+  $T^t:W^*\to V^*$.<br>
+  &bull; Treating elements of $V/W$ as vectors of $V$. They are sets; every
+  computation must be checked independent of the representative.<br>
+  &bull; Confusing $W^0\subseteq V^*$ with $W^\perp\subseteq V$. They live in
+  different spaces and only the inner product relates them.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Dual basis</div>
+      <p>Find the dual basis of $\{(1,0),(1,1)\}$ in $\mathbb{R}^2$.</p>
+      <details><summary>Solution</summary><div class="ans">Need
+      $f_1(1,0)=1$, $f_1(1,1)=0$, giving $f_1(x,y)=x-y$. And $f_2(1,0)=0$,
+      $f_2(1,1)=1$ gives $f_2(x,y)=y$. Note $f_1$ is not "read the first
+      coordinate" &mdash; the dual basis depends on both
+      vectors.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Annihilator</div>
+      <p>Find $W^0$ for $W=\operatorname{span}\{(1,1,0)\}$ in
+      $\mathbb{R}^3$.</p>
+      <details><summary>Answer</summary><div class="ans">Functionals
+      $f(x)=a_1x_1+a_2x_2+a_3x_3$ with $a_1+a_2=0$. A basis is
+      $\{x_1-x_2,\;x_3\}$, so $\dim W^0=2=3-1$. ✓</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Quotient dimension</div>
+      <p>What is $\dim(\mathbb{R}^4/W)$ for $W$ a plane?</p>
+      <details><summary>Answer</summary><div class="ans">$4-2=2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Transpose matrix</div>
+      <p>For $T(x,y)=(x+y,\,2x)$ on $\mathbb{R}^2$, find the matrix of $T^t$ in
+      the dual of the standard basis.</p>
+      <details><summary>Solution</summary><div class="ans">$[T]
+      =\left(\begin{smallmatrix}1&1\\2&0\end{smallmatrix}\right)$, so
+      $[T^t]=\left(\begin{smallmatrix}1&2\\1&0\end{smallmatrix}\right)$ &mdash;
+      the plain transpose, no conjugation.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Cosets</div>
+      <p>In $\mathbb{R}^2$ with $W$ the $x$-axis, describe the cosets and give a
+      natural representative for each.</p>
+      <details><summary>Solution</summary><div class="ans">Cosets are the
+      horizontal lines $y=c$. The point $(0,c)$ is a convenient representative,
+      identifying $\mathbb{R}^2/W$ with the $y$-axis &mdash; but any point on the
+      line would do.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Annihilator of an intersection</div>
+      <p>Prove $(W_1+W_2)^0=W_1^0\cap W_2^0$.</p>
+      <details><summary>Solution</summary><div class="ans">$f$ annihilates
+      $W_1+W_2$ iff it kills every $w_1+w_2$. Taking $w_2=0$ shows it kills
+      $W_1$, and similarly $W_2$; conversely if it kills both it kills every
+      sum by linearity.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Induced operator</div>
+      <p>If $W$ is $T$-invariant, show $T$ induces a well-defined operator on
+      $V/W$.</p>
+      <details><summary>Solution</summary><div class="ans">Define
+      $\overline{T}(v+W)=Tv+W$. If $v+W=v'+W$ then $v-v'\in W$, so
+      $T(v-v')\in W$ by invariance, giving $Tv+W=Tv'+W$. Invariance is exactly
+      what makes this well defined &mdash; and this induced operator is the
+      engine of the primary decomposition in Unit 9.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Double dual</div>
+      <p>Explain why $\Psi:V\to V^{**}$ is called canonical while $V\cong V^*$ is
+      not.</p>
+      <details><summary>Solution</summary><div class="ans">$\Psi(v)(f)=f(v)$ uses
+      no choices at all, so it commutes with every linear map. Any isomorphism
+      $V\to V^*$ must send a basis somewhere, and different bases give different
+      isomorphisms &mdash; there is no basis-free rule.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Dual space and dual basis.</strong> Construct it and prove the
+    dimension equality.</li>
+    <li><strong>Transpose map.</strong> Define $T^t$, note the reversal, and
+    compute its matrix.</li>
+    <li><strong>Annihilators.</strong> Prove $\dim W+\dim W^0=\dim V$.</li>
+    <li><strong>Quotients.</strong> Verify well-definedness, compute dimension,
+    and prove the first isomorphism theorem.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Dual basis gives $\dim V^*=\dim V$; annihilators mirror orthogonal
+    complements without an inner product; quotients package
+    rank&ndash;nullity as an isomorphism. Unit 9 uses the induced operator on a
+    quotient throughout.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Every time you write something about a coset, ask whether the answer would
+    change with a different representative. If it would, the definition is
+    broken.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Defining property</div>
+      <p>What characterises the dual basis?</p>
+      <details><summary>Guide</summary><div class="ans">$f_i(v_j)=\delta_{ij}$:
+      each functional returns $1$ on its own basis vector and $0$ on the
+      others.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Direction of the transpose</div>
+      <p>If $T:V\to W$, where does $T^t$ go?</p>
+      <details><summary>Guide</summary><div class="ans">$T^t:W^*\to V^*$, given
+      by $g\mapsto g\circ T$. Composition forces the reversal.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Annihilator dimension</div>
+      <p>State the dimension formula for $W^0$.</p>
+      <details><summary>Guide</summary><div class="ans">$\dim W^0=\dim V-\dim W$,
+      the exact analogue of the orthogonal complement formula.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Why quotients</div>
+      <p>Why prefer $V/W$ to a complement of $W$?</p>
+      <details><summary>Guide</summary><div class="ans">Complements exist but are
+      not unique and require a choice; the quotient is canonical and works over
+      any field with no inner product.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit07.html">← Unit 07<span>Polar &amp; SVD</span></a>
+  <a href="unit09.html">Unit 09 →<span>Primary decomposition &amp; Jordan form</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

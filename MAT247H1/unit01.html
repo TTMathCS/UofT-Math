@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — Inner Product Spaces · MAT247H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-8"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT247H1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Algebra II</div>
+<h1 class="ch-title reveal">Inner Product Spaces</h1>
+<p class="ch-intro reveal">MAT240H1 had no way to say how long a vector is or what
+angle two vectors make. An inner product supplies both from a single operation.
+Everything geometric in this course &mdash; orthogonality, projection, the
+spectral theorem &mdash; is built on the axioms below.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the real and complex inner product axioms and check them.</li>
+    <li>Explain why the complex case needs conjugate symmetry.</li>
+    <li>Prove Cauchy&ndash;Schwarz and the triangle inequality.</li>
+    <li>Work in a function space with an integral inner product.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A vector space alone cannot express "closest", "perpendicular", or "best
+    approximation". Those are the questions applications actually ask, and an
+    inner product is the minimum extra structure that answers them.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Least squares regression minimises a distance defined by an inner product.
+    Fourier series are orthogonal expansions in a function space. Quantum states
+    live in a complex inner product space, where $\langle u,v\rangle$ is a
+    probability amplitude &mdash; which is why the complex case matters.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Cauchy proved the finite sum version in 1821; Bunyakovsky and Schwarz
+    found the integral version decades later, which is why the inequality carries
+    up to three names. Extending these axioms to infinite dimensions and
+    demanding completeness gives Hilbert space, the subject of MAT357H1.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The axioms</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Let $V$ be a vector space over $F=\mathbb{R}$ or $\mathbb{C}$. An
+    <em>inner product</em> is a map $\langle\cdot,\cdot\rangle:V\times V\to F$
+    with, for all $u,v,w\in V$ and $c\in F$:</p>
+    <div class="step"><em>Linear in the first slot:</em>
+    $\langle u+w,v\rangle=\langle u,v\rangle+\langle w,v\rangle$ and
+    $\langle cu,v\rangle=c\langle u,v\rangle$.</div>
+    <div class="step"><em>Conjugate symmetry:</em>
+    $\langle v,u\rangle=\overline{\langle u,v\rangle}$. Over $\mathbb{R}$ the bar
+    does nothing and this is plain symmetry.</div>
+    <div class="step"><em>Positive definite:</em> $\langle u,u\rangle&gt;0$ for
+    $u\ne0$. Conjugate symmetry forces $\langle u,u\rangle$ to equal its own
+    conjugate, so it is real and the inequality makes sense.</div>
+    <p>The <em>norm</em> is $\|u\|=\sqrt{\langle u,u\rangle}$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>The second slot is conjugate-linear</b></div>
+    <p>$\langle u,cv\rangle=\overline{c}\,\langle u,v\rangle$ and
+    $\langle u,v+w\rangle=\langle u,v\rangle+\langle u,w\rangle$.</p>
+    <p>This is forced, not chosen: conjugate symmetry plus linearity in the first
+    slot gives
+    $\langle u,cv\rangle=\overline{\langle cv,u\rangle}
+    =\overline{c\langle v,u\rangle}=\overline{c}\,\overline{\langle v,u\rangle}
+    =\overline{c}\,\langle u,v\rangle$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why the conjugate is unavoidable</b></div>
+    <div class="step">Suppose we tried plain symmetry on $\mathbb{C}$ with
+    $\langle u,v\rangle=\sum u_iv_i$. Take $u=(1,i)$ in $\mathbb{C}^2$. Then
+    $\langle u,u\rangle=1^2+i^2=1-1=0$ with $u\ne0$ &mdash; positive definiteness
+    dies.</div>
+    <div class="step">With the conjugate, $\langle u,v\rangle=\sum u_i
+    \overline{v_i}$ gives $\langle u,u\rangle=|1|^2+|i|^2=2&gt;0$. In general
+    $\langle u,u\rangle=\sum|u_i|^2$, a sum of non-negative reals.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>The standard examples</h3>
+  <div class="box eg"><div class="bl">Example <b>Four to keep in mind</b></div>
+    <div class="step"><em>Euclidean:</em> on $\mathbb{R}^n$,
+    $\langle u,v\rangle=\sum_{i=1}^n u_iv_i$. Then $\|u\|$ is ordinary
+    length.</div>
+    <div class="step"><em>Standard complex:</em> on $\mathbb{C}^n$,
+    $\langle u,v\rangle=\sum_{i=1}^n u_i\overline{v_i}$.</div>
+    <div class="step"><em>Functions:</em> on $C[0,1]$,
+    $\langle f,g\rangle=\int_0^1 f(t)\overline{g(t)}\,dt$. Positive definiteness
+    uses continuity: a continuous non-negative function with integral $0$ is
+    identically $0$.</div>
+    <div class="step"><em>Matrices:</em> on $M_n(\mathbb{C})$, the Frobenius
+    inner product $\langle A,B\rangle=\operatorname{tr}(B^*A)$, which is just the
+    standard inner product on $\mathbb{C}^{n^2}$ in disguise.</div>
+  </div>
+  <div class="checkpoint"><b>Not every norm comes from an inner product.</b>
+    The norm $\|u\|_1=\sum|u_i|$ is a perfectly good norm, but no inner product
+    produces it. The test is the parallelogram law below &mdash; and this is why
+    "inner product space" is a strictly stronger assumption than "normed
+    space".</div>
+</div>
+
+<div class="block reveal">
+  <h3>Cauchy&ndash;Schwarz and its consequences</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Cauchy&ndash;Schwarz</b></div>
+    <p>$|\langle u,v\rangle|\le\|u\|\,\|v\|$, with equality exactly when $u$ and
+    $v$ are linearly dependent.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>The one-line trick</b></div>
+    <div class="step">If $v=0$ both sides are $0$. Otherwise set
+    $c=\dfrac{\langle u,v\rangle}{\|v\|^2}$ and consider the vector $u-cv$, which
+    is $u$ with its $v$-component removed.</div>
+    <div class="step">Positive definiteness gives $0\le\|u-cv\|^2
+    =\langle u-cv,u-cv\rangle$. Expanding with linearity in the first slot and
+    conjugate-linearity in the second, the cross terms cancel and this equals
+    $\|u\|^2-\dfrac{|\langle u,v\rangle|^2}{\|v\|^2}$.</div>
+    <div class="step">Rearranging gives $|\langle u,v\rangle|^2\le\|u\|^2\|v\|^2$.
+    Equality means $\|u-cv\|=0$, so $u=cv$. &#8718;</div>
+  </div>
+  <div class="box thm"><div class="bl">Theorem <b>Triangle inequality</b></div>
+    <p>$\|u+v\|\le\|u\|+\|v\|$.</p>
+    <p>Expand $\|u+v\|^2=\|u\|^2+2\operatorname{Re}\langle u,v\rangle+\|v\|^2$.
+    Since $\operatorname{Re}\langle u,v\rangle\le|\langle u,v\rangle|
+    \le\|u\|\|v\|$ by Cauchy&ndash;Schwarz, the right side is at most
+    $(\|u\|+\|v\|)^2$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Parallelogram law</b></div>
+    <p>$\|u+v\|^2+\|u-v\|^2=2\|u\|^2+2\|v\|^2$. Expanding both squares makes the
+    cross terms cancel. A norm satisfies this identity if and only if it comes
+    from an inner product, which is how you rule out $\|\cdot\|_1$.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Pulling a scalar out of the second slot without conjugating. Over
+  $\mathbb{C}$, $\langle u,cv\rangle=\overline{c}\langle u,v\rangle$.<br>
+  &bull; Assuming $\langle u,v\rangle$ is real. It is a complex number; only
+  $\langle u,u\rangle$ is guaranteed real.<br>
+  &bull; Defining the angle between complex vectors. The formula
+  $\cos\theta=\langle u,v\rangle/(\|u\|\|v\|)$ needs a real inner product;
+  over $\mathbb{C}$ only orthogonality survives.<br>
+  &bull; Forgetting that the inner product is extra data. The same vector space
+  carries many different inner products, and "orthogonal" means nothing until you
+  name one.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Friedberg, Insel &amp; Spence exercises. Write a full solution before opening
+  the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Axiom check</div>
+      <p>On $\mathbb{R}^2$, is $\langle u,v\rangle=u_1v_1-u_2v_2$ an inner
+      product?</p>
+      <details><summary>Answer</summary><div class="ans">No. It is bilinear and
+      symmetric, but $u=(0,1)$ gives $\langle u,u\rangle=-1&lt;0$, so positive
+      definiteness fails. This is the Minkowski form from relativity, an
+      <em>indefinite</em> form.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Weighted product</div>
+      <p>For which $a,b\in\mathbb{R}$ is
+      $\langle u,v\rangle=au_1v_1+bu_2v_2$ an inner product on
+      $\mathbb{R}^2$?</p>
+      <details><summary>Answer</summary><div class="ans">Exactly when $a&gt;0$
+      and $b&gt;0$. Symmetry and bilinearity hold for any $a,b$; taking
+      $u=(1,0)$ and $u=(0,1)$ forces $a&gt;0$ and $b&gt;0$, and those conditions
+      make $\langle u,u\rangle=au_1^2+bu_2^2&gt;0$ for $u\ne0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Complex computation</div>
+      <p>In $\mathbb{C}^2$ with the standard inner product, compute
+      $\langle u,v\rangle$ and $\langle v,u\rangle$ for $u=(1,i)$,
+      $v=(2,1-i)$.</p>
+      <details><summary>Solution</summary><div class="ans">$\langle u,v\rangle
+      =1\cdot\overline{2}+i\cdot\overline{(1-i)}=2+i(1+i)=2+i-1=1+i$. And
+      $\langle v,u\rangle=2\cdot\overline{1}+(1-i)\overline{i}
+      =2+(1-i)(-i)=2-i-1=1-i$, which is indeed the conjugate.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Function space</div>
+      <p>In $C[0,1]$ with $\langle f,g\rangle=\int_0^1 fg$, compute $\|f\|$ for
+      $f(t)=t$.</p>
+      <details><summary>Solution</summary><div class="ans">$\|f\|^2=\int_0^1
+      t^2\,dt=\tfrac13$, so $\|f\|=1/\sqrt3$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Polarization</div>
+      <p>In a real inner product space, prove
+      $\langle u,v\rangle=\tfrac14\left(\|u+v\|^2-\|u-v\|^2\right)$.</p>
+      <details><summary>Solution</summary><div class="ans">Expand both norms:
+      $\|u\pm v\|^2=\|u\|^2\pm2\langle u,v\rangle+\|v\|^2$. Subtracting kills the
+      $\|u\|^2$ and $\|v\|^2$ terms and leaves $4\langle u,v\rangle$. The inner
+      product is recoverable from the norm.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Ruling out a norm</div>
+      <p>Show $\|u\|_1=|u_1|+|u_2|$ on $\mathbb{R}^2$ comes from no inner
+      product.</p>
+      <details><summary>Solution</summary><div class="ans">Test the parallelogram
+      law with $u=(1,0)$, $v=(0,1)$. Then $\|u+v\|_1=\|u-v\|_1=2$, so the left
+      side is $8$; but $2\|u\|_1^2+2\|v\|_1^2=4$. The law fails, so no inner
+      product induces this norm.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Equality case</div>
+      <p>When is $\|u+v\|=\|u\|+\|v\|$ in a real inner product space?</p>
+      <details><summary>Solution</summary><div class="ans">Tracing the proof,
+      equality needs $\langle u,v\rangle=\|u\|\|v\|$: Cauchy&ndash;Schwarz
+      equality with a non-negative value. So $v=cu$ with $c\ge0$ (or one of them
+      is $0$) &mdash; the vectors point the same way, not merely
+      parallel.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Trace form</div>
+      <p>Verify $\langle A,B\rangle=\operatorname{tr}(B^*A)$ is positive definite
+      on $M_n(\mathbb{C})$.</p>
+      <details><summary>Solution</summary><div class="ans">The $(i,i)$ entry of
+      $A^*A$ is $\sum_j|a_{ji}|^2$, so $\operatorname{tr}(A^*A)
+      =\sum_{i,j}|a_{ji}|^2\ge0$, vanishing only when every entry is $0$. It is
+      the standard inner product on $\mathbb{C}^{n^2}$.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete MAT247H1
+  topic map. It should cover the following items before you move on:</p>
+  <ul>
+    <li><strong>Axioms.</strong> State linearity, conjugate symmetry and positive
+    definiteness, and check them on a proposed form.</li>
+    <li><strong>Real versus complex.</strong> Explain why conjugation is forced
+    in the complex case and where the second slot becomes conjugate-linear.</li>
+    <li><strong>Cauchy&ndash;Schwarz.</strong> Reproduce the proof and identify
+    the equality case.</li>
+    <li><strong>Norms from inner products.</strong> Derive the triangle
+    inequality and the parallelogram law, and use the latter as a test.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT247H1 calendar topics as the coverage spine, and
+    pair lecture notes with a Friedberg-Insel-Spence-style linear algebra text
+    for extra reading. The exact assigned textbook should still be checked
+    against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>The spine here is short: the axioms give Cauchy&ndash;Schwarz, which gives
+    the triangle inequality, which makes $\|\cdot\|$ a genuine norm and $V$ a
+    metric space.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Whenever a proof stalls, expand $\|u\pm cv\|^2$ for a well-chosen scalar $c$.
+    That single move proves most inequalities in this unit.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Slot convention</div>
+      <p>If $\langle cu,v\rangle=c\langle u,v\rangle$, what is
+      $\langle u,cv\rangle$?</p>
+      <details><summary>Guide</summary><div class="ans">$\overline{c}\langle
+      u,v\rangle$. Conjugate symmetry converts one slot into the other, and
+      conjugation of the scalar comes along.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Definiteness</div>
+      <p>Which axiom fails for $\langle u,v\rangle=u_1v_1$ on
+      $\mathbb{R}^2$?</p>
+      <details><summary>Guide</summary><div class="ans">Positive definiteness:
+      $u=(0,1)$ is nonzero but $\langle u,u\rangle=0$. This is positive
+      <em>semi</em>-definite &mdash; a degenerate form.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Equality characterisation</div>
+      <p>State when Cauchy&ndash;Schwarz is an equality.</p>
+      <details><summary>Guide</summary><div class="ans">Exactly when $u$ and $v$
+      are linearly dependent, that is one is a scalar multiple of the
+      other.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Norm test</div>
+      <p>How do you decide whether a given norm arises from an inner
+      product?</p>
+      <details><summary>Guide</summary><div class="ans">Test the parallelogram
+      law $\|u+v\|^2+\|u-v\|^2=2\|u\|^2+2\|v\|^2$. If it holds for all $u,v$ the
+      polarization identity reconstructs the inner product; if it fails
+      anywhere, no inner product induces the norm.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+  <a href="unit02.html">Unit 02 →<span>Orthogonality &amp; Gram&ndash;Schmidt</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-8"></script>
+</body>
+</html>

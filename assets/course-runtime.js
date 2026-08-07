@@ -165,6 +165,29 @@ const mathVariants = {
   mathsf: "sans-serif"
 };
 
+// Blackboard-bold, script and fraktur letters. Most live in the Mathematical
+// Alphanumeric Symbols block at a fixed offset, but a scattering of them were
+// encoded earlier in Letterlike Symbols and have to be spelled out.
+const scriptBases = {mathbb: 0x1d538, mathcal: 0x1d49c, mathfrak: 0x1d504};
+const scriptExceptions = {
+  mathbb: {C: "ℂ", H: "ℍ", N: "ℕ", P: "ℙ", Q: "ℚ", R: "ℝ", Z: "ℤ"},
+  mathcal: {B: "ℬ", E: "ℰ", F: "ℱ", H: "ℋ", I: "ℐ", L: "ℒ", M: "ℳ", R: "ℛ"},
+  mathfrak: {C: "ℭ", H: "ℌ", I: "ℑ", R: "ℜ", Z: "ℨ"}
+};
+
+function scriptLetter(command, raw) {
+  if (!/^[A-Za-z]$/.test(raw)) {
+    return null;
+  }
+  const exception = scriptExceptions[command][raw];
+  if (exception) {
+    return exception;
+  }
+  const base = scriptBases[command];
+  const offset = raw >= "a" ? raw.charCodeAt(0) - 97 + 26 : raw.charCodeAt(0) - 65;
+  return String.fromCodePoint(base + offset);
+}
+
 class LatexMathParser {
   constructor(source) {
     this.source = source;
@@ -367,6 +390,18 @@ class LatexMathParser {
     }
 
     if (mathVariants[command]) {
+      // MathML Core dropped mathvariant on mstyle, so browsers render
+      // \mathbb{R} as a plain italic R. Emit the real character instead and
+      // keep the mstyle only as a fallback for multi-character arguments.
+      if (command === "mathbb" || command === "mathcal" || command === "mathfrak") {
+        const start = this.position;
+        const raw = this.readRawGroup();
+        const letter = scriptLetter(command, raw);
+        if (letter) {
+          return createMathElement("mi", letter);
+        }
+        this.position = start;
+      }
       const style = createMathElement("mstyle", undefined, {
         mathvariant: mathVariants[command]
       });
