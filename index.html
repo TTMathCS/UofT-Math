@@ -5,78 +5,84 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
-<title>U of T Mathematics · Course Guide Library</title>
-<link rel="stylesheet" href="assets/catalog.css?v=20260807-2">
+<title>U of T Mathematics &amp; Statistics · Course Guide Library</title>
+<link rel="stylesheet" href="assets/catalog.css?v=20260807-6">
 <script src="assets/theme.js"></script>
 </head>
 <body>
 <div class="catalog-shell">
   <header class="hero">
-    <div class="kicker">U of T Mathematics · Course Guide Library</div>
-    <h1>Build the proof skills, <em>course by course.</em></h1>
-    <p class="lede">A local, searchable library of detailed course guides and
-    planned upper-year course entries. Each finished guide includes definitions,
-    theorems, worked reasoning, common pitfalls, and practice designed for
-    mastery. Planned entries mark the courses to build next for mathematics,
-    probability, statistics, and PhD-preparation pathways.</p>
+    <div class="kicker">U of T Mathematics &amp; Statistics</div>
+    <h1>The degree, <em>laid out.</em></h1>
+    <p class="lede">Every mathematics and statistics program at U of T Arts &amp;
+    Science, the full course list behind them, and a worked four-year plan for
+    the Probability/Statistics specialist. Detailed guides for the courses that
+    have them.</p>
 
     <div class="stats" aria-label="Library summary">
-      <div><strong id="course-count">4</strong><span>catalog entries</span></div>
-      <div><strong id="chapter-count">42</strong><span>detailed chapters</span></div>
-      <div><strong id="guide-count">4</strong><span>complete guides</span></div>
-      <div><strong id="program-count">14</strong><span>programs mapped</span></div>
+      <div><strong id="program-count">14</strong><span>programs</span></div>
+      <div><strong id="course-count">190</strong><span>courses listed</span></div>
+      <div><strong id="guide-count">4</strong><span>full guides</span></div>
+      <div><strong id="chapter-count">42</strong><span>chapters written</span></div>
     </div>
   </header>
 
   <main>
-    <section class="program-section" aria-labelledby="program-title">
+    <section class="program-section" aria-labelledby="programs-title">
       <div class="section-heading">
         <div>
           <span class="section-number">01</span>
-          <h2 id="program-title">Pick Your Program</h2>
+          <h2 id="programs-title">Programs</h2>
         </div>
-        <p class="section-note">Everything below follows your choice.</p>
+        <p class="section-note">Every code links to its calendar entry.</p>
       </div>
-      <p class="program-lede">Fourteen programs across Mathematics and Statistical
-      Sciences. Pick one and you get the whole degree laid out year by year:
-      <b class="key-req">required</b> courses, the courses
-      <b class="key-opt">suggested</b> for the route you want, and the credits each
-      year costs. Every route is a real way to finish the program, so switch
-      between them to see what the harder path actually buys you. Your choice is
-      remembered on this device.</p>
+      <p class="program-lede">The ten specialists, two majors and two minors run
+      by the two departments. Credit loads are the calendar's own totals, so a
+      range means the number moves with which options you take. Full listings:
+      <a href="https://artsci.calendar.utoronto.ca/section/Mathematics"
+        rel="noreferrer" target="_blank">Mathematics</a> ·
+      <a href="https://artsci.calendar.utoronto.ca/section/Statistical-Sciences"
+        rel="noreferrer" target="_blank">Statistical Sciences</a>.</p>
+      <div id="program-table" class="program-table-wrap"></div>
+    </section>
 
-      <div id="program-paths" class="program-paths"></div>
-      <div id="program-panel" class="program-panel" hidden></div>
+    <section class="focus-section" aria-labelledby="focus-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-number">02</span>
+          <h2 id="focus-title">ASSPE1890 In Detail</h2>
+        </div>
+        <p class="section-note">The program this library is planned around.</p>
+      </div>
+      <div id="focus-panel" class="focus-panel"></div>
     </section>
 
     <section class="catalog-section" aria-labelledby="catalog-title">
       <div class="section-heading">
         <div>
-          <span class="section-number">02</span>
-          <h2 id="catalog-title">Browse Every Course</h2>
+          <span class="section-number">03</span>
+          <h2 id="catalog-title">All Courses</h2>
         </div>
-        <p id="result-count" aria-live="polite">Showing all courses, grouped by year.</p>
+        <p id="result-count" aria-live="polite">Showing every course.</p>
       </div>
-      <p class="program-lede">The full catalog, marked up for whichever program you
-      picked. Use this to look up a course or to see what else would count; the
-      plan above is the part you actually need.</p>
+      <p class="program-lede">Alphabetical, mathematics and statistics together
+      with the computer science, physics, economics and philosophy courses the
+      programs require. Every row links to the calendar; the ones with a written
+      guide link there too. A blank title means the calendar is the source —
+      follow the code.</p>
 
       <div class="catalog-tools">
         <label for="course-search">Search courses and topics</label>
         <input id="course-search" type="search" autocomplete="off"
-          placeholder="Try Year 3, probability, topology, ROP, or STA452">
-        <div id="course-filters" class="filters" aria-label="Filter by subject"></div>
-        <label id="program-only-wrap" class="only-toggle" hidden>
-          <input id="program-only" type="checkbox">
-          <span>Show only program courses</span>
-        </label>
+          placeholder="Try probability, topology, PHY, or STA452">
+        <div id="course-filters" class="filters" aria-label="Filter by department"></div>
       </div>
 
       <div id="course-grid" class="course-results"></div>
 
       <noscript>
         <div class="noscript-list">
-          <p>JavaScript is disabled. Open a course directly:</p>
+          <p>JavaScript is disabled. Open a course guide directly:</p>
           <a href="MAT137/index.html">MAT137 · Calculus with Proofs</a>
           <a href="MAT158H1/index.html">MAT158H1 · Analysis 1A</a>
           <a href="MAT159H1/index.html">MAT159H1 · Analysis 1B</a>
@@ -88,7 +94,7 @@
     <section class="reference-section" aria-labelledby="reference-title">
       <div class="section-heading">
         <div>
-          <span class="section-number">03</span>
+          <span class="section-number">04</span>
           <h2 id="reference-title">Library Notes</h2>
         </div>
       </div>
@@ -113,26 +119,27 @@
     </section>
 
     <section class="add-section" aria-labelledby="add-title">
-      <span class="section-number">04</span>
-      <h2 id="add-title">Adding A Future Course</h2>
-      <p>Create its folder and course pages, then add one object to
-      <code>assets/courses.js</code>. The catalog automatically adds the card,
-      subject filter, search terms, and updated totals. Program requirements live
-      separately in <code>assets/programs.js</code>; a course only lights up for a
-      path once its code appears in that program's required or options list, and a
-      route only suggests it once it appears in that route's picks.</p>
+      <span class="section-number">05</span>
+      <h2 id="add-title">Keeping This Current</h2>
+      <p>Courses with guides live in <code>assets/courses.js</code>; everything
+      else is <code>assets/other-courses.js</code>, where a blank title just
+      means nobody has filled it in yet. Program requirements are in
+      <code>assets/programs.js</code> and registered courses in
+      <code>assets/enrolled.js</code>. Calendar links are built from the course
+      code, so a new entry needs no URL.</p>
     </section>
   </main>
 
   <footer>
-    <span>U OF T MATHEMATICS · LOCAL COURSE LIBRARY</span>
+    <span>U OF T MATHEMATICS &amp; STATISTICS · COURSE LIBRARY</span>
     <span>NO ONLINE RUNTIME DEPENDENCIES</span>
   </footer>
 </div>
 
-<script src="assets/courses.js"></script>
-<script src="assets/programs.js"></script>
-<script src="assets/enrolled.js"></script>
-<script src="assets/catalog.js"></script>
+<script src="assets/courses.js?v=20260807-6"></script>
+<script src="assets/other-courses.js?v=20260807-6"></script>
+<script src="assets/programs.js?v=20260807-6"></script>
+<script src="assets/enrolled.js?v=20260807-6"></script>
+<script src="assets/catalog.js?v=20260807-6"></script>
 </body>
 </html>

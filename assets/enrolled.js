@@ -7,8 +7,15 @@
 // title and credit value here. Y-coded courses are full year and worth 1.0.
 // Clear the terms array to turn the whole thing off.
 (function () {
-  function course(code, title, credits) {
-    return Object.freeze({ code: code, title: title, credits: credits });
+  // A Y course runs both terms, so it gets a row in each. Mark the second one
+  // continued: it still shows in winter but the credit is only counted once.
+  function course(code, title, credits, continued) {
+    return Object.freeze({
+      code: code,
+      title: title,
+      credits: credits,
+      continued: Boolean(continued)
+    });
   }
 
   function term(name, span, courses) {
@@ -26,11 +33,12 @@
         course("PHY131H1", "Introduction to Physics I", 0.5),
         course("ENG140Y1", "Literary Traditions", 1)
       ]),
-      term("Winter 2027", "ENG140Y1 continues", [
+      term("Winter 2027", "", [
         course("MAT159H1", "Analysis 1B", 0.5),
         course("MAT247H1", "Algebra II", 0.5),
         course("CSC148H1", "Introduction to Computer Science", 0.5),
-        course("PHY132H1", "Introduction to Physics II", 0.5)
+        course("PHY132H1", "Introduction to Physics II", 0.5),
+        course("ENG140Y1", "Literary Traditions", 1, true)
       ])
     ])
   });
