@@ -9,6 +9,7 @@
   --blue:#2a5cae;--indigo:#46409f;--green:#2e7d4f;--red:#c03b2d;
   --tint-blue:#eaf1fa;
   --req:#2a5cae;--req-tint:#e8f0fb;--opt:#8a5a12;--opt-tint:#fbf2e0;
+  --done:#2e7d4f;--done-tint:#e7f3ec;
   --shadow-card:0 1px 3px rgba(15,23,42,.07);
   --shadow-lift:0 1px 2px rgba(15,23,42,.05),0 12px 32px rgba(15,23,42,.10);
 }
@@ -19,6 +20,7 @@
   --blue:#7da7e8;--indigo:#a3a0e6;--green:#6cbd8e;--red:#e08272;
   --tint-blue:#1c2531;
   --req:#7da7e8;--req-tint:#1b2430;--opt:#d9ab5c;--opt-tint:#2b2419;
+  --done:#6cbd8e;--done-tint:#16241d;
   --shadow-card:0 1px 3px rgba(0,0,0,.4);
   --shadow-lift:0 1px 2px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.5);
 }
@@ -177,6 +179,44 @@ h2{margin-bottom:0;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-
 [data-theme="dark"] .track-button[aria-pressed="true"]{color:var(--desk)}
 .track-who{margin:.6rem 0 0;max-width:72ch;color:var(--muted);font-size:.88rem}
 
+/* Registered courses, by term. Sits above the plan so the first thing a
+   returning student sees is what they already hold. */
+.enrolled-head{display:flex;align-items:baseline;justify-content:space-between;
+  gap:1rem;margin-bottom:.55rem}
+.enrolled-head h4{margin:0;color:var(--done);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.66rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
+.enrolled-tally{color:var(--muted);font-size:.82rem;font-variant-numeric:tabular-nums}
+.enrolled{display:grid;grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));
+  gap:1px;margin-bottom:1.2rem;border:1px solid var(--line-soft);border-radius:8px;
+  background:var(--line-soft);overflow:hidden}
+.enrolled-term{padding:.6rem .75rem;background:var(--sheet)}
+.enrolled-term-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.4rem}
+.enrolled-term-head b{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.enrolled-span{color:var(--muted);font-size:.74rem;font-style:italic}
+.enrolled-list{display:grid;gap:.15rem}
+.enrolled-course{display:grid;grid-template-columns:5.6rem 1fr max-content 2.1rem;
+  align-items:baseline;gap:.5rem;padding:.2rem .45rem;border-left:3px solid transparent;
+  border-radius:4px}
+.enrolled-course b{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.67rem;font-weight:700;letter-spacing:.04em}
+.enrolled-course>span,.enrolled-link{font-size:.85rem;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.enrolled-link{color:inherit;text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:var(--line)}
+.enrolled-link:hover{text-decoration-color:currentColor}
+.enrolled-course em{font-style:normal;white-space:nowrap;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.enrolled-course i{color:var(--muted);font-style:normal;text-align:right;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+.enrolled-course.is-counted{border-left-color:var(--done);background:var(--done-tint)}
+.enrolled-course.is-counted b,.enrolled-course.is-counted em{color:var(--done)}
+.enrolled-course.is-elective{border-left-color:var(--line)}
+.enrolled-course.is-elective em,.enrolled-course.is-elective b{color:var(--muted)}
+
 /* The plan, set as a degree worksheet: years ruled into bands, one course per
    line, credits accounted in a tabular column with a rule above the total.
    Required courses carry a solid left rule, suggested ones a dashed rule, so
@@ -218,6 +258,14 @@ h2{margin-bottom:0;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-
 .plan-course i{color:var(--muted);font-style:normal;text-align:right;
   font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   font-size:.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+/* already registered: a tick claims the credit, so the row reads as settled
+   rather than as something still to choose */
+.plan-course.is-taken{position:relative}
+.plan-course.is-taken b{color:var(--done)}
+.plan-course.is-taken i{color:var(--done)}
+.plan-course.is-taken i::before{content:"\2713 ";font-weight:700}
+.plan-course.req.is-taken{border-left-color:var(--done);background:var(--done-tint)}
+.plan-course.pick.is-taken{border-left:3px solid var(--done);background:var(--done-tint)}
 .plan-course.is-outside{grid-template-columns:1fr 2.1rem;color:var(--muted)}
 .plan-course.is-outside span{font-size:.84rem}
 .plan-course.req{border-left:3px solid var(--req);background:var(--req-tint)}
@@ -391,6 +439,10 @@ footer{display:flex;justify-content:space-between;gap:1rem;padding:1.3rem 0 2rem
   .program-panel{padding:1rem .9rem}
   .plan-table{min-width:38rem}
   .plan-course{grid-template-columns:5.2rem 1fr 1.8rem;gap:.35rem}
+  .enrolled{grid-template-columns:1fr}
+  .enrolled-head{flex-direction:column;gap:.2rem}
+  .enrolled-course{grid-template-columns:5.2rem 1fr max-content;row-gap:0}
+  .enrolled-course i{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
