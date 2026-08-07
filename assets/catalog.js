@@ -5,6 +5,8 @@
   var others = Array.isArray(window.UOFT_OTHER_COURSES) ? window.UOFT_OTHER_COURSES : [];
   var programs = Array.isArray(window.UOFT_PROGRAMS) ? window.UOFT_PROGRAMS : [];
   var enrolled = window.UOFT_ENROLLED || null;
+  var structure = window.UOFT_STRUCTURE || null;
+  var structurePath = window.UOFT_STRUCTURE_PATH || [];
   var search = document.getElementById("course-search");
   var filters = document.getElementById("course-filters");
   var grid = document.getElementById("course-grid");
@@ -124,6 +126,45 @@
     return found;
   }
 
+  // ---------- 00 · where these programs sit ----------
+
+  function treeNode(item, depth) {
+    var li = element("li", "tree-node");
+    var head = element("div", "tree-row");
+    var label = element("span", "tree-name", item.name);
+
+    if (structurePath.indexOf(item.name) !== -1) {
+      li.classList.add("on-path");
+    }
+    head.append(label);
+    if (item.tag) {
+      head.append(element("span", "tree-tag", item.tag));
+    }
+    if (item.note) {
+      head.append(element("span", "tree-note", item.note));
+    }
+    li.append(head);
+
+    if (item.children.length) {
+      var list = element("ul", "tree-list");
+      item.children.forEach(function (child) {
+        list.append(treeNode(child, depth + 1));
+      });
+      li.append(list);
+    }
+    return li;
+  }
+
+  function renderStructure() {
+    var host = document.getElementById("structure-tree");
+    if (!host || !structure) {
+      return;
+    }
+    var root = element("ul", "tree-list is-root");
+    root.append(treeNode(structure, 0));
+    host.replaceChildren(root);
+  }
+
   // ---------- 01 · every program, one row each ----------
 
   function renderPrograms() {
@@ -133,7 +174,7 @@
     var body = element("tbody");
     var headRow = element("tr");
 
-    ["Code", "Program", "Type", "Credits"].forEach(function (label) {
+    ["Code", "Program", "Type", "Entry", "Credits"].forEach(function (label) {
       headRow.append(element("th", "", label));
     });
     head.append(headRow);
@@ -151,10 +192,14 @@
         element("b", "", item.name),
         element("span", "program-summary", item.summary)
       );
+      var entryCell = element("td", "program-entry");
+      entryCell.append(element("span",
+        item.entry === "Open" ? "entry-open" : "entry-limited", item.entry));
       row.append(
         codeCell,
         nameCell,
         element("td", "program-kind", item.kind),
+        entryCell,
         element("td", "program-credits", item.credits)
       );
       body.append(row);
@@ -468,6 +513,7 @@
   }, 0));
 
   search.addEventListener("input", renderCourses);
+  renderStructure();
   renderPrograms();
   renderFocus();
   renderFilters();
