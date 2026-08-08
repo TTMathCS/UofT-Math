@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 2 — Compactness · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 2</div>
+<div class="unit-no reveal">Unit 2 · Analysis II</div>
+<h1 class="ch-title reveal">Compactness</h1>
+<p class="ch-intro reveal">The single most useful property a set can have. Its
+definition &mdash; every open cover has a finite subcover &mdash; looks strange
+until you see what it does: it turns infinitely many local statements into one
+global statement. Nearly every existence theorem this year runs through it.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the open cover definition and use it directly.</li>
+    <li>Prove the Heine&ndash;Borel theorem in $\mathbb{R}^n$.</li>
+    <li>Move between covering, sequential, and closed-and-bounded.</li>
+    <li>Show compact sets are closed and bounded, and find where the converse
+    fails.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Local information is easy to get and hard to use. Compactness is the
+    hypothesis that lets you take a property holding near every point and
+    conclude it holds uniformly on the whole set. Uniform continuity, attainment
+    of maxima, and partitions of unity are all this move.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Optimisation over a compact feasible region is guaranteed to have a
+    solution, which is why constraints matter as much as objectives. Numerical
+    methods converge on compact domains and can wander off on non-compact ones.
+    Existence of equilibria in economics is a fixed point theorem on a compact
+    convex set.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Heine and Borel's theorem was assembled between 1872 and 1895, and the
+    modern open-cover definition took until Alexandroff and Urysohn in 1929. That
+    slow arrival is a hint: it is not the obvious definition, it is the one that
+    turned out to work. In infinite dimensions closed and bounded stops implying
+    compact, which reshapes all of functional analysis.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The definition</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>An <em>open cover</em> of $K\subseteq\mathbb{R}^n$ is a family
+    $\{U_\alpha\}$ of open sets with $K\subseteq\bigcup_\alpha U_\alpha$. The set
+    $K$ is <em>compact</em> if every open cover of $K$ has a finite
+    subcover: finitely many $U_{\alpha_1},\dots,U_{\alpha_m}$ already cover
+    $K$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why $(0,1)$ fails</b></div>
+    <div class="step">Cover $(0,1)$ by $U_n=\left(\tfrac1n,1\right)$ for
+    $n\ge2$. Every point of $(0,1)$ is in some $U_n$, so this is an open
+    cover.</div>
+    <div class="step">Any finite subfamily has a largest $n$, and then
+    $U_n=\left(\tfrac1n,1\right)$ misses everything in
+    $\left(0,\tfrac1n\right]$. No finite subcover exists, so $(0,1)$ is not
+    compact.</div>
+    <div class="step">The obstruction is the missing endpoint $0$: the set is
+    bounded but not closed.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Why $\mathbb{R}$ fails</b></div>
+    <p>Cover $\mathbb{R}$ by $(-n,n)$ for $n\in\mathbb{N}$. A finite subfamily
+    has a largest $n$ and misses everything beyond. Here the obstruction is
+    unboundedness.</p></div>
+  <div class="checkpoint"><b>The definition is about all covers, not one.</b>
+    To prove compactness you must handle an arbitrary cover, which is why direct
+    proofs are hard and Heine&ndash;Borel is worth so much. To <em>dis</em>prove
+    it you need only exhibit one bad cover, as above.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Heine&ndash;Borel</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Compact implies closed and bounded</b></div>
+    <p>This direction holds in any metric space.</p>
+    <div class="step"><em>Bounded:</em> cover $K$ by the balls $B_m(0)$ for
+    $m\in\mathbb{N}$. A finite subcover has a largest $m$, so
+    $K\subseteq B_m(0)$.</div>
+    <div class="step"><em>Closed:</em> let $x\notin K$. For each $y\in K$ take
+    disjoint balls around $y$ and $x$, of radius $\|x-y\|/2$. These balls about
+    the $y$ cover $K$; a finite subcover has finitely many companion balls about
+    $x$, and their intersection is a ball about $x$ missing $K$. So the
+    complement is open. &#8718;</div></div>
+  <div class="box thm"><div class="bl">Theorem <b>Heine&ndash;Borel</b></div>
+    <p>In $\mathbb{R}^n$, a set is compact <em>if and only if</em> it is closed
+    and bounded.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Bisection on a box</b></div>
+    <div class="step">First take $K=[a,b]$ a closed interval, and suppose an open
+    cover $\mathcal{U}$ has no finite subcover. Bisect: at least one half also
+    has no finite subcover. Repeat, getting nested intervals $I_k$ of length
+    $(b-a)/2^k$, none finitely coverable.</div>
+    <div class="step">By nested intervals there is a point $x$ in every $I_k$.
+    Some $U\in\mathcal{U}$ contains $x$, and since $U$ is open it contains a ball
+    about $x$ — which contains $I_k$ once $2^{-k}(b-a)$ is small enough. So
+    $I_k$ is covered by the single set $U$, contradicting that it had no finite
+    subcover.</div>
+    <div class="step">For a closed box in $\mathbb{R}^n$ the same bisection works
+    with $2^n$ sub-boxes at each stage. For a general closed bounded $K$, put it
+    inside a box $B$; given a cover of $K$, add the open set
+    $\mathbb{R}^n\setminus K$ to get a cover of $B$, extract a finite subcover,
+    and discard that extra set. &#8718;</div>
+  </div>
+  <div class="box warn"><div class="bl">This is special to finite dimensions</div>
+    <p>In an infinite-dimensional normed space the closed unit ball is closed and
+    bounded but never compact. The sequence of standard basis vectors satisfies
+    $\|e_i-e_j\|=\sqrt2$ for $i\ne j$, so it has no convergent subsequence.
+    Heine&ndash;Borel is a theorem about $\mathbb{R}^n$, not a
+    tautology.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Sequential compactness</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$K$ is <em>sequentially compact</em> if every sequence in $K$ has a
+    subsequence converging to a point of $K$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>The two agree in $\mathbb{R}^n$</b></div>
+    <p>For $K\subseteq\mathbb{R}^n$, compact and sequentially compact are
+    equivalent. Both are equivalent to closed and bounded.</p>
+    <div class="step"><em>Closed and bounded &rArr; sequentially compact:</em>
+    boundedness gives a convergent subsequence by Bolzano&ndash;Weierstrass
+    applied one coordinate at a time; closedness keeps the limit in $K$.</div>
+    <div class="step"><em>Sequentially compact &rArr; closed and bounded:</em> if
+    unbounded, pick $x_k$ with $\|x_k\|&gt;k$, which has no convergent
+    subsequence. If not closed, take a sequence converging to a limit outside
+    $K$; every subsequence has the same limit. &#8718;</div></div>
+  <div class="box thm"><div class="bl">Theorem <b>Closed subsets of compact sets</b></div>
+    <p>If $K$ is compact and $F\subseteq K$ is closed, then $F$ is compact.</p>
+    <p>Given an open cover of $F$, add $\mathbb{R}^n\setminus F$ to obtain an
+    open cover of $K$. Extract a finite subcover and drop the added set; what
+    remains still covers $F$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Compactness is intrinsic</b></div>
+    <p>$[0,1]$ is compact whether viewed inside $\mathbb{R}$ or inside
+    $\mathbb{R}^2$ as a segment. Open and closed are relative to an ambient
+    space; compactness is not, because a cover by relatively open sets can always
+    be traded for one by ambient open sets.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Proving compactness by exhibiting one cover with a finite subcover.
+  The definition quantifies over <em>all</em> covers.<br>
+  &bull; Quoting "closed and bounded implies compact" outside $\mathbb{R}^n$. It
+  is exactly what fails in infinite dimensions.<br>
+  &bull; Forgetting that continuous images are compact but preimages need not be.
+  $\sin$ maps the non-compact $\mathbb{R}$ into the compact $[-1,1]$.<br>
+  &bull; Assuming an infinite intersection of compact sets could be empty. A
+  nested family of nonempty compact sets always has a common point.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Classify</div>
+      <p>Is $\{(x,y):x^2+y^2\le1,\ y&gt;0\}$ compact?</p>
+      <details><summary>Answer</summary><div class="ans">No. It is bounded but
+      not closed: points on the segment $y=0$, $|x|&lt;1$ are limit points not in
+      the set.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Bad cover</div>
+      <p>Exhibit an open cover of $[0,1)$ with no finite subcover.</p>
+      <details><summary>Answer</summary><div class="ans">$U_n=\left(-1,1-\tfrac1n
+      \right)$ for $n\ge2$. Any finite subfamily has a largest $n$ and misses
+      $\left[1-\tfrac1n,1\right)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Finite sets</div>
+      <p>Prove every finite set is compact.</p>
+      <details><summary>Solution</summary><div class="ans">Given a cover, choose
+      one member containing each of the finitely many points. That is a finite
+      subcover. No topology needed.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Union and intersection</div>
+      <p>Are finite unions and arbitrary intersections of compact sets
+      compact?</p>
+      <details><summary>Solution</summary><div class="ans">Both yes in
+      $\mathbb{R}^n$. A finite union of closed bounded sets is closed and
+      bounded. An arbitrary intersection of compact sets is closed, and contained
+      in any one of them, hence bounded.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Nested compacts</div>
+      <p>If $K_1\supseteq K_2\supseteq\cdots$ are nonempty compact sets, show
+      $\bigcap_kK_k\ne\emptyset$.</p>
+      <details><summary>Solution</summary><div class="ans">Pick $x_k\in K_k$. All
+      lie in $K_1$, so a subsequence converges to some $x\in K_1$. For each $m$,
+      the tail from index $m$ lies in the closed set $K_m$, so $x\in K_m$. Hence
+      $x$ is in every $K_m$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Distance is attained</div>
+      <p>For compact $K$ and a point $p\notin K$, show there is a nearest point
+      of $K$ to $p$.</p>
+      <details><summary>Solution</summary><div class="ans">$x\mapsto\|x-p\|$ is
+      continuous on $K$, and a continuous real function on a compact set attains
+      its minimum (Unit 3). The minimiser is a nearest point; it need not be
+      unique.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Not compact in a function space</div>
+      <p>Show the closed unit ball of the space of bounded sequences is not
+      compact.</p>
+      <details><summary>Solution</summary><div class="ans">The standard basis
+      vectors $e_i$ all have norm $1$ and satisfy $\|e_i-e_j\|=1$ for $i\ne j$
+      in the sup norm. No subsequence is Cauchy, so none converges — the ball is
+      closed and bounded but not sequentially compact.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Compactness of a graph</div>
+      <p>If $f:[0,1]\to\mathbb{R}$ is continuous, is its graph compact in
+      $\mathbb{R}^2$?</p>
+      <details><summary>Solution</summary><div class="ans">Yes. The graph is the
+      image of the compact $[0,1]$ under the continuous map
+      $x\mapsto(x,f(x))$, and continuous images of compact sets are compact
+      (Unit 3).</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Open cover definition.</strong> Use it directly, in both
+    directions.</li>
+    <li><strong>Heine&ndash;Borel.</strong> Prove it by bisection and know that
+    it is specific to $\mathbb{R}^n$.</li>
+    <li><strong>Sequential compactness.</strong> Prove the equivalence via
+    Bolzano&ndash;Weierstrass.</li>
+    <li><strong>Hereditary properties.</strong> Closed subsets of compact sets,
+    nested intersections.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT257Y1 calendar topics as the coverage spine, and
+    pair lecture notes with Spivak's <em>Calculus on Manifolds</em> or Munkres'
+    <em>Analysis on Manifolds</em>. The exact assigned textbook should still be
+    checked against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Compact gives closed and bounded always; the converse is
+    Heine&ndash;Borel and needs $\mathbb{R}^n$. Sequential compactness is the
+    equivalent form that is easiest to apply. Unit 3 spends the whole page
+    cashing these in.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    When a proof needs "finitely many", look for a compactness hypothesis — that
+    is almost always where the finiteness is coming from.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · The definition</div>
+      <p>State compactness in terms of covers.</p>
+      <details><summary>Guide</summary><div class="ans">Every collection of open
+      sets whose union contains the set has a finite subcollection whose union
+      still contains it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Which direction is general</div>
+      <p>Which half of Heine&ndash;Borel holds in any metric space?</p>
+      <details><summary>Guide</summary><div class="ans">Compact implies closed
+      and bounded. The converse is what needs $\mathbb{R}^n$.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Standard counterexample</div>
+      <p>Name a closed bounded set that is not compact.</p>
+      <details><summary>Guide</summary><div class="ans">The closed unit ball of
+      any infinite-dimensional normed space, for instance bounded sequences under
+      the sup norm.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Why bisection works</div>
+      <p>What makes the bisection proof terminate?</p>
+      <details><summary>Guide</summary><div class="ans">The nested intervals
+      shrink to a point, and that point sits inside some open set of the cover,
+      which then swallows an entire late-stage interval — contradicting that no
+      finite subfamily covered it.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit01.html">← Unit 01<span>The topology of $\mathbb{R}^n$</span></a>
+  <a href="unit03.html">Unit 03 →<span>Continuity &amp; connectedness</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

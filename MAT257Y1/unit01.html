@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — The Topology of R^n · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Analysis II</div>
+<h1 class="ch-title reveal">The Topology of $\mathbb{R}^n$</h1>
+<p class="ch-intro reveal">MAT158H1 built analysis on the order structure of
+$\mathbb{R}$: every argument leaned on $&lt;$. In $\mathbb{R}^n$ there is no
+order. What survives is distance, and this unit rebuilds the vocabulary of
+analysis &mdash; open, closed, limit point, closure &mdash; from distance
+alone.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Prove the three standard norms on $\mathbb{R}^n$ are equivalent.</li>
+    <li>Decide whether a given set is open, closed, both, or neither.</li>
+    <li>Characterise closed sets by limit points and by sequences.</li>
+    <li>Compute interiors, closures and boundaries.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Every theorem in the rest of the year quantifies over neighbourhoods.
+    Without a precise notion of "near", the inverse function theorem cannot even
+    be stated, since it asserts something on a neighbourhood whose size nobody
+    specifies.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Optimisation algorithms terminate on a tolerance, which is a statement
+    about open balls. Numerical stability is continuity made quantitative.
+    Machine learning generalisation bounds are covering arguments over compact
+    parameter sets.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Hausdorff axiomatised topology in 1914 by taking neighbourhoods as
+    primitive and forgetting distance entirely. Everything in this unit survives
+    that abstraction; almost nothing in the next unit does, which is why general
+    topology (MAT327H1) has to work so much harder for compactness.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Norms and the metric</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For $x\in\mathbb{R}^n$ the <em>Euclidean norm</em> is
+    $\|x\|=\sqrt{\sum_{i=1}^nx_i^2}$, and the distance between $x$ and $y$ is
+    $\|x-y\|$. The <em>open ball</em> of radius $r$ about $a$ is
+    $B_r(a)=\{x:\|x-a\|&lt;r\}$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Equivalence of norms</b></div>
+    <p>Write $\|x\|_1=\sum_i|x_i|$ and $\|x\|_\infty=\max_i|x_i|$. Then</p>
+    <div class="step">$\|x\|_\infty\le\|x\|\le\|x\|_1\le n\|x\|_\infty$.</div>
+    <p>So the three norms have the same open sets, the same convergent
+    sequences and the same continuous functions. Any of them may be used
+    wherever it is convenient.</p>
+    <div class="step">For the first: $\|x\|^2=\sum_ix_i^2\ge\max_ix_i^2$. For the
+    second: $\|x\|^2=\sum_ix_i^2\le\left(\sum_i|x_i|\right)^2$ since the
+    cross terms are non-negative. For the third: each $|x_i|\le\|x\|_\infty$
+    and there are $n$ terms. &#8718;</div></div>
+  <div class="checkpoint"><b>Why the balls look different but behave the same.</b>
+    The $\|\cdot\|_\infty$ ball is a cube and the $\|\cdot\|_1$ ball is a
+    diamond. The theorem says each fits inside a scaled copy of the other, so a
+    statement of the form "there exists a ball contained in $U$" does not care
+    which norm you used. In infinite dimensions this fails, and it is one of the
+    main reasons functional analysis is harder.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Open and closed sets</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$U\subseteq\mathbb{R}^n$ is <em>open</em> if for every $a\in U$ there is
+    $r&gt;0$ with $B_r(a)\subseteq U$. A set is <em>closed</em> if its
+    complement is open.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>What survives unions and intersections</b></div>
+    <div class="step">Arbitrary unions of open sets are open; <em>finite</em>
+    intersections of open sets are open.</div>
+    <div class="step">Arbitrary intersections of closed sets are closed;
+    <em>finite</em> unions of closed sets are closed.</div>
+    <p>For a union, a point lies in some member, which already supplies a ball.
+    For a finite intersection, take the smallest of finitely many radii — which
+    is why finiteness is needed, since an infinite family can have radii shrinking
+    to $0$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Infinite intersection fails</b></div>
+    <p>$\bigcap_{n=1}^\infty\left(-\tfrac1n,\tfrac1n\right)=\{0\}$, an
+    intersection of open intervals that is not open. Every candidate radius is
+    killed by taking $n$ large enough.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Neither, and both</b></div>
+    <div class="step">$[0,1)$ in $\mathbb{R}$ is neither open nor closed: no ball
+    about $0$ stays inside, and $1$ is a limit point not in the set.</div>
+    <div class="step">$\emptyset$ and $\mathbb{R}^n$ are both open and closed.
+    In $\mathbb{R}^n$ these are the <em>only</em> such sets, which is exactly the
+    statement that $\mathbb{R}^n$ is connected (Unit 3).</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Limit points, closure and boundary</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$a$ is a <em>limit point</em> of $S$ if every ball $B_r(a)$ contains a
+    point of $S$ other than $a$. The <em>closure</em> $\overline{S}$ is $S$
+    together with its limit points; the <em>interior</em>
+    $\operatorname{int}S$ is the set of points having a ball inside $S$; the
+    <em>boundary</em> is $\partial S=\overline{S}\setminus\operatorname{int}S$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Three descriptions of closed</b></div>
+    <p>For $S\subseteq\mathbb{R}^n$ the following are equivalent:</p>
+    <div class="step">(1) $S$ is closed, that is $\mathbb{R}^n\setminus S$ is
+    open.</div>
+    <div class="step">(2) $S$ contains all its limit points, so
+    $S=\overline{S}$.</div>
+    <div class="step">(3) Whenever $x_k\in S$ and $x_k\to x$, the limit $x$ lies
+    in $S$.</div>
+    <div class="step"><em>(1) &rArr; (3):</em> if $x\notin S$ then some ball about
+    $x$ misses $S$, so no sequence from $S$ can converge to $x$.</div>
+    <div class="step"><em>(3) &rArr; (2):</em> a limit point $a$ has a point
+    $x_k\in S\cap B_{1/k}(a)$ for each $k$, giving $x_k\to a$, so
+    $a\in S$.</div>
+    <div class="step"><em>(2) &rArr; (1):</em> if $x\notin S$ then $x$ is not a
+    limit point, so some ball misses $S$ and lies in the complement.
+    &#8718;</div></div>
+  <div class="box eg"><div class="bl">Example <b>Compute all three</b></div>
+    <p>Let $S=\{(x,y)\in\mathbb{R}^2:x^2+y^2&lt;1\}\cup\{(1,0)\}$.</p>
+    <div class="step">$\operatorname{int}S$ is the open disc: the point $(1,0)$
+    has no ball inside $S$.</div>
+    <div class="step">$\overline{S}$ is the closed disc, since every point of the
+    unit circle is a limit of interior points.</div>
+    <div class="step">$\partial S$ is the whole unit circle. Note $(1,0)$ belongs
+    to $S$ and to $\partial S$ at once — a boundary point can be in or out of the
+    set.</div>
+  </div>
+  <div class="box warn"><div class="bl">Sequences are the practical tool</div>
+    <p>Condition (3) is almost always the fastest way to prove a set is closed:
+    take a convergent sequence in it and show the limit stays. Conditions (1) and
+    (2) are better for the theory, but on a problem set reach for
+    sequences.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Treating "not open" as "closed". Most sets are neither, and
+  $\mathbb{R}^n$ and $\emptyset$ are both.<br>
+  &bull; Confusing limit points with elements. A limit point need not belong to
+  the set, and an isolated element of the set is not a limit point of it.<br>
+  &bull; Using finiteness where it fails. Infinite intersections of open sets can
+  be closed.<br>
+  &bull; Forgetting that open and closed are relative. $[0,1)$ is not open in
+  $\mathbb{R}$ but is open as a subset of $[0,\infty)$ with the subspace
+  topology.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Classify</div>
+      <p>Is $\{(x,y):xy&gt;1\}$ open, closed, or neither?</p>
+      <details><summary>Answer</summary><div class="ans">Open. It is the preimage
+      of the open set $(1,\infty)$ under the continuous map $(x,y)\mapsto xy$,
+      and preimages of open sets under continuous maps are open (Unit
+      3).</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Closure</div>
+      <p>Find $\overline{S}$ for $S=\{1/n:n\in\mathbb{N}\}\subset\mathbb{R}$.</p>
+      <details><summary>Answer</summary><div class="ans">$S\cup\{0\}$. The only
+      limit point is $0$, and no element of $S$ is a limit point of $S$ since
+      each is isolated.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Norm equivalence</div>
+      <p>Prove $\|x\|_\infty\le\|x\|\le\sqrt n\,\|x\|_\infty$.</p>
+      <details><summary>Solution</summary><div class="ans">Let $M=\|x\|_\infty$.
+      Then $\|x\|^2=\sum_ix_i^2\ge M^2$ giving the left inequality, and
+      $\|x\|^2\le nM^2$ giving the right after taking square
+      roots.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Boundary</div>
+      <p>Find $\partial\mathbb{Q}$ inside $\mathbb{R}$.</p>
+      <details><summary>Solution</summary><div class="ans">All of $\mathbb{R}$.
+      Every interval contains both rationals and irrationals, so
+      $\overline{\mathbb{Q}}=\mathbb{R}$ while
+      $\operatorname{int}\mathbb{Q}=\emptyset$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Open balls are open</div>
+      <p>Prove $B_r(a)$ is open.</p>
+      <details><summary>Solution</summary><div class="ans">For $x\in B_r(a)$ put
+      $s=r-\|x-a\|&gt;0$. If $\|y-x\|&lt;s$ then
+      $\|y-a\|\le\|y-x\|+\|x-a\|&lt;r$, so $B_s(x)\subseteq B_r(a)$. The triangle
+      inequality is doing all the work.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Closure of a ball</div>
+      <p>Is $\overline{B_r(a)}$ always the closed ball
+      $\{x:\|x-a\|\le r\}$?</p>
+      <details><summary>Solution</summary><div class="ans">In $\mathbb{R}^n$ with
+      a norm, yes: any point at distance exactly $r$ is a limit of points on the
+      segment towards $a$. In a general metric space it can fail — in a discrete
+      metric, $B_1(a)=\{a\}$ is already closed while the closed ball is
+      everything.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Interior of a union</div>
+      <p>Is $\operatorname{int}(A\cup B)=\operatorname{int}A\cup
+      \operatorname{int}B$?</p>
+      <details><summary>Solution</summary><div class="ans">No, only $\supseteq$
+      holds. Take $A=\mathbb{Q}$ and $B=\mathbb{R}\setminus\mathbb{Q}$: both have
+      empty interior, but their union is $\mathbb{R}$ whose interior is
+      everything.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Closed graph</div>
+      <p>Show the graph $\{(x,f(x)):x\in\mathbb{R}\}$ of a continuous
+      $f:\mathbb{R}\to\mathbb{R}$ is closed in $\mathbb{R}^2$.</p>
+      <details><summary>Solution</summary><div class="ans">Take
+      $(x_k,f(x_k))\to(x,y)$. Then $x_k\to x$, so $f(x_k)\to f(x)$ by continuity;
+      limits are unique, so $y=f(x)$ and the limit is on the graph. Use the
+      sequence criterion.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Norms.</strong> Prove the standard norms equivalent and know what
+    equivalence buys.</li>
+    <li><strong>Open and closed.</strong> Apply the definitions and know which
+    operations preserve each.</li>
+    <li><strong>Limit points.</strong> Prove the three characterisations of
+    closedness equivalent.</li>
+    <li><strong>Interior, closure, boundary.</strong> Compute all three on
+    concrete sets.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT257Y1 calendar topics as the coverage spine, and
+    pair lecture notes with Spivak's <em>Calculus on Manifolds</em> or Munkres'
+    <em>Analysis on Manifolds</em>. The exact assigned textbook should still be
+    checked against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Norms give balls, balls give open sets, complements give closed sets, and
+    sequences give the working criterion for closedness. Unit 2 adds compactness
+    on top of exactly this vocabulary.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every set you meet, name its interior, closure and boundary before doing
+    anything else. Half the errors in this course come from applying a theorem to
+    a set that fails its hypothesis.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Definition of open</div>
+      <p>State what it means for $U$ to be open.</p>
+      <details><summary>Guide</summary><div class="ans">Every point of $U$ has
+      some open ball around it contained entirely in $U$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Where finiteness enters</div>
+      <p>Which operation on open sets requires finiteness, and why?</p>
+      <details><summary>Guide</summary><div class="ans">Intersection. You take
+      the minimum of the radii, and an infinite family can have radii with
+      infimum $0$.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Sequence criterion</div>
+      <p>How do you show a set is closed using sequences?</p>
+      <details><summary>Guide</summary><div class="ans">Take any convergent
+      sequence of points in the set and show its limit is also in the
+      set.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Consequence of equivalence</div>
+      <p>Why does norm equivalence matter for the rest of the course?</p>
+      <details><summary>Guide</summary><div class="ans">Because open sets,
+      convergence and continuity are identical under all three norms, every proof
+      may silently pick whichever norm is easiest — usually
+      $\|\cdot\|_\infty$ for box arguments.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+  <a href="unit02.html">Unit 02 →<span>Compactness</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
