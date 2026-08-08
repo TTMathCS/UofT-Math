@@ -5,6 +5,8 @@
   var others = Array.isArray(window.UOFT_OTHER_COURSES) ? window.UOFT_OTHER_COURSES : [];
   var programs = Array.isArray(window.UOFT_PROGRAMS) ? window.UOFT_PROGRAMS : [];
   var enrolled = window.UOFT_ENROLLED || null;
+  var terms = window.UOFT_TERMS || {};
+  var termSource = window.UOFT_TERM_SOURCE || "the timetable";
   var structure = window.UOFT_STRUCTURE || null;
   var structurePath = window.UOFT_STRUCTURE_PATH || [];
   var search = document.getElementById("course-search");
@@ -224,7 +226,7 @@
   function planCourse(code, kind, done) {
     var course = byCode[code];
     var row = element("div", "plan-course " + kind);
-    var title = element("span", "", course ? course.title : "");
+    var title = element("span", "plan-title", course ? course.title : "");
 
     if (done) {
       row.classList.add("is-taken");
@@ -258,7 +260,7 @@
       term.courses.forEach(function (course) {
         var row = element("div", "plan-course is-taken");
         var entry = byCode[course.code];
-        var title = element("span", "", course.title);
+        var title = element("span", "plan-title", course.title);
         // a full-year course appears in both terms; count its credit once
         if (!course.continued) {
           total += course.credits;
@@ -294,6 +296,32 @@
     return !taken[code];
   }
 
+  // Year 1 runs 2026-27, so Year N starts in 2025 + N.
+  function academicYear(year) {
+    var n = parseInt(year.replace(/\D/g, ""), 10);
+    var start = 2025 + n;
+    return start + "-" + String(start + 1).slice(2);
+  }
+
+  // "F" fall, "S" winter, "FS" either, "Y" both, "-" not offered this year.
+  // Anything we have no timetable entry for is treated as either.
+  function termOf(code) {
+    return terms[code] || "FS";
+  }
+
+  // A course is pinned to a term only when the timetable pins it. "FS" means
+  // you choose, so it belongs in the flexible band rather than in both columns
+  // where it would read as being taken twice.
+  function runsIn(code, half) {
+    var t = termOf(code);
+    return t === "Y" || t === half;
+  }
+
+  function isFlexible(code) {
+    var t = termOf(code);
+    return t === "FS" || t === "-";
+  }
+
   function suggestedYear(program, picks, year) {
     var required = program.required.filter(function (code) {
       return yearOf(code) === year && stillToTake(code);
@@ -308,35 +336,80 @@
       return null;
     }
 
+    var codes = required.concat(suggested);
+    var span = academicYear(year);
+    var starts = [Number(span.slice(0, 4)), Number(span.slice(0, 4)) + 1];
     var block = element("div", "focus-year");
     var head = element("div", "focus-year-head");
     var body = element("div", "focus-year-body");
-    var column = element("div", "focus-term");
     var total = 0;
 
-    required.concat(suggested).forEach(function (code) {
+    // credit counts once per course even when it spans both terms
+    codes.forEach(function (code) {
       total += creditsOf(code);
-      column.append(planCourse(code, program.required.indexOf(code) !== -1
-        ? "req"
-        : "pick", false));
-    });
-    outside.forEach(function (item) {
-      total += item.credits;
-      var row = element("div", "plan-course req is-outside");
-      row.append(
-        element("span", "", item.text),
-        element("i", "", item.credits.toFixed(1))
-      );
-      column.append(row);
     });
 
+    [["F", "Fall " + starts[0]], ["S", "Winter " + starts[1]]].forEach(function (pair) {
+      var half = pair[0];
+      var column = element("div", "focus-term");
+      var label = element("div", "focus-term-head");
+      var listed = codes.filter(function (code) {
+        return runsIn(code, half);
+      });
+
+      label.append(element("b", "", pair[1]));
+      column.append(label);
+
+      listed.forEach(function (code) {
+        var kind = program.required.indexOf(code) !== -1 ? "req" : "pick";
+        var row = planCourse(code, kind, false);
+        if (termOf(code) === "Y") {
+          row.classList.add("is-continued");
+          row.querySelector(".plan-title").append(element("em", "", "full year"));
+        }
+        column.append(row);
+      });
+
+      if (!listed.length) {
+        column.append(element("div", "focus-term-empty", "nothing pinned to this term"));
+      }
+      body.append(column);
+    });
+    block.append(head, body);
+
+    // courses the timetable does not pin to a term, plus the requirements from
+    // other departments; both are placed wherever the load allows
+    var flexible = codes.filter(isFlexible);
+    if (flexible.length || outside.length) {
+      var extra = element("div", "focus-flex");
+      extra.append(element("div", "focus-flex-head", "Either term — place where the load allows"));
+      flexible.forEach(function (code) {
+        var kind = program.required.indexOf(code) !== -1 ? "req" : "pick";
+        var row = planCourse(code, kind, false);
+        if (termOf(code) === "-") {
+          row.classList.add("is-unoffered");
+          row.querySelector(".plan-title").append(
+            element("em", "", "not offered in " + termSource));
+        }
+        extra.append(row);
+      });
+      outside.forEach(function (item) {
+        total += item.credits;
+        var row = element("div", "plan-course req is-outside");
+        row.append(
+          element("span", "", item.text),
+          element("i", "", item.credits.toFixed(1))
+        );
+        extra.append(row);
+      });
+      block.append(extra);
+    }
+
     head.append(
-      element("h4", "", year),
+      element("h4", "", year + " · " + span),
       element("span", "focus-year-tag is-plan", "suggested"),
       element("span", "focus-credits", total.toFixed(1) + " credits")
     );
-    body.append(column);
-    block.append(head, body);
     return block;
   }
 
@@ -401,6 +474,19 @@
       }
     });
     host.append(plan);
+
+    var note = element("p", "focus-note");
+    note.append(
+      element("b", "", "Year 1 is the real timetable; Years 2-4 are not. "),
+      element("span", "", "First year lists every course registered for, so it" +
+        " comes to a full 5.0-credit load. The later years list only what" +
+        " ASSPE1890 itself asks for on this route — the rest of each 5.0 is" +
+        " electives, breadth requirements and whatever second program gets" +
+        " added, none of which this page tries to choose. Terms come from the " +
+        termSource + " and are a snapshot: offerings rotate, so check ACORN" +
+        " before building an actual schedule.")
+    );
+    host.append(note);
 
     var floating = program.outside.filter(function (item) {
       return typeof item === "string" || !item.year;
