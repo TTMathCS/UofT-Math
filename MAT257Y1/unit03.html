@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 3 — Continuity &amp; Connectedness · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 3</div>
+<div class="unit-no reveal">Unit 3 · Analysis II</div>
+<h1 class="ch-title reveal">Continuity &amp; Connectedness</h1>
+<p class="ch-intro reveal">Continuity gets a definition with no $\varepsilon$ in
+it: preimages of open sets are open. From there the two great theorems of
+first-year calculus &mdash; extreme value and intermediate value &mdash; fall
+out as one-line consequences of compactness and connectedness.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Prove the $\varepsilon$-$\delta$, sequential and preimage definitions
+    agree.</li>
+    <li>Show continuous images of compact sets are compact, and cash it in.</li>
+    <li>Prove continuity on a compact set upgrades to uniform continuity.</li>
+    <li>Use connectedness to get the intermediate value theorem in
+    $\mathbb{R}^n$.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>The preimage definition is the one that generalises. It mentions no
+    distance, so it survives into spaces where there is none, and it makes the
+    interaction between continuity and compactness almost trivial to
+    prove.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Uniform continuity is what makes numerical quadrature converge at a rate
+    you can state in advance. The intermediate value theorem is the root-finding
+    guarantee behind bisection. Connectedness is why a continuous deformation
+    cannot tear a domain apart, which underwrites homotopy arguments
+    everywhere.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Cauchy conflated continuity and uniform continuity in 1821, and the
+    distinction was only isolated by Heine in 1872 — one of the errors that drove
+    the whole rigorisation programme. Weierstrass then produced a function
+    continuous everywhere and differentiable nowhere, ending the assumption that
+    continuity implies smoothness anywhere.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Three definitions of continuity</h3>
+  <div class="box thm"><div class="bl">Theorem <b>They agree</b></div>
+    <p>For $f:A\to\mathbb{R}^m$ with $A\subseteq\mathbb{R}^n$ and $a\in A$, the
+    following are equivalent:</p>
+    <div class="step">(1) For every $\varepsilon&gt;0$ there is
+    $\delta&gt;0$ with $\|f(x)-f(a)\|&lt;\varepsilon$ whenever $x\in A$ and
+    $\|x-a\|&lt;\delta$.</div>
+    <div class="step">(2) $x_k\to a$ in $A$ implies $f(x_k)\to f(a)$.</div>
+    <div class="step">(3) If $f$ is continuous at every point, then
+    $f^{-1}(V)$ is open in $A$ for every open $V\subseteq\mathbb{R}^m$.</div>
+  </div>
+  <div class="box eg"><div class="bl">Proof <b>The cycle</b></div>
+    <div class="step"><em>(1) &rArr; (2):</em> given $\varepsilon$, take the
+    $\delta$ from (1); eventually $\|x_k-a\|&lt;\delta$, so
+    $\|f(x_k)-f(a)\|&lt;\varepsilon$.</div>
+    <div class="step"><em>(2) &rArr; (1):</em> contrapositive. If (1) fails there
+    is $\varepsilon&gt;0$ such that for each $k$ some $x_k$ has
+    $\|x_k-a\|&lt;\tfrac1k$ but $\|f(x_k)-f(a)\|\ge\varepsilon$. Then
+    $x_k\to a$ while $f(x_k)\not\to f(a)$.</div>
+    <div class="step"><em>(1) &hArr; (3):</em> $f^{-1}(V)$ open means every point
+    of it has a $\delta$-ball mapping into $V$. Taking $V$ to be the
+    $\varepsilon$-ball around $f(a)$ recovers (1) exactly, and conversely every
+    open $V$ contains such a ball around each of its points. &#8718;</div>
+  </div>
+  <div class="checkpoint"><b>Use the right one for the job.</b>
+    Sequences for concrete counterexamples; $\varepsilon$-$\delta$ when you need
+    a quantitative bound; preimages for anything structural, including every
+    theorem below.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Continuity meets compactness</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Continuous image of a compact set</b></div>
+    <p>If $K$ is compact and $f:K\to\mathbb{R}^m$ is continuous, then $f(K)$ is
+    compact.</p>
+    <div class="step">Let $\{V_\alpha\}$ be an open cover of $f(K)$. Then
+    $\{f^{-1}(V_\alpha)\}$ is an open cover of $K$.</div>
+    <div class="step">Compactness gives finitely many
+    $f^{-1}(V_{\alpha_1}),\dots,f^{-1}(V_{\alpha_m})$ covering $K$, and then the
+    corresponding $V_{\alpha_i}$ cover $f(K)$. &#8718;</div>
+    <p>Three lines, because the preimage definition was chosen to make this
+    easy.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Extreme value theorem</b></div>
+    <p>A continuous $f:K\to\mathbb{R}$ on a nonempty compact $K$ attains a
+    maximum and a minimum.</p>
+    <p>$f(K)$ is compact in $\mathbb{R}$, hence closed and bounded. So
+    $\sup f(K)$ is finite and, being a limit point or member of a closed set,
+    belongs to $f(K)$. Any preimage is a maximiser; likewise for the
+    infimum.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Uniform continuity</b></div>
+    <p>A continuous $f$ on a compact $K$ is <em>uniformly</em> continuous: one
+    $\delta$ works for every point at once.</p>
+    <div class="step">Fix $\varepsilon$. Each $a\in K$ has $\delta_a&gt;0$ with
+    $\|f(x)-f(a)\|&lt;\varepsilon/2$ on $B_{\delta_a}(a)$. The balls
+    $B_{\delta_a/2}(a)$ cover $K$.</div>
+    <div class="step">Extract a finite subcover with centres
+    $a_1,\dots,a_m$ and let $\delta=\tfrac12\min_i\delta_{a_i}&gt;0$ — a minimum
+    of finitely many positive numbers, which is where compactness pays.</div>
+    <div class="step">If $\|x-y\|&lt;\delta$, then $x$ lies in some
+    $B_{\delta_{a_i}/2}(a_i)$, and $y$ is then within $\delta_{a_i}$ of $a_i$
+    too. Both $f(x)$ and $f(y)$ are within $\varepsilon/2$ of $f(a_i)$, so within
+    $\varepsilon$ of each other. &#8718;</div></div>
+  <div class="box eg"><div class="bl">Example <b>Compactness is needed</b></div>
+    <p>$f(x)=1/x$ on $(0,1]$ is continuous but not uniformly continuous: as $x$
+    approaches $0$ the required $\delta$ shrinks to nothing. And $f(x)=x^2$ on
+    $\mathbb{R}$ is continuous but not uniformly so. Drop compactness and the
+    theorem dies.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Connectedness</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$A$ is <em>disconnected</em> if $A=(U\cap A)\cup(V\cap A)$ for open
+    $U,V$ with the two pieces nonempty and disjoint. Otherwise $A$ is
+    <em>connected</em>. $A$ is <em>path connected</em> if any two points are
+    joined by a continuous path inside $A$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Continuous image of a connected set</b></div>
+    <p>If $A$ is connected and $f$ is continuous, $f(A)$ is connected.</p>
+    <p>A disconnection of $f(A)$ by $U,V$ pulls back to a disconnection of $A$ by
+    $f^{-1}(U),f^{-1}(V)$, which are open by the preimage
+    definition.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Intermediate value theorem</b></div>
+    <p>If $A\subseteq\mathbb{R}^n$ is connected, $f:A\to\mathbb{R}$ is
+    continuous, and $f$ takes values $c&lt;d$, then it takes every value
+    between.</p>
+    <p>$f(A)$ is a connected subset of $\mathbb{R}$, and the connected subsets of
+    $\mathbb{R}$ are exactly the intervals. An interval containing $c$ and $d$
+    contains everything between.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Path connected implies connected</b></div>
+    <p>The converse fails. The <em>topologist's sine curve</em>
+    $\{(x,\sin(1/x)):0&lt;x\le1\}$ together with the segment
+    $\{0\}\times[-1,1]$ is connected but not path connected: no path can reach
+    the segment from the curve, because the oscillation never settles.</p>
+    <p>For open subsets of $\mathbb{R}^n$ the two notions <em>do</em> coincide,
+    which is why the distinction rarely bites in this course.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Claiming $f$ open maps open sets to open sets. Continuity is about
+  <em>preimages</em>; $f(x)=x^2$ maps the open $(-1,1)$ to $[0,1)$.<br>
+  &bull; Using uniform continuity without a compact domain. On an open or
+  unbounded set it can fail.<br>
+  &bull; Assuming connected implies path connected. True for open sets in
+  $\mathbb{R}^n$, false in general.<br>
+  &bull; Proving continuity coordinate by coordinate and stopping. That does
+  work for the target — $f$ is continuous iff each $f_i$ is — but separate
+  continuity in each <em>input</em> variable is much weaker than joint
+  continuity.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Separate versus joint</div>
+      <p>Show $f(x,y)=\dfrac{xy}{x^2+y^2}$ (with $f(0,0)=0$) is continuous in
+      each variable separately at the origin but not jointly.</p>
+      <details><summary>Solution</summary><div class="ans">Fixing $y=0$ gives
+      $f(x,0)=0$, continuous in $x$; likewise in $y$. But along $y=x$,
+      $f(x,x)=\tfrac12$ for all $x\ne0$, so the limit at the origin is not
+      $0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Preimage argument</div>
+      <p>Prove $\{(x,y):x^2+y^2&lt;1\}$ is open using continuity.</p>
+      <details><summary>Answer</summary><div class="ans">It is the preimage of
+      the open $(-\infty,1)$ under the continuous $(x,y)\mapsto x^2+y^2$, hence
+      open.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Attainment</div>
+      <p>Does $f(x)=x$ on $(0,1)$ attain a maximum? Which hypothesis
+      fails?</p>
+      <details><summary>Answer</summary><div class="ans">No. The domain is
+      bounded but not closed, so not compact, and the extreme value theorem does
+      not apply.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Uniform continuity fails</div>
+      <p>Show $f(x)=\sin(1/x)$ is not uniformly continuous on $(0,1]$.</p>
+      <details><summary>Solution</summary><div class="ans">Take
+      $x_k=\tfrac{1}{2\pi k}$ and $y_k=\tfrac{1}{2\pi k+\pi/2}$. Then
+      $|x_k-y_k|\to0$ but $|f(x_k)-f(y_k)|=1$ always, so no $\delta$ works for
+      $\varepsilon=\tfrac12$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Fixed point</div>
+      <p>Prove a continuous $f:[0,1]\to[0,1]$ has a fixed point.</p>
+      <details><summary>Solution</summary><div class="ans">Let
+      $g(x)=f(x)-x$, continuous. Then $g(0)=f(0)\ge0$ and $g(1)=f(1)-1\le0$. By
+      the intermediate value theorem $g$ vanishes somewhere, and there
+      $f(x)=x$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Connected subsets of the line</div>
+      <p>Prove a connected subset of $\mathbb{R}$ is an interval.</p>
+      <details><summary>Solution</summary><div class="ans">If $A$ is not an
+      interval there are $a&lt;c&lt;b$ with $a,b\in A$ and $c\notin A$. Then
+      $(-\infty,c)$ and $(c,\infty)$ disconnect $A$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Distance function</div>
+      <p>For nonempty $S$, show $x\mapsto\operatorname{dist}(x,S)$ is uniformly
+      continuous on all of $\mathbb{R}^n$.</p>
+      <details><summary>Solution</summary><div class="ans">For any $s\in S$,
+      $\operatorname{dist}(x,S)\le\|x-y\|+\|y-s\|$; taking the infimum over $s$
+      gives $\operatorname{dist}(x,S)-\operatorname{dist}(y,S)\le\|x-y\|$, and by
+      symmetry the absolute difference is at most $\|x-y\|$. So
+      $\delta=\varepsilon$ works everywhere — no compactness needed, because the
+      function is Lipschitz.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Image of a connected compact set</div>
+      <p>What are the possible images of a connected compact
+      $K\subseteq\mathbb{R}^n$ under a continuous real function?</p>
+      <details><summary>Solution</summary><div class="ans">Exactly the closed
+      bounded intervals $[m,M]$, or a single point. The image is connected
+      (an interval) and compact (closed and bounded), and those two force
+      $[m,M]$.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Equivalent definitions.</strong> Prove
+    $\varepsilon$-$\delta$, sequential and preimage continuity agree.</li>
+    <li><strong>Compactness consequences.</strong> Continuous image, extreme
+    value theorem, uniform continuity.</li>
+    <li><strong>Connectedness.</strong> Continuous image, intermediate value
+    theorem, the sine-curve counterexample.</li>
+    <li><strong>Failure modes.</strong> Separate versus joint continuity, and
+    where each hypothesis is needed.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Use the current UofT MAT257Y1 calendar topics as the coverage spine, and
+    pair lecture notes with Spivak's <em>Calculus on Manifolds</em> or Munkres'
+    <em>Analysis on Manifolds</em>. The exact assigned textbook should still be
+    checked against the instructor syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Preimage continuity plus compactness gives compact images, hence extreme
+    values and uniform continuity. Preimage continuity plus connectedness gives
+    the intermediate value theorem. Both patterns are the same two-line
+    argument.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Whenever a theorem here is quoted, name which of compactness or connectedness
+    it used. Almost every result in this unit is one of those two properties
+    passed through a continuous map.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Topological definition</div>
+      <p>State continuity without $\varepsilon$ or $\delta$.</p>
+      <details><summary>Guide</summary><div class="ans">The preimage of every
+      open set is open.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · What compactness buys</div>
+      <p>Name two theorems that need a compact domain.</p>
+      <details><summary>Guide</summary><div class="ans">The extreme value
+      theorem and the upgrade from continuity to uniform continuity. Both fail on
+      $(0,1)$.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Direction of the image theorems</div>
+      <p>Do continuous maps preserve compactness forwards or backwards?</p>
+      <details><summary>Guide</summary><div class="ans">Forwards: images of
+      compact sets are compact. Preimages of compact sets need not be —
+      $\sin^{-1}([-1,1])$ is all of $\mathbb{R}$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Connected but not path connected</div>
+      <p>Give the standard example.</p>
+      <details><summary>Guide</summary><div class="ans">The topologist's sine
+      curve together with the limiting segment on the $y$-axis. Connected, since
+      the segment is in the closure, but no path reaches
+      it.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit02.html">← Unit 02<span>Compactness</span></a>
+  <a href="unit04.html">Unit 04 →<span>The derivative as a linear map</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

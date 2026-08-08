@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>MAT257Y1 — Analysis II · Course Guide</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="side">
+  <div class="brand"><span>MAT257Y1</span></div>
+  <div class="sub">ANALYSIS II · FULL YEAR<br>COURSE GUIDE</div>
+  <a href="../index.html">All Courses</a>
+  <a href="#about" data-t>About</a>
+  <a href="#units" data-t>Chapters</a>
+  <a href="#textbook" data-t>Textbook Spine</a>
+  <a href="#practice" data-t>Practice Plan</a>
+  <a href="#resources" data-t>Resources</a>
+  <div class="foot">CALCULUS ON MANIFOLDS<br>TEXT: SPIVAK &amp; MUNKRES<br>1.0 CREDIT · 72L/48T</div>
+</nav>
+
+<main>
+<header class="hero reveal">
+  <svg class="curve" viewBox="0 0 230 150" aria-hidden="true">
+    <line class="axis" x1="14" y1="135" x2="220" y2="135"/>
+    <line class="axis" x1="20" y1="8" x2="20" y2="142"/>
+    <path d="M40,120 C80,60 130,140 180,50"/>
+    <path d="M40,90 C90,120 140,40 200,90"/>
+    <circle cx="112" cy="97" r="4.5"/>
+  </svg>
+  <div class="kicker">U of T · Analysis II · Full Year</div>
+  <h1>MAT257Y1: calculus, rebuilt on <em>manifolds</em>.</h1>
+  <p class="lede">One year, one credit, and the hardest second-year course in the
+  department. Everything from first-year calculus returns in $n$ dimensions with
+  proofs attached, and the whole thing converges on a single theorem that
+  contains the fundamental theorem of calculus, Green's, Gauss's and Stokes's as
+  special cases.</p>
+</header>
+
+<div class="note reveal" id="about">
+  <div class="tag">About this course</div>
+  <h3>Where the pieces become one theorem.</h3>
+  <p>MAT257Y1 "Analysis II": topology of $\mathbb{R}^n$, compactness, functions
+  and continuity, the extreme value theorem; derivatives, the inverse and
+  implicit function theorems, maxima and minima, Lagrange multipliers;
+  integration, Fubini's theorem, partitions of unity, change of variables;
+  differential forms; manifolds in $\mathbb{R}^n$, integration on manifolds, and
+  Stokes' theorem in both its differential-form and classical versions.
+  Prerequisites: <a href="../MAT158H1/index.html">MAT158H1</a> +
+  <a href="../MAT159H1/index.html">MAT159H1</a> and
+  <a href="../MAT247H1/index.html">MAT247H1</a> — the linear algebra is not
+  optional here, since the derivative is a linear map. This guide uses Spivak's
+  <em>Calculus on Manifolds</em> with Munkres' <em>Analysis on Manifolds</em> as
+  the gentler companion.</p>
+</div>
+
+<section id="units" class="reveal">
+  <div class="sec-head"><span class="no">01</span><h2>Chapters</h2></div>
+  <p class="sec-sub">In course order, across both terms. Each page has
+  definitions, theorems, worked proofs, pitfalls, and practice.</p>
+
+  <div class="chips">
+    <span class="chip teal"><b>MAT257Y1</b><small>Analysis II · full year</small></span>
+    <span class="chip teal"><b>MAT158H1</b><small>Analysis 1A · prerequisite</small></span>
+    <span class="chip teal"><b>MAT247H1</b><small>Algebra II · prerequisite</small></span>
+  </div>
+
+  <ol class="units">
+    <li><a href="unit01.html"><div><h4>The topology of $\mathbb{R}^n$</h4>
+      <p>Norms, open and closed sets, limit points, closure.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit02.html"><div><h4>Compactness</h4>
+      <p>Open covers, Heine&ndash;Borel, sequential compactness.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit03.html"><div><h4>Continuity &amp; connectedness</h4>
+      <p>Extreme and intermediate value theorems in $\mathbb{R}^n$.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit04.html"><div><h4>The derivative as a linear map</h4>
+      <p>Differentiability, the Jacobian, partial derivatives.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit05.html"><div><h4>Chain rule &amp; higher derivatives</h4>
+      <p>Composition, equality of mixed partials, Taylor.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit06.html"><div><h4>The inverse function theorem</h4>
+      <p>Local invertibility from an invertible derivative.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit07.html"><div><h4>The implicit function theorem</h4>
+      <p>Solving $F(x,y)=0$ for $y$, locally.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit08.html"><div><h4>Extrema &amp; Lagrange multipliers</h4>
+      <p>The Hessian test and constrained optimisation.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit09.html"><div><h4>The Riemann integral in $\mathbb{R}^n$</h4>
+      <p>Measure zero, Lebesgue's criterion, Fubini.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit10.html"><div><h4>Partitions of unity &amp; change of variables</h4>
+      <p>Localising an integral; the Jacobian factor.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit11.html"><div><h4>Tensors &amp; differential forms</h4>
+      <p>Alternating tensors, the wedge product.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit12.html"><div><h4>The exterior derivative</h4>
+      <p>$d^2=0$, closed and exact, the Poincar&eacute; lemma.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit13.html"><div><h4>Manifolds in $\mathbb{R}^n$</h4>
+      <p>Charts, tangent spaces, boundary, orientation.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit14.html"><div><h4>Stokes' theorem</h4>
+      <p>One theorem; Green, Gauss and classical Stokes as corollaries.</p></div><span class="go">Open →</span></a></li>
+  </ol>
+</section>
+
+<section id="textbook" class="reveal">
+  <div class="sec-head"><span class="no">02</span><h2>Textbook Spine</h2></div>
+  <p class="sec-sub">The calendar lists MAT257Y1's topics in exactly the order
+  used here, and that order is Spivak's <em>Calculus on Manifolds</em>. Spivak is
+  terse to the point of cruelty; Munkres' <em>Analysis on Manifolds</em> covers
+  the same ground at three times the length and is the better first read. Check
+  the current syllabus for the assigned text and problems.</p>
+
+  <div class="context">
+    <div class="ctxh">Unit-to-textbook alignment</div>
+    <div class="ci"><div class="cl">The topological base</div>
+      <p>Units 1-3 pair with Spivak's opening chapter and Munkres' first
+      sections: norms, open sets, compactness, continuity. Almost none of this
+      is calculus yet — it is the machinery every later proof stands on.</p></div>
+    <div class="ci"><div class="cl">Differentiation</div>
+      <p>Units 4-8 pair with the differentiation chapter. The load-bearing
+      results are the inverse and implicit function theorems, and everything
+      about constrained optimisation follows from them.</p></div>
+    <div class="ci"><div class="cl">Integration</div>
+      <p>Units 9-10 pair with the integration chapter: measure zero, Fubini,
+      partitions of unity, change of variables. Partitions of unity look like a
+      technicality and turn out to be the tool that makes integration on
+      manifolds possible at all.</p></div>
+    <div class="ci"><div class="cl">Forms and manifolds</div>
+      <p>Units 11-14 pair with the final chapters. This is the part with no
+      first-year analogue, and the part the whole course exists to reach.</p></div>
+  </div>
+
+  <div class="bp">
+    <div class="card"><div class="n">LINEARISE</div><h4>The derivative is a map</h4>
+      <p>$Df(a)$ is a linear transformation, not a number and not a list of
+      partials. Every theorem in the middle of this course is really a statement
+      about that linear map, which is why MAT247H1 is a prerequisite.</p></div>
+    <div class="card"><div class="n">LOCALISE</div><h4>Everything is local</h4>
+      <p>Inverse function, implicit function, and manifold charts are all
+      statements about a neighbourhood. Get in the habit of asking "on what
+      neighbourhood?" before believing any claim.</p></div>
+    <div class="card"><div class="n">ORIENT</div><h4>Signs are structure</h4>
+      <p>Orientation is not bookkeeping. Stokes' theorem is false without it, and
+      most lost marks in the last third of the course are sign errors from an
+      unstated orientation.</p></div>
+    <div class="card"><div class="n">SPECIALISE</div><h4>Check against Year 1</h4>
+      <p>Every general theorem should reduce to something familiar in low
+      dimension. If Stokes in $\mathbb{R}^1$ does not give you the fundamental
+      theorem of calculus, you have misread it.</p></div>
+  </div>
+</section>
+
+<section id="practice" class="reveal">
+  <div class="sec-head"><span class="no">03</span><h2>Practice Plan</h2></div>
+  <p class="sec-sub">A full-year course with a famously heavy problem set load.
+  The unit pages give guided questions; use this course-level mix across both
+  terms.</p>
+
+  <div class="bp">
+    <div class="card"><div class="n">01</div><h4>Counterexample library</h4>
+      <p>Keep a running file: partials exist but not differentiable, mixed
+      partials unequal, closed and bounded but not compact in an infinite
+      dimensional space. This course is taught through its
+      pathologies.</p></div>
+    <div class="card"><div class="n">02</div><h4>Low-dimensional checks</h4>
+      <p>Before trusting a general statement, test it in $\mathbb{R}^1$ and
+      $\mathbb{R}^2$ where you can draw it. Most sign and index errors surface
+      immediately.</p></div>
+    <div class="card"><div class="n">03</div><h4>Theorem dependency map</h4>
+      <p>Draw which theorems feed which. Inverse function implies implicit
+      function implies the manifold charts implies Stokes. Knowing the order is
+      most of knowing the course.</p></div>
+    <div class="card"><div class="n">04</div><h4>Compute the forms</h4>
+      <p>Wedge products and exterior derivatives are mechanical but error-prone.
+      Do enough by hand that the antisymmetry becomes reflex before the
+      manifold material arrives.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Course-wide challenge bank</h3>
+    <p class="prac-intro">These mix proof and computation in the style expected
+    from a specialist analysis course.</p>
+    <div class="prac">
+      <div class="q"><div class="ql">Challenge 1 · Partials are not enough</div>
+        <p>Give $f:\mathbb{R}^2\to\mathbb{R}$ whose partial derivatives both
+        exist at the origin but which is not differentiable there.</p>
+        <details><summary>Solution sketch</summary><div class="ans">Take
+        $f(x,y)=\dfrac{xy}{x^2+y^2}$ for $(x,y)\ne0$ and $f(0,0)=0$. Both
+        partials at the origin are $0$ since $f$ vanishes on both axes, but $f$
+        is not even continuous: along $y=x$ it equals $\tfrac12$
+        throughout.</div></details></div>
+      <div class="q"><div class="ql">Challenge 2 · Compactness in action</div>
+        <p>Prove a continuous $f:K\to\mathbb{R}$ on compact $K$ attains a
+        maximum.</p>
+        <details><summary>Solution sketch</summary><div class="ans">$f(K)$ is
+        compact, hence closed and bounded, so $\sup f(K)$ is finite and belongs
+        to $f(K)$. Any preimage of it is a maximiser.</div></details></div>
+      <div class="q"><div class="ql">Challenge 3 · Implicit function</div>
+        <p>Near which points does $x^2+y^2=1$ define $y$ as a function of
+        $x$?</p>
+        <details><summary>Solution sketch</summary><div class="ans">With
+        $F(x,y)=x^2+y^2-1$, $\partial F/\partial y=2y$ is nonzero exactly when
+        $y\ne0$. So everywhere except $(\pm1,0)$ — precisely the two points where
+        the circle is vertical.</div></details></div>
+      <div class="q"><div class="ql">Challenge 4 · Stokes reduces</div>
+        <p>Show Stokes' theorem on $[a,b]\subset\mathbb{R}$ is the fundamental
+        theorem of calculus.</p>
+        <details><summary>Solution sketch</summary><div class="ans">Take the
+        $0$-form $\omega=f$. Then $d\omega=f'\,dx$, and the boundary of $[a,b]$
+        is the two points $b$ and $a$ with signs $+$ and $-$. Stokes reads
+        $\int_a^bf'\,dx=f(b)-f(a)$.</div></details></div>
+    </div>
+  </div>
+</section>
+
+<section id="resources" class="reveal">
+  <div class="sec-head"><span class="no">04</span><h2>Resources</h2></div>
+  <p class="src">
+    <a href="https://artsci.calendar.utoronto.ca/course/mat257y1">MAT257Y1 — official calendar listing</a><br>
+    <a href="https://www.math.toronto.edu/">Department of Mathematics</a>
+  </p>
+  <p class="lic">Companion texts used by this guide: Spivak, <em>Calculus on
+  Manifolds</em>, and Munkres, <em>Analysis on Manifolds</em>. The public
+  calendar confirms the MAT257Y1 topic list but does not publish a current
+  instructor textbook. Verify the assigned text, edition, and problem numbers
+  against the active syllabus each year.</p>
+</section>
+
+<footer class="end">
+  <span>MAT257Y1 · ANALYSIS II · U OF T</span>
+  <span>PREREQ: MAT158H1 + MAT159H1 + MAT247H1</span>
+</footer>
+</main>
+</div>
+
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
