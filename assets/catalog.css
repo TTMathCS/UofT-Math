@@ -250,6 +250,23 @@ h2{margin-bottom:0;font-family:"Avenir Next","Helvetica Neue","Segoe UI",system-
 /* second half of a full-year course: shown, but its credit already counted */
 .plan-course.is-continued{opacity:.72}
 .plan-course.is-continued i::before{content:""}
+/* term notes sit next to the title: "full year", "either term", "not offered" */
+.plan-title em{margin-left:.4rem;color:var(--muted);font-style:normal;
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.plan-course.is-unoffered{opacity:.6}
+.plan-course.is-unoffered .plan-code{text-decoration:line-through}
+.plan-course.is-unoffered .plan-title em{color:var(--red)}
+.focus-term-empty{padding:.35rem .4rem;color:var(--muted);font-size:.8rem;font-style:italic}
+/* courses the timetable leaves unpinned, shown once rather than in both terms */
+.focus-flex{padding:.6rem .8rem;border-top:1px dashed var(--line)}
+.focus-note{max-width:74ch;margin:1rem 0 0;padding:.8rem .95rem;
+  border:1px solid var(--line-soft);border-left:3px solid var(--opt);
+  border-radius:6px;color:var(--muted);background:var(--well);font-size:.88rem}
+.focus-note b{color:var(--ink)}
+.focus-flex-head{margin-bottom:.35rem;color:var(--muted);
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.6rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
 .plan-course em{margin-left:.45rem;color:var(--muted);font-style:normal;
   font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
