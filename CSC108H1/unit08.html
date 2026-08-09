@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 8 — Unit Testing &amp; Design · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 8</div>
+<div class="unit-no reveal">Unit 8 · Intro to Programming</div>
+<h1 class="ch-title reveal">Unit Testing &amp; Design</h1>
+<p class="ch-intro reveal">The docstring examples you have been writing since
+Unit 3 are executable. This unit runs them, then goes further: choosing test
+cases deliberately, so that passing tests actually means something rather than
+confirming the one case you happened to think of.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Run <code>doctest</code> on your own docstrings.</li>
+    <li>Write a <code>unittest</code> test case with several checks.</li>
+    <li>Choose test inputs by category rather than at random.</li>
+    <li>Say why testing a float with <code>==</code> is a mistake.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Code that works on the example you tried is not code that works. Tests
+    turn "I think it is right" into a claim that can be rechecked automatically
+    every time the code changes.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>The Ariane 5 rocket was lost in 1996 to a conversion that had been safe
+    on the previous rocket's flight profile and was never retested on the new
+    one. The code was correct; the test cases were from the wrong
+    world.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Dijkstra's line is that testing shows the presence of bugs, never their
+    absence. Formal verification proves absence but is far more expensive, so
+    almost all real software relies on well-chosen tests
+    instead.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>doctest</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><code>doctest</code> finds lines starting with <code>&gt;&gt;&gt;</code>
+    in docstrings, runs them, and compares the actual output to the text on the
+    following line. Any mismatch is reported.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Running your docstrings</b></div>
+    <div class="code"><div class="cl">python</div><pre>def double(n: int) -&gt; int:
+    """Return twice n.
+
+    &gt;&gt;&gt; double(4)
+    8
+    &gt;&gt;&gt; double(0)
+    0
+    """
+    return n * 2
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()</pre></div>
+    <div class="step">Silence means every example passed. A failure prints
+    what was expected and what happened.</div>
+    <div class="step">The <code>if __name__ == '__main__':</code> guard makes the
+    tests run when the file is executed directly but not when it is imported by
+    another module.</div>
+  </div>
+  <div class="box warn"><div class="bl">The expected output must match exactly</div>
+    <p>Quotes count. <code>double('a')</code> returning <code>'aa'</code> must be
+    written as <code>'aa'</code> with the quotes, because that is what the shell
+    displays. Dictionaries are worse: order was once unreliable, so the safe
+    pattern is to compare explicitly &mdash;
+    <code>&gt;&gt;&gt; invert({'a': 1}) == {1: 'a'}</code> followed by
+    <code>True</code>.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>unittest</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For anything beyond a couple of examples, <code>unittest</code> keeps
+    tests in their own file. Each check is a method whose name starts with
+    <code>test</code>, and the framework finds and runs them all.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A test file</b></div>
+    <div class="code"><div class="cl">python</div><pre>import unittest
+from average import average
+
+
+class TestAverage(unittest.TestCase):
+    """Tests for the average function."""
+
+    def test_typical(self) -&gt; None:
+        """Test a normal list of several values."""
+        self.assertEqual(average([1, 2, 3]), 2.0)
+
+    def test_empty(self) -&gt; None:
+        """Test the documented empty-list behaviour."""
+        self.assertEqual(average([]), 0.0)
+
+    def test_single(self) -&gt; None:
+        """Test a one-item list."""
+        self.assertEqual(average([7]), 7.0)
+
+    def test_negatives(self) -&gt; None:
+        """Test that negative values are handled."""
+        self.assertEqual(average([-2, 2]), 0.0)
+
+
+if __name__ == '__main__':
+    unittest.main()</pre></div>
+    <div class="step">Each method tests one thing and says which in its name, so
+    a failure report names the broken case.</div>
+    <div class="step">Useful assertions: <code>assertEqual</code>,
+    <code>assertTrue</code>, <code>assertFalse</code>,
+    <code>assertAlmostEqual</code> for floats, and
+    <code>assertRaises</code> when an error is the correct
+    behaviour.</div>
+  </div>
+  <div class="box warn"><div class="bl">Never assertEqual on floats</div>
+    <div class="code"><div class="cl">python</div><pre>self.assertEqual(0.1 + 0.2, 0.3)        <i># FAILS</i>
+self.assertAlmostEqual(0.1 + 0.2, 0.3)  <i># passes</i></pre></div>
+    <p>Unit 10 explains why. For now: floats are approximations, so compare them
+    with a tolerance.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Choosing test cases</h3>
+  <div class="box thm"><div class="bl">Rule <b>Test by category, not by whim</b></div>
+    <p>For any function, walk this list before writing tests:</p>
+    <div class="step"><strong>Typical case.</strong> The ordinary input the
+    function exists for.</div>
+    <div class="step"><strong>Empty.</strong> Empty list, empty string, zero
+    items.</div>
+    <div class="step"><strong>One item.</strong> Boundaries often break where
+    the loop runs exactly once, or not at all.</div>
+    <div class="step"><strong>Boundary values.</strong> Zero, one, the first and
+    last position, the exact threshold in a comparison.</div>
+    <div class="step"><strong>Negative or unusual.</strong> Negative numbers,
+    duplicates, already-sorted input, all-equal input.</div>
+    <p>Two well-chosen cases beat ten random ones. The categories are also how
+    assignment graders choose theirs.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Applying the categories</b></div>
+    <p>For <code>is_sorted(xs)</code> from Unit 2:</p>
+    <div class="code"><div class="cl">python</div><pre>is_sorted([1, 2, 3])   <i># typical, True</i>
+is_sorted([3, 1, 2])   <i># typical, False</i>
+is_sorted([])          <i># empty - True by convention, must be documented</i>
+is_sorted([5])         <i># one item - True, loop body never runs</i>
+is_sorted([2, 2])      <i># duplicates - True if non-decreasing is intended</i>
+is_sorted([3, 2])      <i># boundary - the smallest failing case</i></pre></div>
+    <p>The empty and duplicate cases are decisions, not facts. Testing forces
+    you to make them and write them down.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Testing only the case you already know works.<br>
+  &bull; Writing tests after the code and shaping them around what it happens to
+  do. Write them from the docstring instead.<br>
+  &bull; Comparing floats with <code>==</code>.<br>
+  &bull; Docstring examples that do not match real output, quotes included &mdash;
+  <code>doctest</code> is exact.<br>
+  &bull; One giant test method. When it fails you learn only that something
+  broke.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Why does it fail?</div>
+      <p>Why does this doctest fail?</p>
+      <div class="code"><div class="cl">python</div><pre>def shout(s: str) -&gt; str:
+    """Return s in upper case.
+
+    &gt;&gt;&gt; shout('hi')
+    HI
+    """
+    return s.upper()</pre></div>
+      <details><summary>Answer</summary><div class="ans">The shell displays a
+      returned string with quotes, so the expected line must be
+      <code>'HI'</code>. <code>doctest</code> compares text
+      exactly.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Categories</div>
+      <p>List five test cases for <code>count_vowels(s)</code>.</p>
+      <details><summary>Answer</summary><div class="ans">Typical
+      (<code>'hello'</code>), empty (<code>''</code>), no vowels
+      (<code>'xyz'</code>), all vowels (<code>'aeiou'</code>), mixed case
+      (<code>'HeLLo'</code>). The last checks a decision the docstring should
+      already state.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Float assertion</div>
+      <p>Which assertion suits <code>average([1, 2])</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>assertAlmostEqual(average([1, 2]), 1.5)</code>.
+      Here <code>1.5</code> is exactly representable so <code>assertEqual</code>
+      would pass, but using the tolerant form by habit avoids the cases where it
+      would not.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Write tests</div>
+      <p>Write a <code>unittest</code> case for <code>is_palindrome</code> from
+      Unit 4.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>class TestPalindrome(unittest.TestCase):
+    """Tests for is_palindrome."""
+
+    def test_simple(self) -&gt; None:
+        """Test a lowercase palindrome."""
+        self.assertTrue(is_palindrome('racecar'))
+
+    def test_spaces_and_case(self) -&gt; None:
+        """Test that case and spaces are ignored."""
+        self.assertTrue(is_palindrome('Race car'))
+
+    def test_not_palindrome(self) -&gt; None:
+        """Test a non-palindrome."""
+        self.assertFalse(is_palindrome('hello'))
+
+    def test_empty(self) -&gt; None:
+        """Test that the empty string counts as a palindrome."""
+        self.assertTrue(is_palindrome(''))</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Expected failure</div>
+      <p>How do you test that a function raises on bad input?</p>
+      <details><summary>Answer</summary><div class="ans">
+      <code>with self.assertRaises(ValueError): parse('abc')</code>. The test
+      passes only if that error is raised.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Test independence</div>
+      <p>Why should tests not depend on each other's order?</p>
+      <details><summary>Answer</summary><div class="ans">The framework may run
+      them in any order, and one failing test would cascade into unrelated
+      failures. Each should set up whatever it needs.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Passing tests, broken code</div>
+      <p>Give a function passing <code>double(2) == 4</code> that is
+      wrong.</p>
+      <details><summary>Answer</summary><div class="ans">
+      <code>def double(n): return n + 2</code>. It agrees at
+      <code>n = 2</code> and nowhere else — which is exactly why a single test
+      case proves nothing.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Smallest failing case</div>
+      <p>Why prefer the smallest input that reproduces a bug?</p>
+      <details><summary>Answer</summary><div class="ans">Because the fewer
+      moving parts, the more directly the failure points at the cause. Shrinking
+      a failing input is usually faster than reading the code
+      again.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>doctest.</strong> Write runnable docstring examples and execute
+    them.</li>
+    <li><strong>unittest.</strong> Test classes, test methods, the common
+    assertions.</li>
+    <li><strong>Case selection.</strong> Typical, empty, single, boundary,
+    unusual.</li>
+    <li><strong>Floats.</strong> Why <code>assertAlmostEqual</code> exists.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "unit testing" explicitly. Assignments in this course
+    are commonly marked partly on the tests you supply; check the handout for
+    which framework is required.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>The docstring is the specification; tests check the code against it. That
+    is why Unit 3 insisted on writing examples before the body &mdash; those
+    examples were the first tests.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Before fixing any bug, write the failing test first. You then know when it is
+    actually fixed, and it can never come back
+    unnoticed.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · What doctest reads</div>
+      <p>Where does <code>doctest</code> find its tests?</p>
+      <details><summary>Guide</summary><div class="ans">In docstrings, on lines
+      beginning <code>&gt;&gt;&gt;</code>, comparing the next line to the actual
+      output.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Float comparison</div>
+      <p>Which assertion for floats?</p>
+      <details><summary>Guide</summary><div class="ans"><code>assertAlmostEqual</code>,
+      which compares within a tolerance rather than exactly.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Case categories</div>
+      <p>Name the five categories.</p>
+      <details><summary>Guide</summary><div class="ans">Typical, empty, single
+      item, boundary values, and unusual input such as negatives or
+      duplicates.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · What tests prove</div>
+      <p>Can passing tests prove code correct?</p>
+      <details><summary>Guide</summary><div class="ans">No. They show bugs are
+      present when they fail; passing only means the cases you chose did not
+      expose one.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit07.html">← Unit 07<span>Classes, objects &amp; methods</span></a>
+  <a href="unit09.html">Unit 09 →<span>Searching, sorting &amp; complexity</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

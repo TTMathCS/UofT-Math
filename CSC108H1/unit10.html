@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 10 — Floating Point &amp; Numerical Computation · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 10</div>
+<div class="unit-no reveal">Unit 10 · Intro to Programming</div>
+<h1 class="ch-title reveal">Floating Point &amp; Numerical Computation</h1>
+<p class="ch-intro reveal">The unit that explains why <code>0.1 + 0.2</code> is
+not <code>0.3</code>. Floats are not real numbers &mdash; they are a finite
+approximation, and once you know the shape of the approximation, the surprises
+stop being surprises.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Explain why some decimals cannot be stored exactly.</li>
+    <li>Compare floats correctly with a tolerance.</li>
+    <li>Recognise catastrophic cancellation and avoid it.</li>
+    <li>Choose between <code>float</code>, <code>int</code> and
+    <code>Decimal</code>.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A float has $64$ bits and there are infinitely many real numbers between
+    any two, so almost every real must be rounded to the nearest storable value.
+    Every arithmetic result is rounded again, and the errors
+    accumulate.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>A Patriot missile battery failed in 1991 after $100$ hours of uptime: its
+    clock accumulated a tiny rounding error per tick, drifting by a third of a
+    second and missing an incoming target. Financial systems avoid floats
+    entirely for money for the same reason.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The IEEE 754 standard of 1985, led by William Kahan, made floating point
+    behave identically across machines &mdash; before it, the same program gave
+    different answers on different hardware. Kahan won the Turing Award for
+    it.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Why 0.1 is not 0.1</h3>
+  <div class="box thm"><div class="bl">Rule <b>Binary fractions</b></div>
+    <p>A float stores a binary fraction: sums of $1/2$, $1/4$, $1/8$ and so on.
+    A decimal is exactly representable only when its value is such a sum.</p>
+    <div class="step">$0.5$ is $1/2$ &mdash; exact.</div>
+    <div class="step">$0.25$ is $1/4$ &mdash; exact.</div>
+    <div class="step">$0.1$ is $1/10$, and $10$ has a factor of $5$, which is not
+    a power of two. In binary it repeats forever, exactly as $1/3$ does in
+    decimal, and must be cut off.</div></div>
+  <div class="box eg"><div class="bl">Example <b>See the stored value</b></div>
+    <div class="code"><div class="cl">python</div><pre>0.1 + 0.2            <i># 0.30000000000000004</i>
+0.1 + 0.2 == 0.3     <i># False</i>
+
+format(0.1, '.20f')  <i># '0.10000000000000000555'</i></pre></div>
+    <p>Python usually prints the shortest string that round-trips, which is why
+    <code>0.1</code> displays as <code>0.1</code>. Asking for twenty decimal
+    places shows what is really stored.</p></div>
+  <div class="box warn"><div class="bl">Never compare floats with ==</div>
+    <div class="code"><div class="cl">python</div><pre><i># wrong</i>
+if total == 0.3:
+    ...
+
+<i># right - compare within a tolerance</i>
+if abs(total - 0.3) &lt; 1e-9:
+    ...</pre></div>
+    <p>The same rule made <code>assertAlmostEqual</code> necessary in Unit 8, and
+    it is why a <code>while</code> loop testing a float for equality can run
+    forever.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Accumulated error</h3>
+  <div class="box eg"><div class="bl">Example <b>Adding a tenth, ten times</b></div>
+    <div class="code"><div class="cl">python</div><pre>total = 0.0
+for _ in range(10):
+    total = total + 0.1
+
+total          <i># 0.9999999999999999</i>
+total == 1.0   <i># False</i></pre></div>
+    <p>Each addition rounds, and ten roundings do not cancel. Where possible,
+    count in integers and divide once at the end:
+    <code>total = count / 10</code>.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Catastrophic cancellation</b></div>
+    <p>Subtracting two nearly equal floats destroys precision. The leading digits
+    agree and cancel, leaving only the noisy trailing digits, which are then
+    scaled up by whatever comes next.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Losing everything at once</b></div>
+    <div class="code"><div class="cl">python</div><pre>a = 1.0000000001
+b = 1.0000000000
+(a - b) * 1e10       <i># about 1.000000082740371, not 1.0</i></pre></div>
+    <div class="step">Both inputs carry about sixteen good digits, but the first
+    ten cancel, so the difference has only about six left.</div>
+    <div class="step">Multiplying magnifies the remaining error. Rearranging a
+    formula to avoid the subtraction is the standard fix &mdash; the quadratic
+    formula is the textbook case.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Order of operations matters</b></div>
+    <div class="code"><div class="cl">python</div><pre>1e16 + 1 - 1e16      <i># 0.0   - the 1 was lost to rounding</i>
+1e16 - 1e16 + 1      <i># 1.0   - same operations, different order</i></pre></div>
+    <p>Floating point addition is not associative. Adding a tiny number to a huge
+    one can change nothing at all, because the result rounds back to the huge
+    number.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Choosing a numeric type</h3>
+  <div class="box thm"><div class="bl">Rule <b>Which type when</b></div>
+    <div class="step"><strong><code>int</code></strong> &mdash; counts, indices,
+    and money in cents. Python integers are exact and unbounded, so there is no
+    reason to avoid them.</div>
+    <div class="step"><strong><code>float</code></strong> &mdash; measurements,
+    averages, anything physical. Approximation is acceptable because the input
+    was approximate too.</div>
+    <div class="step"><strong><code>Decimal</code></strong> &mdash; money and
+    anything where decimal rounding rules are specified. It stores base-ten
+    digits, so <code>0.1</code> is exact.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Money three ways</b></div>
+    <div class="code"><div class="cl">python</div><pre><i># wrong: cents go missing over many transactions</i>
+total = 0.0
+total = total + 0.10
+
+<i># simple and exact: work in cents as integers</i>
+total_cents = 0
+total_cents = total_cents + 10
+
+<i># exact with decimal points, when the format matters</i>
+from decimal import Decimal
+total = Decimal('0.00') + Decimal('0.10')   <i># Decimal('0.10')</i></pre></div>
+    <p>Note <code>Decimal('0.1')</code> takes a <em>string</em>. Writing
+    <code>Decimal(0.1)</code> passes an already-imprecise float and preserves the
+    error you were trying to avoid.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Rounding is not what you expect</b></div>
+    <div class="code"><div class="cl">python</div><pre>round(2.5)     <i># 2  - banker's rounding, ties go to even</i>
+round(3.5)     <i># 4</i>
+round(2.675, 2)<i># 2.67 - because 2.675 is really 2.67499999...</i></pre></div>
+    <p>Ties rounding to even is deliberate: it avoids the upward bias of always
+    rounding half up when summing many values.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Comparing floats with <code>==</code>.<br>
+  &bull; Using floats for money.<br>
+  &bull; A <code>while</code> loop testing a float for exact equality &mdash;
+  step past the target and it never ends.<br>
+  &bull; Assuming <code>round</code> rounds half up.<br>
+  &bull; Writing <code>Decimal(0.1)</code> rather than
+  <code>Decimal('0.1')</code>.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Exact or not</div>
+      <p>Which of $0.5$, $0.25$, $0.2$, $0.125$ are exactly
+      representable?</p>
+      <details><summary>Answer</summary><div class="ans">$0.5$, $0.25$ and
+      $0.125$ — all powers of two. $0.2$ is $1/5$ and is
+      not.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Safe comparison</div>
+      <p>Rewrite <code>if x == 0.3:</code> safely.</p>
+      <details><summary>Answer</summary><div class="ans">
+      <code>if abs(x - 0.3) &lt; 1e-9:</code>. Choose the tolerance to suit the
+      magnitudes involved.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Infinite loop</div>
+      <p>Why might this never stop?</p>
+      <div class="code"><div class="cl">python</div><pre>x = 0.0
+while x != 1.0:
+    x = x + 0.1</pre></div>
+      <details><summary>Answer</summary><div class="ans">After ten additions
+      <code>x</code> is <code>0.9999999999999999</code> and steps straight past
+      <code>1.0</code>. Use <code>while x &lt; 1.0:</code>, or better, loop over
+      <code>range(10)</code> with integers.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Money</div>
+      <p>Why is <code>0.1 + 0.2 == 0.3</code> a problem for a shop?</p>
+      <details><summary>Answer</summary><div class="ans">Totals drift by
+      fractions of a cent and stop reconciling. Store cents as integers, or use
+      <code>Decimal</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Cancellation</div>
+      <p>Why does <code>(1e16 + 1) - 1e16</code> give <code>0.0</code>?</p>
+      <details><summary>Answer</summary><div class="ans">At that magnitude the
+      gap between consecutive representable floats exceeds $1$, so adding
+      <code>1</code> rounds straight back to <code>1e16</code>. The information
+      is gone before the subtraction happens.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Averaging safely</div>
+      <p>How should you average a long list of floats?</p>
+      <details><summary>Answer</summary><div class="ans">Sum then divide once,
+      rather than accumulating a running mean. For very long or
+      wide-ranging lists, <code>math.fsum</code> tracks the error and gives a
+      correctly rounded total.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · round</div>
+      <p>What is <code>round(0.5)</code> and <code>round(1.5)</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>0</code> and
+      <code>2</code>. Ties go to the even neighbour, so half the ties round down
+      and the bias cancels over many values.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Nearly equal</div>
+      <p>Write a helper testing whether two floats are close.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def close(a: float, b: float, tol: float = 1e-9) -&gt; bool:
+    """Return whether a and b agree to within tol.
+
+    &gt;&gt;&gt; close(0.1 + 0.2, 0.3)
+    True
+    """
+    return abs(a - b) &lt; tol</pre></div>
+      Python's own <code>math.isclose</code> does this with a relative tolerance,
+      which behaves better across very different
+      magnitudes.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Representation.</strong> Binary fractions and why some decimals
+    repeat forever.</li>
+    <li><strong>Comparison.</strong> Tolerance instead of equality.</li>
+    <li><strong>Error growth.</strong> Accumulation, cancellation, and the
+    failure of associativity.</li>
+    <li><strong>Type choice.</strong> int, float and Decimal, and money in
+    particular.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "floating-point numbers and numerical computation" as
+    the final topic. It is the one most often skipped by students and most often
+    examined by a tracing question.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Finite bits force rounding; rounding accumulates; subtraction of near-equal
+    values magnifies what is left. Every rule in this unit follows from those
+    three sentences.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Whenever a float appears in a condition, stop. Either compare with a
+    tolerance or switch to integers. That single habit prevents most numerical
+    bugs you will meet in this course.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why 0.1 is inexact</div>
+      <p>Explain in one sentence.</p>
+      <details><summary>Guide</summary><div class="ans">$1/10$ is not a finite
+      sum of powers of two, so its binary expansion repeats forever and has to be
+      cut off.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Comparison</div>
+      <p>How should floats be compared?</p>
+      <details><summary>Guide</summary><div class="ans">Within a tolerance:
+      <code>abs(a - b) &lt; tol</code>, or <code>math.isclose</code> for a
+      relative test.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Cancellation</div>
+      <p>When does subtraction lose precision?</p>
+      <details><summary>Guide</summary><div class="ans">When the two values are
+      nearly equal. Their agreeing leading digits cancel and only the noisy tail
+      survives.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Money</div>
+      <p>What should represent currency?</p>
+      <details><summary>Guide</summary><div class="ans">Integer cents, or
+      <code>Decimal</code> constructed from a string. Never a
+      float.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit09.html">← Unit 09<span>Searching, sorting &amp; complexity</span></a>
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
