@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 4 — Linked Lists · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 4</div>
+<div class="unit-no reveal">Unit 4 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Linked Lists</h1>
+<p class="ch-intro reveal">The first structure you build from nothing. No Python
+list underneath &mdash; just objects holding references to other objects. It
+trades away instant indexing and buys constant-time insertion anywhere you
+already are.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Build a linked list from node objects.</li>
+    <li>Insert and delete without losing the rest of the list.</li>
+    <li>Say precisely what linked lists are better and worse at.</li>
+    <li>Handle the empty list and the head as separate cases.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A Python list stores items contiguously, so inserting in the middle shifts
+    everything after it. A linked list stores each item wherever, connected by
+    references, so inserting is three assignments regardless of
+    size.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>File systems chain disk blocks this way. Undo histories, music playlists
+    and the free-memory lists inside an allocator are linked structures, chosen
+    because insertion and removal dominate.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Linked lists were invented in 1955 for an early artificial-intelligence
+    program at RAND. The idea &mdash; data scattered in memory but logically
+    ordered by references &mdash; is the ancestor of every tree and graph in this
+    course.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Nodes</h3>
+  <div class="box eg"><div class="bl">Example <b>The building block</b></div>
+    <div class="code"><div class="cl">python</div><pre>class _Node:
+    """A node in a linked list.
+
+    Attributes:
+        item: the value stored here
+        next: the following node, or None at the end of the list
+    """
+    item: object
+    next: object
+
+    def __init__(self, item) -&gt; None:
+        """Initialize a node holding item with no successor."""
+        self.item = item
+        self.next = None</pre></div>
+    <div class="step">The leading underscore says clients never see nodes. They
+    are an implementation detail of the list.</div>
+    <div class="step"><code>next</code> being <code>None</code> is what marks the
+    end. Every traversal stops on it.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>The list itself</b></div>
+    <div class="code"><div class="cl">python</div><pre>class LinkedList:
+    """A sequence of items stored in linked nodes.
+
+    Attributes:
+        _first: the first node, or None if the list is empty
+    """
+    _first: object
+
+    def __init__(self) -&gt; None:
+        """Initialize an empty linked list."""
+        self._first = None
+
+    def is_empty(self) -&gt; bool:
+        """Return whether this list is empty."""
+        return self._first is None
+
+    def __len__(self) -&gt; int:
+        """Return the number of items in this list.
+
+        &gt;&gt;&gt; lst = LinkedList()
+        &gt;&gt;&gt; len(lst)
+        0
+        """
+        count = 0
+        node = self._first
+        while node is not None:
+            count = count + 1
+            node = node.next
+        return count</pre></div>
+    <div class="step">Note <code>__len__</code> is $O(n)$: there is no stored
+    count, so it walks the whole list. A Python list answers in $O(1)$. That is
+    the first of the trade-offs.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>The traversal pattern</b></div>
+    <p>Almost every linked-list method is this loop:</p>
+    <div class="code"><div class="cl">python</div><pre>node = self._first
+while node is not None:
+    <i># do something with node.item</i>
+    node = node.next</pre></div>
+    <p>Forgetting the last line gives an infinite loop, and it is the single most
+    common mistake in the unit.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Insertion</h3>
+  <div class="box eg"><div class="bl">Example <b>At the front &mdash; the cheap case</b></div>
+    <div class="code"><div class="cl">python</div><pre>def prepend(self, item) -&gt; None:
+    """Add item to the front of this list.
+
+    &gt;&gt;&gt; lst = LinkedList()
+    &gt;&gt;&gt; lst.prepend(2)
+    &gt;&gt;&gt; lst.prepend(1)
+    &gt;&gt;&gt; len(lst)
+    2
+    """
+    new_node = _Node(item)
+    new_node.next = self._first
+    self._first = new_node</pre></div>
+    <div class="step">Two assignments, $O(1)$, whatever the length. A Python
+    list's <code>insert(0, x)</code> is $O(n)$.</div>
+    <div class="step">The order matters. Setting <code>self._first</code> first
+    would lose the reference to the old head and orphan the entire
+    list.</div>
+  </div>
+  <div class="box warn"><div class="bl">Order of assignment is the whole game</div>
+    <div class="code"><div class="cl">python</div><pre><i># wrong - the rest of the list is now unreachable</i>
+self._first = new_node
+new_node.next = self._first   <i># points at itself!</i></pre></div>
+    <p>Always attach the new node to the existing structure <em>before</em>
+    redirecting anything that pointed into it. Drawing the arrows makes this
+    obvious; reading the code does not.</p></div>
+  <div class="box eg"><div class="bl">Example <b>In the middle</b></div>
+    <div class="code"><div class="cl">python</div><pre>def insert_after(self, target, item) -&gt; bool:
+    """Insert item immediately after the first occurrence of target.
+
+    Return whether target was found.
+
+    &gt;&gt;&gt; lst = LinkedList()
+    &gt;&gt;&gt; lst.prepend(1)
+    &gt;&gt;&gt; lst.insert_after(1, 2)
+    True
+    """
+    node = self._first
+    while node is not None:
+        if node.item == target:
+            new_node = _Node(item)
+            new_node.next = node.next
+            node.next = new_node
+            return True
+        node = node.next
+    return False</pre></div>
+    <div class="step">The insertion itself is $O(1)$ &mdash; two assignments.
+    Finding the position is $O(n)$.</div>
+    <div class="step">That split is the honest description of linked lists:
+    cheap to modify <em>once you are there</em>, expensive to get
+    there.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Deletion</h3>
+  <div class="box eg"><div class="bl">Example <b>Removing a node</b></div>
+    <div class="code"><div class="cl">python</div><pre>def remove(self, item) -&gt; bool:
+    """Remove the first occurrence of item and return whether it was found.
+
+    &gt;&gt;&gt; lst = LinkedList()
+    &gt;&gt;&gt; lst.prepend(1)
+    &gt;&gt;&gt; lst.remove(1)
+    True
+    &gt;&gt;&gt; lst.is_empty()
+    True
+    """
+    if self._first is None:
+        return False
+
+    if self._first.item == item:          <i># removing the head</i>
+        self._first = self._first.next
+        return True
+
+    node = self._first                    <i># removing anything else</i>
+    while node.next is not None:
+        if node.next.item == item:
+            node.next = node.next.next
+            return True
+        node = node.next
+    return False</pre></div>
+    <div class="step">Three cases, and they genuinely differ: empty list, head,
+    and everything else. Collapsing them into one loop is where most bugs come
+    from.</div>
+    <div class="step">Removing the head is special because there is no previous
+    node to redirect &mdash; <code>self._first</code> plays that
+    role.</div>
+    <div class="step">The loop looks at <code>node.next</code>, not
+    <code>node</code>, because you must hold the node <em>before</em> the one you
+    are deleting.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Deletion is just skipping</b></div>
+    <p>Nothing is erased. Setting <code>node.next = node.next.next</code> routes
+    around the unwanted node, and Python's garbage collector reclaims it once
+    nothing refers to it.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The trade-off</h3>
+  <div class="box thm"><div class="bl">Rule <b>Which structure when</b></div>
+    <div class="step"><strong>Indexing.</strong> Python list $O(1)$; linked list
+    $O(n)$ &mdash; you must walk from the start.</div>
+    <div class="step"><strong>Insert or delete at the front.</strong> Python list
+    $O(n)$; linked list $O(1)$.</div>
+    <div class="step"><strong>Insert or delete at a known node.</strong> Python
+    list $O(n)$; linked list $O(1)$.</div>
+    <div class="step"><strong>Memory.</strong> Linked lists use more &mdash; each
+    item carries a reference alongside it.</div>
+    <p>Neither is better. Choose by which operation dominates, which is exactly
+    the analysis Unit 9 formalises.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Fixing the queue</b></div>
+    <p>Unit 3's queue had an $O(n)$ dequeue. Keeping a reference to the
+    <em>last</em> node as well as the first fixes it.</p>
+    <div class="step">Enqueue at the back: attach to <code>_last</code>, then
+    update <code>_last</code>. $O(1)$.</div>
+    <div class="step">Dequeue from the front: advance <code>_first</code>.
+    $O(1)$.</div>
+    <div class="step">Both ends are now constant time, which no single Python
+    list can manage. This is the concrete payoff of the whole
+    unit.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting <code>node = node.next</code> and looping
+  forever.<br>
+  &bull; Reassigning references in the wrong order and orphaning the
+  list.<br>
+  &bull; Not handling the empty list or the head as separate
+  cases.<br>
+  &bull; Comparing with <code>== None</code> rather than
+  <code>is None</code>.<br>
+  &bull; Expecting <code>len()</code> to be free. It walks the whole
+  list.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · End of list</div>
+      <p>How does a traversal know it has finished?</p>
+      <details><summary>Answer</summary><div class="ans">The current node's
+      <code>next</code> is <code>None</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Assignment order</div>
+      <p>What breaks if you set <code>self._first = new_node</code> before
+      <code>new_node.next = self._first</code>?</p>
+      <details><summary>Answer</summary><div class="ans">The new node points at
+      itself and the rest of the list becomes unreachable — a self-referential
+      loop and a lost list.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Cost of indexing</div>
+      <p>What is the cost of getting item $k$?</p>
+      <details><summary>Answer</summary><div class="ans">$O(k)$, so $O(n)$ in
+      the worst case. There is no arithmetic shortcut to a
+      position.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Why three cases</div>
+      <p>Why does <code>remove</code> treat the head separately?</p>
+      <details><summary>Answer</summary><div class="ans">Because there is no
+      preceding node to redirect. The list's own <code>_first</code> reference
+      has to be updated instead.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Append</div>
+      <p>Write a method adding an item at the end.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def append(self, item) -&gt; None:
+    """Add item to the end of this list."""
+    new_node = _Node(item)
+    if self._first is None:
+        self._first = new_node
+        return
+    node = self._first
+    while node.next is not None:
+        node = node.next
+    node.next = new_node</pre></div>
+      $O(n)$ without a tail reference — which is exactly why the queue keeps
+      one.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Count occurrences</div>
+      <p>Count how many times an item appears.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def count(self, item) -&gt; int:
+    """Return how many times item appears in this list."""
+    total = 0
+    node = self._first
+    while node is not None:
+        if node.item == item:
+            total = total + 1
+        node = node.next
+    return total</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Reverse</div>
+      <p>Reverse a linked list in place.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def reverse(self) -&gt; None:
+    """Reverse the order of the items in this list."""
+    previous = None
+    node = self._first
+    while node is not None:
+        following = node.next    <i># save before overwriting</i>
+        node.next = previous
+        previous = node
+        node = following
+    self._first = previous</pre></div>
+      Saving <code>following</code> first is essential — overwriting
+      <code>node.next</code> destroys the only route to the
+      rest.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · When to choose it</div>
+      <p>Give a case where a linked list clearly beats a Python list.</p>
+      <details><summary>Answer</summary><div class="ans">Repeatedly inserting at
+      the front, or maintaining a queue where both ends are used. Both are
+      $O(1)$ per operation on a linked list and $O(n)$ on a Python
+      list.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Nodes.</strong> Item plus reference, with <code>None</code>
+    marking the end.</li>
+    <li><strong>Traversal.</strong> The standard loop and why the advance line
+    matters.</li>
+    <li><strong>Insertion and deletion.</strong> Assignment order, and the head
+    and empty cases.</li>
+    <li><strong>Trade-offs.</strong> What linked lists win and lose against a
+    Python list.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "linked data structures" explicitly. Check Quercus for
+    the assigned exercises; linked-list manipulation is a standard term test
+    question and is usually assessed by writing code by
+    hand.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Objects holding references to objects. Change the structure by
+    redirecting references, in the right order. Units 7 and 8 use the same idea
+    with two references per node instead of one.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Draw the boxes and arrows before and after every operation, and number the
+    assignments in the order you will make them. Reference bugs are invisible in
+    code and obvious in a diagram.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Marking the end</div>
+      <p>What signals the end of a linked list?</p>
+      <details><summary>Guide</summary><div class="ans">A <code>next</code> of
+      <code>None</code>. Every traversal loop tests for
+      it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Insertion cost</div>
+      <p>Why is inserting at a known node $O(1)$?</p>
+      <details><summary>Guide</summary><div class="ans">It is two assignments and
+      nothing shifts. The $O(n)$ part is finding the node, not the insertion
+      itself.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Head case</div>
+      <p>Why is removing the first item special?</p>
+      <details><summary>Guide</summary><div class="ans">There is no previous node
+      whose <code>next</code> can be redirected, so the list's own
+      <code>_first</code> must change.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Choosing</div>
+      <p>When does a Python list win?</p>
+      <details><summary>Guide</summary><div class="ans">When indexing dominates.
+      $O(1)$ access by position versus $O(n)$, and lower memory
+      per item.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit03.html">← Unit 03<span>Stacks &amp; queues</span></a>
+  <a href="unit05.html">Unit 05 →<span>Recursion</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

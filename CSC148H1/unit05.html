@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 5 — Recursion · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 5</div>
+<div class="unit-no reveal">Unit 5 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Recursion</h1>
+<p class="ch-intro reveal">The idea the course is built around, and the one most
+people stall on. A recursive function solves a problem by calling itself on a
+smaller version. The difficulty is never the code &mdash; it is learning to stop
+tracing and start trusting.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Write a base case and a recursive case that shrinks the input.</li>
+    <li>Apply the recursive leap of faith instead of tracing every level.</li>
+    <li>Diagnose infinite recursion.</li>
+    <li>Say when recursion beats a loop and when it does not.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Some data has no fixed depth. A folder holds folders that hold folders,
+    with no bound known in advance. No fixed number of nested loops can walk it;
+    recursion handles arbitrary depth with one
+    function.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Parsing HTML and JSON, rendering nested user interfaces, searching a file
+    system, and every compiler ever written. Wherever the data nests without
+    limit, the code recurses.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Early Fortran forbade recursion because each function had one fixed block
+    of memory for its variables. Supporting it required the call stack of Unit 3,
+    which is why the two ideas arrived together.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The two parts</h3>
+  <div class="box thm"><div class="bl">Rule <b>Every recursive function needs both</b></div>
+    <div class="step"><strong>Base case.</strong> A version small enough to
+    answer outright, with no further call.</div>
+    <div class="step"><strong>Recursive case.</strong> Reduce to a strictly
+    smaller problem, call yourself, combine.</div>
+    <p>Missing base case: it never stops. Recursive case that does not shrink the
+    input: also never stops.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Factorial, annotated</b></div>
+    <div class="code"><div class="cl">python</div><pre>def factorial(n: int) -&gt; int:
+    """Return n!, the product of the integers from 1 to n.
+
+    Preconditions: n &gt;= 0
+
+    &gt;&gt;&gt; factorial(0)
+    1
+    &gt;&gt;&gt; factorial(4)
+    24
+    """
+    if n == 0:              <i># base case</i>
+        return 1
+    return n * factorial(n - 1)   <i># recursive case, strictly smaller</i></pre></div>
+    <div class="step">The base case is $0$, not $1$. Choosing $1$ would still
+    work for positive input but would recurse forever on
+    $0$.</div>
+    <div class="step">The argument decreases by one each call, so it reaches the
+    base case in exactly $n$ steps.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>The recursive leap of faith</b></div>
+    <p>When writing the recursive case, <em>assume the recursive call already
+    works</em>. Do not trace it. Ask only: given a correct answer for the smaller
+    problem, how do I build the answer for this one?</p>
+    <p>For factorial: assume <code>factorial(n - 1)</code> returns
+    $(n-1)!$ correctly. Then $n!$ is $n$ times that. Done &mdash; no tracing
+    required.</p></div>
+  <div class="box warn"><div class="bl">Tracing is the trap</div>
+    <p>Following every level by hand works for depth three and collapses at depth
+    ten. The leap of faith is not laziness; it is the only technique that scales.
+    Trace once, early, to convince yourself the mechanism works &mdash; then stop
+    doing it.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Diagnosing failures</h3>
+  <div class="box eg"><div class="bl">Example <b>Three ways it goes wrong</b></div>
+    <div class="code"><div class="cl">python</div><pre><i># 1. no base case</i>
+def bad1(n: int) -&gt; int:
+    return n * bad1(n - 1)
+
+<i># 2. base case unreachable from some inputs</i>
+def bad2(n: int) -&gt; int:
+    if n == 0:
+        return 1
+    return n * bad2(n - 2)      <i># odd n skips straight past 0</i>
+
+<i># 3. input does not shrink</i>
+def bad3(n: int) -&gt; int:
+    if n == 0:
+        return 1
+    return n * bad3(n)          <i># same argument forever</i></pre></div>
+    <div class="step">All three raise <code>RecursionError</code> after about a
+    thousand calls &mdash; Python's limit, which exists to turn an infinite loop
+    into an error rather than a crash.</div>
+    <div class="step">The second is the subtle one. It has a base case and it
+    does shrink, but odd inputs step over the base case and run to negative
+    infinity. Always check the base case is <em>reachable from every valid
+    input</em>.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Recursion versus iteration</h3>
+  <div class="box eg"><div class="bl">Example <b>The same job, both ways</b></div>
+    <div class="code"><div class="cl">python</div><pre>def total_loop(xs: list) -&gt; int:
+    """Return the sum of xs, iteratively."""
+    running = 0
+    for x in xs:
+        running = running + x
+    return running
+
+def total_rec(xs: list) -&gt; int:
+    """Return the sum of xs, recursively.
+
+    &gt;&gt;&gt; total_rec([1, 2, 3])
+    6
+    """
+    if xs == []:
+        return 0
+    return xs[0] + total_rec(xs[1:])</pre></div>
+    <div class="step">The loop is better here. The data is flat, so there is no
+    nesting for recursion to exploit, and <code>xs[1:]</code> copies the rest of
+    the list every call &mdash; making the recursive version $O(n^2)$ in time and
+    memory.</div>
+    <div class="step">Recursion earns its place when the <em>data</em> is
+    recursive. A flat list is not.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>When to reach for recursion</b></div>
+    <div class="step"><strong>Use it</strong> when the data nests to unknown
+    depth: nested lists, trees, file systems, expressions.</div>
+    <div class="step"><strong>Use it</strong> when the problem naturally splits
+    into smaller instances of itself: divide-and-conquer
+    sorting.</div>
+    <div class="step"><strong>Prefer a loop</strong> for flat sequences and
+    simple counting.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Where it clearly wins</b></div>
+    <div class="code"><div class="cl">python</div><pre>def depth(obj) -&gt; int:
+    """Return the nesting depth of obj, a nested list.
+
+    &gt;&gt;&gt; depth(5)
+    0
+    &gt;&gt;&gt; depth([1, [2, [3]]])
+    3
+    """
+    if not isinstance(obj, list):
+        return 0
+    if obj == []:
+        return 1
+    return 1 + max(depth(item) for item in obj)</pre></div>
+    <p>No loop structure can do this, because the nesting depth is not known when
+    the code is written. Unit 6 develops this pattern
+    properly.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; No base case, or one unreachable from some
+  inputs.<br>
+  &bull; A recursive call that does not strictly shrink the
+  input.<br>
+  &bull; Tracing every level instead of trusting the call.<br>
+  &bull; Forgetting to <em>return</em> the recursive call's result.<br>
+  &bull; Slicing a list on every call and quietly making the function
+  quadratic.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Two parts</div>
+      <p>What must every recursive function have?</p>
+      <details><summary>Answer</summary><div class="ans">A base case, and a
+      recursive case that reduces to a strictly smaller
+      input.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Diagnose</div>
+      <p>Why does <code>bad2</code> above fail on odd input?</p>
+      <details><summary>Answer</summary><div class="ans">Subtracting two from an
+      odd number never lands on zero, so the base case is skipped and the
+      recursion runs past it.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Countdown</div>
+      <p>Write a function printing $n$ down to $1$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def countdown(n: int) -&gt; None:
+    """Print the integers from n down to 1, one per line.
+
+    Preconditions: n &gt;= 0
+    """
+    if n == 0:
+        return
+    print(n)
+    countdown(n - 1)</pre></div>
+      Moving the <code>print</code> after the call would count
+      up instead — the same code, opposite output.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Fibonacci</div>
+      <p>Write it recursively and say why it is slow.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def fib(n: int) -&gt; int:
+    """Return the nth Fibonacci number, with fib(0) = 0.
+
+    Preconditions: n &gt;= 0
+
+    &gt;&gt;&gt; fib(6)
+    8
+    """
+    if n &lt; 2:
+        return n
+    return fib(n - 1) + fib(n - 2)</pre></div>
+      It recomputes the same values enormously often — the call tree has about
+      $2^n$ nodes. Correct but exponential. Storing results as they are computed
+      fixes it.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Leap of faith</div>
+      <p>Assuming <code>rev(s[1:])</code> reverses correctly, write
+      <code>rev</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def rev(s: str) -&gt; str:
+    """Return s reversed.
+
+    &gt;&gt;&gt; rev('abc')
+    'cba'
+    """
+    if s == '':
+        return ''
+    return rev(s[1:]) + s[0]</pre></div>
+      The reversed tail, with the first character stuck on the end. No tracing
+      needed.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Palindrome</div>
+      <p>Test a palindrome recursively.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def is_pal(s: str) -&gt; bool:
+    """Return whether s reads the same forwards and backwards.
+
+    &gt;&gt;&gt; is_pal('racecar')
+    True
+    """
+    if len(s) &lt; 2:
+        return True
+    return s[0] == s[-1] and is_pal(s[1:-1])</pre></div>
+      Two base cases collapse into one: empty and single-character strings are
+      both palindromes.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Which to use</div>
+      <p>Summing a flat list &mdash; loop or recursion?</p>
+      <details><summary>Answer</summary><div class="ans">A loop. The data is
+      flat, so recursion adds call overhead and slicing cost for no structural
+      benefit.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Missing return</div>
+      <p>What does this return, and why?</p>
+      <div class="code"><div class="cl">python</div><pre>def f(n: int) -&gt; int:
+    if n == 0:
+        return 1
+    n * f(n - 1)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>None</code> for
+      any $n &gt; 0$. The recursive case computes the value and discards it — the
+      <code>return</code> is missing. A very common
+      slip.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Structure.</strong> Base case and recursive case, and what each
+    must guarantee.</li>
+    <li><strong>The leap of faith.</strong> Trusting the recursive call rather
+    than tracing it.</li>
+    <li><strong>Failure modes.</strong> Missing, unreachable and non-shrinking
+    cases.</li>
+    <li><strong>Judgment.</strong> When recursion beats iteration and when it
+    costs more than it gives.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "recursion" explicitly. It is the concept the course is
+    organised around and the most heavily assessed; check Quercus for the
+    assigned exercises.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Reduce to a smaller instance, trust the result, combine. Unit 6 applies
+    this to nested data and Units 7 and 8 to trees, where recursion is not a
+    choice but the only reasonable approach.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Write the base case first, every time. Then write the recursive case assuming
+    the call works. If you find yourself tracing, stop and reread the
+    docstring — the contract is what you are allowed to
+    assume.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Requirements</div>
+      <p>What two things must a recursive function have?</p>
+      <details><summary>Guide</summary><div class="ans">A base case, and a
+      recursive case on a strictly smaller input that reaches
+      it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · The technique</div>
+      <p>What is the recursive leap of faith?</p>
+      <details><summary>Guide</summary><div class="ans">Assuming the recursive
+      call is correct while writing the case that uses it, rather than tracing
+      it.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Infinite recursion</div>
+      <p>Name two causes.</p>
+      <details><summary>Guide</summary><div class="ans">No base case, or an input
+      that never reaches it — either because it does not shrink or because it
+      steps over.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Choosing</div>
+      <p>When does recursion beat a loop?</p>
+      <details><summary>Guide</summary><div class="ans">When the data nests to
+      unknown depth, or the problem splits into smaller copies of
+      itself.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit04.html">← Unit 04<span>Linked lists</span></a>
+  <a href="unit06.html">Unit 06 →<span>Recursion on nested data</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

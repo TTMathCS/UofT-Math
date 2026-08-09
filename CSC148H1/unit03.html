@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 3 — Stacks &amp; Queues · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 3</div>
+<div class="unit-no reveal">Unit 3 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Stacks &amp; Queues</h1>
+<p class="ch-intro reveal">Two ADTs that differ in exactly one respect: which
+end you take from. That single choice changes what an algorithm computes, which
+is why the same traversal code explores depth-first with one and breadth-first
+with the other.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the contract for a Stack and a Queue.</li>
+    <li>Implement both with the right end of a Python list.</li>
+    <li>Explain why the naive queue implementation is $O(n)$.</li>
+    <li>Recognise which problems call for which.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Some problems need the most recent item, others the oldest. Naming those
+    two disciplines and giving each a tiny interface makes the intent of an
+    algorithm obvious from which one it uses.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>The call stack is why a function returns to its caller and why infinite
+    recursion produces a "stack overflow". Print queues, network packet buffers
+    and task schedulers are queues. Undo history is a
+    stack.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Turing described a stack mechanism for subroutine calls in 1946. Making it
+    the standard way to implement function calls was what allowed recursion to
+    exist as a language feature at all.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Stack</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>stack</em> is last-in-first-out. The only accessible item is the one
+    added most recently. Operations: <code>push</code>, <code>pop</code>,
+    <code>is_empty</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Implementation</b></div>
+    <div class="code"><div class="cl">python</div><pre>class Stack:
+    """A last-in-first-out collection.
+
+    Attributes:
+        _items: the contents, with the top of the stack at the end
+    """
+    _items: list
+
+    def __init__(self) -&gt; None:
+        """Initialize an empty stack."""
+        self._items = []
+
+    def push(self, item) -&gt; None:
+        """Add item to the top of this stack."""
+        self._items.append(item)
+
+    def pop(self):
+        """Remove and return the top item of this stack.
+
+        Preconditions: this stack is not empty.
+
+        &gt;&gt;&gt; s = Stack()
+        &gt;&gt;&gt; s.push(1)
+        &gt;&gt;&gt; s.push(2)
+        &gt;&gt;&gt; s.pop()
+        2
+        """
+        return self._items.pop()
+
+    def is_empty(self) -&gt; bool:
+        """Return whether this stack is empty."""
+        return self._items == []</pre></div>
+    <div class="step">The top is at the <em>end</em> of the list, deliberately.
+    Both <code>append</code> and <code>pop()</code> are $O(1)$
+    there.</div>
+    <div class="step">Putting the top at the front would still be correct but
+    $O(n)$ per operation, as Unit 1 showed.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Balanced brackets</b></div>
+    <div class="code"><div class="cl">python</div><pre>def balanced(text: str) -&gt; bool:
+    """Return whether the brackets in text are correctly nested.
+
+    &gt;&gt;&gt; balanced('([])')
+    True
+    &gt;&gt;&gt; balanced('([)]')
+    False
+    """
+    pairs = {')': '(', ']': '[', '}': '{'}
+    s = Stack()
+    for ch in text:
+        if ch in '([{':
+            s.push(ch)
+        elif ch in pairs:
+            if s.is_empty() or s.pop() != pairs[ch]:
+                return False
+    return s.is_empty()</pre></div>
+    <div class="step">A stack is exactly right because the bracket that must
+    close next is always the most recently opened one.</div>
+    <div class="step">The final <code>is_empty</code> check matters: without it
+    <code>'(('</code> would pass.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Queue</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>queue</em> is first-in-first-out. The only accessible item is the
+    one added earliest. Operations: <code>enqueue</code>,
+    <code>dequeue</code>, <code>is_empty</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The obvious implementation, and its flaw</b></div>
+    <div class="code"><div class="cl">python</div><pre>class Queue:
+    """A first-in-first-out collection.
+
+    Attributes:
+        _items: the contents, with the front of the queue at index 0
+    """
+    _items: list
+
+    def __init__(self) -&gt; None:
+        """Initialize an empty queue."""
+        self._items = []
+
+    def enqueue(self, item) -&gt; None:
+        """Add item to the back of this queue."""
+        self._items.append(item)          <i># O(1)</i>
+
+    def dequeue(self):
+        """Remove and return the front item of this queue.
+
+        Preconditions: this queue is not empty.
+
+        &gt;&gt;&gt; q = Queue()
+        &gt;&gt;&gt; q.enqueue(1)
+        &gt;&gt;&gt; q.enqueue(2)
+        &gt;&gt;&gt; q.dequeue()
+        1
+        """
+        return self._items.pop(0)         <i># O(n) - shifts everything</i></pre></div>
+    <div class="step">This is correct but asymmetric: enqueue is $O(1)$ and
+    dequeue is $O(n)$, because removing index $0$ shifts every remaining element
+    down.</div>
+    <div class="step">A queue cannot avoid this with one Python list, since it
+    needs both ends. Unit 4's linked list fixes it by keeping a reference to each
+    end, making both $O(1)$.</div>
+    <div class="step">In production you would use
+    <code>collections.deque</code>, which is $O(1)$ at both ends. Writing it out
+    by hand is the point here.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Why the choice changes the answer</h3>
+  <div class="box eg"><div class="bl">Example <b>The same code, two behaviours</b></div>
+    <p>Exploring a structure by taking from a collection and adding neighbours:</p>
+    <div class="code"><div class="cl">python</div><pre>def explore(start, use_stack: bool) -&gt; list:
+    """Return the nodes reachable from start, in visit order.
+
+    With use_stack the exploration is depth-first; otherwise
+    it is breadth-first.
+    """
+    pending = Stack() if use_stack else Queue()
+    add = pending.push if use_stack else pending.enqueue
+    take = pending.pop if use_stack else pending.dequeue
+
+    add(start)
+    seen = []
+    while not pending.is_empty():
+        node = take()
+        if node not in seen:
+            seen.append(node)
+            for neighbour in node.neighbours:
+                add(neighbour)
+    return seen</pre></div>
+    <div class="step">With a stack, the most recently discovered node is
+    explored next, so the search plunges down one branch before
+    backtracking &mdash; depth-first.</div>
+    <div class="step">With a queue, the earliest discovered node goes next, so
+    the search fans out level by level &mdash; breadth-first, which finds the
+    shortest path.</div>
+    <div class="step">Identical logic, different structure, genuinely different
+    algorithm. This is the clearest argument in the course for taking ADT choice
+    seriously.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Popping from an empty stack or queue. Check the precondition or the
+  emptiness first.<br>
+  &bull; Using <code>pop(0)</code> in a loop over a large queue and wondering
+  why it is slow.<br>
+  &bull; Putting the stack top at index $0$. Correct but needlessly
+  $O(n)$.<br>
+  &bull; Forgetting the final emptiness check in bracket
+  matching.<br>
+  &bull; Choosing a stack when the problem wants oldest-first. The code runs and
+  the answer is wrong.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Order out</div>
+      <p>Push $1$, $2$, $3$ onto a stack, then pop three times. What comes
+      out?</p>
+      <details><summary>Answer</summary><div class="ans">$3$, $2$, $1$. A queue
+      would give $1$, $2$, $3$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Which ADT</div>
+      <p>A printer serves jobs in the order submitted. Stack or queue?</p>
+      <details><summary>Answer</summary><div class="ans">Queue — first in, first
+      out.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Cost</div>
+      <p>Why is the list-based <code>dequeue</code> $O(n)$?</p>
+      <details><summary>Answer</summary><div class="ans"><code>pop(0)</code>
+      removes the first element and shifts every remaining one down by one
+      position.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Brackets</div>
+      <p>Why does <code>balanced</code> need the final
+      <code>is_empty()</code>?</p>
+      <details><summary>Answer</summary><div class="ans">To catch unclosed
+      openers. Without it <code>'((('</code> would return
+      <code>True</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Reverse with a stack</div>
+      <p>Reverse a string using only a stack.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def reverse(text: str) -&gt; str:
+    """Return text reversed.
+
+    &gt;&gt;&gt; reverse('abc')
+    'cba'
+    """
+    s = Stack()
+    for ch in text:
+        s.push(ch)
+    out = ''
+    while not s.is_empty():
+        out = out + s.pop()
+    return out</pre></div>
+      Reversal is the defining behaviour of a stack — items come out in the
+      opposite order to going in.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Two stacks</div>
+      <p>How would you build a queue from two stacks?</p>
+      <details><summary>Solution</summary><div class="ans">Push arrivals onto
+      stack A. To dequeue, if stack B is empty, pop everything from A onto B —
+      which reverses the order — then pop from B. Each item moves at most twice,
+      so the cost averages $O(1)$ per operation even though individual dequeues
+      can be $O(n)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Search order</div>
+      <p>Which structure finds the shortest path in an unweighted graph?</p>
+      <details><summary>Answer</summary><div class="ans">A queue. Breadth-first
+      search reaches every node at distance $k$ before any at $k+1$, so the first
+      time it reaches the target is by a shortest
+      route.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Call stack</div>
+      <p>Why is the mechanism behind function calls a stack?</p>
+      <details><summary>Answer</summary><div class="ans">Because the function
+      that must resume next is always the most recent caller. Infinite recursion
+      exhausts it, which is exactly the "stack overflow"
+      error.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Stack.</strong> LIFO contract, list-based implementation, why
+    the top goes at the end.</li>
+    <li><strong>Queue.</strong> FIFO contract, and the $O(n)$ dequeue that
+    motivates linked lists.</li>
+    <li><strong>Choosing.</strong> Which discipline a problem needs, and how the
+    choice changes an algorithm's behaviour.</li>
+    <li><strong>Applications.</strong> Bracket matching, reversal, and the
+    depth-first versus breadth-first distinction.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "abstract data types and data structures for
+    implementing them". Stacks and queues are the first worked examples; check
+    Quercus for the assigned exercises.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Two ADTs, differing only in which end is accessible. That difference
+    determines whether an algorithm goes deep or wide. Unit 4 gives both an
+    implementation where every operation is constant time.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    When a problem involves processing things in some order, name the order out
+    loud before writing code. "Most recent" means stack; "oldest waiting" means
+    queue. The naming does the design.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · The difference</div>
+      <p>What separates a stack from a queue?</p>
+      <details><summary>Guide</summary><div class="ans">Which end is accessible.
+      A stack removes the most recent item, a queue the oldest.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Placement</div>
+      <p>Why put the stack top at the end of the list?</p>
+      <details><summary>Guide</summary><div class="ans">Because
+      <code>append</code> and <code>pop()</code> at the end are $O(1)$, while
+      operations at the front are $O(n)$.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Search behaviour</div>
+      <p>Which gives depth-first search?</p>
+      <details><summary>Guide</summary><div class="ans">A stack. It explores the
+      most recently discovered node next, plunging down one branch before
+      backtracking.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Fixing the queue</div>
+      <p>How can dequeue become $O(1)$?</p>
+      <details><summary>Guide</summary><div class="ans">Keep references to both
+      ends, as a linked list does, or use a structure built for it such as
+      <code>collections.deque</code>.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit02.html">← Unit 02<span>Object-oriented design</span></a>
+  <a href="unit04.html">Unit 04 →<span>Linked lists</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

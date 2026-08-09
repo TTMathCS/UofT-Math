@@ -41,7 +41,7 @@
     course("CSC108H1", "Introduction to Computer Programming", "CSC108H1/index.html", 10),
     course("CSC110Y1", "Foundations of Computer Science I"),
     course("CSC111H1", "Foundations of Computer Science II"),
-    course("CSC148H1", "Introduction to Computer Science"),
+    course("CSC148H1", "Introduction to Computer Science", "CSC148H1/index.html", 10),
     course("CSC207H1", "Software Design"),
     course("CSC300H1", "Computers and Society"),
     course("CSC336H1", "Numerical Methods"),

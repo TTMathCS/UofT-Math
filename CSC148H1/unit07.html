@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 7 — Trees · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 7</div>
+<div class="unit-no reveal">Unit 7 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Trees</h1>
+<p class="ch-intro reveal">A structure that is recursive by construction: a tree
+is a value plus a list of trees. Every operation on it is the Unit 6 pattern with
+"subtree" in place of "element", and this is where recursion stops being optional
+and becomes the only sensible approach.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Define a tree recursively and implement it.</li>
+    <li>Compute size, height and membership recursively.</li>
+    <li>Distinguish preorder, postorder and level order.</li>
+    <li>Handle the empty tree deliberately.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Hierarchies are everywhere and lists cannot express them. A tree captures
+    "this contains those" directly, and because the definition is recursive,
+    every algorithm on it is too.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>File systems, the DOM behind every web page, organisation charts, decision
+    trees in machine learning, and the parse trees every compiler builds from
+    source code.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The upside-down convention &mdash; root at the top, leaves at the bottom
+    &mdash; is universal in computing and backwards from botany. It stuck because
+    it reads naturally top to bottom on a page.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Definition and implementation</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>tree</em> is either empty, or a <em>root</em> value together with a
+    list of <em>subtrees</em>, each itself a tree.</p>
+    <div class="step">A node with no subtrees is a <em>leaf</em>.</div>
+    <div class="step">The <em>size</em> is the number of values.</div>
+    <div class="step">The <em>height</em> of a one-node tree is $1$; the empty
+    tree has height $0$.</div></div>
+  <div class="box eg"><div class="bl">Example <b>The class</b></div>
+    <div class="code"><div class="cl">python</div><pre>class Tree:
+    """A tree with a root value and a list of subtrees.
+
+    Attributes:
+        _root: the value at this node, or None if the tree is empty
+        _subtrees: the subtrees of this node
+
+    Representation invariants:
+        - if self._root is None then self._subtrees == []
+    """
+    _root: object
+    _subtrees: list
+
+    def __init__(self, root, subtrees: list) -&gt; None:
+        """Initialize a tree with the given root and subtrees.
+
+        An empty tree is Tree(None, []).
+        """
+        self._root = root
+        self._subtrees = subtrees
+
+    def is_empty(self) -&gt; bool:
+        """Return whether this tree is empty."""
+        return self._root is None</pre></div>
+    <div class="step">The invariant matters: an empty tree cannot have subtrees.
+    Without it, <code>Tree(None, [something])</code> would be a nonsensical
+    object every method would then have to cope with.</div>
+    <div class="step">A leaf is <code>Tree(value, [])</code> &mdash; a root with
+    an empty subtree list, not an empty tree.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Recursive operations</h3>
+  <div class="box thm"><div class="bl">Rule <b>The tree pattern</b></div>
+    <p>Every method follows the same three steps:</p>
+    <div class="code"><div class="cl">python</div><pre>def method(self):
+    if self.is_empty():
+        return <i>something for the empty tree</i>
+    <i># combine self._root with method() on each subtree</i></pre></div>
+    <p>Compare Unit 6. The only change is that "each element" has become "each
+    subtree".</p></div>
+  <div class="box eg"><div class="bl">Example <b>Size, height, membership</b></div>
+    <div class="code"><div class="cl">python</div><pre>def __len__(self) -&gt; int:
+    """Return the number of values in this tree.
+
+    &gt;&gt;&gt; t = Tree(1, [Tree(2, []), Tree(3, [])])
+    &gt;&gt;&gt; len(t)
+    3
+    """
+    if self.is_empty():
+        return 0
+    return 1 + sum(sub.__len__() for sub in self._subtrees)
+
+
+def height(self) -&gt; int:
+    """Return the height of this tree.
+
+    An empty tree has height 0; a leaf has height 1.
+
+    &gt;&gt;&gt; Tree(1, [Tree(2, [])]).height()
+    2
+    """
+    if self.is_empty():
+        return 0
+    if self._subtrees == []:
+        return 1
+    return 1 + max(sub.height() for sub in self._subtrees)
+
+
+def __contains__(self, item) -&gt; bool:
+    """Return whether item is a value in this tree.
+
+    &gt;&gt;&gt; 2 in Tree(1, [Tree(2, [])])
+    True
+    """
+    if self.is_empty():
+        return False
+    if self._root == item:
+        return True
+    return any(item in sub for sub in self._subtrees)</pre></div>
+    <div class="step"><code>height</code> needs the leaf case separately, because
+    <code>max</code> cannot handle an empty subtree list &mdash; the same trap as
+    Unit 6.</div>
+    <div class="step"><code>__contains__</code> stops early: <code>any</code>
+    short-circuits, so it will not search subtrees once the value is
+    found.</div>
+  </div>
+  <div class="box warn"><div class="bl">Empty tree versus leaf</div>
+    <p>These are different and both need handling. An empty tree has no root at
+    all; a leaf has a root and no subtrees. Conflating them produces methods that
+    crash on one or return nonsense on the other.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Traversal order</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Visiting every value, in one of several orders:</p>
+    <div class="step"><em>Preorder:</em> root first, then the subtrees.</div>
+    <div class="step"><em>Postorder:</em> subtrees first, then the root.</div>
+    <div class="step"><em>Level order:</em> all depth-1 values, then all depth-2,
+    and so on.</div></div>
+  <div class="box eg"><div class="bl">Example <b>The first two, and why they differ</b></div>
+    <div class="code"><div class="cl">python</div><pre>def preorder(self) -&gt; list:
+    """Return the values of this tree, root before subtrees.
+
+    &gt;&gt;&gt; Tree(1, [Tree(2, []), Tree(3, [])]).preorder()
+    [1, 2, 3]
+    """
+    if self.is_empty():
+        return []
+    values = [self._root]
+    for sub in self._subtrees:
+        values.extend(sub.preorder())
+    return values
+
+
+def postorder(self) -&gt; list:
+    """Return the values of this tree, subtrees before root.
+
+    &gt;&gt;&gt; Tree(1, [Tree(2, []), Tree(3, [])]).postorder()
+    [2, 3, 1]
+    """
+    if self.is_empty():
+        return []
+    values = []
+    for sub in self._subtrees:
+        values.extend(sub.postorder())
+    values.append(self._root)
+    return values</pre></div>
+    <div class="step">The only difference is where <code>self._root</code> is
+    added. One line, entirely different output order.</div>
+    <div class="step">Postorder is what you want for deleting a tree or
+    computing folder sizes &mdash; children must be handled before their
+    parent.</div>
+    <div class="step">Preorder suits copying or printing an outline, where the
+    parent must appear before what it contains.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Level order needs a queue</b></div>
+    <div class="code"><div class="cl">python</div><pre>def level_order(self) -&gt; list:
+    """Return the values of this tree, one depth level at a time."""
+    if self.is_empty():
+        return []
+    values = []
+    pending = [self]
+    while pending != []:
+        current = pending.pop(0)      <i># take from the front: FIFO</i>
+        values.append(current._root)
+        pending.extend(current._subtrees)
+    return values</pre></div>
+    <div class="step">This one is <em>not</em> recursive. Level order needs a
+    queue, exactly as Unit 3 showed &mdash; taking from the front gives
+    breadth-first, and there is no natural recursive
+    formulation.</div>
+    <div class="step">Swapping <code>pop(0)</code> for <code>pop()</code> turns
+    it into a stack and gives depth-first order instead. The same
+    one-character difference as before.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Treating the empty tree and a leaf as the same
+  case.<br>
+  &bull; Calling <code>max</code> on an empty subtree list in
+  <code>height</code>.<br>
+  &bull; Using <code>append</code> where <code>extend</code> is needed when
+  gathering subtree results.<br>
+  &bull; Off-by-one on height. Decide whether a leaf is $0$ or $1$ and document
+  it.<br>
+  &bull; Expecting level order to fall out of recursion. It needs a
+  queue.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Definition</div>
+      <p>Define a tree recursively.</p>
+      <details><summary>Answer</summary><div class="ans">Either empty, or a root
+      value together with a list of subtrees, each a tree.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Two empties</div>
+      <p>What is the difference between an empty tree and a leaf?</p>
+      <details><summary>Answer</summary><div class="ans">An empty tree has no
+      root. A leaf has a root and an empty list of
+      subtrees.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Count leaves</div>
+      <p>Count the leaves of a tree.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def leaf_count(self) -&gt; int:
+    """Return the number of leaves in this tree."""
+    if self.is_empty():
+        return 0
+    if self._subtrees == []:
+        return 1
+    return sum(sub.leaf_count() for sub in self._subtrees)</pre></div>
+      Three cases: empty, leaf, and internal node.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Order</div>
+      <p>For a root $1$ with children $2$ and $3$, give preorder and
+      postorder.</p>
+      <details><summary>Answer</summary><div class="ans">Preorder $[1, 2, 3]$;
+      postorder $[2, 3, 1]$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Which order</div>
+      <p>Computing the total size of a folder tree &mdash; which
+      traversal?</p>
+      <details><summary>Answer</summary><div class="ans">Postorder. A folder's
+      size depends on its contents, so children must be computed
+      first.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Sum the values</div>
+      <p>Sum all values in a tree of integers.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def total(self) -&gt; int:
+    """Return the sum of the values in this tree."""
+    if self.is_empty():
+        return 0
+    return self._root + sum(sub.total() for sub in self._subtrees)</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Height convention</div>
+      <p>Why does <code>height</code> need a separate leaf case?</p>
+      <details><summary>Answer</summary><div class="ans">Because
+      <code>max</code> over an empty list of subtrees raises. A leaf must return
+      $1$ directly.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Depth-first from level order</div>
+      <p>What single change makes <code>level_order</code> depth-first?</p>
+      <details><summary>Answer</summary><div class="ans">Replace
+      <code>pop(0)</code> with <code>pop()</code>, turning the queue into a
+      stack. Same code, different traversal — the Unit 3 point
+      again.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Definition.</strong> Recursive structure, and the empty tree
+    versus a leaf.</li>
+    <li><strong>Recursive methods.</strong> Size, height, membership, and the
+    three-case pattern.</li>
+    <li><strong>Traversals.</strong> Preorder, postorder, and what each is
+    for.</li>
+    <li><strong>Level order.</strong> Why it needs a queue rather than
+    recursion.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Trees are the main application of "recursion" in the calendar's topic
+    list. Check Quercus for the assigned exercises; tree methods are standard
+    assignment and exam material.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Recursive data, recursive code. Handle the empty case, do something with
+    the root, recurse on each subtree, combine. Unit 8 constrains the shape to
+    two subtrees and adds an ordering rule, which is what makes fast search
+    possible.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every tree method, write the three cases before any code: empty, leaf,
+    internal. Most tree bugs are a missing one of the
+    three.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why recursive</div>
+      <p>Why is a tree naturally handled recursively?</p>
+      <details><summary>Guide</summary><div class="ans">Because its definition is
+      recursive — each subtree is a tree — so the code mirrors the
+      data.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Traversal choice</div>
+      <p>When does postorder matter?</p>
+      <details><summary>Guide</summary><div class="ans">When a node's result
+      depends on its children: computing sizes, freeing memory, evaluating an
+      expression tree.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Level order</div>
+      <p>Why is it not recursive?</p>
+      <details><summary>Guide</summary><div class="ans">It visits across the
+      tree rather than down it, so it needs a queue of pending nodes rather than
+      the call stack.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · The invariant</div>
+      <p>Why require that an empty tree has no subtrees?</p>
+      <details><summary>Guide</summary><div class="ans">To rule out a
+      contradictory object every method would otherwise have to handle
+      defensively.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit06.html">← Unit 06<span>Recursion on nested data</span></a>
+  <a href="unit08.html">Unit 08 →<span>Binary search trees</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

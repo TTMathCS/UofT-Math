@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>CSC148H1 — Introduction to Computer Science · Course Guide</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="side">
+  <div class="brand"><span>CSC148H1</span></div>
+  <div class="sub">INTRO TO COMPUTER SCIENCE · WINTER<br>COURSE GUIDE</div>
+  <a href="../index.html">All Courses</a>
+  <a href="#about" data-t>About</a>
+  <a href="#units" data-t>Chapters</a>
+  <a href="#textbook" data-t>Textbook Spine</a>
+  <a href="#practice" data-t>Practice Plan</a>
+  <a href="#resources" data-t>Resources</a>
+  <div class="foot">ADTs &amp; RECURSION<br>36L / 24P<br>FOLLOWS CSC108H1</div>
+</nav>
+
+<main>
+<header class="hero reveal">
+  <svg class="curve" viewBox="0 0 230 150" aria-hidden="true">
+    <line class="axis" x1="14" y1="135" x2="220" y2="135"/>
+    <line class="axis" x1="20" y1="8" x2="20" y2="142"/>
+    <path d="M120,25 L70,70 M120,25 L170,70 M70,70 L45,115 M70,70 L95,115"/>
+    <circle cx="120" cy="25" r="4.5"/>
+    <circle cx="70" cy="70" r="4.5"/>
+    <circle cx="170" cy="70" r="4.5"/>
+  </svg>
+  <div class="kicker">U of T · Introduction to Computer Science · Winter</div>
+  <h1>CSC148H1: data structures, and <em>recursion</em>.</h1>
+  <p class="lede">CSC108H1 taught you to write programs. This course teaches you
+  to design them: choose the right structure for the data, hide how it works
+  behind a specification, and solve problems that fold back into themselves.</p>
+</header>
+
+<div class="note reveal" id="about">
+  <div class="tag">About this course</div>
+  <h3>The real beginning of computer science.</h3>
+  <p>CSC148H1 "Introduction to Computer Science" covers abstract data types and
+  the data structures that implement them, linked data structures, encapsulation
+  and information hiding, object-oriented programming, specifications, analyzing
+  the efficiency of programs, and recursion. It runs 36 lecture hours and 24
+  practical hours; attendance at practicals is required. It assumes the
+  programming experience from <a href="../CSC108H1/index.html">CSC108H1</a>.</p>
+  <p><strong>The reputation is deserved.</strong> The step up from CSC108H1 is
+  real, and recursion is where most people stall. The course allows a move back
+  to CSC108H1 after the add deadline if it turns out to be too much &mdash; the
+  calendar says so explicitly, which tells you how common
+  that is.</p>
+</div>
+
+<section id="units" class="reveal">
+  <div class="sec-head"><span class="no">01</span><h2>Chapters</h2></div>
+  <p class="sec-sub">In course order. Each page has the concept, runnable code,
+  the design reasoning behind it, pitfalls, and practice.</p>
+
+  <div class="chips">
+    <span class="chip teal"><b>CSC148H1</b><small>Intro to CS · Winter</small></span>
+    <span class="chip teal"><b>CSC108H1</b><small>prerequisite</small></span>
+    <span class="chip"><b>Practicals</b><small>attendance required</small></span>
+  </div>
+
+  <ol class="units">
+    <li><a href="unit01.html"><div><h4>Abstract data types</h4>
+      <p>Separating what a structure does from how it does it.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit02.html"><div><h4>Object-oriented design</h4>
+      <p>Encapsulation, information hiding, representation invariants.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit03.html"><div><h4>Stacks &amp; queues</h4>
+      <p>Two ADTs, and why the choice changes the answer.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit04.html"><div><h4>Linked lists</h4>
+      <p>Nodes, references, and the cost of pointer surgery.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit05.html"><div><h4>Recursion</h4>
+      <p>Base case, recursive case, and trusting the recursion.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit06.html"><div><h4>Recursion on nested data</h4>
+      <p>Nested lists and the shape of the data driving the code.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit07.html"><div><h4>Trees</h4>
+      <p>General trees, traversals, and recursive structure.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit08.html"><div><h4>Binary search trees</h4>
+      <p>The ordering property and what it buys.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit09.html"><div><h4>Efficiency analysis</h4>
+      <p>Big-O properly, worst case, and comparing structures.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit10.html"><div><h4>Sorting &amp; inheritance</h4>
+      <p>Divide-and-conquer sorts; subclasses and polymorphism.</p></div><span class="go">Open →</span></a></li>
+  </ol>
+</section>
+
+<section id="textbook" class="reveal">
+  <div class="sec-head"><span class="no">02</span><h2>Textbook Spine</h2></div>
+  <p class="sec-sub">The calendar lists the topics in the order used here. The
+  course normally runs on its own course notes rather than a published textbook.
+  Check Quercus for the current notes, the assignment handouts, and the required
+  docstring and type-annotation style, which is marked.</p>
+
+  <div class="context">
+    <div class="ctxh">Unit-to-topic alignment</div>
+    <div class="ci"><div class="cl">Design before structures</div>
+      <p>Units 1-2 cover the calendar's "abstract data types", "encapsulation and
+      information-hiding" and "specifications". This is the conceptual frame:
+      what a client may rely on, and what the implementer stays free to
+      change.</p></div>
+    <div class="ci"><div class="cl">Concrete structures</div>
+      <p>Units 3-4 cover "data structures for implementing them" and "linked data
+      structures". Stacks and queues are the ADTs; linked lists are the first
+      implementation built from scratch rather than borrowed from
+      Python.</p></div>
+    <div class="ci"><div class="cl">Recursion</div>
+      <p>Units 5-8 cover "recursion" and the recursive structures it exists to
+      handle. Trees are where recursion stops being a curiosity and becomes the
+      only sensible approach.</p></div>
+    <div class="ci"><div class="cl">Analysis and reuse</div>
+      <p>Units 9-10 cover "analyzing the efficiency of programs" and finish the
+      object-oriented thread with inheritance. Big-O returns from CSC108H1, now
+      applied to structures you built yourself.</p></div>
+  </div>
+
+  <div class="bp">
+    <div class="card"><div class="n">SPECIFY</div><h4>Contract before code</h4>
+      <p>Write the docstring, the type annotations, the preconditions and the
+      examples first. In this course the specification is marked, and writing it
+      first is also the fastest way to get the body right.</p></div>
+    <div class="card"><div class="n">TRUST</div><h4>Let the recursion work</h4>
+      <p>Assume the recursive call handles the smaller case correctly, then
+      combine. Tracing every level by hand is how people get stuck, not how they
+      get unstuck.</p></div>
+    <div class="card"><div class="n">FOLLOW</div><h4>Code mirrors data</h4>
+      <p>If the data is recursive, the code is recursive with the same shape. A
+      tree with subtrees becomes a function calling itself on each
+      subtree.</p></div>
+    <div class="card"><div class="n">MEASURE</div><h4>State the cost</h4>
+      <p>Name the big-O of every operation you write. Choosing between two
+      structures is nearly always a cost comparison.</p></div>
+  </div>
+</section>
+
+<section id="practice" class="reveal">
+  <div class="sec-head"><span class="no">03</span><h2>Practice Plan</h2></div>
+  <p class="sec-sub">CSC148H1 is passed by writing code, not by reading it. The
+  unit pages give exercises; use this course-level mix to build exam
+  readiness.</p>
+
+  <div class="bp">
+    <div class="card"><div class="n">01</div><h4>Base case first</h4>
+      <p>For every recursive function, write the base case before anything else.
+      Missing or wrong base cases cause most infinite
+      recursions.</p></div>
+    <div class="card"><div class="n">02</div><h4>Draw the structure</h4>
+      <p>Sketch nodes and arrows before writing linked-list or tree code.
+      Reference bugs are almost impossible to see in code and obvious in a
+      diagram.</p></div>
+    <div class="card"><div class="n">03</div><h4>Test the edges</h4>
+      <p>Empty structure, one element, and the deepest nesting you can manage.
+      These break more code than any typical case.</p></div>
+    <div class="card"><div class="n">04</div><h4>Write the invariant down</h4>
+      <p>State what must always be true of your representation, then check every
+      method preserves it. This is how subtle bugs get caught before they
+      run.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Course-wide challenge bank</h3>
+    <p class="prac-intro">These mix recursion, structure choice and analysis in
+    the way the final exam does.</p>
+    <div class="prac">
+      <div class="q"><div class="ql">Challenge 1 · Which structure</div>
+        <p>You must process items in the order they arrive, and separately undo
+        the most recent action. Which ADT for each?</p>
+        <details><summary>Solution sketch</summary><div class="ans">Arrival order
+        is first-in-first-out: a <strong>queue</strong>. Undo is
+        last-in-first-out: a <strong>stack</strong>. The choice is dictated by
+        which end you need to reach, and getting it backwards produces code that
+        runs and answers the wrong question.</div></details></div>
+      <div class="q"><div class="ql">Challenge 2 · Recursive shape</div>
+        <p>Write a function counting all integers in an arbitrarily nested
+        list.</p>
+        <details><summary>Solution sketch</summary><div class="ans">
+        <div class="code"><div class="cl">python</div><pre>def count_ints(obj) -&gt; int:
+    """Return the number of integers in obj, a nested list of ints.
+
+    &gt;&gt;&gt; count_ints([1, [2, [3, 4]], 5])
+    5
+    """
+    if isinstance(obj, int):
+        return 1
+    return sum(count_ints(item) for item in obj)</pre></div>
+        Two cases matching the two shapes the data can take. No loop over depth
+        is needed, because the recursion follows the
+        nesting.</div></details></div>
+      <div class="q"><div class="ql">Challenge 3 · Cost comparison</div>
+        <p>Inserting at the front: Python list or linked list?</p>
+        <details><summary>Solution sketch</summary><div class="ans">Linked list,
+        at $O(1)$ &mdash; make a node and point it at the old head. A Python list
+        must shift every element, which is $O(n)$. But indexing reverses the
+        comparison: $O(1)$ for the list, $O(n)$ for the linked
+        list.</div></details></div>
+      <div class="q"><div class="ql">Challenge 4 · When BSTs fail</div>
+        <p>Binary search tree lookup is often called $O(\log n)$. When is it
+        not?</p>
+        <details><summary>Solution sketch</summary><div class="ans">When the tree
+        is unbalanced. Inserting sorted data produces a chain of $n$ nodes and
+        lookup degrades to $O(n)$. The logarithmic figure is the balanced case;
+        the worst case is linear, which is why self-balancing trees exist in
+        later courses.</div></details></div>
+    </div>
+  </div>
+</section>
+
+<section id="resources" class="reveal">
+  <div class="sec-head"><span class="no">04</span><h2>Resources</h2></div>
+  <p class="src">
+    <a href="https://artsci.calendar.utoronto.ca/course/csc148h1">CSC148H1 — official calendar listing</a><br>
+    <a href="https://web.cs.toronto.edu/undergraduate">Department of Computer Science — undergraduate</a>
+  </p>
+  <p class="lic">The calendar confirms the CSC148H1 topic list and the 36L/24P
+  hours. The course normally uses its own notes rather than a published
+  textbook; verify the current notes, assignment specifications and required
+  code style against Quercus each year.</p>
+</section>
+
+<footer class="end">
+  <span>CSC148H1 · INTRODUCTION TO COMPUTER SCIENCE · U OF T</span>
+  <span>PREREQUISITE: CSC108H1</span>
+</footer>
+</main>
+</div>
+
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

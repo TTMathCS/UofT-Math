@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 9 — Efficiency Analysis · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 9</div>
+<div class="unit-no reveal">Unit 9 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Efficiency Analysis</h1>
+<p class="ch-intro reveal">CSC108H1 introduced big-O informally. Here it becomes
+a tool for choosing between the structures you have built: which operations each
+does cheaply, which expensively, and how to analyse a recursive function whose
+cost is not obvious from looking at it.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Define big-O in terms of growth, and say what it ignores.</li>
+    <li>Analyse loops, nested loops and recursive calls.</li>
+    <li>Compare the structures from Units 3, 4, 7 and 8 by operation.</li>
+    <li>Distinguish worst, average and amortised cost.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Every structure in this course is a trade-off. Analysis is how you make
+    the trade deliberately rather than by habit, and it is the only way to
+    compare two correct programs.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>A quadratic algorithm on a thousand items is fine and on a million is
+    hopeless. Most performance problems in production are not slow code &mdash;
+    they are the wrong growth rate discovered after the data
+    grew.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The notation is Bachmann's, from 1894 number theory. Knuth brought it into
+    computing in 1976. Whether every problem verifiable in polynomial time is
+    also solvable in polynomial time &mdash; P versus NP &mdash; remains open and
+    carries a million-dollar prize.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>What big-O means</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A function is $O(g(n))$ if, beyond some input size, its cost is at most a
+    constant multiple of $g(n)$. Informally: how the work grows as the input
+    grows.</p>
+    <div class="step">Constants are dropped: $3n$ and $n$ are both
+    $O(n)$.</div>
+    <div class="step">Lower-order terms are dropped: $n^2 + n$ is
+    $O(n^2)$.</div>
+    <div class="step">It describes an <em>upper bound</em> on growth, not a
+    running time in seconds.</div></div>
+  <div class="box warn"><div class="bl">Constants matter in practice, just not in big-O</div>
+    <p>An $O(n)$ algorithm with a huge constant can lose to an $O(n^2)$ one on
+    small inputs. Big-O tells you which wins <em>eventually</em>, which is the
+    right question when data grows and the wrong one when it never
+    will.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Analysing code</h3>
+  <div class="box thm"><div class="bl">Rule <b>Sequential adds, nested multiplies</b></div>
+    <div class="code"><div class="cl">python</div><pre>for x in xs: ...        <i># O(n)</i>
+for y in xs: ...        <i># O(n)   - total still O(n)</i>
+
+for x in xs:            <i># O(n)</i>
+    for y in xs: ...    <i>#   x O(n) = O(n^2)</i></pre></div>
+    <p>Two passes are $2n$, which is $O(n)$. Nested passes multiply, and that is
+    the difference that matters.</p></div>
+  <div class="box warn"><div class="bl">Look for hidden loops</div>
+    <div class="code"><div class="cl">python</div><pre>out = []
+for x in xs:
+    if x not in out:        <i># this is a loop! O(len(out))</i>
+        out.append(x)</pre></div>
+    <p>One visible loop, $O(n^2)$ total. The operations that hide a loop are
+    <code>in</code> on a list, <code>list.remove</code>,
+    <code>list.insert(0, x)</code>, <code>list.pop(0)</code>, slicing, and string
+    concatenation. Each turns an enclosing loop quadratic.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Analysing recursion</b></div>
+    <p>Count the calls and multiply by the work per call.</p>
+    <div class="code"><div class="cl">python</div><pre>def total(obj):           <i># nested list, n integers total</i>
+    if isinstance(obj, int):
+        return obj
+    return sum(total(item) for item in obj)</pre></div>
+    <div class="step">Each integer and each list is visited exactly once, and the
+    work at each is constant. So $O(n)$ where $n$ counts every node in the
+    structure.</div>
+    <div class="code"><div class="cl">python</div><pre>def fib(n):
+    if n &lt; 2:
+        return n
+    return fib(n - 1) + fib(n - 2)</pre></div>
+    <div class="step">Two calls per level, depth $n$, so about $2^n$ calls.
+    Exponential &mdash; and the reason is that the same subproblems are recomputed
+    endlessly.</div>
+    <div class="code"><div class="cl">python</div><pre>def total_rec(xs: list) -&gt; int:
+    if xs == []:
+        return 0
+    return xs[0] + total_rec(xs[1:])</pre></div>
+    <div class="step">$n$ calls, but <code>xs[1:]</code> copies the rest of the
+    list each time. Copying $n$, then $n-1$, and so on gives $O(n^2)$ &mdash;
+    hidden entirely inside the slice.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Comparing the structures</h3>
+  <div class="box thm"><div class="bl">Rule <b>The table worth knowing</b></div>
+    <div class="step"><strong>Python list.</strong> Index $O(1)$; append $O(1)$;
+    insert or delete at the front $O(n)$; search $O(n)$.</div>
+    <div class="step"><strong>Linked list.</strong> Index $O(n)$; prepend $O(1)$;
+    insert or delete at a known node $O(1)$; search $O(n)$.</div>
+    <div class="step"><strong>Stack and queue.</strong> $O(1)$ per operation
+    when implemented with the right end or with a linked
+    list.</div>
+    <div class="step"><strong>BST.</strong> Search, insert, delete
+    $O(\log n)$ balanced, $O(n)$ worst case.</div>
+    <div class="step"><strong>Dictionary and set.</strong> Lookup, insert, delete
+    $O(1)$ on average &mdash; but no ordering.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Choosing from the table</b></div>
+    <div class="step">Membership tested in a loop &rarr; set, not
+    list. $O(n)$ instead of $O(n^2)$.</div>
+    <div class="step">Repeated insertion at the front &rarr; linked list, not
+    Python list.</div>
+    <div class="step">Keys needed in sorted order &rarr; BST, not
+    dictionary.</div>
+    <div class="step">Indexing by position &rarr; Python list, not linked
+    list.</div>
+    <p>Every one of these is a one-line change that alters the growth rate, which
+    is why the table is worth memorising.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Worst, average, amortised</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><em>Worst case:</em> the most expensive input of that size.
+    The default when a complexity is quoted without
+    qualification.</div>
+    <div class="step"><em>Average case:</em> expected cost over typical inputs.
+    Needs an assumption about what "typical" means.</div>
+    <div class="step"><em>Amortised:</em> average cost per operation over a long
+    sequence, where occasional expensive operations are paid for by many cheap
+    ones.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why append is amortised $O(1)$</b></div>
+    <p>A Python list keeps spare capacity. Most appends drop into a free slot,
+    which is $O(1)$. When it fills, the list allocates a bigger block and copies
+    everything &mdash; $O(n)$.</p>
+    <div class="step">That copy happens rarely, and because the capacity roughly
+    doubles, the cost of all the copies up to size $n$ adds to about
+    $2n$.</div>
+    <div class="step">Spread over $n$ appends, that is constant per operation. So
+    append is amortised $O(1)$ even though individual calls can be
+    $O(n)$.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Where average and worst diverge</b></div>
+    <div class="step">BST search: $O(\log n)$ average with random insertions,
+    $O(n)$ worst case with sorted ones. Unit 8's honest
+    version.</div>
+    <div class="step">Dictionary lookup: $O(1)$ average, $O(n)$ worst if every
+    key collides. In practice the worst case never occurs, which is why the
+    average is quoted.</div>
+    <p>Say which case you mean. "A dictionary is $O(1)$" is shorthand for the
+    average, and the distinction matters when an adversary chooses the
+    input.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Writing $O(2n)$ or $O(n + 3)$. Drop constants: both are
+  $O(n)$.<br>
+  &bull; Missing hidden loops inside list operations and
+  slicing.<br>
+  &bull; Quoting BST or dictionary complexity without saying which case you
+  mean.<br>
+  &bull; Assuming fewer lines means faster. A one-line comprehension can be
+  quadratic.<br>
+  &bull; Optimising growth rate on data that will never be large. Sometimes
+  $O(n^2)$ is the right answer.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Read the loops</div>
+      <p>What is the complexity of two sequential loops over the same list?</p>
+      <details><summary>Answer</summary><div class="ans">$O(n)$. Sequential work
+      adds and constants drop.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Hidden cost</div>
+      <p>What is the complexity of building a list with
+      <code>if x not in out</code> inside a loop?</p>
+      <details><summary>Answer</summary><div class="ans">$O(n^2)$. The membership
+      test scans a growing list on every iteration.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Fix it</div>
+      <p>How do you make that $O(n)$?</p>
+      <details><summary>Answer</summary><div class="ans">Track seen items in a
+      set, where membership is $O(1)$ on average, while still appending to a list
+      to preserve order.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Slicing</div>
+      <p>Why is recursing with <code>xs[1:]</code> quadratic?</p>
+      <details><summary>Answer</summary><div class="ans">Each slice copies the
+      remaining elements, so the copies total
+      $n + (n-1) + \cdots$, which is $O(n^2)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Structure choice</div>
+      <p>You need fast membership and fast sorted output. What do you use?</p>
+      <details><summary>Answer</summary><div class="ans">A BST gives both:
+      $O(\log n)$ membership when balanced, and sorted output free from in-order
+      traversal. A set is faster for membership but cannot produce order without
+      sorting.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Amortised</div>
+      <p>Explain why <code>list.append</code> is called amortised
+      $O(1)$.</p>
+      <details><summary>Answer</summary><div class="ans">Most appends are
+      constant time. Occasionally the list resizes and copies everything, which is
+      $O(n)$, but because capacity doubles, those copies total about $2n$ over
+      $n$ appends — constant on average.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Tree traversal</div>
+      <p>What is the complexity of visiting every node of a tree with $n$
+      values?</p>
+      <details><summary>Answer</summary><div class="ans">$O(n)$. Each node is
+      visited exactly once and the work per node is
+      constant.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · When not to care</div>
+      <p>When is an $O(n^2)$ algorithm acceptable?</p>
+      <details><summary>Answer</summary><div class="ans">When $n$ is small and
+      bounded, or when the simpler code is worth more than the speed. Choosing
+      quadratic knowingly is fine; choosing it accidentally is
+      not.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Big-O.</strong> Growth rates, dropping constants and lower-order
+    terms.</li>
+    <li><strong>Reading code.</strong> Sequential versus nested, and the
+    operations that hide a loop.</li>
+    <li><strong>Recursive analysis.</strong> Counting calls times work per
+    call.</li>
+    <li><strong>Case distinctions.</strong> Worst, average and amortised, and
+    when each is the honest figure to quote.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "analyzing the efficiency of programs". Check Quercus
+    for the assigned exercises; complexity questions appear on every term test in
+    this course.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Cost grows with input. Structures differ in which operations are cheap.
+    Choosing one is choosing which operations you are willing to pay for, and
+    analysis is how that choice gets made on evidence.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    State the big-O of every method you write, in its docstring where the course
+    asks for it. Ten seconds each, and it turns analysis into a habit rather than
+    an exam topic.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · What is dropped</div>
+      <p>Why is $3n^2 + 5n$ written $O(n^2)$?</p>
+      <details><summary>Guide</summary><div class="ans">Constants and
+      lower-order terms do not affect the growth rate, which is all big-O
+      describes.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Combining</div>
+      <p>How do sequential and nested loops combine?</p>
+      <details><summary>Guide</summary><div class="ans">Sequential add and
+      collapse to the largest term; nested multiply.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Hidden loops</div>
+      <p>Name three operations that are secretly $O(n)$.</p>
+      <details><summary>Guide</summary><div class="ans"><code>x in a_list</code>,
+      <code>list.pop(0)</code>, and slicing. Each makes an enclosing loop
+      quadratic.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Amortised versus average</div>
+      <p>How do they differ?</p>
+      <details><summary>Guide</summary><div class="ans">Amortised averages over a
+      <em>sequence</em> of operations and is a guarantee. Average case averages
+      over <em>inputs</em> and depends on an assumption about which inputs
+      occur.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit08.html">← Unit 08<span>Binary search trees</span></a>
+  <a href="unit10.html">Unit 10 →<span>Sorting &amp; inheritance</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
