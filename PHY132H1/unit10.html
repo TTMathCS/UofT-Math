@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 10 — Special Relativity · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 10</div>
+<div class="unit-no reveal">Unit 10 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Special Relativity</h1>
+<p class="ch-intro reveal">Two postulates, and everything else follows. The
+consequences &mdash; clocks disagreeing, lengths shrinking, simultaneity
+dissolving &mdash; sound like paradoxes and are simply what happens when the
+speed of light is the same for everyone.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the two postulates and see what forces them.</li>
+    <li>Compute time dilation and length contraction.</li>
+    <li>Explain the muon and twin cases without contradiction.</li>
+    <li>Use $E = mc^2$ and relativistic momentum.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Maxwell's equations give one speed of light, with no reference to who is
+    measuring. Either they held only in some special frame, or the speed really
+    is the same for everyone. Experiment said the second, and Newtonian time had
+    to give way.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>GPS satellites run clocks fast by about $38$ microseconds a day from the
+    two relativistic effects combined. Uncorrected, positions would drift by
+    kilometres within a day. Particle accelerators would not work at all without
+    relativistic dynamics.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Michelson and Morley tried in 1887 to detect Earth's motion through the
+    ether and found nothing, to their own dissatisfaction. Einstein resolved it
+    in 1905 by discarding absolute time rather than patching the
+    ether.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The postulates</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><strong>Relativity.</strong> The laws of physics are the
+    same in every inertial frame. No experiment can tell you that you are
+    "really" moving.</div>
+    <div class="step"><strong>Light speed.</strong> Light travels at $c$ in
+    vacuum for every observer, regardless of the motion of source or
+    observer.</div>
+    <p>The first is unremarkable and dates to Galileo. The second is the one that
+    breaks everything.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why the second postulate is strange</b></div>
+    <div class="step">Throw a ball at $10$ m/s from a train moving at $30$ m/s
+    and someone on the platform measures $40$ m/s. Velocities
+    add.</div>
+    <div class="step">Shine a torch from the same train and the platform observer
+    measures $c$ &mdash; not $c + 30$. Light does not
+    add.</div>
+    <div class="step">If both observers measure the same speed for the same beam
+    while moving relative to each other, they cannot agree about distance and
+    time. Something has to give, and it is
+    simultaneity.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>The Lorentz factor</b></div>
+    <div class="step">$\gamma = \dfrac{1}{\sqrt{1 - v^2/c^2}}$</div>
+    <p>Always at least $1$, and rising steeply near $c$. Every relativistic
+    formula is a Newtonian one with a $\gamma$ in it.</p>
+    <div class="step">At $v = 0.1c$, $\gamma = 1.005$ &mdash; a half-percent
+    effect.</div>
+    <div class="step">At $v = 0.87c$, $\gamma = 2$.</div>
+    <div class="step">At $v = 0.99c$, $\gamma = 7.1$.</div>
+    <p>This is why relativity is invisible in daily life: at everyday speeds
+    $\gamma$ differs from $1$ by parts in a trillion.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Time and length</h3>
+  <div class="box thm"><div class="bl">Rule <b>Time dilation</b></div>
+    <div class="step">$\Delta t = \gamma\,\Delta t_0$</div>
+    <p>where $\Delta t_0$ is the <em>proper time</em>, measured by a clock
+    present at both events. Any other observer measures a longer interval: moving
+    clocks run slow.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Length contraction</b></div>
+    <div class="step">$L = \dfrac{L_0}{\gamma}$</div>
+    <p>where $L_0$ is the <em>proper length</em>, measured in the object's own
+    rest frame. Moving objects are shorter, along the direction of motion
+    only.</p></div>
+  <div class="box warn"><div class="bl">Identify the proper quantity first</div>
+    <p>Half the errors in this unit come from mixing them up. Proper time is
+    measured by the clock that is <em>at</em> both events. Proper length is
+    measured in the frame where the object is <em>at rest</em>. Note they work
+    oppositely: proper time is the shortest, proper length the
+    longest.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The muon</b></div>
+    <p>Muons form about $10$ km up and live $2.2\,\mu$s. Even at $c$ they should
+    travel only $660$ m. Yet they reach the ground.</p>
+    <div class="step"><em>Ground frame:</em> at $v = 0.999c$,
+    $\gamma = 22$, so the muon's clock runs slow and it survives
+    $48\,\mu$s of our time &mdash; enough for $14$ km.</div>
+    <div class="step"><em>Muon frame:</em> the muon lives its ordinary
+    $2.2\,\mu$s, but the $10$ km of atmosphere is contracted to
+    $10/22 = 450$ m, which it crosses easily.</div>
+    <div class="step">Different explanations, same outcome. Both frames are
+    correct and neither is preferred &mdash; which is exactly what the first
+    postulate demands.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>The twin case</b></div>
+    <p>One twin travels at high speed and returns younger. If motion is relative,
+    why is it not symmetric?</p>
+    <div class="step">Because it is not symmetric. The traveller
+    <em>turns around</em>, and so changes inertial frame; the stay-at-home does
+    not.</div>
+    <div class="step">The postulates apply to inertial frames. The traveller
+    accelerates and can feel it, which breaks the
+    symmetry.</div>
+    <div class="step">So there is no paradox, only an asymmetry that the informal
+    statement of the puzzle hides.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Momentum, energy, mass</h3>
+  <div class="box thm"><div class="bl">Rule <b>The relativistic forms</b></div>
+    <div class="step">$p = \gamma m v$</div>
+    <div class="step">$E = \gamma m c^2$ &mdash; total energy</div>
+    <div class="step">$E_0 = mc^2$ &mdash; rest energy, present even at
+    rest</div>
+    <div class="step">$KE = (\gamma - 1)mc^2$ &mdash; and this reduces to
+    $\tfrac12 mv^2$ at low speed, as it must</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why nothing reaches $c$</b></div>
+    <div class="step">As $v \to c$, $\gamma \to \infty$, so momentum and energy
+    both diverge.</div>
+    <div class="step">Accelerating a massive object to $c$ would take infinite
+    energy. It is not a technological limit but an arithmetic
+    one.</div>
+    <div class="step">Massless particles are the exception: with
+    $m = 0$ the formulas allow travel at exactly $c$, and photons must always
+    move at $c$ &mdash; they are never at rest in any
+    frame.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>What $E = mc^2$ actually says</b></div>
+    <div class="step">Mass is a form of energy. Because $c^2$ is enormous, a
+    tiny mass carries a vast energy: one gram is about $9 \times 10^{13}$ J,
+    roughly a day's electricity for a small city.</div>
+    <div class="step">In the Sun, four hydrogen nuclei fuse into helium that is
+    about $0.7$ per cent lighter, and that missing mass is the
+    sunlight.</div>
+    <div class="step">Chemical reactions do the same thing, but the mass change
+    is around a billionth &mdash; far too small to notice, which is why chemistry
+    could develop with mass treated as conserved.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Confusing proper time with proper length. Identify which frame each
+  is measured in.<br>
+  &bull; Applying length contraction perpendicular to the motion. Only the
+  direction of travel contracts.<br>
+  &bull; Treating the twin case as symmetric. The traveller
+  accelerates.<br>
+  &bull; Using $p = mv$ at relativistic speed.<br>
+  &bull; Forgetting that everything must reduce to the Newtonian result as
+  $v \to 0$. That check catches most algebra errors.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Lorentz factor</div>
+      <p>Find $\gamma$ at $v = 0.6c$.</p>
+      <details><summary>Answer</summary><div class="ans">$\gamma = 1/\sqrt{1 -
+      0.36} = 1/0.8 = 1.25$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Dilation</div>
+      <p>A clock on that ship ticks $1$ s. How long on Earth?</p>
+      <details><summary>Answer</summary><div class="ans">$1.25$ s. The moving
+      clock runs slow from our point of view.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Contraction</div>
+      <p>The ship is $100$ m long at rest. How long do we measure it?</p>
+      <details><summary>Answer</summary><div class="ans">$100/1.25 = 80$
+      m.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Which is proper</div>
+      <p>Who measures the proper lifetime of a particle?</p>
+      <details><summary>Answer</summary><div class="ans">An observer moving with
+      it, for whom creation and decay happen at the same
+      place.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Rest energy</div>
+      <p>Find the rest energy of a $1$ kg mass.</p>
+      <details><summary>Answer</summary><div class="ans">$E_0 = (1)(3 \times
+      10^8)^2 = 9 \times 10^{16}$ J.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · The twin</div>
+      <p>Why is the twin situation not symmetric?</p>
+      <details><summary>Answer</summary><div class="ans">The traveller changes
+      inertial frame when turning around and feels the acceleration. The
+      stay-at-home never does, so the two are not
+      interchangeable.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Low-speed check</div>
+      <p>Show $KE = (\gamma - 1)mc^2$ becomes $\tfrac12 mv^2$ at small
+      $v$.</p>
+      <details><summary>Solution</summary><div class="ans">For small $v/c$,
+      $\gamma \approx 1 + \tfrac12 v^2/c^2$. Then
+      $(\gamma - 1)mc^2 \approx \tfrac12 mv^2$. Every relativistic formula must
+      pass this test, and it is the fastest way to check
+      one.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · GPS</div>
+      <p>Why must GPS satellites correct for relativity?</p>
+      <details><summary>Answer</summary><div class="ans">Their clocks disagree
+      with ground clocks by tens of microseconds a day. Since positions are
+      computed from light travel times, an uncorrected microsecond is hundreds of
+      metres of error, accumulating to kilometres within a
+      day.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The postulates.</strong> Both statements, and why the second
+    forces the rest.</li>
+    <li><strong>Dilation and contraction.</strong> The formulas and identifying
+    the proper quantity.</li>
+    <li><strong>Resolving the puzzles.</strong> Muon and twin cases from both
+    frames.</li>
+    <li><strong>Dynamics.</strong> Relativistic momentum and energy, rest energy,
+    and the low-speed limit.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar closes its topic list with "special relativity". Check the
+    syllabus on Quercus for the assigned problems; this material usually occupies
+    the last two weeks.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>A constant light speed for all observers forces time and length to depend
+    on the observer. Every formula is Newtonian with a factor of $\gamma$, and
+    every one reduces to Newton at low speed. Nothing is discarded, only
+    corrected.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Name the two frames explicitly before computing, and say which measures the
+    proper quantity. Then check the answer reduces sensibly as
+    $v \to 0$.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · The radical postulate</div>
+      <p>Which postulate breaks Newtonian intuition?</p>
+      <details><summary>Guide</summary><div class="ans">The constancy of $c$.
+      Light does not obey ordinary velocity addition, which forces time and space
+      to adjust instead.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Proper quantities</div>
+      <p>Which frame measures proper time, and which proper length?</p>
+      <details><summary>Guide</summary><div class="ans">Proper time: the frame
+      where both events happen at the same place. Proper length: the frame where
+      the object is at rest.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Direction</div>
+      <p>Does an object contract in every direction?</p>
+      <details><summary>Guide</summary><div class="ans">No, only along the
+      direction of motion. Perpendicular dimensions are
+      unchanged.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · The speed limit</div>
+      <p>Why can a massive object not reach $c$?</p>
+      <details><summary>Guide</summary><div class="ans">Its energy
+      $\gamma mc^2$ diverges as $v \to c$, so infinite energy would be
+      required.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit09.html">← Unit 09<span>Wave optics</span></a>
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

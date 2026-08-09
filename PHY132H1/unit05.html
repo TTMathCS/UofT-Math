@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 5 — Magnetic Fields · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 5</div>
+<div class="unit-no reveal">Unit 5 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Magnetic Fields</h1>
+<p class="ch-intro reveal">A second field, with a strange rule: it acts only on
+<em>moving</em> charges, and the force is perpendicular to both the velocity and
+the field. That perpendicularity has a striking consequence &mdash; a magnetic
+force can never change a particle's speed.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Apply the right-hand rule reliably.</li>
+    <li>Compute the force on a moving charge and on a current-carrying
+    wire.</li>
+    <li>Explain why magnetic forces do no work.</li>
+    <li>Find the field produced by currents.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Moving charges both feel and produce magnetic fields. That reciprocity is
+    what makes motors and generators possible, and Unit 6 shows it is the same
+    phenomenon viewed two ways.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every electric motor, every hard disk, every MRI scanner. The Earth's
+    field deflects charged particles from the Sun, which is what produces the
+    aurora and what keeps the atmosphere from being stripped
+    away.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Ørsted noticed in 1820 that a compass needle moved when a nearby current
+    was switched on &mdash; the first evidence that electricity and magnetism
+    were connected. Magnetic monopoles have never been found; unlike charge,
+    magnetism seems to come only in pairs.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Force on a moving charge</h3>
+  <div class="box thm"><div class="bl">Rule <b>The magnetic force</b></div>
+    <div class="step">$F = qvB\sin\theta$, with $\theta$ between the velocity and
+    the field.</div>
+    <div class="step">Direction: perpendicular to <em>both</em> $v$ and $B$,
+    given by the right-hand rule.</div>
+    <p>Three consequences follow immediately:</p>
+    <div class="step">A stationary charge feels nothing. $v = 0$ gives
+    $F = 0$.</div>
+    <div class="step">A charge moving <em>along</em> the field feels nothing.
+    $\sin 0 = 0$.</div>
+    <div class="step">The force is maximum when the motion is perpendicular to
+    the field.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>The right-hand rule</b></div>
+    <p>Point your fingers along $v$, curl them toward $B$; your thumb gives the
+    force on a <em>positive</em> charge. For a negative charge, reverse
+    it.</p>
+    <p>Practise physically rather than mentally. Direction errors, not
+    arithmetic, are what lose marks in this unit.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why magnetic forces do no work</b></div>
+    <div class="step">Work is $Fd\cos\theta$ with $\theta$ between force and
+    displacement.</div>
+    <div class="step">The magnetic force is always perpendicular to the velocity,
+    hence to the displacement. So $\cos\theta = 0$ and the work is
+    <em>always zero</em>.</div>
+    <div class="step">A magnetic field can change a particle's
+    <em>direction</em> but never its speed or kinetic energy. Motors do work, but
+    the energy comes from the electrical supply, not from the
+    magnet.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Circular motion in a field</b></div>
+    <p>A charge moving perpendicular to a uniform field feels a constant-magnitude
+    force always perpendicular to its motion &mdash; exactly the condition for a
+    circle.</p>
+    <div class="step">Setting $qvB = mv^2/r$ gives
+    $r = \dfrac{mv}{qB}$.</div>
+    <div class="step">Heavier or faster means a wider circle; stronger field
+    means tighter. This is how a mass spectrometer separates isotopes and how a
+    cyclotron confines particles.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Force on a current</h3>
+  <div class="box thm"><div class="bl">Rule <b>A wire is many moving charges</b></div>
+    <div class="step">$F = BIL\sin\theta$ for a straight wire of length $L$
+    carrying current $I$.</div>
+    <p>Same right-hand rule, with the current direction playing the role of
+    $v$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>How a motor works</b></div>
+    <div class="step">A current loop in a magnetic field feels opposite forces on
+    its two sides, since the current runs in opposite
+    directions there.</div>
+    <div class="step">Those forces make a couple &mdash; zero net force, nonzero
+    torque &mdash; so the loop rotates.</div>
+    <div class="step">Half a turn later the torque would reverse and stall it, so
+    a commutator flips the current direction each half turn. That is the entire
+    principle of a direct-current motor.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Sources of magnetic field</h3>
+  <div class="box thm"><div class="bl">Rule <b>Currents make fields</b></div>
+    <div class="step"><em>Long straight wire:</em>
+    $B = \dfrac{\mu_0 I}{2\pi r}$, in circles around the wire. Grip the wire with
+    your right hand, thumb along the current, and your fingers curl the field
+    direction.</div>
+    <div class="step"><em>Centre of a loop of radius $R$:</em>
+    $B = \dfrac{\mu_0 I}{2R}$.</div>
+    <div class="step"><em>Inside a long solenoid:</em>
+    $B = \mu_0 n I$ with $n$ turns per metre &mdash; uniform, and independent of
+    position.</div>
+    <p>Here $\mu_0 = 4\pi \times 10^{-7}$ T·m/A.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Two parallel wires</b></div>
+    <p>Each wire sits in the other's field, so each feels a force.</p>
+    <div class="step">Currents in the <em>same</em> direction: the wires
+    <em>attract</em>.</div>
+    <div class="step">Currents in <em>opposite</em> directions: they
+    <em>repel</em>.</div>
+    <div class="step">This is the reverse of the electrostatic intuition, where
+    like repels like, and it is worth checking with the right-hand rule twice
+    rather than trusting memory.</div>
+  </div>
+  <div class="box warn"><div class="bl">No magnetic monopoles</div>
+    <p>Electric field lines start and end on charges. Magnetic field lines always
+    form closed loops, because there is no magnetic charge to begin or end on.
+    Cutting a bar magnet in half gives two magnets, not a north and a south
+    pole.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting the force is zero for a stationary charge, or for motion
+  along the field.<br>
+  &bull; Using the right-hand rule for a negative charge without
+  reversing.<br>
+  &bull; Thinking a magnetic force changes speed. It never
+  does.<br>
+  &bull; Confusing the field <em>produced by</em> a current with the force
+  <em>on</em> it.<br>
+  &bull; Assuming parallel currents repel. They attract.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Zero force</div>
+      <p>Name two situations where a charge in a magnetic field feels no
+      force.</p>
+      <details><summary>Answer</summary><div class="ans">When it is at rest, and
+      when it moves parallel or antiparallel to the field.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Magnitude</div>
+      <p>A proton at $2 \times 10^6$ m/s crosses a $0.5$ T field
+      perpendicularly. Find the force.</p>
+      <details><summary>Answer</summary><div class="ans">$F = (1.6 \times
+      10^{-19})(2 \times 10^6)(0.5) = 1.6 \times 10^{-13}$
+      N.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Radius</div>
+      <p>Find that proton's orbital radius. Take
+      $m_p = 1.67 \times 10^{-27}$ kg.</p>
+      <details><summary>Answer</summary><div class="ans">$r = mv/(qB) = (1.67
+      \times 10^{-27})(2 \times 10^6)/((1.6 \times 10^{-19})(0.5)) = 0.042$
+      m.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · No work</div>
+      <p>Why can a magnetic field not speed up a particle?</p>
+      <details><summary>Answer</summary><div class="ans">The force is always
+      perpendicular to the velocity, so it does no work and the kinetic energy
+      cannot change.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Wire field</div>
+      <p>Find the field $0.05$ m from a wire carrying $10$ A.</p>
+      <details><summary>Answer</summary><div class="ans">$B = (4\pi \times
+      10^{-7})(10)/(2\pi \times 0.05) = 4 \times 10^{-5}$ T — comparable to the
+      Earth's field.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Parallel wires</div>
+      <p>Two wires carry current in the same direction. Attract or repel?</p>
+      <details><summary>Solution</summary><div class="ans">Attract. Apply the
+      right-hand rule twice: find the field of wire one at wire two, then the
+      force on wire two in that field. The result points toward wire
+      one.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Solenoid</div>
+      <p>Find the field inside a solenoid with $500$ turns per metre carrying
+      $2$ A.</p>
+      <details><summary>Answer</summary><div class="ans">$B = \mu_0 nI = (4\pi
+      \times 10^{-7})(500)(2) = 1.26 \times 10^{-3}$ T, uniform
+      throughout.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Monopoles</div>
+      <p>What happens if you cut a bar magnet in half?</p>
+      <details><summary>Answer</summary><div class="ans">You get two complete
+      magnets, each with a north and a south pole. Isolated poles have never been
+      observed, which is why magnetic field lines always
+      close.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The magnetic force.</strong> Its formula, its direction, and the
+    two cases where it vanishes.</li>
+    <li><strong>No work.</strong> Why speed cannot change, and what that implies
+    for motors.</li>
+    <li><strong>Forces on currents.</strong> Wires, loops, and how a motor
+    turns.</li>
+    <li><strong>Sources.</strong> Wire, loop and solenoid fields, and the absence
+    of monopoles.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "magnetism". Check the syllabus on Quercus for the
+    assigned problems; right-hand-rule questions are standard on term
+    tests.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Moving charges feel magnetic forces and also create magnetic fields. The
+    force is perpendicular to the motion, so it steers without speeding up. Unit
+    6 closes the loop by showing changing magnetic fields create electric
+    ones.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Use your actual right hand every time, and say aloud which quantity each
+    finger represents. Mental right-hand rules go wrong far more often than
+    physical ones.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Requirement</div>
+      <p>What must a charge be doing to feel a magnetic force?</p>
+      <details><summary>Guide</summary><div class="ans">Moving, and not parallel
+      to the field.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Work</div>
+      <p>How much work does a magnetic force do?</p>
+      <details><summary>Guide</summary><div class="ans">None, ever. It is always
+      perpendicular to the displacement.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Circular motion</div>
+      <p>Why does a charge move in a circle in a uniform field?</p>
+      <details><summary>Guide</summary><div class="ans">The force has constant
+      magnitude and stays perpendicular to the velocity — the exact condition for
+      uniform circular motion.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Closed lines</div>
+      <p>Why do magnetic field lines form loops?</p>
+      <details><summary>Guide</summary><div class="ans">There are no magnetic
+      charges for them to start or end on, so they have nowhere to terminate
+      except back on themselves.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit04.html">← Unit 04<span>Current &amp; circuits</span></a>
+  <a href="unit06.html">Unit 06 →<span>Induction</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

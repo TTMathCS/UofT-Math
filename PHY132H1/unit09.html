@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 9 — Wave Optics · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 9</div>
+<div class="unit-no reveal">Unit 9 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Wave Optics</h1>
+<p class="ch-intro reveal">Where rays fail. When light passes an obstacle
+comparable to its wavelength it spreads, and when two beams overlap they can
+cancel. Neither has any explanation in the ray picture, and both are what
+settled the argument about what light is.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Relate path difference to constructive and destructive
+    interference.</li>
+    <li>Analyse the double slit and locate its fringes.</li>
+    <li>Explain single-slit diffraction and the resolution limit.</li>
+    <li>Account for thin-film colours, including the phase flip on
+    reflection.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Two beams of light producing <em>darkness</em> is impossible for
+    particles and natural for waves. Interference is the decisive evidence, and
+    it also sets a hard limit on what any optical instrument can
+    resolve.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Anti-reflective coatings on lenses and glasses, the colours of soap
+    bubbles and oil films, CD and DVD readout, and the diffraction gratings in
+    every spectrometer.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Young's double-slit experiment of 1801 was ridiculed for contradicting
+    Newton's particle view. A century later the same experiment done one photon
+    at a time still produced fringes, which is the central puzzle of quantum
+    mechanics and remains one.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Interference</h3>
+  <div class="box thm"><div class="bl">Rule <b>Path difference decides everything</b></div>
+    <p>Two coherent sources, and a point where their waves arrive having
+    travelled different distances $\Delta$:</p>
+    <div class="step"><em>Constructive:</em> $\Delta = m\lambda$ for integer
+    $m$ &mdash; whole wavelengths, so the waves arrive in
+    step.</div>
+    <div class="step"><em>Destructive:</em>
+    $\Delta = \left(m + \tfrac12\right)\lambda$ &mdash; half wavelengths, so
+    crest meets trough.</div>
+    <p><em>Coherent</em> means the sources keep a fixed phase relationship.
+    Ordinary lamps do not, which is why interference needs a laser or a single
+    source split in two.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why two lamps show no fringes</b></div>
+    <div class="step">Independent sources shift phase randomly and constantly, so
+    the pattern moves faster than any eye or detector can
+    follow.</div>
+    <div class="step">Splitting one source into two paths keeps them locked
+    together, which is precisely what a double slit does. The fringes then stand
+    still and can be seen.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>The double slit</h3>
+  <div class="box thm"><div class="bl">Rule <b>Fringe positions</b></div>
+    <p>Two slits separated by $d$, with a screen at distance $L$:</p>
+    <div class="step">Bright fringes at
+    $d\sin\theta = m\lambda$.</div>
+    <div class="step">Dark fringes at
+    $d\sin\theta = \left(m + \tfrac12\right)\lambda$.</div>
+    <div class="step">For small angles, the spacing on the screen is
+    $\Delta y = \dfrac{\lambda L}{d}$.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Measuring a wavelength</b></div>
+    <p>Slits $0.1$ mm apart, screen $2$ m away, fringes $1.26$ cm apart.</p>
+    <div class="step">$\lambda = \dfrac{\Delta y\, d}{L} = \dfrac{(0.0126)(10^{-4})}{2}
+    = 6.3 \times 10^{-7}$ m.</div>
+    <div class="step">That is $630$ nm &mdash; red light. Measuring a distance of
+    less than a millionth of a metre using only a ruler is the
+    point.</div>
+    <div class="step">Note the inverse dependence: <em>closer</em> slits give
+    <em>wider</em> fringes.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Single-slit diffraction</h3>
+  <div class="box thm"><div class="bl">Rule <b>One slit also produces a pattern</b></div>
+    <p>A single slit of width $a$ gives dark fringes at</p>
+    <div class="step">$a\sin\theta = m\lambda$ for
+    $m = 1, 2, 3, \dots$ &mdash; note this is the condition for
+    <em>darkness</em>, the reverse of the double slit.</div>
+    <p>The central bright band is twice as wide as the others and much
+    brighter.</p></div>
+  <div class="box warn"><div class="bl">Narrower slit, wider pattern</div>
+    <p>Squeezing the slit spreads the light more. This is counterintuitive and is
+    the whole content of diffraction: the more you confine a wave, the more it
+    spreads. It is also, in a different guise, the uncertainty
+    principle.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The resolution limit</b></div>
+    <p>Every aperture diffracts, so a point source images as a small disc rather
+    than a point. Two sources closer than about</p>
+    <div class="step">$\theta \approx 1.22\dfrac{\lambda}{D}$</div>
+    <p>cannot be told apart, where $D$ is the aperture diameter.</p>
+    <div class="step">This is why large telescopes resolve better &mdash; not
+    only more light, but a smaller diffraction limit.</div>
+    <div class="step">It is also why electron microscopes exist: electrons have a
+    far shorter wavelength than light, so the limit is far
+    finer.</div>
+    <div class="step">No amount of engineering beats this. It is set by the wave
+    nature of light itself.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Thin films</h3>
+  <div class="box thm"><div class="bl">Rule <b>Two reflections interfere</b></div>
+    <p>Light hitting a thin film partly reflects off the top surface and partly
+    off the bottom. The two reflections travel different distances and
+    interfere.</p>
+    <div class="step">Extra path in the film: $2t$ for near-normal
+    incidence.</div>
+    <div class="step">The wavelength <em>inside</em> the film is
+    $\lambda/n$, so the path counts in those shortened
+    wavelengths.</div></div>
+  <div class="box warn"><div class="bl">Reflection off a denser medium flips the phase</div>
+    <p>Light reflecting from a medium of <em>higher</em> refractive index gains
+    half a wavelength of phase. Reflecting from a lower index does not.</p>
+    <div class="step">A soap film in air has a flip at the top surface only, so
+    the two reflections start half a wavelength out of
+    step.</div>
+    <div class="step">That is why a very thin soap film looks <em>black</em> just
+    before it bursts: with $t$ nearly zero the only difference is the flip, and
+    the reflections cancel.</div>
+    <p>Forgetting the flip inverts every answer in this section, and it is the
+    most common error in the unit.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Anti-reflective coating</b></div>
+    <p>A lens coated with a film of index between air and glass.</p>
+    <div class="step">Both surfaces now reflect off a denser medium, so
+    <em>both</em> reflections flip and the flips cancel out.</div>
+    <div class="step">Choosing $2t = \lambda/(2n)$, so
+    $t = \lambda/(4n)$, makes the two reflections destructive and kills the
+    reflection.</div>
+    <div class="step">It works exactly at one wavelength only, usually chosen in
+    the green where the eye is most sensitive. The residual purple tint on coated
+    lenses is the red and blue that were not
+    cancelled.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Swapping the bright and dark conditions between single and double
+  slit.<br>
+  &bull; Forgetting the half-wavelength phase flip in thin
+  films.<br>
+  &bull; Using the vacuum wavelength inside a film. Divide by
+  $n$.<br>
+  &bull; Expecting fringes from two independent lamps. They are not
+  coherent.<br>
+  &bull; Thinking a narrower slit gives a narrower pattern.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Path difference</div>
+      <p>Two waves arrive with a path difference of $1.5\lambda$. Constructive
+      or destructive?</p>
+      <details><summary>Answer</summary><div class="ans">Destructive — it is a
+      half-integer number of wavelengths.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Fringe spacing</div>
+      <p>Slits $0.2$ mm apart, screen $1.5$ m away, $500$ nm light. Find the
+      spacing.</p>
+      <details><summary>Answer</summary><div class="ans">$\Delta y = \lambda L/d
+      = (5 \times 10^{-7})(1.5)/(2 \times 10^{-4}) = 3.75$
+      mm.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Closer slits</div>
+      <p>What happens to the fringes if the slits are moved closer
+      together?</p>
+      <details><summary>Answer</summary><div class="ans">They spread further
+      apart. The spacing goes as $1/d$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Coherence</div>
+      <p>Why does a double slit use one source rather than two lamps?</p>
+      <details><summary>Answer</summary><div class="ans">Independent sources
+      have randomly shifting phase, so the pattern washes out. Splitting one
+      source keeps the two beams locked in
+      phase.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Single slit</div>
+      <p>A $0.05$ mm slit with $600$ nm light. Find the angle of the first dark
+      fringe.</p>
+      <details><summary>Answer</summary><div class="ans">$\sin\theta = \lambda/a
+      = (6 \times 10^{-7})/(5 \times 10^{-5}) = 0.012$, so
+      $\theta = 0.69$ degrees.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Resolution</div>
+      <p>Why does a bigger telescope resolve finer detail?</p>
+      <details><summary>Solution</summary><div class="ans">The diffraction limit
+      $\theta \approx 1.22\lambda/D$ shrinks as the aperture $D$ grows. More
+      light is a separate benefit; the resolution gain is purely a wave
+      effect.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Black soap film</div>
+      <p>Why does a soap film look black just before bursting?</p>
+      <details><summary>Answer</summary><div class="ans">The thickness has gone
+      to nearly zero, so the only difference between the two reflections is the
+      half-wavelength flip at the top surface. They cancel and no light is
+      reflected.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Coating thickness</div>
+      <p>Find the thinnest anti-reflective coating for $550$ nm light with
+      $n = 1.38$.</p>
+      <details><summary>Solution</summary><div class="ans">$t = \lambda/(4n) =
+      (5.5 \times 10^{-7})/(4 \times 1.38) = 99.6$ nm — about a hundred
+      nanometres, which is why such coatings are deposited a few molecular layers
+      at a time.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Interference.</strong> Path difference conditions and what
+    coherence requires.</li>
+    <li><strong>Double slit.</strong> Fringe positions and the inverse dependence
+    on separation.</li>
+    <li><strong>Diffraction.</strong> Single-slit minima and the resolution
+    limit.</li>
+    <li><strong>Thin films.</strong> The phase flip, the wavelength in the
+    medium, and anti-reflective coatings.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar's "light" and "optics" topics include wave optics. Check the
+    syllabus on Quercus for assigned problems; the double slit is usually a
+    laboratory experiment as well.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Waves that meet add, and whether they reinforce or cancel depends only on
+    path difference. Slits, films and apertures are all the same calculation with
+    different geometry. Unit 10 turns to what light's constant speed does to
+    space and time.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Count wavelengths of path difference, and remember to add half a wavelength
+    for each reflection off a denser medium. Getting that bookkeeping right is
+    the whole unit.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Constructive condition</div>
+      <p>What path difference gives constructive interference?</p>
+      <details><summary>Guide</summary><div class="ans">A whole number of
+      wavelengths.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Slit width</div>
+      <p>What happens to a diffraction pattern as the slit narrows?</p>
+      <details><summary>Guide</summary><div class="ans">It spreads out. Greater
+      confinement means greater spreading.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · The flip</div>
+      <p>When does reflection add half a wavelength?</p>
+      <details><summary>Guide</summary><div class="ans">When reflecting off a
+      medium with a higher refractive index.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Hard limit</div>
+      <p>Can better lenses beat the diffraction limit?</p>
+      <details><summary>Guide</summary><div class="ans">No. It follows from the
+      wave nature of light and the aperture size. Shorter wavelengths are the
+      only way around it, which is what electron microscopy
+      does.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit08.html">← Unit 08<span>Geometric optics</span></a>
+  <a href="unit10.html">Unit 10 →<span>Special relativity</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

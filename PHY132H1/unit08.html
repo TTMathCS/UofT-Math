@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 8 — Geometric Optics · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 8</div>
+<div class="unit-no reveal">Unit 8 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Geometric Optics</h1>
+<p class="ch-intro reveal">When obstacles are much larger than the wavelength,
+light can be treated as straight rays. That approximation covers mirrors,
+lenses, eyes and telescopes &mdash; everything optical you use, right up to the
+point where Unit 9 shows why it must eventually fail.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Apply the laws of reflection and refraction.</li>
+    <li>Compute critical angles and explain total internal reflection.</li>
+    <li>Use the mirror and lens equations with correct sign conventions.</li>
+    <li>Distinguish real from virtual images.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Tracing rays is far simpler than solving wave equations, and it gives the
+    right answer whenever the wavelength is negligible. Knowing when the
+    approximation holds is as important as the approximation
+    itself.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Spectacles, cameras, microscopes, telescopes. Optical fibre carries
+    essentially all long-distance internet traffic by total internal reflection,
+    trapping light inside a glass thread for thousands of
+    kilometres.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Snell found the refraction law in 1621; Ibn Sahl had described it in
+    Baghdad six centuries earlier. Fermat later showed it follows from light
+    taking the path of least time &mdash; a reformulation that turned out to
+    anticipate how modern physics states its laws.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Reflection and refraction</h3>
+  <div class="box thm"><div class="bl">Rule <b>Reflection</b></div>
+    <p>The angle of reflection equals the angle of incidence, both measured from
+    the <em>normal</em> &mdash; the perpendicular to the surface, not the surface
+    itself.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Refraction: Snell's law</b></div>
+    <div class="step">$n_1\sin\theta_1 = n_2\sin\theta_2$</div>
+    <p>The refractive index is $n = c/v$, so a larger $n$ means slower light.
+    Air is about $1.00$, water $1.33$, glass around $1.5$.</p>
+    <div class="step">Entering a <em>slower</em> medium, the ray bends
+    <em>toward</em> the normal.</div>
+    <div class="step">Entering a <em>faster</em> medium, it bends
+    <em>away</em>.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why a straw looks bent</b></div>
+    <div class="step">Light from the submerged part leaves the water and bends
+    away from the normal.</div>
+    <div class="step">Your eye traces the rays back in straight lines, so the
+    submerged part appears shallower and displaced.</div>
+    <div class="step">The same effect makes a pool look shallower than it is, by
+    a factor of about $1.33$ &mdash; which is a genuine safety
+    issue.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Total internal reflection</b></div>
+    <p>Going from slower to faster, the refracted ray bends away from the normal.
+    Beyond a certain incidence angle it would need to exceed $90$ degrees, which
+    is impossible &mdash; so <em>none</em> escapes and all the light
+    reflects.</p>
+    <div class="step">$\sin\theta_c = \dfrac{n_2}{n_1}$, valid only when
+    $n_1 > n_2$.</div>
+    <div class="step">For water to air, $\theta_c = \arcsin(1/1.33) = 48.8$
+    degrees.</div>
+    <p>This is the only kind of reflection that is perfectly lossless, which is
+    exactly why optical fibre works over long
+    distances.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Mirrors and lenses</h3>
+  <div class="box thm"><div class="bl">Rule <b>One equation for both</b></div>
+    <div class="step">$\dfrac{1}{d_o} + \dfrac{1}{d_i} = \dfrac{1}{f}$</div>
+    <div class="step">Magnification $m = -\dfrac{d_i}{d_o}$. Negative $m$ means
+    inverted.</div>
+    <p>Sign conventions, which is where the marks are:</p>
+    <div class="step">$f > 0$ for converging &mdash; a concave mirror or convex
+    lens.</div>
+    <div class="step">$f < 0$ for diverging &mdash; a convex mirror or concave
+    lens.</div>
+    <div class="step">$d_i > 0$ for a <em>real</em> image, formed where light
+    actually converges. $d_i < 0$ for a <em>virtual</em>
+    image.</div></div>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step">A <em>real</em> image is where rays actually meet. It can
+    be caught on a screen. Cameras and projectors form
+    them.</div>
+    <div class="step">A <em>virtual</em> image is where rays only
+    <em>appear</em> to come from when traced backwards. It cannot be projected. A
+    plane mirror gives one.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Converging lens, object outside the focus</b></div>
+    <p>An object $30$ cm from a lens of focal length $10$ cm.</p>
+    <div class="step">$1/30 + 1/d_i = 1/10$, so
+    $1/d_i = 1/10 - 1/30 = 1/15$ and $d_i = 15$ cm.</div>
+    <div class="step">Positive, so the image is real and on the far side.
+    $m = -15/30 = -0.5$: inverted and half size.</div>
+    <div class="step">This is a camera. Moving the object closer to the focus
+    pushes the image further away and makes it larger.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Same lens, object inside the focus</b></div>
+    <p>Now $5$ cm from the same lens.</p>
+    <div class="step">$1/5 + 1/d_i = 1/10$, so
+    $1/d_i = 1/10 - 1/5 = -1/10$ and $d_i = -10$ cm.</div>
+    <div class="step">Negative, so the image is virtual, on the same side as the
+    object. $m = -(-10)/5 = +2$: upright and double
+    size.</div>
+    <div class="step">This is a magnifying glass. The negative sign is not an
+    error &mdash; it is the answer telling you the image is
+    virtual.</div>
+  </div>
+  <div class="box warn"><div class="bl">Take the reciprocal at the end</div>
+    <p>The commonest arithmetic error is solving for $1/d_i$ and reporting it as
+    $d_i$. Check the sign as well: it tells you real or virtual, which is usually
+    what the question is actually asking.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The eye and corrective lenses</h3>
+  <div class="box eg"><div class="bl">Example <b>Two common defects</b></div>
+    <div class="step"><em>Myopia</em>, short sight: the eye focuses in front of
+    the retina, so distant objects blur. Corrected with a
+    <em>diverging</em> lens, which pushes the focus back.</div>
+    <div class="step"><em>Hyperopia</em>, long sight: the focus falls behind the
+    retina and near objects blur. Corrected with a <em>converging</em>
+    lens.</div>
+    <div class="step">Prescription strength is in <em>dioptres</em>,
+    $1/f$ with $f$ in metres. A $-2.5$ D prescription is a diverging lens of
+    focal length $-0.4$ m, and the sign alone tells you which defect is being
+    corrected.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Measuring angles from the surface rather than the
+  normal.<br>
+  &bull; Applying the critical-angle formula going into a denser medium. Total
+  internal reflection only happens dense to
+  sparse.<br>
+  &bull; Forgetting to invert after solving for $1/d_i$.<br>
+  &bull; Getting the focal-length sign wrong for a diverging
+  element.<br>
+  &bull; Treating a negative image distance as a mistake rather than as
+  "virtual".</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Snell</div>
+      <p>Light hits water at $40$ degrees from the normal. Find the refraction
+      angle.</p>
+      <details><summary>Answer</summary><div class="ans">$\sin\theta_2 =
+      \sin 40/1.33 = 0.483$, so $\theta_2 = 28.9$ degrees — bent toward the
+      normal, as entering a slower medium requires.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Critical angle</div>
+      <p>Find the critical angle for glass of $n = 1.5$ to air.</p>
+      <details><summary>Answer</summary><div class="ans">$\sin\theta_c = 1/1.5$,
+      so $\theta_c = 41.8$ degrees.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Which direction</div>
+      <p>Does light bend toward or away from the normal entering glass from
+      air?</p>
+      <details><summary>Answer</summary><div class="ans">Toward. Glass is slower,
+      so the ray bends toward the normal.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Lens equation</div>
+      <p>An object $20$ cm from a $15$ cm converging lens. Find the image.</p>
+      <details><summary>Answer</summary><div class="ans">$1/d_i = 1/15 - 1/20 =
+      1/60$, so $d_i = 60$ cm. Real, inverted,
+      $m = -3$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Virtual image</div>
+      <p>How do you know an image is virtual from the arithmetic?</p>
+      <details><summary>Answer</summary><div class="ans">$d_i$ comes out
+      negative. The image is on the same side as the object and cannot be
+      projected onto a screen.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Fibre optics</div>
+      <p>Why does light stay in an optical fibre?</p>
+      <details><summary>Solution</summary><div class="ans">The core has a higher
+      refractive index than the cladding, so light striking the boundary beyond
+      the critical angle is totally internally reflected — losslessly, and
+      repeatedly along the whole length.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Prescription</div>
+      <p>What does a $+2.0$ D lens do, and which defect does it correct?</p>
+      <details><summary>Answer</summary><div class="ans">Converging, with
+      $f = 0.5$ m. Positive means converging, which corrects long
+      sight.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Plane mirror</div>
+      <p>Where is the image in a flat mirror, and is it real?</p>
+      <details><summary>Answer</summary><div class="ans">As far behind the mirror
+      as the object is in front, upright and the same size. Virtual — no light
+      actually goes behind the mirror, so it cannot be caught on a
+      screen.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Reflection and refraction.</strong> Angles from the normal, and
+    Snell's law.</li>
+    <li><strong>Total internal reflection.</strong> The critical angle and its
+    one-way condition.</li>
+    <li><strong>Mirrors and lenses.</strong> The equation, the sign conventions,
+    and magnification.</li>
+    <li><strong>Images.</strong> Real versus virtual, and reading the answer off
+    the sign.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "optics". Check the syllabus on Quercus for assigned
+    problems; ray diagrams and the sign conventions are standard laboratory and
+    exam material.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Light changes speed between media, which bends it. Curved surfaces bend
+    rays to a focus, and one equation with careful signs handles every mirror and
+    lens. Unit 9 takes over where the ray picture
+    fails.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Sketch the ray diagram before computing. It tells you whether to expect a
+    real or virtual image, so the sign of your answer becomes a check rather than
+    a surprise.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Measuring angles</div>
+      <p>From what are optical angles measured?</p>
+      <details><summary>Guide</summary><div class="ans">The normal, the
+      perpendicular to the surface — never the surface
+      itself.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · TIR condition</div>
+      <p>When can total internal reflection occur?</p>
+      <details><summary>Guide</summary><div class="ans">Only going from a higher
+      index to a lower one, at an angle beyond the
+      critical.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Reading the sign</div>
+      <p>What does a negative image distance mean?</p>
+      <details><summary>Guide</summary><div class="ans">The image is virtual and
+      on the same side as the object.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · When rays fail</div>
+      <p>When does geometric optics break down?</p>
+      <details><summary>Guide</summary><div class="ans">When apertures or
+      obstacles are comparable to the wavelength. Then diffraction matters and
+      Unit 9's wave treatment is required.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit07.html">← Unit 07<span>Electromagnetic waves &amp; light</span></a>
+  <a href="unit09.html">Unit 09 →<span>Wave optics</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

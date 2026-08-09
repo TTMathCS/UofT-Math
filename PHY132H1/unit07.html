@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 7 — Electromagnetic Waves &amp; Light · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 7</div>
+<div class="unit-no reveal">Unit 7 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Electromagnetic Waves &amp; Light</h1>
+<p class="ch-intro reveal">The synthesis. A changing magnetic field makes an
+electric field, and a changing electric field makes a magnetic one &mdash; so
+the two can sustain each other and travel with nothing to travel through. That
+travelling disturbance is light.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Describe how the two fields sustain one another.</li>
+    <li>Explain why $c$ follows from measured electric and magnetic
+    constants.</li>
+    <li>Place the parts of the electromagnetic spectrum.</li>
+    <li>Relate energy, intensity and polarisation.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Every previous unit dealt with fields tied to their sources. Here the
+    fields let go: a wave carries energy away and keeps going with no charges
+    present at all. That is how sunlight crosses empty
+    space.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Radio, microwaves, wifi, X-rays, and vision itself. All the same
+    phenomenon at different wavelengths, all travelling at the same
+    speed.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Maxwell computed the wave speed in 1862 from constants measured in
+    laboratory experiments on charges and currents. It came out equal to the
+    measured speed of light, and he concluded light must be electromagnetic
+    &mdash; one of the great unifications in physics, done on
+    paper.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>How the wave sustains itself</h3>
+  <div class="box thm"><div class="bl">Rule <b>Each field regenerates the other</b></div>
+    <div class="step">Unit 6: a changing magnetic field induces an electric
+    field.</div>
+    <div class="step">Maxwell's addition: a changing electric field induces a
+    magnetic field.</div>
+    <div class="step">So an oscillating electric field creates an oscillating
+    magnetic field, which recreates the electric field a little further on, and
+    the pair propagates.</div>
+    <p>No medium is needed. This was the hardest part to accept &mdash; the
+    nineteenth century searched hard for a substance called the ether for light
+    to wave <em>in</em>, and never found it.</p></div>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>In an electromagnetic wave in vacuum:</p>
+    <div class="step">$E$ and $B$ are perpendicular to each other and
+    <em>both</em> perpendicular to the direction of travel &mdash; the wave is
+    transverse.</div>
+    <div class="step">They oscillate in phase: both peak
+    together.</div>
+    <div class="step">Their magnitudes are related by
+    $E = cB$.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>The speed comes out of the constants</b></div>
+    <div class="step">$c = \dfrac{1}{\sqrt{\varepsilon_0\mu_0}}$</div>
+    <p>Substituting the values from Units 2 and 5 gives about
+    $3.00 \times 10^8$ m/s.</p>
+    <p>Nothing about light went into the calculation. Two constants from
+    electrostatics and magnetostatics produce the speed of light, which is the
+    whole argument that light <em>is</em> electromagnetic.</p></div>
+  <div class="box warn"><div class="bl">In a medium light slows down</div>
+    <p>$v = c/n$, where $n$ is the refractive index. The frequency is unchanged
+    &mdash; it is set at the source &mdash; so the <em>wavelength</em> shortens.
+    Unit 8 builds refraction entirely on this.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The spectrum</h3>
+  <div class="box thm"><div class="bl">Rule <b>One phenomenon, many wavelengths</b></div>
+    <p>All obey $c = f\lambda$. In order of increasing frequency:</p>
+    <div class="step"><em>Radio</em> &mdash; metres to kilometres.
+    Broadcasting.</div>
+    <div class="step"><em>Microwave</em> &mdash; centimetres. Radar, wifi,
+    heating water molecules.</div>
+    <div class="step"><em>Infrared</em> &mdash; micrometres. Heat, remote
+    controls.</div>
+    <div class="step"><em>Visible</em> &mdash; about $400$ to $700$ nm. The
+    narrow band our eyes evolved for, because it is what the Sun emits most
+    of.</div>
+    <div class="step"><em>Ultraviolet</em> &mdash; enough energy to damage
+    molecules, hence sunburn.</div>
+    <div class="step"><em>X-ray and gamma</em> &mdash; penetrating, and ionising.
+    Imaging and radiotherapy.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Working with the relation</b></div>
+    <p>An FM station broadcasts at $100$ MHz. Find the wavelength.</p>
+    <div class="step">$\lambda = c/f = (3 \times 10^8)/(10^8) = 3$ m.</div>
+    <div class="step">Antenna lengths are chosen as fractions of the wavelength,
+    which is why an FM aerial is around a metre and a mobile phone antenna is a
+    few centimetres.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Energy, intensity, polarisation</h3>
+  <div class="box thm"><div class="bl">Rule <b>Intensity</b></div>
+    <div class="step">Intensity is power per unit area, in W/m$^2$, and it is
+    proportional to $E^2$.</div>
+    <div class="step">From a point source it falls off as
+    $1/r^2$, since the same power spreads over a sphere of area
+    $4\pi r^2$.</div>
+    <p>Doubling the distance quarters the brightness &mdash; the same geometry as
+    Coulomb's law, for the same reason.</p></div>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><em>Polarisation</em> is the direction the electric field oscillates in.
+    Sunlight is unpolarised &mdash; a random mixture of all directions. A
+    polarising filter transmits only one.</p>
+    <div class="step">Unpolarised light through one filter loses half its
+    intensity, whatever the filter's orientation.</div>
+    <div class="step">Already-polarised light through a filter at angle
+    $\theta$ transmits $I = I_0\cos^2\theta$ &mdash; Malus's
+    law.</div>
+    <div class="step">Two crossed filters at $90$ degrees transmit
+    <em>nothing</em>.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Three filters, and a surprise</b></div>
+    <p>Two crossed filters block all light. Insert a third at $45$ degrees
+    <em>between</em> them.</p>
+    <div class="step">Light now gets through &mdash; adding a filter
+    <em>increases</em> transmission.</div>
+    <div class="step">The middle filter rotates the polarisation to $45$ degrees,
+    which is no longer perpendicular to the third. Each stage passes
+    $\cos^2 45 = \tfrac12$, so an eighth of the original unpolarised intensity
+    emerges.</div>
+    <div class="step">The lesson: a polariser does not merely filter, it
+    <em>reorients</em>. This is the standard demonstration and it reliably
+    surprises.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Polarised sunglasses</b></div>
+    <p>Light reflecting off water or road surfaces is partly horizontally
+    polarised. Sunglasses with a vertical axis block most of it, cutting glare
+    while passing ordinary light &mdash; which is why tilting your head sideways
+    makes them stop working.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Thinking light needs a medium. It does not.<br>
+  &bull; Expecting frequency to change when light enters glass. The wavelength
+  changes.<br>
+  &bull; Forgetting that $E$ and $B$ are perpendicular to the travel direction
+  <em>and</em> to each other.<br>
+  &bull; Applying Malus's law to unpolarised light. The first filter always
+  passes half.<br>
+  &bull; Assuming more filters always mean less light.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Wavelength</div>
+      <p>Find the wavelength of a $2.4$ GHz wifi signal.</p>
+      <details><summary>Answer</summary><div class="ans">$\lambda = (3 \times
+      10^8)/(2.4 \times 10^9) = 0.125$ m.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · No medium</div>
+      <p>How does sunlight cross space?</p>
+      <details><summary>Answer</summary><div class="ans">The electric and
+      magnetic fields sustain each other, so no medium is required. The search
+      for the ether failed because there is none.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Into glass</div>
+      <p>Light with $n = 1.5$ enters glass. What changes?</p>
+      <details><summary>Answer</summary><div class="ans">Speed drops to
+      $2 \times 10^8$ m/s and the wavelength shortens by the same factor.
+      Frequency is unchanged.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Intensity</div>
+      <p>You move three times further from a lamp. What happens to the
+      brightness?</p>
+      <details><summary>Answer</summary><div class="ans">It drops to a ninth, by
+      the inverse-square law.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · One filter</div>
+      <p>Unpolarised light of intensity $I_0$ passes one polariser. What
+      emerges?</p>
+      <details><summary>Answer</summary><div class="ans">$I_0/2$, regardless of
+      the filter's orientation.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Malus</div>
+      <p>Polarised light meets a filter at $30$ degrees. What fraction gets
+      through?</p>
+      <details><summary>Answer</summary><div class="ans">$\cos^2 30 = 0.75$, so
+      three quarters.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Three filters</div>
+      <p>Compute the output for unpolarised light through filters at $0$, $45$
+      and $90$ degrees.</p>
+      <details><summary>Solution</summary><div class="ans">First: $I_0/2$.
+      Second: $\times\cos^2 45 = I_0/4$. Third:
+      $\times\cos^2 45 = I_0/8$. Removing the middle filter would give
+      zero — adding a filter increased the
+      transmission.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Maxwell's argument</div>
+      <p>Why did computing $1/\sqrt{\varepsilon_0\mu_0}$ prove anything?</p>
+      <details><summary>Answer</summary><div class="ans">Because both constants
+      came from experiments on charges and currents with no reference to light,
+      yet the combination gave the measured speed of light exactly. That
+      coincidence is too strong to be one.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Self-sustaining fields.</strong> How each induces the other and
+    why no medium is needed.</li>
+    <li><strong>The speed of light.</strong> Derived from
+    $\varepsilon_0$ and $\mu_0$.</li>
+    <li><strong>The spectrum.</strong> One phenomenon across many
+    wavelengths.</li>
+    <li><strong>Intensity and polarisation.</strong> Inverse square, Malus's law,
+    and the three-filter result.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "light". This unit bridges the electromagnetism half of
+    the course and the optics half; check the syllabus on Quercus for the
+    assigned problems.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Units 1 to 6 built two fields that turned out to be coupled. Here the
+    coupling lets them travel on their own, at a speed fixed by the constants of
+    the earlier units. Units 8 and 9 then study what that wave
+    does.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Keep straight which quantity survives a change of medium. Frequency does;
+    speed and wavelength do not. Almost every optics error traces back to
+    that.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Medium</div>
+      <p>What does an electromagnetic wave travel through?</p>
+      <details><summary>Guide</summary><div class="ans">Nothing is required. The
+      fields sustain each other, so it propagates in
+      vacuum.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · The constants</div>
+      <p>What is the significance of
+      $c = 1/\sqrt{\varepsilon_0\mu_0}$?</p>
+      <details><summary>Guide</summary><div class="ans">It derives the speed of
+      light from purely electrical and magnetic measurements, identifying light
+      as an electromagnetic wave.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Entering a medium</div>
+      <p>Which wave property is unchanged?</p>
+      <details><summary>Guide</summary><div class="ans">Frequency. It is fixed at
+      the source, so speed and wavelength change
+      together.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Polarisers</div>
+      <p>Why can a third filter increase transmission?</p>
+      <details><summary>Guide</summary><div class="ans">Because a polariser
+      rotates the polarisation as well as filtering it, so the light is no longer
+      perpendicular to the final filter.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit06.html">← Unit 06<span>Induction</span></a>
+  <a href="unit08.html">Unit 08 →<span>Geometric optics</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
