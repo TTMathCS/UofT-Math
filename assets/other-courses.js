@@ -23,18 +23,22 @@
     STA: "Statistical Sciences"
   });
 
-  function course(code, title) {
+  // path and chapters are set once a course has a written guide in this repo;
+  // without them the row still appears, linking only to the calendar
+  function course(code, title, path, chapters) {
     return Object.freeze({
       code: code,
       title: title || "",
       subject: DEPARTMENTS[code.slice(0, 3)] || "Other",
-      credits: /Y1$/.test(code) ? 1 : 0.5
+      credits: /Y1$/.test(code) ? 1 : 0.5,
+      path: path || "",
+      chapters: chapters || 0
     });
   }
 
   window.UOFT_OTHER_COURSES = Object.freeze([
     course("AST221H1", "Stars and Planets"),
-    course("CSC108H1", "Introduction to Computer Programming"),
+    course("CSC108H1", "Introduction to Computer Programming", "CSC108H1/index.html", 10),
     course("CSC110Y1", "Foundations of Computer Science I"),
     course("CSC111H1", "Foundations of Computer Science II"),
     course("CSC148H1", "Introduction to Computer Science"),

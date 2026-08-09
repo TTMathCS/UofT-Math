@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 9 — Searching, Sorting &amp; Complexity · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 9</div>
+<div class="unit-no reveal">Unit 9 · Intro to Programming</div>
+<h1 class="ch-title reveal">Searching, Sorting &amp; Complexity</h1>
+<p class="ch-intro reveal">The first properly computer-science unit. Two
+algorithms that do the same job can differ by a factor of a million on real
+data, and the difference is visible from the shape of the loops without running
+anything. Learning to see it is the point.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Implement linear and binary search and state what each requires.</li>
+    <li>Explain why binary search takes about $\log_2 n$ steps.</li>
+    <li>Read the big-O of a function from its loop structure.</li>
+    <li>Say why $O(n^2)$ sorting is unusable at scale.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Hardware gets faster by constant factors; algorithms improve by growth
+    rates. A better growth rate beats a faster machine at every size past some
+    threshold, and the threshold is usually small.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>A database index turns a linear scan into a logarithmic lookup, which is
+    why queries return instantly instead of after a minute. Every autocomplete,
+    every route search, every recommendation is a growth-rate decision made by
+    someone.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Binary search was described in 1946 but the first correct published
+    implementation for arbitrary list lengths took until 1962 &mdash; the
+    boundary conditions are genuinely hard. A midpoint overflow bug survived in
+    Java's standard library until 2006.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Linear search</h3>
+  <div class="box eg"><div class="bl">Example <b>Look at everything</b></div>
+    <div class="code"><div class="cl">python</div><pre>def linear_search(xs: list, target) -&gt; int:
+    """Return the index of target in xs, or -1 if it is absent.
+
+    &gt;&gt;&gt; linear_search([4, 9, 2], 9)
+    1
+    &gt;&gt;&gt; linear_search([4, 9, 2], 7)
+    -1
+    """
+    for i in range(len(xs)):
+        if xs[i] == target:
+            return i
+    return -1</pre></div>
+    <div class="step">Works on any list, sorted or not. That generality is its
+    whole advantage.</div>
+    <div class="step">Best case one comparison, worst case $n$. On average about
+    $n/2$, which still grows in proportion to $n$ &mdash; so we call it
+    $O(n)$.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Binary search</h3>
+  <div class="box thm"><div class="bl">Rule <b>Requires a sorted list</b></div>
+    <p>Binary search compares against the middle item and discards half the list
+    each time. Discarding is only justified if the list is sorted &mdash; on
+    unsorted data it returns wrong answers silently, which is worse than
+    failing.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Halve it each round</b></div>
+    <div class="code"><div class="cl">python</div><pre>def binary_search(xs: list, target) -&gt; int:
+    """Return an index of target in sorted xs, or -1 if it is absent.
+
+    &gt;&gt;&gt; binary_search([2, 4, 9], 9)
+    2
+    &gt;&gt;&gt; binary_search([2, 4, 9], 5)
+    -1
+    """
+    lo = 0
+    hi = len(xs) - 1
+    while lo &lt;= hi:
+        mid = (lo + hi) // 2
+        if xs[mid] == target:
+            return mid
+        elif xs[mid] &lt; target:
+            lo = mid + 1      <i># target is in the upper half</i>
+        else:
+            hi = mid - 1      <i># target is in the lower half</i>
+    return -1</pre></div>
+    <div class="step">The <code>+ 1</code> and <code>- 1</code> matter. Without
+    them the range never shrinks in some cases and the loop hangs.</div>
+    <div class="step"><code>lo &lt;= hi</code> not <code>&lt;</code>: when they
+    are equal there is still one unexamined item.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Why it is $\log_2 n$</b></div>
+    <p>Each round halves the remaining range: $n$, $n/2$, $n/4$, and so on. The
+    number of halvings before one item remains is the number of times $n$ can be
+    divided by two, which is $\log_2 n$.</p>
+    <div class="step">$n = 1{,}000$ needs about $10$ comparisons.</div>
+    <div class="step">$n = 1{,}000{,}000$ needs about $20$.</div>
+    <div class="step">A thousand times more data costs ten more steps. That is
+    what a logarithm buys.</div></div>
+</div>
+
+<div class="block reveal">
+  <h3>Big-O</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Big-O names how the work grows as the input grows, ignoring constants and
+    lower-order terms. It answers "what happens when the data gets ten times
+    bigger?", not "how many seconds does this take?"</p></div>
+  <div class="box eg"><div class="bl">Example <b>Reading it off the loops</b></div>
+    <div class="code"><div class="cl">python</div><pre>xs[0]                          <i># O(1)     - one step regardless of size</i>
+
+for x in xs: ...               <i># O(n)     - one pass</i>
+
+for x in xs:                   <i># O(n^2)   - nested passes multiply</i>
+    for y in xs: ...
+
+while lo &lt;= hi: ...            <i># O(log n) - the range halves</i>
+
+xs.sort()                      <i># O(n log n) - Python's built-in sort</i></pre></div>
+    <div class="step">Sequential loops <em>add</em>, so two separate passes are
+    still $O(n)$ &mdash; constants are dropped.</div>
+    <div class="step">Nested loops <em>multiply</em>. That is the whole
+    difference.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>The growth rates in this course</b></div>
+    <div class="step">$O(1)$ &mdash; indexing a list, a dictionary lookup, a set
+    membership test.</div>
+    <div class="step">$O(\log n)$ &mdash; binary search.</div>
+    <div class="step">$O(n)$ &mdash; linear search, summing, one pass.</div>
+    <div class="step">$O(n\log n)$ &mdash; a good sort. This is the practical
+    ceiling for comparison sorting.</div>
+    <div class="step">$O(n^2)$ &mdash; nested loops over the same data,
+    including <code>x in some_list</code> inside a loop.</div></div>
+  <div class="box eg"><div class="bl">Example <b>What the difference costs</b></div>
+    <p>At $n = 100{,}000$, assuming a million basic operations per second:</p>
+    <div class="step">$O(n)$: about $0.1$ seconds.</div>
+    <div class="step">$O(n\log n)$: about $1.7$ seconds.</div>
+    <div class="step">$O(n^2)$: about $10{,}000$ seconds, which is nearly three
+    hours.</div>
+    <p>This is why Unit 6 kept recommending a set. Replacing
+    <code>x in a_list</code> with <code>x in a_set</code> inside a loop turns
+    the second row into the first.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Sorting</h3>
+  <div class="box eg"><div class="bl">Example <b>Selection sort, and why it is slow</b></div>
+    <div class="code"><div class="cl">python</div><pre>def selection_sort(xs: list) -&gt; None:
+    """Sort xs in place into non-decreasing order."""
+    for i in range(len(xs)):
+        smallest = i
+        for j in range(i + 1, len(xs)):
+            if xs[j] &lt; xs[smallest]:
+                smallest = j
+        xs[i], xs[smallest] = xs[smallest], xs[i]</pre></div>
+    <div class="step">The outer loop runs $n$ times and the inner runs up to $n$
+    times, so the total is proportional to $n^2$.</div>
+    <div class="step">Worth writing once to understand, never worth using.
+    Python's built-in sort is $O(n\log n)$ and implemented in C.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Use the built-ins</b></div>
+    <div class="step"><code>xs.sort()</code> sorts in place and returns
+    <code>None</code>.</div>
+    <div class="step"><code>sorted(xs)</code> returns a new sorted list.</div>
+    <div class="step"><code>sorted(xs, key=len)</code> sorts by a computed value;
+    <code>reverse=True</code> flips the order.</div>
+    <p>Sorting first to enable binary search costs $O(n\log n)$, which only pays
+    off if you search many times. For a single lookup, a linear scan is
+    faster.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Binary search on an unsorted list. It returns wrong answers rather
+  than erroring.<br>
+  &bull; Getting the midpoint update wrong and hanging. The range must strictly
+  shrink every round.<br>
+  &bull; Writing <code>O(2n)</code> or <code>O(n + 5)</code>. Constants are
+  dropped; both are $O(n)$.<br>
+  &bull; Missing hidden loops. <code>x in a_list</code> is $O(n)$, so putting it
+  inside a loop is $O(n^2)$ even though only one loop is
+  visible.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Count the comparisons</div>
+      <p>How many comparisons does binary search need on a sorted list of
+      $1{,}000{,}000$?</p>
+      <details><summary>Answer</summary><div class="ans">About $20$, since
+      $2^{20}$ is just over a million.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Read the order</div>
+      <p>What is the big-O?</p>
+      <div class="code"><div class="cl">python</div><pre>for x in xs:
+    for y in ys:
+        print(x, y)</pre></div>
+      <details><summary>Answer</summary><div class="ans">$O(nm)$ where $n$ and
+      $m$ are the two lengths. If both are the same list, $O(n^2)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Hidden cost</div>
+      <p>What is the complexity of this?</p>
+      <div class="code"><div class="cl">python</div><pre>out = []
+for x in xs:
+    if x not in out:
+        out.append(x)</pre></div>
+      <details><summary>Answer</summary><div class="ans">$O(n^2)$. The
+      <code>not in</code> scans <code>out</code>, which grows, so the visible
+      single loop hides a second one. Using a set makes it
+      $O(n)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Sequential loops</div>
+      <p>Two separate loops over the same list — what order?</p>
+      <details><summary>Answer</summary><div class="ans">$O(n)$. Sequential work
+      adds, and constant factors are dropped.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Off by one</div>
+      <p>What breaks if <code>lo = mid</code> replaces
+      <code>lo = mid + 1</code>?</p>
+      <details><summary>Answer</summary><div class="ans">When
+      <code>hi = lo + 1</code>, <code>mid</code> equals <code>lo</code> and the
+      range stops shrinking, so the loop never ends.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Sort with a key</div>
+      <p>Sort words by length, longest first.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <code>sorted(words, key=len, reverse=True)</code>. Ties keep their
+      original relative order, since Python's sort is stable.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Sort then search?</div>
+      <p>Is it worth sorting a list to binary search it once?</p>
+      <details><summary>Answer</summary><div class="ans">No. Sorting is
+      $O(n\log n)$ and a linear scan is $O(n)$, so a single lookup is cheaper
+      unsorted. Sorting pays when you will search many
+      times.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Two sorted lists</div>
+      <p>Find values common to two sorted lists efficiently.</p>
+      <details><summary>Solution</summary><div class="ans">Walk both with two
+      indices, advancing whichever points at the smaller value — $O(n + m)$.
+      Alternatively <code>set(a) &amp; set(b)</code>, also linear and much
+      shorter, at the cost of building the sets.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Linear search.</strong> Implementation and $O(n)$ cost.</li>
+    <li><strong>Binary search.</strong> Implementation, the sorted requirement,
+    the boundary conditions, and $O(\log n)$.</li>
+    <li><strong>Big-O.</strong> Reading growth from loop structure, dropping
+    constants, spotting hidden loops.</li>
+    <li><strong>Sorting.</strong> Why $O(n^2)$ sorts are unusable and what the
+    built-ins provide.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "searching, sorting, and complexity" explicitly. This
+    is the most theoretical unit of the course and the one that carries most
+    directly into CSC148H1.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Cost grows with input. Sequential work adds; nested work multiplies;
+    halving gives a logarithm. Everything else is applying those three
+    facts.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every function you write, name its big-O before moving on. It takes ten
+    seconds and it is the habit CSC148H1 assumes you already
+    have.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Precondition</div>
+      <p>What does binary search require?</p>
+      <details><summary>Guide</summary><div class="ans">A sorted list. On
+      unsorted input it gives wrong answers without any
+      error.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Why logarithmic</div>
+      <p>Why $\log_2 n$ steps?</p>
+      <details><summary>Guide</summary><div class="ans">Each comparison halves
+      the remaining range, and $\log_2 n$ is how many halvings reduce $n$ to
+      one.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Nested versus sequential</div>
+      <p>How do loop structures combine?</p>
+      <details><summary>Guide</summary><div class="ans">Sequential loops add and
+      collapse to the largest term; nested loops multiply.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Hidden linear work</div>
+      <p>Which common operations are secretly $O(n)$?</p>
+      <details><summary>Guide</summary><div class="ans"><code>x in a_list</code>,
+      <code>list.remove</code>, <code>list.insert(0, x)</code>, and string
+      concatenation in a loop. Each turns an enclosing loop
+      quadratic.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit08.html">← Unit 08<span>Unit testing &amp; design</span></a>
+  <a href="unit10.html">Unit 10 →<span>Floating point</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

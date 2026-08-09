@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 5 — Lists &amp; Aliasing · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 5</div>
+<div class="unit-no reveal">Unit 5 · Intro to Programming</div>
+<h1 class="ch-title reveal">Lists &amp; Aliasing</h1>
+<p class="ch-intro reveal">Lists index like strings but, unlike strings, they can
+be changed in place. That one difference creates the hardest concept in the
+course: two names can refer to the same list, so changing it through one name
+changes what the other sees. Almost every mysterious bug in CSC108 is this.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Distinguish mutating a list from rebinding a name.</li>
+    <li>Predict when two names share a list and when they do not.</li>
+    <li>Copy a list correctly, including the nested case.</li>
+    <li>Explain why a function can change its caller's list.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Mutation is efficient: appending to a list of a million items does not
+    copy a million items. The cost is that a list is a shared thing, and sharing
+    is invisible in the source unless you are watching for it.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Shared mutable state is the root of most concurrency bugs in every
+    language. The discipline this unit teaches &mdash; know who else can see this
+    object &mdash; is the same discipline that keeps large systems
+    correct.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Whole languages exist to avoid this. Haskell and Clojure make data
+    immutable by default, so aliasing cannot bite; the trade is that every
+    change copies. Python picks the other side, which is why you have to think
+    about it.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Lists are mutable</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A list is an ordered, mutable sequence written <code>[1, 2, 3]</code>. It
+    indexes and slices exactly like a string, but item assignment is allowed:
+    <code>xs[0] = 99</code> works.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The mutating operations</b></div>
+    <div class="code"><div class="cl">python</div><pre>xs = [3, 1, 2]
+
+xs.append(4)      <i># [3, 1, 2, 4]   - adds one item at the end</i>
+xs.extend([5, 6]) <i># [3, 1, 2, 4, 5, 6] - adds each item of another list</i>
+xs.insert(0, 0)   <i># [0, 3, 1, 2, 4, 5, 6]</i>
+xs.remove(3)      <i># removes the FIRST 3 by value</i>
+xs.pop()          <i># removes and returns the last item</i>
+xs.sort()         <i># sorts in place, returns None</i>
+xs.reverse()      <i># reverses in place, returns None</i></pre></div>
+    <p>Every one of these changes <code>xs</code> itself. Contrast the string
+    methods of Unit 4, which changed nothing.</p></div>
+  <div class="box warn"><div class="bl">In-place methods return None</div>
+    <p><code>xs = xs.sort()</code> sets <code>xs</code> to <code>None</code> and
+    loses the list. The sort already happened; there is nothing to assign. If
+    you want a sorted <em>copy</em>, use the built-in
+    <code>sorted(xs)</code>, which returns a new list and leaves the original
+    alone. Same pairing for <code>reverse()</code> and
+    <code>reversed()</code>.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Aliasing</h3>
+  <div class="box thm"><div class="bl">Rule <b>Assignment never copies</b></div>
+    <p><code>ys = xs</code> binds a second name to the <em>same</em> list. There
+    is now one list with two names. Mutating through either name is visible
+    through both.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Mutate versus rebind</b></div>
+    <div class="code"><div class="cl">python</div><pre>xs = [1, 2, 3]
+ys = xs
+
+ys.append(4)     <i># MUTATES the shared list</i>
+print(xs)        <i># [1, 2, 3, 4]  - xs sees it</i>
+
+ys = [9]         <i># REBINDS ys to a different list</i>
+print(xs)        <i># [1, 2, 3, 4]  - xs unaffected</i></pre></div>
+    <div class="step">The distinction is everything. A method call like
+    <code>append</code> reaches into the object. An assignment to the bare name
+    moves the label somewhere else.</div>
+    <div class="step">Check with <code>xs is ys</code>, which asks whether they
+    are the same object &mdash; different from <code>xs == ys</code>, which asks
+    whether the contents match.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>== versus is</b></div>
+    <div class="code"><div class="cl">python</div><pre>a = [1, 2]
+b = [1, 2]
+c = a
+
+a == b   <i># True  - same contents</i>
+a is b   <i># False - two separate lists</i>
+a is c   <i># True  - one list, two names</i></pre></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Copying</h3>
+  <div class="box thm"><div class="bl">Rule <b>Three ways to copy, one gap</b></div>
+    <div class="step"><code>ys = xs[:]</code> or <code>ys = list(xs)</code> makes
+    a <em>shallow</em> copy: a new outer list holding the same inner
+    objects.</div>
+    <div class="step">For a flat list of numbers or strings, shallow is
+    enough.</div>
+    <div class="step">For a list of lists it is not: the inner lists are still
+    shared.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Where shallow fails</b></div>
+    <div class="code"><div class="cl">python</div><pre>grid = [[0, 0], [0, 0]]
+copy = grid[:]          <i># new outer list, SAME two inner lists</i>
+
+copy[0][0] = 9
+print(grid)             <i># [[9, 0], [0, 0]]  - leaked through</i>
+
+copy.append([1, 1])
+print(len(grid))        <i># 2 - the outer list really was copied</i></pre></div>
+    <p>To copy properly, copy each row:
+    <code>copy = [row[:] for row in grid]</code>.</p></div>
+  <div class="box warn"><div class="bl">The multiplication trap</div>
+    <p><code>grid = [[0] * 3] * 2</code> looks like a 2-by-3 grid and is a
+    disaster: it makes <em>one</em> inner list and points at it twice. Setting
+    <code>grid[0][0] = 1</code> changes both rows. Build it with
+    <code>[[0] * 3 for _ in range(2)]</code>, which evaluates the inner list
+    fresh each time.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Lists as arguments</h3>
+  <div class="box thm"><div class="bl">Rule <b>The parameter is an alias</b></div>
+    <p>Passing a list to a function binds the parameter to the same list. The
+    function can mutate the caller's data. This is not a leak &mdash; it is how
+    <code>sort</code> works &mdash; but it must be deliberate and
+    documented.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Two contracts, clearly stated</b></div>
+    <div class="code"><div class="cl">python</div><pre>def add_one_bad(xs: list) -&gt; None:
+    """Add 1 to every item of xs, modifying xs in place."""
+    for i in range(len(xs)):
+        xs[i] = xs[i] + 1
+
+def add_one(xs: list) -&gt; list:
+    """Return a new list with 1 added to every item of xs.
+
+    &gt;&gt;&gt; add_one([1, 2])
+    [2, 3]
+    """
+    return [x + 1 for x in xs]</pre></div>
+    <div class="step">Neither is wrong, but the docstrings must say which one it
+    is. A function that mutates and also returns something is the worst of both
+    and confuses every caller.</div>
+    <div class="step">Note the first returns <code>None</code>, matching the
+    convention of <code>sort</code> and <code>append</code>: in-place operations
+    return nothing.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Rebinding does not escape</b></div>
+    <div class="code"><div class="cl">python</div><pre>def wipe(xs: list) -&gt; None:
+    xs = []          <i># rebinds the LOCAL name only</i>
+
+data = [1, 2, 3]
+wipe(data)
+print(data)          <i># [1, 2, 3] - untouched</i></pre></div>
+    <p>To actually empty the caller's list you must mutate it:
+    <code>xs.clear()</code> or <code>del xs[:]</code>. Same rule as
+    always &mdash; assignment moves a label, it does not touch the
+    object.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; <code>xs = xs.sort()</code>. In-place methods return
+  <code>None</code>.<br>
+  &bull; Believing <code>ys = xs</code> copies. It never does.<br>
+  &bull; Shallow-copying a nested list and being surprised when inner changes
+  leak.<br>
+  &bull; <code>[[0] * 3] * 2</code> for a grid. Use a comprehension.<br>
+  &bull; Removing from a list while iterating it, as in Unit 2.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Trace</div>
+      <p>What prints?</p>
+      <div class="code"><div class="cl">python</div><pre>a = [1, 2]
+b = a
+b.append(3)
+b = [7]
+print(a)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>[1, 2, 3]</code>.
+      The <code>append</code> mutated the shared list; the later assignment only
+      moved <code>b</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · sort returns</div>
+      <p>What is <code>x</code>?</p>
+      <div class="code"><div class="cl">python</div><pre>x = [3, 1, 2].sort()</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>None</code>. The
+      list was sorted and then discarded, since nothing else referred to it. Use
+      <code>sorted([3, 1, 2])</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Nested copy</div>
+      <p>Copy <code>g = [[1, 2], [3, 4]]</code> so changing the copy cannot
+      affect <code>g</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <code>c = [row[:] for row in g]</code>. A plain <code>g[:]</code> shares
+      the inner lists.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Grid trap</div>
+      <p>What does this print, and why?</p>
+      <div class="code"><div class="cl">python</div><pre>g = [[0] * 2] * 2
+g[0][0] = 5
+print(g)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>[[5, 0],
+      [5, 0]]</code>. There is only one inner list, referenced twice, so the
+      change appears in both rows.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · is versus ==</div>
+      <p>When is <code>a == b</code> True but <code>a is b</code> False?</p>
+      <details><summary>Answer</summary><div class="ans">Whenever the contents
+      match but the objects are distinct, as with two separately built
+      <code>[1, 2]</code> lists. Use <code>==</code> for values;
+      <code>is</code> only for identity, and in practice mostly for
+      <code>is None</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Write it</div>
+      <p>Write a function returning a new list with duplicates removed, order
+      preserved.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def dedupe(xs: list) -&gt; list:
+    """Return a new list with duplicates of xs removed, keeping first
+    occurrences in order.
+
+    &gt;&gt;&gt; dedupe([1, 2, 1, 3, 2])
+    [1, 2, 3]
+    """
+    out = []
+    for x in xs:
+        if x not in out:
+            out.append(x)
+    return out</pre></div>
+      Unit 6 shows a faster version using a set, since <code>x not in out</code>
+      scans the whole list each time.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Mutating parameter</div>
+      <p>Does this change the caller's list?</p>
+      <div class="code"><div class="cl">python</div><pre>def f(xs: list) -&gt; None:
+    xs = xs + [1]</pre></div>
+      <details><summary>Answer</summary><div class="ans">No.
+      <code>xs + [1]</code> builds a new list and the assignment rebinds only the
+      local name. <code>xs.append(1)</code> would change the
+      caller's.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Flatten</div>
+      <p>Flatten <code>[[1, 2], [3], []]</code> to <code>[1, 2, 3]</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def flatten(rows: list) -&gt; list:
+    """Return one list containing every item of every row.
+
+    &gt;&gt;&gt; flatten([[1, 2], [3], []])
+    [1, 2, 3]
+    """
+    out = []
+    for row in rows:
+        out.extend(row)
+    return out</pre></div>
+      <code>extend</code> adds each item; <code>append</code> would add the row
+      itself as a single nested element.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Mutation.</strong> The in-place methods and the fact they return
+    <code>None</code>.</li>
+    <li><strong>Aliasing.</strong> Assignment binds names; <code>is</code> versus
+    <code>==</code>.</li>
+    <li><strong>Copying.</strong> Shallow copy, and the nested case that needs
+    more.</li>
+    <li><strong>Parameters.</strong> Why a function can change its caller's
+    list, and how to document which it does.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "lists" among the elementary data types. Aliasing is
+    the concept the term test reliably examines through tracing questions; check
+    the syllabus for the assigned exercises.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Names refer to objects, from Unit 1. Lists are mutable, so several names
+    can watch one object change. Copying is the deliberate act of breaking that
+    sharing.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Draw boxes and arrows. Names are labels with arrows to objects; mutation
+    changes the object, assignment moves an arrow. Almost every tracing question
+    falls out of one such diagram.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Aliasing</div>
+      <p>What does <code>ys = xs</code> do for a list?</p>
+      <details><summary>Guide</summary><div class="ans">Binds a second name to
+      the same list. No copy is made.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · In-place return</div>
+      <p>What does <code>xs.sort()</code> return?</p>
+      <details><summary>Guide</summary><div class="ans"><code>None</code>. Use
+      <code>sorted(xs)</code> when you want a new sorted
+      list.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Depth of copy</div>
+      <p>When is <code>xs[:]</code> not enough?</p>
+      <details><summary>Guide</summary><div class="ans">When the items are
+      themselves mutable, such as a list of lists. The inner objects stay
+      shared.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Escaping a function</div>
+      <p>Which changes inside a function are visible to the caller?</p>
+      <details><summary>Guide</summary><div class="ans">Mutations of the passed
+      object. Rebinding the parameter name is purely
+      local.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit04.html">← Unit 04<span>Strings</span></a>
+  <a href="unit06.html">Unit 06 →<span>Dictionaries &amp; sets</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

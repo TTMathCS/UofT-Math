@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 6 — Dictionaries &amp; Sets · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 6</div>
+<div class="unit-no reveal">Unit 6 · Intro to Programming</div>
+<h1 class="ch-title reveal">Dictionaries &amp; Sets</h1>
+<p class="ch-intro reveal">Lists answer "what is at position 3?". Dictionaries
+answer "what is associated with this key?" &mdash; and they answer it in roughly
+constant time no matter how large they get. The calendar calls them maps. Once
+you have them, a whole class of slow list-scanning code disappears.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Build, read and update a dictionary safely.</li>
+    <li>Use the counting and grouping patterns from memory.</li>
+    <li>Say which objects can be keys, and why.</li>
+    <li>Choose between a list, a set and a dictionary deliberately.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Searching a list for a value means looking at every item. A dictionary
+    jumps straight to the answer by computing where it must be. That difference
+    is $O(n)$ versus $O(1)$, and on real data it is the difference between
+    instant and unusable.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every database index, every cache, every word-frequency count is a hash
+    table. Python's own namespaces are dictionaries &mdash; when you write
+    <code>x = 5</code>, an entry goes into one.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Hash tables date to 1953 at IBM. Since Python 3.7 dictionaries preserve
+    insertion order, which was originally an implementation accident in 3.6 that
+    proved so useful it was written into the language
+    specification.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Dictionaries</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A dictionary maps <em>keys</em> to <em>values</em>, written
+    <code>{'a': 1, 'b': 2}</code>. Keys are unique; assigning to an existing key
+    replaces its value. Lookup is <code>d[key]</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The core operations</b></div>
+    <div class="code"><div class="cl">python</div><pre>ages = {'ada': 36, 'alan': 41}
+
+ages['ada']            <i># 36</i>
+ages['grace'] = 45     <i># adds a new pair</i>
+ages['ada'] = 37       <i># replaces the existing value</i>
+'alan' in ages         <i># True  - tests KEYS, not values</i>
+len(ages)              <i># 3</i>
+del ages['alan']       <i># removes the pair</i>
+
+ages.keys()            <i># the keys</i>
+ages.values()          <i># the values</i>
+ages.items()           <i># (key, value) pairs</i></pre></div>
+  </div>
+  <div class="box warn"><div class="bl">A missing key raises</div>
+    <p><code>ages['nobody']</code> is a <code>KeyError</code>. Three ways to
+    avoid it:</p>
+    <div class="step"><code>if k in d:</code> before reading &mdash; clearest
+    when you need a branch anyway.</div>
+    <div class="step"><code>d.get(k)</code> returns <code>None</code> when
+    absent, or <code>d.get(k, 0)</code> to supply your own default.</div>
+    <div class="step"><code>d.setdefault(k, [])</code> inserts the default and
+    returns it, which is the grouping idiom below.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Iterating</b></div>
+    <div class="code"><div class="cl">python</div><pre>for name in ages:                 <i># iterates KEYS by default</i>
+    print(name, ages[name])
+
+for name, age in ages.items():    <i># cleaner when you need both</i>
+    print(name, age)</pre></div>
+    <p>Iterating a dictionary gives keys, not pairs. Reaching for
+    <code>.items()</code> when you want both is the idiom.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The two patterns worth memorising</h3>
+  <div class="box eg"><div class="bl">Example <b>Counting</b></div>
+    <div class="code"><div class="cl">python</div><pre>def count_chars(s: str) -&gt; dict:
+    """Return a dictionary mapping each character of s to its count.
+
+    &gt;&gt;&gt; count_chars('aab')
+    {'a': 2, 'b': 1}
+    """
+    counts = {}
+    for ch in s:
+        counts[ch] = counts.get(ch, 0) + 1
+    return counts</pre></div>
+    <p><code>get(ch, 0)</code> supplies zero the first time a character appears,
+    so the same line handles both the new and the repeat case. Without it you
+    need an <code>if</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Grouping</b></div>
+    <div class="code"><div class="cl">python</div><pre>def group_by_length(words: list) -&gt; dict:
+    """Return a dictionary mapping each length to the words of that length.
+
+    &gt;&gt;&gt; group_by_length(['at', 'to', 'cat'])
+    {2: ['at', 'to'], 3: ['cat']}
+    """
+    groups = {}
+    for w in words:
+        groups.setdefault(len(w), []).append(w)
+    return groups</pre></div>
+    <p><code>setdefault</code> returns the list already stored, or inserts a new
+    empty one and returns that. Either way there is a list to append
+    to.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Inverting</b></div>
+    <div class="code"><div class="cl">python</div><pre>def invert(d: dict) -&gt; dict:
+    """Return a dictionary with keys and values swapped.
+
+    &gt;&gt;&gt; invert({'a': 1, 'b': 2}) == {1: 'a', 2: 'b'}
+    True
+    """
+    return {v: k for k, v in d.items()}</pre></div>
+    <p>Only safe when the values are unique and hashable. Duplicate values
+    collapse, keeping whichever came last.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>What can be a key</h3>
+  <div class="box thm"><div class="bl">Rule <b>Keys must be hashable</b></div>
+    <p>A key must be immutable: <code>int</code>, <code>float</code>,
+    <code>str</code>, <code>bool</code>, and tuples of those. Lists and
+    dictionaries cannot be keys.</p>
+    <p>The reason is direct. A dictionary places a key by computing a number
+    from its contents. If the contents could change afterwards, the key would be
+    filed in a location that no longer matches and would become
+    unfindable.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Tuples work, lists do not</b></div>
+    <div class="code"><div class="cl">python</div><pre>grid = {}
+grid[(0, 0)] = 'start'      <i># fine - tuples are immutable</i>
+grid[[0, 0]] = 'start'      <i># TypeError: unhashable type: 'list'</i></pre></div>
+    <p>Using coordinate tuples as keys is the standard way to represent a sparse
+    grid without allocating every cell.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Sets</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A set is an unordered collection of unique hashable values, written
+    <code>{1, 2, 3}</code>. Think of it as a dictionary with keys and no values.
+    The empty set is <code>set()</code>, since <code>{}</code> is an empty
+    dictionary.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Membership and algebra</b></div>
+    <div class="code"><div class="cl">python</div><pre>a = {1, 2, 3}
+b = {3, 4}
+
+3 in a          <i># True - fast, unlike a list scan</i>
+a | b           <i># {1, 2, 3, 4}  union</i>
+a &amp; b           <i># {3}           intersection</i>
+a - b           <i># {1, 2}        difference</i>
+
+set([1, 1, 2])  <i># {1, 2} - deduplication in one step</i>
+sorted(set(xs)) <i># unique values, back in order</i></pre></div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Choosing the structure</b></div>
+    <div class="step">Order matters, duplicates allowed, index by position
+    &rarr; <strong>list</strong>.</div>
+    <div class="step">Only membership and uniqueness matter &rarr;
+    <strong>set</strong>.</div>
+    <div class="step">Each item carries associated data &rarr;
+    <strong>dictionary</strong>.</div>
+    <p>The Unit 5 <code>dedupe</code> function scanned a growing list for every
+    item, which is quadratic. Tracking seen items in a set makes it linear, and
+    that is the whole reason to reach for one.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; <code>{}</code> is an empty dictionary, not an empty set. Use
+  <code>set()</code>.<br>
+  &bull; Using a list as a key. Convert to a tuple first.<br>
+  &bull; Assuming <code>in</code> on a dictionary checks values. It checks
+  keys.<br>
+  &bull; Relying on set order. Sets have none, so
+  <code>sorted()</code> whenever output order matters.<br>
+  &bull; Changing a dictionary's size while iterating it. Iterate over
+  <code>list(d.keys())</code> if you must delete during the loop.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Key or value?</div>
+      <p>For <code>d = {'a': 1}</code>, what are <code>'a' in d</code> and
+      <code>1 in d</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>True</code> and
+      <code>False</code>. Membership tests keys. Use
+      <code>1 in d.values()</code> for the other question.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Counting</div>
+      <p>Count word frequencies in a sentence.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def word_counts(text: str) -&gt; dict:
+    """Return a dictionary mapping each word of text to its count.
+
+    &gt;&gt;&gt; word_counts('a b a')
+    {'a': 2, 'b': 1}
+    """
+    counts = {}
+    for w in text.split():
+        counts[w] = counts.get(w, 0) + 1
+    return counts</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Empty set</div>
+      <p>What type is <code>{}</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>dict</code>. The
+      empty set has to be written <code>set()</code>, because the brace notation
+      was taken by dictionaries first.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Faster dedupe</div>
+      <p>Rewrite Unit 5's <code>dedupe</code> using a set, keeping order.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def dedupe(xs: list) -&gt; list:
+    """Return a new list with duplicates removed, order preserved.
+
+    &gt;&gt;&gt; dedupe([1, 2, 1, 3])
+    [1, 2, 3]
+    """
+    seen = set()
+    out = []
+    for x in xs:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out</pre></div>
+      The set makes each membership test constant time instead of a scan, so the
+      whole function goes from quadratic to linear.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Unhashable</div>
+      <p>Why does <code>d[[1, 2]] = 'x'</code> fail?</p>
+      <details><summary>Answer</summary><div class="ans">Lists are mutable, so
+      their hash could change after insertion and the entry would become
+      unfindable. Python forbids it outright. Use a tuple.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Max by value</div>
+      <p>Find the key with the largest value in a non-empty dictionary.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def top_key(d: dict) -&gt; str:
+    """Return a key of d whose value is largest.
+
+    &gt;&gt;&gt; top_key({'a': 1, 'b': 5})
+    'b'
+    """
+    best = None
+    for k, v in d.items():
+        if best is None or v &gt; d[best]:
+            best = k
+    return best</pre></div>
+      Ties resolve to whichever came first. Say so in the docstring if it
+      matters.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Set algebra</div>
+      <p>Find words appearing in both of two sentences.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <code>set(a.split()) &amp; set(b.split())</code>. Intersection expresses
+      it directly; a nested loop would be quadratic and less
+      readable.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Grouping by first letter</div>
+      <p>Group words by their first letter.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def by_letter(words: list) -&gt; dict:
+    """Return a dictionary mapping first letters to the words starting
+    with them.
+
+    &gt;&gt;&gt; by_letter(['ant', 'ape', 'bee'])
+    {'a': ['ant', 'ape'], 'b': ['bee']}
+    """
+    groups = {}
+    for w in words:
+        groups.setdefault(w[0], []).append(w)
+    return groups</pre></div>
+      An empty string in the input would raise on <code>w[0]</code>; guard it or
+      document that words are non-empty.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Dictionaries.</strong> Create, read, update, delete; keys,
+    values, items.</li>
+    <li><strong>Safe access.</strong> <code>in</code>, <code>get</code> with a
+    default, <code>setdefault</code>.</li>
+    <li><strong>Patterns.</strong> Counting, grouping, inverting.</li>
+    <li><strong>Sets.</strong> Uniqueness, membership, the algebra operations,
+    and choosing between the three structures.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "maps" among the elementary data types. Dictionary
+    patterns are heavily assessed on assignments; check the syllabus on Quercus
+    for the assigned exercises.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>A dictionary trades memory for speed by computing where a key belongs
+    rather than searching for it. Unit 9 makes that trade explicit as
+    $O(1)$ versus $O(n)$.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Whenever you write <code>x in some_list</code> inside a loop, stop and ask
+    whether a set belongs there. It is the single most common speed fix in the
+    course.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Missing key</div>
+      <p>What happens on <code>d['absent']</code>?</p>
+      <details><summary>Guide</summary><div class="ans">A
+      <code>KeyError</code>. Use <code>d.get('absent', default)</code> to avoid
+      it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Key requirements</div>
+      <p>Why must keys be immutable?</p>
+      <details><summary>Guide</summary><div class="ans">Because the key's
+      contents determine where it is stored. If they changed, the entry could
+      never be found again.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Structure choice</div>
+      <p>When is a set the right structure?</p>
+      <details><summary>Guide</summary><div class="ans">When you only care
+      whether something is present and want no duplicates, and order does not
+      matter.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Iteration default</div>
+      <p>What does <code>for x in d</code> give?</p>
+      <details><summary>Guide</summary><div class="ans">The keys. Use
+      <code>d.items()</code> for pairs, <code>d.values()</code> for
+      values.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit05.html">← Unit 05<span>Lists &amp; aliasing</span></a>
+  <a href="unit07.html">Unit 07 →<span>Classes, objects &amp; methods</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

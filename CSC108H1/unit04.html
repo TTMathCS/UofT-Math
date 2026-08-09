@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 4 — Strings · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 4</div>
+<div class="unit-no reveal">Unit 4 · Intro to Programming</div>
+<h1 class="ch-title reveal">Strings</h1>
+<p class="ch-intro reveal">Text is the first data structure you will index and
+slice, and the first one that is <em>immutable</em>. That word does most of the
+work in this unit: string methods never change the string they are called on,
+they return a new one, and forgetting that produces code that looks right and
+does nothing.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Index and slice with confidence, including negative indices.</li>
+    <li>Explain why <code>s.upper()</code> alone accomplishes nothing.</li>
+    <li>Build strings in a loop and know why <code>join</code> is better.</li>
+    <li>Pick the right method from the common set.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Almost all data arrives as text: files, web responses, user input.
+    Getting from text to structured values is the first half of nearly every
+    real program, and slicing is the basic tool.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Parsing dates, cleaning names, splitting CSV lines. The Heartbleed bug of
+    2014 was a length field trusted without checking, letting a read run past
+    the end of a buffer &mdash; an indexing error with global
+    consequences.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Python 3 strings are sequences of Unicode code points, not bytes, which
+    is why <code>len('café')</code> is 4 rather than 5. That change from
+    Python 2 broke a great deal of code and is the main reason the migration took
+    a decade.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Indexing and slicing</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><code>s[i]</code> is the character at position <code>i</code>, counting
+    from <code>0</code>. Negative indices count from the end, so
+    <code>s[-1]</code> is the last character. <code>s[a:b]</code> is the slice
+    from <code>a</code> up to but <em>not including</em> <code>b</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Every form</b></div>
+    <div class="code"><div class="cl">python</div><pre>s = 'computer'
+<i>#    01234567
+#   -87654321</i>
+
+s[0]      <i># 'c'</i>
+s[-1]     <i># 'r'</i>
+s[1:4]    <i># 'omp'    - positions 1, 2, 3</i>
+s[:3]     <i># 'com'    - start defaults to 0</i>
+s[5:]     <i># 'ter'    - end defaults to len(s)</i>
+s[:]      <i># 'computer' - a full copy</i>
+s[::2]    <i># 'cmue'   - every second character</i>
+s[::-1]   <i># 'retupmoc' - reversed</i></pre></div>
+    <p>The excluded endpoint is the same convention as <code>range</code>, and
+    it has the same payoff: <code>s[:i] + s[i:]</code> reconstructs
+    <code>s</code> for any <code>i</code>, with no off-by-one
+    adjustment.</p></div>
+  <div class="box warn"><div class="bl">Indexing raises, slicing does not</div>
+    <p><code>s[100]</code> raises <code>IndexError</code>. But
+    <code>s[100:200]</code> quietly returns <code>''</code>. Slicing clamps to
+    the valid range, which is convenient and occasionally hides a bug &mdash; an
+    empty result may mean your indices were nonsense rather than that the data
+    was empty.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Immutability</h3>
+  <div class="box thm"><div class="bl">Rule <b>Strings never change</b></div>
+    <p>No operation modifies a string in place. <code>s[0] = 'x'</code> is a
+    <code>TypeError</code>. Every method that appears to alter a string in fact
+    returns a new one, and the original is untouched.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The mistake everyone makes once</b></div>
+    <div class="code"><div class="cl">python</div><pre>name = 'ada'
+name.upper()        <i># computes 'ADA' and throws it away</i>
+print(name)         <i># 'ada' - unchanged</i>
+
+name = name.upper() <i># the return value has to be captured</i>
+print(name)         <i># 'ADA'</i></pre></div>
+    <p>If a line consists only of <code>something.method()</code> on a string
+    and nothing is assigned, that line does nothing at all.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Building a string in a loop</b></div>
+    <div class="code"><div class="cl">python</div><pre><i># works, but creates a new string every round</i>
+out = ''
+for w in words:
+    out = out + w + ' '
+
+<i># idiomatic and faster</i>
+out = ' '.join(words)</pre></div>
+    <div class="step">Because strings are immutable, <code>out + w</code> copies
+    everything accumulated so far. Over $n$ words that is $n^2$ character copies
+    &mdash; a Unit 9 concern that shows up here first.</div>
+    <div class="step"><code>join</code> is called on the <em>separator</em>,
+    which reads backwards at first but means any separator works:
+    <code>', '.join(names)</code>.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>The methods worth memorising</h3>
+  <div class="box eg"><div class="bl">Example <b>The common set</b></div>
+    <div class="code"><div class="cl">python</div><pre>s = '  Hello World  '
+
+s.strip()            <i># 'Hello World'  - removes leading/trailing whitespace</i>
+s.lower()            <i># '  hello world  '</i>
+s.replace('l', 'L')  <i># replaces every occurrence</i>
+s.split()            <i># ['Hello', 'World'] - splits on any whitespace run</i>
+'a,b,c'.split(',')   <i># ['a', 'b', 'c']   - or on a given separator</i>
+s.find('World')      <i># 8  - index, or -1 if absent</i>
+s.count('l')         <i># 3</i>
+'World' in s         <i># True - the readable membership test</i>
+'abc'.startswith('a')<i># True</i>
+'42'.isdigit()       <i># True - useful before int()</i></pre></div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>find versus index versus in</b></div>
+    <div class="step">Use <code>in</code> when you only need to know whether
+    something is present. It is the clearest.</div>
+    <div class="step">Use <code>find</code> when you need the position and can
+    handle <code>-1</code> for absent.</div>
+    <div class="step">Use <code>index</code> when absence is a genuine error;
+    it raises <code>ValueError</code> rather than returning a sentinel that can
+    be used by accident as a valid index.</div></div>
+  <div class="box warn"><div class="bl">-1 is a valid index</div>
+    <p>This is the trap in <code>find</code>. If you write
+    <code>s[s.find('z')]</code> and <code>'z'</code> is absent, the
+    <code>-1</code> silently gives you the <em>last</em> character rather than an
+    error. Always test the result of <code>find</code> before using
+    it.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Calling a method and discarding the result. Strings are immutable;
+  capture the return value.<br>
+  &bull; Assuming <code>split()</code> and <code>split(' ')</code> behave the
+  same. The first collapses runs of whitespace, the second does not, so
+  <code>'a  b'.split(' ')</code> gives a stray empty string.<br>
+  &bull; Forgetting the excluded endpoint on slices.<br>
+  &bull; Using <code>find</code> without checking for <code>-1</code>.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Slice it</div>
+      <p>For <code>s = 'abcdef'</code>, what are <code>s[2:5]</code>,
+      <code>s[-2:]</code>, <code>s[::-1]</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>'cde'</code>,
+      <code>'ef'</code>, <code>'fedcba'</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Why unchanged?</div>
+      <p>Why does this print <code>hello</code>?</p>
+      <div class="code"><div class="cl">python</div><pre>s = 'hello'
+s.replace('h', 'j')
+print(s)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>replace</code>
+      returns a new string; nothing captured it. Write
+      <code>s = s.replace('h', 'j')</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Palindrome</div>
+      <p>Write a function testing whether a string reads the same
+      backwards.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def is_palindrome(s: str) -&gt; bool:
+    """Return whether s reads the same forwards and backwards,
+    ignoring case and spaces.
+
+    &gt;&gt;&gt; is_palindrome('Race car')
+    True
+    &gt;&gt;&gt; is_palindrome('hello')
+    False
+    """
+    clean = s.lower().replace(' ', '')
+    return clean == clean[::-1]</pre></div>
+      Chaining <code>lower()</code> then <code>replace()</code> works because
+      each returns a new string for the next to act on.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · split difference</div>
+      <p>What do <code>'a  b'.split()</code> and <code>'a  b'.split(' ')</code>
+      give?</p>
+      <details><summary>Answer</summary><div class="ans"><code>['a', 'b']</code>
+      and <code>['a', '', 'b']</code>. With no argument, runs of whitespace count
+      as one separator; with an explicit <code>' '</code>, each space separates,
+      so the double space yields an empty field.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Initials</div>
+      <p>Turn <code>'ada lovelace'</code> into <code>'A.L.'</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def initials(name: str) -&gt; str:
+    """Return the dotted uppercase initials of name.
+
+    &gt;&gt;&gt; initials('ada lovelace')
+    'A.L.'
+    """
+    return ''.join(w[0].upper() + '.' for w in name.split())</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 6 · find trap</div>
+      <p>What does <code>'hello'[('hello'.find('z'))]</code> give, and why is
+      that bad?</p>
+      <details><summary>Answer</summary><div class="ans"><code>'o'</code>.
+      <code>find</code> returned <code>-1</code>, which is a legal index meaning
+      "last". You get a plausible-looking wrong answer instead of an
+      error.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Count words</div>
+      <p>Count the words in a sentence.</p>
+      <details><summary>Solution</summary><div class="ans"><code>len(sentence.split())</code>.
+      Splitting on whitespace and taking the length handles multiple spaces and
+      leading or trailing space correctly, which counting spaces would
+      not.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Vowel removal</div>
+      <p>Remove all vowels from a string.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def strip_vowels(s: str) -&gt; str:
+    """Return s with all vowels removed.
+
+    &gt;&gt;&gt; strip_vowels('education')
+    'dctn'
+    """
+    return ''.join(ch for ch in s if ch.lower() not in 'aeiou')</pre></div>
+      Build a new string rather than trying to delete from the old one — there is
+      no way to delete from a string.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Indexing and slicing.</strong> Positive and negative indices,
+    defaults, step, and the excluded endpoint.</li>
+    <li><strong>Immutability.</strong> Why methods return rather than
+    modify.</li>
+    <li><strong>Common methods.</strong> strip, split, join, replace, find,
+    count, membership.</li>
+    <li><strong>Building strings.</strong> Why <code>join</code> beats repeated
+    concatenation.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists strings among the elementary data types. Check the
+    syllabus on Quercus for the assigned exercises and for which methods the
+    course expects you to know without lookup.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Strings are immutable sequences. Unit 5 introduces lists, which are
+    <em>mutable</em> sequences with almost the same indexing &mdash; and the
+    difference between the two is where the aliasing trap lives.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Whenever you call a string method, ask where the result is going. If the
+    answer is nowhere, the line is dead code.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Immutability</div>
+      <p>What happens on <code>s[0] = 'x'</code>?</p>
+      <details><summary>Guide</summary><div class="ans"><code>TypeError</code>:
+      strings do not support item assignment. Build a new string
+      instead.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Slice bounds</div>
+      <p>What does <code>s[10:20]</code> give on a short string?</p>
+      <details><summary>Guide</summary><div class="ans"><code>''</code>. Slicing
+      clamps rather than raising, unlike indexing.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · join direction</div>
+      <p>Why is <code>join</code> a method of the separator?</p>
+      <details><summary>Guide</summary><div class="ans">So any string can be the
+      separator and the argument can be any iterable of strings. It reads oddly
+      but generalises cleanly.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Concatenation cost</div>
+      <p>Why is repeated <code>+=</code> on a string slow?</p>
+      <details><summary>Guide</summary><div class="ans">Each one builds a whole
+      new string, copying everything so far. Over $n$ appends that is
+      quadratic work.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit03.html">← Unit 03<span>Functions</span></a>
+  <a href="unit05.html">Unit 05 →<span>Lists &amp; aliasing</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

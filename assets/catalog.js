@@ -96,8 +96,8 @@
       dept: departmentOf(course.code),
       description: "",
       topics: [],
-      path: "",
-      chapters: 0,
+      path: course.path || "",
+      chapters: course.chapters || 0,
       credits: course.credits
     };
   })).sort(function (first, second) {

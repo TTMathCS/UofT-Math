@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 7 — Classes, Objects &amp; Methods · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 7</div>
+<div class="unit-no reveal">Unit 7 · Intro to Programming</div>
+<h1 class="ch-title reveal">Classes, Objects &amp; Methods</h1>
+<p class="ch-intro reveal">So far you have used types Python provides. A class
+lets you define your own: bundle the data that belongs together, and the
+operations that make sense on it, into one named thing. Everything you have
+already used &mdash; strings, lists, dictionaries &mdash; is a class.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Write a class with <code>__init__</code> and instance attributes.</li>
+    <li>Explain what <code>self</code> is and why every method takes it.</li>
+    <li>Implement <code>__str__</code> and <code>__eq__</code> and say when each
+    is called.</li>
+    <li>Decide when a class earns its place over a dictionary.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Passing four related values into every function is fragile: swap two
+    arguments and nothing complains. A class names the bundle once, so the
+    grouping is checked and the operations live beside the data they act
+    on.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every library you import is built from classes. A <code>datetime</code>,
+    a database connection, a plot &mdash; all objects with methods. Reading their
+    documentation is reading class definitions.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Objects came from Simula in the 1960s, built to simulate real-world
+    entities. Python's version is deliberately light: no privacy enforcement, no
+    required declarations. The leading underscore convention for "internal" is
+    an agreement between programmers, not a rule the language
+    enforces.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Defining a class</h3>
+  <div class="box eg"><div class="bl">Example <b>A complete small class</b></div>
+    <div class="code"><div class="cl">python</div><pre>class Student:
+    """A student with a name and a list of grades."""
+
+    def __init__(self, name: str) -&gt; None:
+        """Initialize a student named name with no grades yet."""
+        self.name = name
+        self.grades = []
+
+    def add_grade(self, mark: float) -&gt; None:
+        """Record mark for this student."""
+        self.grades.append(mark)
+
+    def average(self) -&gt; float:
+        """Return this student's mean grade, or 0.0 if there are none."""
+        if not self.grades:
+            return 0.0
+        return sum(self.grades) / len(self.grades)</pre></div>
+    <div class="step"><code>class</code> introduces the type;
+    <code>Student</code> is capitalised by convention.</div>
+    <div class="step"><code>__init__</code> runs when an instance is created. It
+    does not return the object &mdash; it sets up the one already
+    being made.</div>
+    <div class="step">Attributes are created simply by assigning to
+    <code>self.something</code>. There is no separate declaration.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Using it</b></div>
+    <div class="code"><div class="cl">python</div><pre>s = Student('Ada')     <i># calls __init__ with self = the new object</i>
+s.add_grade(80)
+s.add_grade(90)
+print(s.average())     <i># 85.0</i>
+print(s.name)          <i># 'Ada' - attributes are readable directly</i></pre></div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>self is the instance</b></div>
+    <p>Every method's first parameter is the object it was called on. Writing
+    <code>s.add_grade(80)</code> is Python calling
+    <code>Student.add_grade(s, 80)</code>. So <code>self</code> is not magic and
+    not a keyword &mdash; it is an ordinary parameter that everyone agrees to
+    call <code>self</code>.</p>
+    <p>Forgetting it gives
+    <code>TypeError: add_grade() takes 1 positional argument but 2 were
+    given</code>, which is confusing until you know the object is being passed
+    invisibly.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Special methods</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Methods named with double underscores hook into Python's built-in
+    behaviour. Defining them lets your class work with the ordinary syntax
+    rather than requiring special function calls.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The three worth writing</b></div>
+    <div class="code"><div class="cl">python</div><pre>class Point:
+    """A point in two dimensions."""
+
+    def __init__(self, x: float, y: float) -&gt; None:
+        """Initialize a point at (x, y)."""
+        self.x = x
+        self.y = y
+
+    def __str__(self) -&gt; str:
+        """Return a readable description of this point.
+
+        &gt;&gt;&gt; str(Point(1, 2))
+        '(1, 2)'
+        """
+        return '(' + str(self.x) + ', ' + str(self.y) + ')'
+
+    def __eq__(self, other) -&gt; bool:
+        """Return whether this point has the same coordinates as other.
+
+        &gt;&gt;&gt; Point(1, 2) == Point(1, 2)
+        True
+        """
+        return self.x == other.x and self.y == other.y</pre></div>
+    <div class="step"><code>__str__</code> is what <code>print</code> and
+    <code>str()</code> use. Without it you get
+    <code>&lt;__main__.Point object at 0x10a...&gt;</code>, which tells the
+    reader nothing.</div>
+    <div class="step"><code>__eq__</code> is what <code>==</code> uses. Without
+    it, <code>==</code> falls back to identity, so two points with identical
+    coordinates compare unequal &mdash; the same
+    <code>is</code>-versus-<code>==</code> distinction from Unit 5.</div>
+  </div>
+  <div class="box warn"><div class="bl">Without __eq__, equality is identity</div>
+    <div class="code"><div class="cl">python</div><pre>Point(1, 2) == Point(1, 2)   <i># False, if __eq__ is not defined</i></pre></div>
+    <p>Two separately built objects are different objects. This bites hardest
+    when testing, because an assertion that looks obviously true
+    fails.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>When a class is the right choice</h3>
+  <div class="box thm"><div class="bl">Rule <b>Class or dictionary?</b></div>
+    <div class="step">Use a <strong>dictionary</strong> when the keys are data
+    &mdash; unknown until runtime, varying between instances, arbitrary in
+    number.</div>
+    <div class="step">Use a <strong>class</strong> when the fields are fixed and
+    known while writing the code, and when operations belong with the
+    data.</div>
+    <p>A student record with exactly a name and grades is a class. A word-count
+    table is a dictionary. Writing <code>d['nmae']</code> silently creates a new
+    key; writing <code>s.nmae</code> raises
+    <code>AttributeError</code> immediately, and that early failure is much of
+    the value.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Operations live with the data</b></div>
+    <div class="code"><div class="cl">python</div><pre><i># without a class: the function and the data drift apart</i>
+def student_average(grades: list) -&gt; float:
+    ...
+avg = student_average(record['grades'])
+
+<i># with a class: there is one place to look</i>
+avg = student.average()</pre></div>
+    <p>The second version cannot be called on the wrong thing, and someone
+    reading <code>Student</code> sees every operation that applies to
+    it.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting <code>self</code> in a method signature, or forgetting
+  <code>self.</code> when referring to an attribute inside a method.<br>
+  &bull; Returning something from <code>__init__</code>. It initialises; it must
+  return <code>None</code>.<br>
+  &bull; Assigning a mutable default in the class body rather than in
+  <code>__init__</code> &mdash; it is then shared by every instance, exactly the
+  Unit 3 default-argument trap.<br>
+  &bull; Defining <code>__str__</code> and expecting it inside a list.
+  Printing a list of objects uses <code>__repr__</code>, not
+  <code>__str__</code>.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · What is self?</div>
+      <p>Why does <code>s.add_grade(80)</code> pass two arguments to a method
+      defined with two parameters?</p>
+      <details><summary>Answer</summary><div class="ans">Because
+      <code>s</code> is passed automatically as <code>self</code>. The call is
+      really <code>Student.add_grade(s, 80)</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Missing __str__</div>
+      <p>What does <code>print(Point(1, 2))</code> show without
+      <code>__str__</code>?</p>
+      <details><summary>Answer</summary><div class="ans">Something like
+      <code>&lt;__main__.Point object at 0x7f...&gt;</code> — the type and a
+      memory address.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Write a class</div>
+      <p>Write a <code>Rectangle</code> class with width, height, an
+      <code>area</code> method and a readable <code>__str__</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>class Rectangle:
+    """A rectangle with a width and a height."""
+
+    def __init__(self, width: float, height: float) -&gt; None:
+        """Initialize a rectangle of the given width and height."""
+        self.width = width
+        self.height = height
+
+    def area(self) -&gt; float:
+        """Return the area of this rectangle.
+
+        &gt;&gt;&gt; Rectangle(3, 4).area()
+        12
+        """
+        return self.width * self.height
+
+    def __str__(self) -&gt; str:
+        """Return a readable description of this rectangle."""
+        return str(self.width) + 'x' + str(self.height)</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Shared mutable</div>
+      <p>What goes wrong here?</p>
+      <div class="code"><div class="cl">python</div><pre>class Basket:
+    items = []
+    def add(self, x) -&gt; None:
+        self.items.append(x)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>items</code> is
+      defined on the class, so every basket shares one list. Adding to one
+      basket adds to all. Create it per instance inside
+      <code>__init__</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Equality</div>
+      <p>Why might <code>Point(1, 2) == Point(1, 2)</code> be False?</p>
+      <details><summary>Answer</summary><div class="ans">If <code>__eq__</code>
+      is not defined, <code>==</code> compares identity, and these are two
+      distinct objects.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Method versus function</div>
+      <p>Rewrite <code>distance(p, q)</code> as a method on
+      <code>Point</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>    def distance_to(self, other) -&gt; float:
+        """Return the distance from this point to other.
+
+        &gt;&gt;&gt; Point(0, 0).distance_to(Point(3, 4))
+        5.0
+        """
+        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5</pre></div>
+      Called as <code>p.distance_to(q)</code>, which reads as the operation
+      belonging to a point.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Class or dict?</div>
+      <p>Which suits a phone book mapping names to numbers?</p>
+      <details><summary>Answer</summary><div class="ans">A dictionary. The keys
+      are data — names are not known while writing the code, and there can be any
+      number of them.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Counting instances</div>
+      <p>Track how many <code>Student</code> objects have been created.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>class Student:
+    count = 0          <i># class attribute, shared deliberately</i>
+
+    def __init__(self, name: str) -&gt; None:
+        """Initialize a student named name."""
+        self.name = name
+        Student.count = Student.count + 1</pre></div>
+      This is the legitimate use of a class attribute: data belonging to the type
+      itself rather than to any one instance. Note it is updated through
+      <code>Student</code>, not <code>self</code>.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Class definition.</strong> <code>class</code>,
+    <code>__init__</code>, instance attributes.</li>
+    <li><strong>Methods.</strong> <code>self</code>, calling convention, and
+    docstrings on every one.</li>
+    <li><strong>Special methods.</strong> <code>__str__</code> and
+    <code>__eq__</code>, and what calls each.</li>
+    <li><strong>Design judgment.</strong> When a class beats a
+    dictionary.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "classes, objects, methods" under program structure.
+    Assignments in this course typically require a class with full docstrings;
+    check the handout for the exact style required.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>A class is a type you define. Instances hold their own attributes; methods
+    are functions that receive the instance as <code>self</code>. Unit 8 tests
+    these the same way it tests plain functions.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Write <code>__str__</code> on every class you define, immediately. Debugging
+    without it means reading memory addresses.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · __init__</div>
+      <p>What does <code>__init__</code> return?</p>
+      <details><summary>Guide</summary><div class="ans"><code>None</code>. It
+      initialises the object that is already being created; it does not produce
+      it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · self</div>
+      <p>Is <code>self</code> a keyword?</p>
+      <details><summary>Guide</summary><div class="ans">No, just the
+      conventional name for the first parameter. Python passes the instance
+      there automatically.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Attribute location</div>
+      <p>Where should mutable attributes be created?</p>
+      <details><summary>Guide</summary><div class="ans">Inside
+      <code>__init__</code>, so each instance gets its own. In the class body
+      they would be shared by all instances.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Choosing</div>
+      <p>When is a dictionary better than a class?</p>
+      <details><summary>Guide</summary><div class="ans">When the keys are data
+      rather than a fixed schema — unknown at authoring time and varying in
+      number.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit06.html">← Unit 06<span>Dictionaries &amp; sets</span></a>
+  <a href="unit08.html">Unit 08 →<span>Unit testing &amp; design</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
