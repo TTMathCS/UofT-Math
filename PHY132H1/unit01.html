@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — Electric Charge &amp; Force · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Electric Charge &amp; Force</h1>
+<p class="ch-intro reveal">A new fundamental property, and a force law with the
+same shape as gravity but two crucial differences: it comes in two signs, and it
+is about $10^{36}$ times stronger. Everything in this course follows from
+that.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the properties of charge, including conservation and
+    quantisation.</li>
+    <li>Apply Coulomb's law with correct direction.</li>
+    <li>Superpose forces from several charges.</li>
+    <li>Explain conductors, insulators and induced charge.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Every force you meet in daily life other than gravity is electromagnetic.
+    The normal force, friction, tension, chemical bonds &mdash; all are electric
+    forces between atoms, dressed up.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Photocopiers and laser printers move toner with electrostatic attraction.
+    Lightning is charge separation released. Static shocks are the same physics
+    at a smaller scale.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Coulomb measured the inverse-square law in 1785 with a torsion balance
+    delicate enough to detect forces of a millionth of a newton. Why charge is
+    quantised in units of $e$ &mdash; and why the proton's charge exactly
+    balances the electron's &mdash; is still unexplained.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Charge</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Charge is a property of matter, measured in coulombs. Its rules:</p>
+    <div class="step"><em>Two signs.</em> Like charges repel, unlike attract.
+    This is the deep difference from gravity, which only
+    attracts.</div>
+    <div class="step"><em>Conserved.</em> Charge is never created or destroyed,
+    only moved. Rubbing a balloon transfers electrons; it does not make
+    charge.</div>
+    <div class="step"><em>Quantised.</em> Every observed charge is a whole
+    multiple of $e = 1.6 \times 10^{-19}$ C.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>Conductors and insulators</b></div>
+    <div class="step">In a <em>conductor</em>, some electrons move freely.
+    Charge redistributes almost instantly and always ends up on the
+    surface.</div>
+    <div class="step">In an <em>insulator</em>, charges stay put. Charge remains
+    wherever it was placed.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why a charged rod attracts neutral paper</b></div>
+    <div class="step">The rod's field pulls the paper's electrons slightly toward
+    it and pushes its nuclei slightly away &mdash; the paper
+    <em>polarises</em>.</div>
+    <div class="step">The near side is now oppositely charged and the far side
+    likewise charged. Because force falls off with distance, the near attraction
+    beats the far repulsion.</div>
+    <div class="step">Net attraction, with no net charge on the paper at all.
+    This is why neutral objects are attracted to charged ones regardless of the
+    charge's sign.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Coulomb's law</h3>
+  <div class="box thm"><div class="bl">Rule <b>The force between two point charges</b></div>
+    <div class="step">$F = k\dfrac{|q_1 q_2|}{r^2}$ with
+    $k = 8.99 \times 10^9$ N·m$^2$/C$^2$</div>
+    <p>The force acts along the line joining them: repulsive for like signs,
+    attractive for unlike. Use the formula for the <em>magnitude</em> and settle
+    direction by inspection.</p></div>
+  <div class="box warn"><div class="bl">Do not put signs into the formula</div>
+    <p>Substituting negative charges and hoping the sign comes out right leads to
+    confusion in two dimensions. Compute the magnitude from absolute values, then
+    draw the arrow. This is the single most useful habit in the
+    unit.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Comparing with gravity</b></div>
+    <p>Two protons a distance $r$ apart.</p>
+    <div class="step">Electric repulsion: $ke^2/r^2$. Gravitational attraction:
+    $Gm_p^2/r^2$.</div>
+    <div class="step">The ratio is about $10^{36}$, and $r$ cancels entirely
+    &mdash; both are inverse-square, so the comparison is the same at every
+    distance.</div>
+    <div class="step">Gravity dominates at large scales only because bulk matter
+    is almost exactly neutral. Electric forces cancel; gravity cannot, because
+    there is no negative mass.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>A numerical case</b></div>
+    <p>Charges of $+3\,\mu$C and $-2\,\mu$C, $0.05$ m apart.</p>
+    <div class="step">$F = (8.99 \times 10^9)(3 \times 10^{-6})(2 \times 10^{-6})
+    / (0.05)^2$</div>
+    <div class="step">$= (8.99 \times 10^9)(6 \times 10^{-12}) / (2.5 \times
+    10^{-3}) = 21.6$ N.</div>
+    <div class="step">Attractive, since the signs differ. Note how large that is
+    for microcoulomb charges &mdash; a reminder that a coulomb is an enormous
+    amount of charge.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Superposition</h3>
+  <div class="box thm"><div class="bl">Rule <b>Forces add as vectors</b></div>
+    <p>With several charges present, the force on one is the vector sum of the
+    forces from each other charge taken separately. Each pair is computed as
+    though the others were absent.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Three charges in a line</b></div>
+    <p>Charges of $+2\,\mu$C at $x = 0$, $+3\,\mu$C at $x = 0.1$ m, and
+    $-1\,\mu$C at $x = 0.2$ m. Find the force on the middle one.</p>
+    <div class="step">From the left charge: repulsion, so pointing $+x$.
+    Magnitude $k(2)(3) \times 10^{-12}/(0.1)^2 = 5.39$ N.</div>
+    <div class="step">From the right charge: attraction, so also pointing $+x$.
+    Magnitude $k(3)(1) \times 10^{-12}/(0.1)^2 = 2.70$ N.</div>
+    <div class="step">Both point the same way, so the total is $8.09$ N in the
+    $+x$ direction. Deciding each direction by inspection made the sum
+    trivial.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Two dimensions</b></div>
+    <p>When the charges are not collinear, resolve each force into components,
+    add the components, then recombine &mdash; exactly the PHY131H1 Unit 1
+    procedure.</p>
+    <div class="step">Never add magnitudes. Two $5$ N forces at right angles give
+    $7.1$ N, not $10$ N.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Putting signs into Coulomb's law instead of deciding direction by
+  inspection.<br>
+  &bull; Adding force magnitudes rather than components.<br>
+  &bull; Forgetting to square the distance, or using diameter for
+  radius.<br>
+  &bull; Leaving charges in microcoulombs. Convert to coulombs
+  first.<br>
+  &bull; Thinking a neutral object cannot be attracted. Polarisation makes it
+  so.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Direction</div>
+      <p>Two negative charges. Attract or repel?</p>
+      <details><summary>Answer</summary><div class="ans">Repel. Like signs
+      always repel, whichever sign they are.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Distance</div>
+      <p>Halving the separation does what to the force?</p>
+      <details><summary>Answer</summary><div class="ans">Quadruples it. The force
+      goes as $1/r^2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Magnitude</div>
+      <p>Find the force between $+1\,\mu$C and $+1\,\mu$C at $0.1$ m.</p>
+      <details><summary>Answer</summary><div class="ans">$F = (8.99 \times
+      10^9)(10^{-12})/(0.01) = 0.899$ N, repulsive.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Neutral attraction</div>
+      <p>Why does a charged comb pick up paper?</p>
+      <details><summary>Answer</summary><div class="ans">The paper polarises. Its
+      near side becomes oppositely charged and, being closer, is attracted more
+      strongly than the far side is repelled.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Equilibrium point</div>
+      <p>Charges $+q$ at $x = 0$ and $+4q$ at $x = 1$. Where is the field-free
+      point on the line between them?</p>
+      <details><summary>Solution</summary><div class="ans">Set the magnitudes
+      equal: $q/x^2 = 4q/(1-x)^2$, so $(1-x) = 2x$ and $x = 1/3$. Closer to the
+      smaller charge, as it must be.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Counting electrons</div>
+      <p>How many electrons make $-1\,\mu$C?</p>
+      <details><summary>Answer</summary><div class="ans">$10^{-6}/(1.6 \times
+      10^{-19}) = 6.25 \times 10^{12}$ — over six trillion, for a charge that is
+      small by laboratory standards.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Conductor</div>
+      <p>Where does excess charge sit on an isolated metal sphere?</p>
+      <details><summary>Answer</summary><div class="ans">Entirely on the outer
+      surface. Mutual repulsion drives the charges as far apart as possible, and
+      Unit 2 proves the interior field is zero.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Two dimensions</div>
+      <p>Charges $+q$ at the two ends of a base and $+q$ at the apex of an
+      equilateral triangle. Which way is the force on the apex charge?</p>
+      <details><summary>Solution</summary><div class="ans">Directly away from the
+      midpoint of the base. The horizontal components from the two base charges
+      cancel by symmetry and the vertical ones add, so the net force is
+      $2F\cos 30$ upward where $F$ is either individual
+      force.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Charge.</strong> Two signs, conservation, quantisation.</li>
+    <li><strong>Coulomb's law.</strong> Magnitude, direction by inspection, and
+    the comparison with gravity.</li>
+    <li><strong>Superposition.</strong> Vector addition of forces from several
+    charges.</li>
+    <li><strong>Materials.</strong> Conductors, insulators, polarisation and
+    induced charge.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar's topic list opens with "electricity". Check the syllabus on
+    Quercus for the assigned reading and problems; this material is normally the
+    first two weeks.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Charge produces force; force falls off as $1/r^2$; forces from many
+    charges add as vectors. Unit 2 recasts all of this in terms of a field, which
+    removes the need to keep asking "force on what?".</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Draw the force arrows before computing anything. Direction settled by
+    inspection and magnitude by formula is faster and far less error-prone than
+    trying to do both at once.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Two signs</div>
+      <p>What does having two signs of charge allow that gravity cannot?</p>
+      <details><summary>Guide</summary><div class="ans">Cancellation. Bulk matter
+      is neutral because positive and negative balance, which is why gravity
+      dominates at large scales despite being far
+      weaker.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Quantisation</div>
+      <p>What is the smallest observed free charge?</p>
+      <details><summary>Guide</summary><div class="ans">$e = 1.6 \times
+      10^{-19}$ C. Quarks carry thirds of it but are never found
+      alone.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Direction</div>
+      <p>Why not substitute signed charges into Coulomb's law?</p>
+      <details><summary>Guide</summary><div class="ans">Because the sign of the
+      result does not encode a direction in two dimensions. Compute the magnitude
+      and draw the arrow.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Polarisation</div>
+      <p>Can a neutral object experience a net electric force?</p>
+      <details><summary>Guide</summary><div class="ans">Yes, if it polarises in a
+      non-uniform field. The nearer induced charge is attracted more than the
+      farther one is repelled.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+  <a href="unit02.html">Unit 02 →<span>The electric field</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

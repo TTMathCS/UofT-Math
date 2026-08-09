@@ -81,7 +81,7 @@
     course("PHL345H1"),
     course("PHL348H1"),
     course("PHY131H1", "Introduction to Physics I", "PHY131H1/index.html", 10),
-    course("PHY132H1", "Introduction to Physics II"),
+    course("PHY132H1", "Introduction to Physics II", "PHY132H1/index.html", 10),
     course("PHY151H1", "Foundations of Physics I"),
     course("PHY152H1", "Foundations of Physics II"),
     course("PHY224H1", "Practical Physics I"),

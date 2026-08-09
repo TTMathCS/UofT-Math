@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 2 — The Electric Field · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 2</div>
+<div class="unit-no reveal">Unit 2 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">The Electric Field</h1>
+<p class="ch-intro reveal">A change of viewpoint rather than of physics. Instead
+of asking what force one charge exerts on another, ask what condition the first
+charge creates in space. The field is real, it carries energy, and in Unit 7 it
+detaches and travels as light.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Define the field and compute it from point charges.</li>
+    <li>Draw and read field lines.</li>
+    <li>Use Gauss's law on symmetric charge distributions.</li>
+    <li>Explain why the field inside a conductor is zero.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Coulomb's law describes action at a distance, which troubled everyone who
+    used it. The field replaces it with something local: the charge alters space
+    around it, and another charge responds to the space where it
+    actually is.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Faraday cages work because the field inside a conductor is zero &mdash;
+    which is why you are safe in a car during a lightning strike, and why an MRI
+    room is lined with metal.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Faraday introduced field lines in the 1830s as a picture, being largely
+    self-taught and uncomfortable with algebra. Maxwell then turned the picture
+    into equations, and the field became the more fundamental object &mdash; a
+    rare case of an intuition outlasting the formalism it replaced.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Definition</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>The electric field at a point is the force per unit charge a small
+    positive test charge would feel there:</p>
+    <div class="step">$E = \dfrac{F}{q}$, measured in N/C.</div>
+    <p>The field exists whether or not anything is there to feel it. Placing a
+    charge $q$ in a field gives $F = qE$.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Field of a point charge</b></div>
+    <div class="step">$E = k\dfrac{|Q|}{r^2}$, pointing <em>away</em> from a
+    positive charge and <em>toward</em> a negative one.</div>
+    <p>Fields from several charges superpose as vectors, exactly as forces
+    did.</p></div>
+  <div class="box warn"><div class="bl">Direction depends on the test charge's sign</div>
+    <p>The field direction is fixed by the source. But the <em>force</em> on a
+    charge placed in it depends on that charge's sign: positive charges are
+    pushed along the field, negative charges against it. Confusing the two is the
+    commonest error in the unit.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Field on the axis of a dipole</b></div>
+    <p>Charges $+q$ and $-q$ separated by $d$. At a point on the perpendicular
+    bisector:</p>
+    <div class="step">Each contributes a field of the same magnitude
+    $kq/r^2$.</div>
+    <div class="step">The components along the bisector cancel; the components
+    parallel to the dipole axis add.</div>
+    <div class="step">The net field points from positive to negative, parallel to
+    the axis &mdash; the opposite of what many expect from a
+    sketch.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Field lines</h3>
+  <div class="box thm"><div class="bl">Rule <b>How to read them</b></div>
+    <div class="step">Lines start on positive charges and end on negative
+    ones.</div>
+    <div class="step">The field direction at a point is the
+    <em>tangent</em> to the line, not the line itself.</div>
+    <div class="step">Density of lines indicates field strength.</div>
+    <div class="step">Lines never cross &mdash; the field has one direction at
+    each point.</div>
+    <div class="step">Lines meet a conductor's surface
+    <em>perpendicularly</em>.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why perpendicular at a surface</b></div>
+    <div class="step">Suppose a line met the surface at an angle. It would then
+    have a component along the surface.</div>
+    <div class="step">That component would push the conductor's free charges
+    sideways, and they would move.</div>
+    <div class="step">They keep moving until no such component remains. So in
+    equilibrium the field must be perpendicular &mdash; the argument is entirely
+    about what the charges would <em>do</em>.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Gauss's law</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><em>Flux</em> measures how much field passes through a surface. For a
+    uniform field through a flat area,
+    $\Phi = EA\cos\theta$, with $\theta$ between the field and the
+    surface's normal.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Gauss's law</b></div>
+    <p>The total flux through any <em>closed</em> surface depends only on the
+    charge enclosed:</p>
+    <div class="step">$\Phi = \dfrac{Q_{\text{enclosed}}}{\varepsilon_0}$ with
+    $\varepsilon_0 = 8.85 \times 10^{-12}$ C$^2$/(N·m$^2$)</div>
+    <p>Charges outside contribute nothing: their field enters the surface and
+    leaves again, and the two cancel exactly.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Field of a charged sphere</b></div>
+    <p>A sphere carrying total charge $Q$, at a distance $r$ outside it.</p>
+    <div class="step">Choose a spherical surface of radius $r$ centred on the
+    charge. By symmetry the field has the same magnitude everywhere on it and
+    points radially.</div>
+    <div class="step">Flux is then $E \times 4\pi r^2$, and Gauss's law gives
+    $E = \dfrac{Q}{4\pi\varepsilon_0 r^2} = \dfrac{kQ}{r^2}$.</div>
+    <div class="step">Identical to a point charge at the centre. A uniformly
+    charged sphere acts, from outside, exactly like all its charge concentrated
+    at its middle &mdash; the same result as for gravity, for the same
+    geometrical reason.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Inside a conductor</b></div>
+    <p>Take a Gaussian surface entirely within the metal of a charged
+    conductor in equilibrium.</p>
+    <div class="step">If the field were nonzero anywhere inside, free charges
+    would move &mdash; contradicting equilibrium. So $E = 0$
+    throughout the metal.</div>
+    <div class="step">Zero field means zero flux, so by Gauss's law the enclosed
+    charge is zero. Any excess charge must therefore sit on the
+    <em>surface</em>.</div>
+    <div class="step">This is the Faraday cage. A hollow conductor shields its
+    interior from any external field, which is why sensitive electronics live in
+    metal boxes.</div>
+  </div>
+  <div class="box warn"><div class="bl">Gauss's law is always true, rarely useful</div>
+    <p>It holds for every closed surface and every charge distribution. But it
+    only lets you <em>solve</em> for $E$ when symmetry makes the field constant
+    over the surface &mdash; spherical, cylindrical or planar. Without symmetry
+    it is true and useless.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Confusing field direction with force direction on a negative
+  charge.<br>
+  &bull; Thinking field lines are paths a charge follows. They are not
+  trajectories.<br>
+  &bull; Including charges outside the Gaussian surface. Only enclosed charge
+  counts.<br>
+  &bull; Applying Gauss's law where there is no symmetry.<br>
+  &bull; Forgetting that $E = 0$ inside conductor material but not inside a
+  hollow cavity containing charge.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Field from a charge</div>
+      <p>Find the field $0.2$ m from a $+5\,\mu$C charge.</p>
+      <details><summary>Answer</summary><div class="ans">$E = (8.99 \times
+      10^9)(5 \times 10^{-6})/0.04 = 1.12 \times 10^6$ N/C, pointing
+      away.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Force on a negative charge</div>
+      <p>An electron sits in a field pointing east. Which way is the force?</p>
+      <details><summary>Answer</summary><div class="ans">West. Negative charges
+      feel a force opposite the field.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Crossing lines</div>
+      <p>Why can field lines never cross?</p>
+      <details><summary>Answer</summary><div class="ans">A crossing point would
+      have two field directions at once, which is
+      meaningless.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Enclosed charge</div>
+      <p>A closed surface encloses $+3\,\mu$C and $-1\,\mu$C, with $+5\,\mu$C
+      outside. What is the flux?</p>
+      <details><summary>Answer</summary><div class="ans">$\Phi = (2 \times
+      10^{-6})/\varepsilon_0 = 2.26 \times 10^5$ N·m$^2$/C. The outside charge
+      contributes nothing.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Inside a shell</div>
+      <p>What is the field inside a uniformly charged spherical shell?</p>
+      <details><summary>Solution</summary><div class="ans">Zero. A Gaussian
+      sphere inside encloses no charge, and symmetry forces the field to be
+      uniform on it — so it must vanish. The shell's own charge contributes
+      nothing anywhere inside.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Infinite sheet</div>
+      <p>Use Gauss's law to find the field of an infinite plane with surface
+      charge density $\sigma$.</p>
+      <details><summary>Solution</summary><div class="ans">Take a cylinder
+      through the sheet with end caps of area $A$. Flux is $2EA$ — two caps —
+      and the enclosed charge is $\sigma A$. So
+      $E = \sigma/(2\varepsilon_0)$, independent of distance. A remarkable
+      result: the field does not weaken as you move
+      away.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Faraday cage</div>
+      <p>Why is a car a safe place in a lightning storm?</p>
+      <details><summary>Answer</summary><div class="ans">The metal body is a
+      conductor, so the field inside it is zero and the charge flows around the
+      outside to the ground. The rubber tyres are
+      irrelevant.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · When Gauss fails</div>
+      <p>Why can Gauss's law not give the field of an arbitrary lump of
+      charge?</p>
+      <details><summary>Answer</summary><div class="ans">It is still true, but
+      without symmetry the field varies over the surface and cannot be pulled out
+      of the flux integral. You learn the total flux and nothing about the field
+      at any particular point.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The field.</strong> Force per unit charge, and the distinction
+    between field direction and force direction.</li>
+    <li><strong>Field lines.</strong> The five rules and what each
+    encodes.</li>
+    <li><strong>Gauss's law.</strong> Flux, enclosed charge, and the three
+    symmetric cases where it solves for $E$.</li>
+    <li><strong>Conductors.</strong> Zero interior field, surface charge, and
+    shielding.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar's "electricity" topic covers this. Check the syllabus on
+    Quercus for assigned problems; Gauss's law questions are usually restricted
+    to the three symmetric geometries.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>The field is what a charge does to space. Lines picture it, Gauss's law
+    computes it when symmetry allows, and conductors rearrange until their
+    interior field vanishes. Unit 3 adds the energy view of the same
+    thing.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Before any Gauss's law problem, ask what symmetry the charge has. If the
+    answer is none, the law will not help and another method is
+    needed.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Field versus force</div>
+      <p>Does the field direction depend on the test charge?</p>
+      <details><summary>Guide</summary><div class="ans">No. The field is fixed by
+      the sources. Only the force on a placed charge depends on that charge's
+      sign.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Flux</div>
+      <p>What determines the flux through a closed surface?</p>
+      <details><summary>Guide</summary><div class="ans">Only the charge enclosed.
+      External charges contribute equal inward and outward flux, which
+      cancels.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Conductors</div>
+      <p>Why is the field zero inside conductor material?</p>
+      <details><summary>Guide</summary><div class="ans">Any field would move the
+      free charges, and they move until it is cancelled. Equilibrium requires
+      zero.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Usefulness</div>
+      <p>When does Gauss's law actually solve a problem?</p>
+      <details><summary>Guide</summary><div class="ans">When spherical,
+      cylindrical or planar symmetry makes the field constant over a chosen
+      surface, so it factors out of the flux.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit01.html">← Unit 01<span>Electric charge &amp; force</span></a>
+  <a href="unit03.html">Unit 03 →<span>Electric potential</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

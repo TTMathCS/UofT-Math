@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 4 — Current &amp; Circuits · PHY132H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY132H1</a><span>/</span>Unit 4</div>
+<div class="unit-no reveal">Unit 4 · Introduction to Physics II</div>
+<h1 class="ch-title reveal">Current &amp; Circuits</h1>
+<p class="ch-intro reveal">Charges in motion, and the most immediately practical
+unit of the course. Two conservation laws &mdash; charge at a junction, energy
+around a loop &mdash; solve every circuit you will meet, however complicated it
+looks.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Relate current, voltage and resistance.</li>
+    <li>Combine resistors in series and parallel.</li>
+    <li>Apply Kirchhoff's junction and loop rules.</li>
+    <li>Compute power dissipated in a circuit element.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Static charges are a special case. Almost everything electricity is used
+    for involves charges flowing, and circuits are how that flow is directed and
+    controlled.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Household wiring is parallel, so each appliance gets the full voltage and
+    switching one off leaves the others running. Fuses and breakers exist because
+    power dissipated goes as $I^2R$, and too much current melts
+    things.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Ohm published his law in 1827 to widespread rejection; it was thought too
+    simple to be true. Kirchhoff stated his rules in 1845 while still a student,
+    and they remain the basis of all circuit analysis.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Current, resistance, Ohm's law</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><em>Current</em> $I$ is charge per unit time,
+    $I = Q/t$, in amperes.</div>
+    <div class="step"><em>Resistance</em> $R$ measures opposition to flow, in
+    ohms.</div>
+    <div class="step"><em>Ohm's law:</em> $V = IR$ for materials where $R$ is
+    constant.</div></div>
+  <div class="box warn"><div class="bl">Conventional current runs backwards</div>
+    <p>By convention current flows from positive to negative &mdash; the
+    direction positive charges <em>would</em> move. In a metal wire the actual
+    carriers are electrons, moving the opposite way. Every circuit formula uses
+    the convention, so use it too and do not try to reconcile
+    them.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Drift speed is astonishingly slow</b></div>
+    <div class="step">In a typical wire carrying a few amps, individual electrons
+    drift at well under a millimetre per second.</div>
+    <div class="step">Yet a light turns on instantly, because the
+    <em>field</em> propagates through the wire at nearly light speed and starts
+    every electron moving at once.</div>
+    <div class="step">The analogy is a full pipe: push water in one end and it
+    comes out the other immediately, though no individual molecule made the
+    trip.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Power</b></div>
+    <div class="step">$P = IV$ in general.</div>
+    <div class="step">$P = I^2R$ and $P = V^2/R$ for a resistor, by substituting
+    Ohm's law.</div>
+    <p>Use whichever form matches what you know. The $I^2R$ version is why
+    transmission lines run at high voltage and low current: halving the current
+    quarters the loss.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Series and parallel</h3>
+  <div class="box thm"><div class="bl">Rule <b>Series</b></div>
+    <div class="step">One path, so the <em>current is the same</em> through
+    each.</div>
+    <div class="step">Voltages add: $V = V_1 + V_2$.</div>
+    <div class="step">$R = R_1 + R_2$, always larger than either.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>Parallel</b></div>
+    <div class="step">Branches share endpoints, so the <em>voltage is the
+    same</em> across each.</div>
+    <div class="step">Currents add: $I = I_1 + I_2$.</div>
+    <div class="step">$\dfrac{1}{R} = \dfrac{1}{R_1} + \dfrac{1}{R_2}$, always
+    smaller than either.</div></div>
+  <div class="box warn"><div class="bl">These are opposite to capacitors</div>
+    <p>Resistors add in series; capacitors add in parallel. If a rule feels
+    familiar, check which component you are dealing with. Mixing them is the
+    single most common error in this material.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why parallel lowers resistance</b></div>
+    <div class="step">Adding a second path gives the current somewhere else to
+    go, so more flows for the same voltage &mdash; and more current at the same
+    voltage means less resistance.</div>
+    <div class="step">Two identical resistors in parallel give exactly half.
+    Three give a third.</div>
+    <div class="step">A useful check: the parallel combination is always less
+    than the <em>smallest</em> branch. If your answer is larger, the algebra is
+    wrong.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>A mixed network</b></div>
+    <p>A $6\,\Omega$ resistor in series with two $4\,\Omega$ resistors that are
+    in parallel with each other, across $12$ V.</p>
+    <div class="step">Parallel pair: $1/R = 1/4 + 1/4$, so
+    $R = 2\,\Omega$.</div>
+    <div class="step">Total: $6 + 2 = 8\,\Omega$, so
+    $I = 12/8 = 1.5$ A from the battery.</div>
+    <div class="step">Across the parallel section:
+    $V = (1.5)(2) = 3$ V, so each branch carries
+    $3/4 = 0.75$ A &mdash; which correctly sums back to
+    $1.5$ A.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Kirchhoff's rules</h3>
+  <div class="box thm"><div class="bl">Rule <b>Junction rule &mdash; charge conservation</b></div>
+    <p>The total current into a junction equals the total current out. Charge
+    cannot accumulate at a point.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Loop rule &mdash; energy conservation</b></div>
+    <p>Around any closed loop, the potential changes sum to zero. Returning to
+    where you started means returning to the same potential.</p>
+    <div class="step">Across a battery from $-$ to $+$: gain
+    $+\mathcal{E}$.</div>
+    <div class="step">Across a resistor in the direction of current: drop
+    $-IR$.</div>
+    <div class="step">Against the current through a resistor: gain
+    $+IR$.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Applying them</b></div>
+    <p>Two batteries and three resistors in a two-loop circuit.</p>
+    <div class="step">Assign a current with an assumed direction to each branch.
+    Guessing wrongly is fine &mdash; the answer comes out negative and that tells
+    you the true direction.</div>
+    <div class="step">Write the junction rule at each junction, giving equations
+    relating the currents.</div>
+    <div class="step">Write the loop rule around enough independent loops to
+    match the number of unknowns.</div>
+    <div class="step">Solve the resulting linear system. That is the entire
+    method, and it works no matter how tangled the
+    circuit.</div>
+  </div>
+  <div class="box warn"><div class="bl">A negative current is information, not an error</div>
+    <p>It means the real current flows opposite to your assumed direction. Do not
+    go back and redo the problem &mdash; the magnitude is correct and the sign
+    has told you what you wanted to know.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Using the capacitor combination rules for resistors.<br>
+  &bull; Assuming current is "used up" as it goes round. It is the same all the
+  way round a series loop.<br>
+  &bull; Forgetting that parallel resistance is less than the smallest
+  branch.<br>
+  &bull; Getting the sign wrong crossing a resistor against the
+  current.<br>
+  &bull; Treating a negative current as a mistake.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Ohm's law</div>
+      <p>Find the current through a $220\,\Omega$ resistor at $12$ V.</p>
+      <details><summary>Answer</summary><div class="ans">$I = 12/220 = 0.055$ A,
+      or $55$ mA.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Series</div>
+      <p>Three $10\,\Omega$ resistors in series. Find the total.</p>
+      <details><summary>Answer</summary><div class="ans">$30\,\Omega$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Parallel</div>
+      <p>Three $10\,\Omega$ resistors in parallel. Find the total.</p>
+      <details><summary>Answer</summary><div class="ans">$1/R = 3/10$, so
+      $R = 3.33\,\Omega$ — less than the smallest branch, as
+      required.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Power</div>
+      <p>How much power does a $60\,\Omega$ heater draw at $120$ V?</p>
+      <details><summary>Answer</summary><div class="ans">$P = V^2/R = 14400/60 =
+      240$ W.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Household wiring</div>
+      <p>Why are home outlets wired in parallel?</p>
+      <details><summary>Answer</summary><div class="ans">So every appliance gets
+      the full supply voltage and switching one off does not break the circuit for
+      the rest. In series they would share the voltage and all fail
+      together.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Transmission</div>
+      <p>Why is power transmitted at high voltage?</p>
+      <details><summary>Solution</summary><div class="ans">For a given power
+      $P = IV$, raising $V$ lowers $I$. Line losses go as $I^2R$, so halving the
+      current cuts the loss to a quarter. The voltage is stepped back down by
+      transformers near the point of use.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Loop rule</div>
+      <p>A $9$ V battery drives current through $2\,\Omega$ and
+      $4\,\Omega$ in series. Verify the loop rule.</p>
+      <details><summary>Solution</summary><div class="ans">$I = 9/6 = 1.5$ A.
+      Drops are $(1.5)(2) = 3$ V and $(1.5)(4) = 6$ V. Going round:
+      $+9 - 3 - 6 = 0$. ✓</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Negative answer</div>
+      <p>You solve a circuit and get $I = -0.4$ A. What does that mean?</p>
+      <details><summary>Answer</summary><div class="ans">The current is $0.4$ A
+      flowing opposite to the direction you assumed. The magnitude is right and
+      no rework is needed.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY132H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Current and resistance.</strong> Definitions, Ohm's law, and the
+    conventional-current convention.</li>
+    <li><strong>Combinations.</strong> Series and parallel, and how they differ
+    from capacitors.</li>
+    <li><strong>Kirchhoff's rules.</strong> Junction and loop, with correct
+    signs.</li>
+    <li><strong>Power.</strong> The three forms and when each is
+    convenient.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Circuits fall under the calendar's "electricity" topic and dominate the
+    laboratory component. Check the syllabus on Quercus for the assigned problems
+    and for which lab experiments accompany this
+    material.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Potential differences from Unit 3 drive current; resistance opposes it;
+    charge and energy conservation give two rules that solve any network. Unit 5
+    asks what those moving charges do to the space around
+    them.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Redraw every circuit before solving, grouping obvious series and parallel
+    blocks. Most circuit problems that look hard are simple ones drawn
+    awkwardly.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Series current</div>
+      <p>Does current decrease as it passes through resistors in series?</p>
+      <details><summary>Guide</summary><div class="ans">No. Charge is conserved,
+      so the same current flows throughout. The <em>voltage</em> drops, not the
+      current.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Parallel check</div>
+      <p>What is a quick sanity check on a parallel combination?</p>
+      <details><summary>Guide</summary><div class="ans">It must be smaller than
+      the smallest branch resistance.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · The two rules</div>
+      <p>What conservation law does each Kirchhoff rule express?</p>
+      <details><summary>Guide</summary><div class="ans">Junction: conservation of
+      charge. Loop: conservation of energy.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Drift speed</div>
+      <p>Why does a lamp light instantly if electrons drift slowly?</p>
+      <details><summary>Guide</summary><div class="ans">The electric field
+      establishes itself through the wire at close to light speed, so every
+      electron in the circuit starts moving essentially at
+      once.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit03.html">← Unit 03<span>Electric potential</span></a>
+  <a href="unit05.html">Unit 05 →<span>Magnetic fields</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
