@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 2 — Object-Oriented Design · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 2</div>
+<div class="unit-no reveal">Unit 2 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Object-Oriented Design</h1>
+<p class="ch-intro reveal">CSC108H1 showed you how to write a class. This unit is
+about designing one: what the attributes mean, what must always be true of them,
+and how to state that so the invariant survives every method you
+add.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Write a representation invariant and check methods preserve it.</li>
+    <li>Document attributes with types and meanings.</li>
+    <li>Decide what belongs in the public interface.</li>
+    <li>Implement <code>__eq__</code>, <code>__str__</code> and
+    <code>__len__</code> where they earn their place.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A class is a promise that its data stays in a sensible state. Writing that
+    promise down turns a vague intention into something you can check every
+    method against &mdash; and most bugs in this course are a method quietly
+    breaking one.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>A bank account whose balance and transaction history can disagree is a
+    serious bug. Stating "balance equals the sum of the transactions" as an
+    invariant makes the requirement explicit and testable rather than
+    assumed.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Design by contract came from Bertrand Meyer's Eiffel language in the
+    1980s, where preconditions, postconditions and invariants were checked by the
+    compiler. Python leaves them as documentation, so the discipline has to be
+    yours.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Documenting the representation</h3>
+  <div class="box thm"><div class="bl">Rule <b>What a class docstring carries</b></div>
+    <div class="step"><strong>What the class represents</strong> in one
+    line.</div>
+    <div class="step"><strong>Attributes</strong>, each with its type and what
+    it means.</div>
+    <div class="step"><strong>Representation invariants</strong> &mdash;
+    conditions on the attributes that must hold at all times.</div></div>
+  <div class="box eg"><div class="bl">Example <b>A fully documented class</b></div>
+    <div class="code"><div class="cl">python</div><pre>class Course:
+    """A course with a fixed capacity and a list of enrolled students.
+
+    Attributes:
+        code: the course code, such as 'CSC148H1'
+        capacity: the maximum number of students, a positive int
+        students: the names of enrolled students
+
+    Representation invariants:
+        - len(self.students) &lt;= self.capacity
+        - there are no duplicates in self.students
+        - self.capacity &gt; 0
+    """
+    code: str
+    capacity: int
+    students: list
+
+    def __init__(self, code: str, capacity: int) -&gt; None:
+        """Initialize an empty course with the given code and capacity.
+
+        Preconditions: capacity &gt; 0
+        """
+        self.code = code
+        self.capacity = capacity
+        self.students = []</pre></div>
+    <div class="step">The invariants are the interesting part. They say what
+    "valid" means for this class, and every method now has something concrete to
+    be checked against.</div>
+    <div class="step">Note the constructor establishes them: an empty list has no
+    duplicates and its length is at most any positive capacity.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Every method must preserve the invariant</b></div>
+    <p>If the invariant holds when a method starts, it must hold when the method
+    ends. That is the obligation, and it is what makes the class trustworthy from
+    the outside.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A method that respects it</b></div>
+    <div class="code"><div class="cl">python</div><pre>def enrol(self, name: str) -&gt; bool:
+    """Add name to this course and return whether it succeeded.
+
+    Fails if the course is full or name is already enrolled.
+
+    &gt;&gt;&gt; c = Course('CSC148H1', 2)
+    &gt;&gt;&gt; c.enrol('Ada')
+    True
+    &gt;&gt;&gt; c.enrol('Ada')
+    False
+    """
+    if len(self.students) &gt;= self.capacity:
+        return False
+    if name in self.students:
+        return False
+    self.students.append(name)
+    return True</pre></div>
+    <div class="step">The two guards correspond exactly to the two invariants.
+    That is not a coincidence &mdash; writing the invariant first tells you which
+    checks the method needs.</div>
+    <div class="step">Returning a boolean rather than raising is a design choice.
+    Either works; the docstring records which was
+    chosen.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Public interface</h3>
+  <div class="box thm"><div class="bl">Rule <b>Expose behaviour, not data</b></div>
+    <p>Ask what callers need to <em>do</em>, not what they need to see. A method
+    can enforce the invariant; a bare attribute cannot.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Where the invariant leaks</b></div>
+    <div class="code"><div class="cl">python</div><pre>c = Course('CSC148H1', 2)
+c.students.append('Ada')
+c.students.append('Ada')     <i># duplicate - invariant broken</i>
+c.students.append('Alan')    <i># over capacity - invariant broken</i></pre></div>
+    <div class="step">Because <code>students</code> is a public list, a client
+    can bypass <code>enrol</code> entirely and leave the object in a state the
+    class claims is impossible.</div>
+    <div class="step">Making it <code>_students</code> and exposing a
+    <code>class_list()</code> method that returns a <em>copy</em> closes the
+    hole. Returning the list itself would reopen it, since the caller could
+    mutate the copy's original.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Returning a copy</b></div>
+    <div class="code"><div class="cl">python</div><pre>def class_list(self) -&gt; list:
+    """Return a new list of the names enrolled in this course.
+
+    Mutating the returned list does not affect this course.
+    """
+    return self._students[:]</pre></div>
+    <p>The docstring states the guarantee. Without it, a caller cannot tell
+    whether mutating the result is safe.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Special methods worth defining</h3>
+  <div class="box thm"><div class="bl">Rule <b>Define them when the concept applies</b></div>
+    <div class="step"><code>__str__</code> &mdash; always. Debugging without it
+    means reading memory addresses.</div>
+    <div class="step"><code>__eq__</code> &mdash; when two distinct objects can
+    be meaningfully equal.</div>
+    <div class="step"><code>__len__</code> &mdash; when the object has an obvious
+    size.</div>
+    <div class="step"><code>__contains__</code> &mdash; when membership makes
+    sense, enabling <code>in</code>.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Adding them</b></div>
+    <div class="code"><div class="cl">python</div><pre>def __len__(self) -&gt; int:
+    """Return the number of students enrolled in this course.
+
+    &gt;&gt;&gt; c = Course('CSC148H1', 2)
+    &gt;&gt;&gt; c.enrol('Ada')
+    True
+    &gt;&gt;&gt; len(c)
+    1
+    """
+    return len(self._students)
+
+def __contains__(self, name: str) -&gt; bool:
+    """Return whether name is enrolled in this course.
+
+    &gt;&gt;&gt; c = Course('CSC148H1', 2)
+    &gt;&gt;&gt; c.enrol('Ada')
+    True
+    &gt;&gt;&gt; 'Ada' in c
+    True
+    """
+    return name in self._students</pre></div>
+    <p>These let client code read naturally &mdash; <code>len(c)</code> and
+    <code>'Ada' in c</code> &mdash; while keeping the list
+    private.</p></div>
+  <div class="box warn"><div class="bl">__eq__ has consequences</div>
+    <p>Defining <code>__eq__</code> without <code>__hash__</code> makes instances
+    unhashable, so they can no longer go in a set or serve as dictionary keys.
+    Python does this deliberately: two objects that compare equal must hash
+    equally, and it will not guess how.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Stating an invariant and then writing a method that breaks
+  it.<br>
+  &bull; Exposing a mutable attribute and expecting clients not to touch
+  it.<br>
+  &bull; Returning an internal list directly from a getter.<br>
+  &bull; Documenting attribute types but not their meanings. "students: list"
+  says nothing about what is in it.<br>
+  &bull; Defining <code>__eq__</code> and then wondering why instances cannot go
+  in a set.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Invariant</div>
+      <p>Write a representation invariant for a <code>Rectangle</code> class
+      with width and height.</p>
+      <details><summary>Answer</summary><div class="ans"><code>self.width &gt; 0
+      and self.height &gt; 0</code>. Whether zero is allowed is a design
+      decision, but it must be stated either way.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Which method breaks it</div>
+      <p>A <code>Playlist</code> has invariant "no duplicate songs". Which method
+      is most likely to violate it?</p>
+      <details><summary>Answer</summary><div class="ans">Whichever adds a song.
+      It needs a membership check before appending, and the invariant is what
+      tells you so.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Getter safety</div>
+      <p>Why return <code>self._items[:]</code> rather than
+      <code>self._items</code>?</p>
+      <details><summary>Answer</summary><div class="ans">Returning the list
+      itself hands the caller a reference to the internal state, which they can
+      mutate — breaking any invariant the class maintains. A copy is
+      safe.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Equality</div>
+      <p>Should two <code>Course</code> objects with the same code be
+      equal?</p>
+      <details><summary>Answer</summary><div class="ans">A design decision. If
+      the code identifies the course, yes. If two sections can share a code, no.
+      Document whichever you choose.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Write the class</div>
+      <p>Design a <code>BankAccount</code> with a balance that cannot go
+      negative.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>class BankAccount:
+    """An account with a non-negative balance.
+
+    Attributes:
+        owner: the account holder's name
+
+    Representation invariants:
+        - self._balance &gt;= 0
+    """
+
+    def __init__(self, owner: str) -&gt; None:
+        """Initialize an account for owner with a zero balance."""
+        self.owner = owner
+        self._balance = 0
+
+    def withdraw(self, amount: int) -&gt; bool:
+        """Withdraw amount and return whether it succeeded.
+
+        Fails if amount exceeds the balance.
+
+        Preconditions: amount &gt; 0
+        """
+        if amount &gt; self._balance:
+            return False
+        self._balance = self._balance - amount
+        return True</pre></div>
+      The balance is private precisely because a public one could be set
+      negative directly.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Which specials</div>
+      <p>Which special methods suit a <code>Deck</code> of cards?</p>
+      <details><summary>Answer</summary><div class="ans"><code>__len__</code> for
+      the count, <code>__contains__</code> for whether a card is present,
+      <code>__str__</code> for display. <code>__eq__</code> is doubtful — two
+      decks with the same cards in a different order probably are not the same
+      deck.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Hashability</div>
+      <p>You define <code>__eq__</code> and then cannot put instances in a set.
+      Why?</p>
+      <details><summary>Answer</summary><div class="ans">Defining
+      <code>__eq__</code> sets <code>__hash__</code> to <code>None</code>. Objects
+      that compare equal must hash equally, and Python refuses to assume how.
+      Define <code>__hash__</code> yourself if the objects are
+      immutable.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Interface design</div>
+      <p>A class stores a sorted list. Should <code>sort()</code> be
+      public?</p>
+      <details><summary>Answer</summary><div class="ans">No. If sortedness is a
+      representation invariant, the class must maintain it itself — every insert
+      keeps it sorted. Exposing <code>sort()</code> implies the list might be
+      unsorted, which contradicts the invariant.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Class documentation.</strong> Purpose, attributes with meanings,
+    representation invariants.</li>
+    <li><strong>Invariant preservation.</strong> Checking every method against
+    the stated conditions.</li>
+    <li><strong>Encapsulation.</strong> Private attributes, safe getters, and
+    why exposing mutable state leaks the invariant.</li>
+    <li><strong>Special methods.</strong> Which to define and the hashability
+    consequence of <code>__eq__</code>.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "encapsulation and information-hiding" and
+    "object-oriented programming". Representation invariants are marked on
+    assignments; check Quercus for the exact required
+    format.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>The invariant defines what a valid object is. Encapsulation protects it
+    from outside interference. Methods are obliged to preserve it. Every class in
+    the rest of the course is written this way.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    After writing any method, reread the invariant and ask whether this method
+    could break it. If it could, add the guard. That habit catches most bugs
+    before the code ever runs.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Invariant</div>
+      <p>What is a representation invariant?</p>
+      <details><summary>Guide</summary><div class="ans">A condition on the
+      attributes that must hold at all times, before and after every
+      method.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Obligation</div>
+      <p>What does every method owe the invariant?</p>
+      <details><summary>Guide</summary><div class="ans">To leave it true. It may
+      break it temporarily inside the body, but not on
+      exit.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Getter risk</div>
+      <p>Why is returning an internal list dangerous?</p>
+      <details><summary>Guide</summary><div class="ans">The caller gets a
+      reference to the real object and can mutate it, bypassing every check the
+      class performs.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Equality cost</div>
+      <p>What does defining <code>__eq__</code> break?</p>
+      <details><summary>Guide</summary><div class="ans">Hashability. Instances
+      can no longer go in sets or serve as dictionary keys unless you also define
+      <code>__hash__</code>.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit01.html">← Unit 01<span>Abstract data types</span></a>
+  <a href="unit03.html">Unit 03 →<span>Stacks &amp; queues</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — Abstract Data Types · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Abstract Data Types</h1>
+<p class="ch-intro reveal">The idea the whole course rests on: separate
+<em>what</em> a structure does from <em>how</em> it does it. Say what operations
+exist and what they promise, and leave the implementation free to change without
+breaking anyone.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Distinguish an abstract data type from a data structure.</li>
+    <li>Write a specification a client can rely on.</li>
+    <li>Say why the same ADT admits several implementations.</li>
+    <li>Use preconditions to move responsibility deliberately.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Without the separation, every user of your code depends on its internals,
+    and you can never change them. With it, you can replace the implementation
+    entirely and nothing that uses it needs to
+    know.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every library API is an ADT. Python's <code>list</code> promises indexing
+    and appending without telling you it is a dynamic array; the interpreter has
+    changed how it works several times without breaking a single
+    program.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Barbara Liskov formalised abstract data types in the 1970s and won the
+    Turing Award for it. Her rule, that a subtype must be usable wherever the
+    supertype is expected, is now called the Liskov substitution principle and
+    returns in Unit 10.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>ADT versus data structure</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step">An <em>abstract data type</em> is a set of values plus the
+    operations on them, described by what they do. It says nothing about
+    storage.</div>
+    <div class="step">A <em>data structure</em> is a concrete way of storing the
+    data so those operations can be carried out.</div>
+    <p>One ADT, many possible structures. "Stack" is an ADT; a Python list and a
+    linked list are two structures that implement it.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The same ADT, two structures</b></div>
+    <p>A Stack promises: put an item on top, take the top item off, ask whether
+    it is empty. That is the whole contract.</p>
+    <div class="code"><div class="cl">python</div><pre><i># implementation A: a Python list, top at the end</i>
+class Stack:
+    def __init__(self) -&gt; None:
+        self._items = []
+
+    def push(self, item) -&gt; None:
+        self._items.append(item)
+
+    def pop(self):
+        return self._items.pop()
+
+<i># implementation B: a Python list, top at the front</i>
+class Stack:
+    def __init__(self) -&gt; None:
+        self._items = []
+
+    def push(self, item) -&gt; None:
+        self._items.insert(0, item)
+
+    def pop(self):
+        return self._items.pop(0)</pre></div>
+    <div class="step">Both satisfy the same contract. Client code cannot tell
+    them apart by behaviour.</div>
+    <div class="step">They differ enormously in cost: A is $O(1)$ per
+    operation, B is $O(n)$ because inserting at the front shifts everything.
+    Correctness is identical; performance is not.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>The underscore is a promise you make to yourself</b></div>
+    <p>A leading underscore, as in <code>_items</code>, marks an attribute as
+    internal. Python does not enforce it &mdash; client code <em>can</em> reach
+    in. The convention says: if you touch this and it breaks later, that is your
+    fault, not the implementer's.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Writing a specification</h3>
+  <div class="box thm"><div class="bl">Rule <b>What a complete docstring carries</b></div>
+    <div class="step"><strong>Type annotations</strong> on parameters and return
+    value.</div>
+    <div class="step"><strong>A one-line summary</strong> beginning with "Return"
+    or naming the effect.</div>
+    <div class="step"><strong>Preconditions</strong> &mdash; what the caller must
+    guarantee.</div>
+    <div class="step"><strong>Examples</strong> in doctest form.</div>
+    <p>In CSC148H1 this is marked, so it is worth getting into the habit
+    immediately.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A specification worth relying on</b></div>
+    <div class="code"><div class="cl">python</div><pre>def pop(self):
+    """Remove and return the item most recently pushed onto this stack.
+
+    Preconditions: this stack is not empty.
+
+    &gt;&gt;&gt; s = Stack()
+    &gt;&gt;&gt; s.push(1)
+    &gt;&gt;&gt; s.push(2)
+    &gt;&gt;&gt; s.pop()
+    2
+    """
+    return self._items.pop()</pre></div>
+    <div class="step">The summary says what, not how. Nothing here mentions a
+    list, so the implementation stays free.</div>
+    <div class="step">The precondition moves responsibility to the caller.
+    Without it, the method would owe an answer for the empty case &mdash; and
+    would need to say what that answer is.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Preconditions are a design decision</b></div>
+    <p>Two defensible choices for popping an empty stack:</p>
+    <div class="step"><em>Precondition:</em> "this stack is not empty". Fast, and
+    the caller must check. Undefined behaviour if they do not.</div>
+    <div class="step"><em>Raise an exception:</em> defined behaviour for every
+    input, at the cost of a check on every call.</div>
+    <p>Either is fine. What is not fine is leaving it unsaid, so callers guess
+    and half of them guess wrong.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Why the separation pays</h3>
+  <div class="box eg"><div class="bl">Example <b>Swapping the implementation</b></div>
+    <p>Suppose client code is written against the Stack contract:</p>
+    <div class="code"><div class="cl">python</div><pre>def reverse(items: list) -&gt; list:
+    """Return a new list with the items of items in reverse order.
+
+    &gt;&gt;&gt; reverse([1, 2, 3])
+    [3, 2, 1]
+    """
+    s = Stack()
+    for item in items:
+        s.push(item)
+    return [s.pop() for _ in range(len(items))]</pre></div>
+    <div class="step">This works with implementation A or B, unchanged. It never
+    mentions <code>_items</code>.</div>
+    <div class="step">Replace the Stack with a linked-list version in Unit 4 and
+    this function still works. That is the entire payoff of programming to a
+    contract.</div>
+  </div>
+  <div class="box warn"><div class="bl">Reaching past the interface</div>
+    <p>Writing <code>s._items.append(x)</code> instead of
+    <code>s.push(x)</code> couples your code to the implementation. It works
+    today and breaks the moment the structure changes &mdash; and the error will
+    surface far from the line that caused it.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Describing <em>how</em> in a docstring. The client does not care and
+  should not depend on it.<br>
+  &bull; Accessing another object's underscore attributes.<br>
+  &bull; Omitting preconditions and leaving edge behaviour
+  undefined.<br>
+  &bull; Confusing the ADT with one of its implementations. A stack is not "a
+  list with append and pop".<br>
+  &bull; Writing the code before the specification. The specification is what
+  tells you when the code is finished.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Which is which</div>
+      <p>Is "queue" an ADT or a data structure?</p>
+      <details><summary>Answer</summary><div class="ans">An ADT. It specifies
+      first-in-first-out behaviour without saying how the items are stored. A
+      linked list or a Python list could implement it.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Cost difference</div>
+      <p>Both stack implementations above are correct. Why prefer A?</p>
+      <details><summary>Answer</summary><div class="ans">A is $O(1)$ per
+      operation; B is $O(n)$ because inserting and removing at the front shifts
+      every element. Same contract, very different
+      performance.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Write a precondition</div>
+      <p>Specify a <code>first()</code> method returning the front of a
+      queue.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def first(self):
+    """Return the item at the front of this queue, without removing it.
+
+    Preconditions: this queue is not empty.
+
+    &gt;&gt;&gt; q = Queue()
+    &gt;&gt;&gt; q.enqueue(5)
+    &gt;&gt;&gt; q.first()
+    5
+    """</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Leaky abstraction</div>
+      <p>What is wrong with this docstring?</p>
+      <div class="code"><div class="cl">python</div><pre>def push(self, item) -&gt; None:
+    """Append item to the end of self._items."""</pre></div>
+      <details><summary>Answer</summary><div class="ans">It describes the
+      implementation, not the contract. A client reading it might rely on the
+      list, and the docstring becomes wrong the moment the structure changes. Say
+      "Add item to the top of this stack".</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Two designs</div>
+      <p>Give two reasonable behaviours for dequeuing an empty queue.</p>
+      <details><summary>Answer</summary><div class="ans">Declare a precondition
+      that the queue is non-empty, or raise an exception. Both are defensible;
+      leaving it unspecified is not.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Client independence</div>
+      <p>Why can <code>reverse</code> above survive an implementation
+      change?</p>
+      <details><summary>Answer</summary><div class="ans">It uses only
+      <code>push</code>, <code>pop</code> and the constructor — the public
+      contract. It never touches internals, so internals are free to
+      change.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Specify a Set</div>
+      <p>Write the operation list for a Set ADT.</p>
+      <details><summary>Solution</summary><div class="ans">Add an item, remove
+      an item, test membership, report size. Notably absent: any notion of order
+      or position — including those would over-specify the ADT and rule out hash
+      implementations.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · When to break the rule</div>
+      <p>Is it ever right to access another object's private attribute?</p>
+      <details><summary>Answer</summary><div class="ans">Inside the same class,
+      yes — a method may reach into another instance of its own type, which is
+      how <code>__eq__</code> works. Across classes, no. The boundary is the
+      class, not the object.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>ADT versus structure.</strong> What each term means and why one
+    ADT admits many structures.</li>
+    <li><strong>Specifications.</strong> Type annotations, summary,
+    preconditions, examples.</li>
+    <li><strong>Information hiding.</strong> The underscore convention and what
+    it does and does not enforce.</li>
+    <li><strong>Design judgment.</strong> Choosing preconditions versus
+    exceptions deliberately.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar names "abstract data types" and "specifications" among the
+    first topics. The course runs on its own notes; check Quercus for the
+    required docstring format, which is marked on every
+    assignment.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>The contract is what clients depend on; the implementation is what you
+    stay free to change. Every structure in this course is introduced as a
+    contract first and code second.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Before writing any method body, write its docstring in full. If you cannot
+    state the contract clearly, the design is not settled and the code will not
+    save it.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · The distinction</div>
+      <p>State the difference between an ADT and a data structure.</p>
+      <details><summary>Guide</summary><div class="ans">The ADT is the contract:
+      operations and their behaviour. The data structure is one concrete way of
+      meeting it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Underscore</div>
+      <p>Does Python enforce privacy?</p>
+      <details><summary>Guide</summary><div class="ans">No. The leading
+      underscore is a convention. It signals intent and shifts blame, but nothing
+      blocks access.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Precondition purpose</div>
+      <p>What does a precondition do?</p>
+      <details><summary>Guide</summary><div class="ans">Moves responsibility to
+      the caller. Behaviour is undefined if it is violated, which is why it must
+      be stated.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Cost versus contract</div>
+      <p>Can two correct implementations differ in complexity?</p>
+      <details><summary>Guide</summary><div class="ans">Yes, dramatically. The
+      contract fixes behaviour, not cost, which is why choosing an
+      implementation is a separate decision.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+  <a href="unit02.html">Unit 02 →<span>Object-oriented design</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

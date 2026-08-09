@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 6 — Recursion on Nested Data · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 6</div>
+<div class="unit-no reveal">Unit 6 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Recursion on Nested Data</h1>
+<p class="ch-intro reveal">Where recursion stops being a curiosity. When the data
+itself is defined recursively, the code writes itself &mdash; one branch per case
+in the data's definition. Get the definition right and the function follows
+almost mechanically.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Write a recursive definition of a data type.</li>
+    <li>Turn that definition directly into code, one branch per case.</li>
+    <li>Handle nested lists of arbitrary depth.</li>
+    <li>Recognise the pattern in problems that look unrelated.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Unit 5 recursed on numbers, where a loop would have done. Here the data
+    has no fixed depth, so there is no loop that could work. This is the case
+    recursion was invented for.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>JSON, XML and HTML are all arbitrarily nested. Every parser, every
+    document renderer, every configuration reader walks them
+    recursively.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Lisp, from 1958, made the nested list its only data structure &mdash; code
+    and data were the same nested lists. Every function in it was written exactly
+    this way, and the language is still in use for that
+    reason.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Recursive data definitions</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>nested list of integers</em> is either:</p>
+    <div class="step">an integer, or</div>
+    <div class="step">a list whose elements are each a nested list of
+    integers.</div>
+    <p>The definition refers to itself, and one case &mdash; the integer &mdash;
+    does not. That is exactly the base-case-and-recursive-case structure of a
+    function.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>The code mirrors the definition</b></div>
+    <p>One branch per case:</p>
+    <div class="code"><div class="cl">python</div><pre>def f(obj):
+    if isinstance(obj, int):
+        <i># base case: handle a single integer</i>
+        ...
+    else:
+        <i># recursive case: combine f(item) over the elements</i>
+        ...</pre></div>
+    <p>Every function in this unit has that shape. Only the two bodies
+    change.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Three functions, one pattern</b></div>
+    <div class="code"><div class="cl">python</div><pre>def total(obj) -&gt; int:
+    """Return the sum of the integers in obj, a nested list of ints.
+
+    &gt;&gt;&gt; total([1, [2, [3, 4]], 5])
+    15
+    """
+    if isinstance(obj, int):
+        return obj
+    return sum(total(item) for item in obj)
+
+
+def count(obj) -&gt; int:
+    """Return how many integers are in obj.
+
+    &gt;&gt;&gt; count([1, [2, [3, 4]], 5])
+    5
+    """
+    if isinstance(obj, int):
+        return 1
+    return sum(count(item) for item in obj)
+
+
+def largest(obj) -&gt; int:
+    """Return the largest integer in obj.
+
+    Preconditions: obj contains at least one integer.
+
+    &gt;&gt;&gt; largest([1, [7, [3]], 5])
+    7
+    """
+    if isinstance(obj, int):
+        return obj
+    return max(largest(item) for item in obj)</pre></div>
+    <div class="step">Identical structure. The base case returns something about
+    one integer; the recursive case aggregates over the elements.</div>
+    <div class="step">Once the pattern is visible, these take under a minute
+    each. That recognition is the goal of the unit.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Handling the empty case</h3>
+  <div class="box warn"><div class="bl">Empty lists need thought</div>
+    <p><code>sum([])</code> is $0$, which is right for <code>total</code>. But
+    <code>max([])</code> raises, which is why <code>largest</code> carries a
+    precondition. Always ask what the aggregation does on nothing.</p></div>
+  <div class="box eg"><div class="bl">Example <b>When the answer is not obvious</b></div>
+    <div class="code"><div class="cl">python</div><pre>def depth(obj) -&gt; int:
+    """Return the nesting depth of obj.
+
+    An integer has depth 0; a flat list has depth 1.
+
+    &gt;&gt;&gt; depth(5)
+    0
+    &gt;&gt;&gt; depth([1, 2])
+    1
+    &gt;&gt;&gt; depth([1, [2, [3]]])
+    3
+    &gt;&gt;&gt; depth([])
+    1
+    """
+    if isinstance(obj, int):
+        return 0
+    if obj == []:
+        return 1
+    return 1 + max(depth(item) for item in obj)</pre></div>
+    <div class="step">Three cases, not two, because the empty list is neither an
+    integer nor something <code>max</code> can handle.</div>
+    <div class="step">That the empty list has depth $1$ is a
+    <em>decision</em>, and the docstring records it. Someone might reasonably
+    have chosen $0$.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Building new structures</h3>
+  <div class="box eg"><div class="bl">Example <b>Preserving the shape</b></div>
+    <div class="code"><div class="cl">python</div><pre>def doubled(obj):
+    """Return a new nested list with every integer in obj doubled.
+
+    The nesting structure is unchanged.
+
+    &gt;&gt;&gt; doubled([1, [2, [3]]])
+    [2, [4, [6]]]
+    """
+    if isinstance(obj, int):
+        return obj * 2
+    return [doubled(item) for item in obj]</pre></div>
+    <div class="step">The recursive case builds a <em>list</em> rather than
+    aggregating to a single value, which is what keeps the shape.</div>
+    <div class="step">Compare with <code>flatten</code> below, which deliberately
+    destroys the shape. The difference is one line.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Discarding the shape</b></div>
+    <div class="code"><div class="cl">python</div><pre>def flatten(obj) -&gt; list:
+    """Return a flat list of all integers in obj, left to right.
+
+    &gt;&gt;&gt; flatten([1, [2, [3, 4]], 5])
+    [1, 2, 3, 4, 5]
+    """
+    if isinstance(obj, int):
+        return [obj]
+    result = []
+    for item in obj:
+        result.extend(flatten(item))
+    return result</pre></div>
+    <div class="step">The base case returns a <em>list</em> holding one integer,
+    not the integer itself. That uniformity is what lets
+    <code>extend</code> work at every level.</div>
+    <div class="step">Using <code>append</code> instead of <code>extend</code>
+    would nest the results and defeat the entire
+    purpose.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting the empty-list case when the aggregation cannot handle
+  it.<br>
+  &bull; Returning an integer from the base case when the recursive case expects
+  a list.<br>
+  &bull; Using <code>append</code> where <code>extend</code> is
+  needed.<br>
+  &bull; Testing <code>type(obj) == list</code> instead of
+  <code>isinstance</code>.<br>
+  &bull; Trying to write a loop over depth. There is no such
+  loop.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · The pattern</div>
+      <p>What are the two cases for a nested list?</p>
+      <details><summary>Answer</summary><div class="ans">An integer, or a list of
+      nested lists. The code has one branch for each.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Count lists</div>
+      <p>Count the sub-lists, not the integers, in a nested list.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def count_lists(obj) -&gt; int:
+    """Return how many lists appear in obj, including obj itself.
+
+    &gt;&gt;&gt; count_lists([1, [2, [3]]])
+    3
+    """
+    if isinstance(obj, int):
+        return 0
+    return 1 + sum(count_lists(item) for item in obj)</pre></div>
+      The base case returns $0$ because an integer is not a
+      list.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Empty trouble</div>
+      <p>Why does <code>largest</code> need a precondition?</p>
+      <details><summary>Answer</summary><div class="ans">Because
+      <code>max</code> raises on an empty sequence, and there is no sensible
+      largest integer in a structure containing none.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Contains</div>
+      <p>Test whether a value appears anywhere in a nested list.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def contains(obj, target: int) -&gt; bool:
+    """Return whether target appears anywhere in obj.
+
+    &gt;&gt;&gt; contains([1, [2, [3]]], 3)
+    True
+    """
+    if isinstance(obj, int):
+        return obj == target
+    return any(contains(item, target) for item in obj)</pre></div>
+      <code>any</code> on an empty list is <code>False</code>, which is correct
+      here — no precondition needed.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Shape versus values</div>
+      <p>What single change turns <code>doubled</code> into
+      <code>flatten</code>?</p>
+      <details><summary>Answer</summary><div class="ans">The recursive case:
+      building a list of results preserves shape, concatenating them discards it.
+      The base case changes too, returning a one-item list rather than a bare
+      integer.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Negatives only</div>
+      <p>Return a flat list of the negative integers in a nested list.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def negatives(obj) -&gt; list:
+    """Return a flat list of the negative integers in obj.
+
+    &gt;&gt;&gt; negatives([1, [-2, [3, -4]]])
+    [-2, -4]
+    """
+    if isinstance(obj, int):
+        return [obj] if obj &lt; 0 else []
+    result = []
+    for item in obj:
+        result.extend(negatives(item))
+    return result</pre></div>
+      The base case can return an <em>empty</em> list, which is how filtering
+      works in this pattern.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · isinstance</div>
+      <p>Why prefer <code>isinstance(obj, int)</code> to
+      <code>type(obj) == int</code>?</p>
+      <details><summary>Answer</summary><div class="ans">
+      <code>isinstance</code> accepts subclasses, which is usually what you want.
+      It is also the idiom the course expects.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Why no loop</div>
+      <p>Why can no loop replace the recursion here?</p>
+      <details><summary>Answer</summary><div class="ans">The nesting depth is not
+      known when the code is written, and each level of nesting would need its
+      own loop. Recursion handles any depth with one
+      function.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Recursive definitions.</strong> Writing the data definition
+    before the code.</li>
+    <li><strong>The mirror.</strong> One code branch per case in the
+    definition.</li>
+    <li><strong>Aggregation.</strong> Combining recursive results, and what each
+    aggregator does on empty.</li>
+    <li><strong>Building versus collapsing.</strong> Preserving nesting or
+    flattening it.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar's "recursion" topic covers this. Nested-list exercises are
+    standard assignment material; check Quercus for the assigned
+    set.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Recursive data gives recursive code with the same shape. Units 7 and 8
+    apply the identical technique to trees, where the recursive case is "each
+    subtree" rather than "each element".</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Write the data definition in words before writing any code. The number of
+    cases in that definition is the number of branches your function needs, and
+    getting it wrong is the only real difficulty here.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Structure</div>
+      <p>How does the data definition determine the code?</p>
+      <details><summary>Guide</summary><div class="ans">One branch per case. The
+      non-recursive case becomes the base case; the recursive one becomes the
+      recursive call.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Empty aggregation</div>
+      <p>Why is <code>sum</code> safer than <code>max</code> here?</p>
+      <details><summary>Guide</summary><div class="ans"><code>sum([])</code> is
+      $0$; <code>max([])</code> raises. Aggregators without an identity value
+      need an empty case or a precondition.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Base-case type</div>
+      <p>Why does <code>flatten</code>'s base case return a list?</p>
+      <details><summary>Guide</summary><div class="ans">So every level returns
+      the same type and can be concatenated uniformly.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Depth</div>
+      <p>Why is no loop possible?</p>
+      <details><summary>Guide</summary><div class="ans">Because the depth is
+      unbounded and unknown at authoring time. A fixed number of nested loops can
+      only handle a fixed depth.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit05.html">← Unit 05<span>Recursion</span></a>
+  <a href="unit07.html">Unit 07 →<span>Trees</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

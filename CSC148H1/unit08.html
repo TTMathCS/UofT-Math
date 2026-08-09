@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 8 — Binary Search Trees · CSC148H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC148H1</a><span>/</span>Unit 8</div>
+<div class="unit-no reveal">Unit 8 · Introduction to Computer Science</div>
+<h1 class="ch-title reveal">Binary Search Trees</h1>
+<p class="ch-intro reveal">Add one rule to a binary tree &mdash; everything left
+is smaller, everything right is larger &mdash; and search becomes logarithmic.
+It is the same halving as binary search, now on a structure that also supports
+cheap insertion.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the BST property as a representation invariant.</li>
+    <li>Search, insert and delete while preserving it.</li>
+    <li>Explain why an in-order traversal comes out sorted.</li>
+    <li>Say when a BST degrades to $O(n)$ and why.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A sorted list gives $O(\log n)$ search but $O(n)$ insertion. A linked list
+    reverses that. A BST offers $O(\log n)$ for both &mdash; when it stays
+    balanced, which is the catch this unit is honest
+    about.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Database indexes are tree structures of this family. Python's
+    <code>dict</code> uses hashing instead, which is faster for lookup but cannot
+    give you the keys in order &mdash; the thing a BST does for
+    free.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Binary search trees were described independently by several groups around
+    1960. The balancing problem was solved within two years by AVL trees, and
+    later by red-black trees, which is what most standard libraries use
+    today.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The property</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>binary search tree</em> is a binary tree where, for every node:</p>
+    <div class="step">every value in the left subtree is <em>less than</em> the
+    root, and</div>
+    <div class="step">every value in the right subtree is <em>greater than</em>
+    the root.</div>
+    <p>This must hold at every node, not just the top &mdash; which is the point
+    people most often miss.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The class</b></div>
+    <div class="code"><div class="cl">python</div><pre>class BST:
+    """A binary search tree.
+
+    Attributes:
+        _root: the value at this node, or None if empty
+        _left: the left subtree
+        _right: the right subtree
+
+    Representation invariants:
+        - if self._root is None then self._left is None and
+          self._right is None
+        - every value in self._left is &lt; self._root
+        - every value in self._right is &gt; self._root
+    """
+
+    def __init__(self, root) -&gt; None:
+        """Initialize a BST containing root, or empty if root is None."""
+        self._root = root
+        if root is None:
+            self._left = None
+            self._right = None
+        else:
+            self._left = BST(None)
+            self._right = BST(None)
+
+    def is_empty(self) -&gt; bool:
+        """Return whether this tree is empty."""
+        return self._root is None</pre></div>
+    <p>Empty subtrees are empty BSTs rather than <code>None</code>. That keeps
+    every recursive call uniform &mdash; no branch has to test whether a subtree
+    exists before recursing into it.</p></div>
+  <div class="box warn"><div class="bl">The property is not local</div>
+    <p>Checking only that each node's immediate children are on the right sides
+    is <em>not enough</em>. A value deep in the left subtree that exceeds the
+    root breaks the tree even if every parent-child pair looks fine. The
+    invariant quantifies over <em>every</em> value in the subtree.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Search</h3>
+  <div class="box eg"><div class="bl">Example <b>Halving at every step</b></div>
+    <div class="code"><div class="cl">python</div><pre>def __contains__(self, item) -&gt; bool:
+    """Return whether item is in this BST.
+
+    &gt;&gt;&gt; t = BST(5)
+    &gt;&gt;&gt; t.insert(3)
+    &gt;&gt;&gt; 3 in t
+    True
+    &gt;&gt;&gt; 4 in t
+    False
+    """
+    if self.is_empty():
+        return False
+    if item == self._root:
+        return True
+    if item &lt; self._root:
+        return item in self._left       <i># discard the entire right subtree</i>
+    return item in self._right          <i># discard the entire left subtree</i></pre></div>
+    <div class="step">Each comparison eliminates a whole subtree. That is the
+    same halving as binary search, and it is the whole reason the ordering rule
+    exists.</div>
+    <div class="step">The cost is the <em>height</em> of the tree, not its size.
+    For a balanced tree the height is about $\log_2 n$.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>In-order gives sorted output</b></div>
+    <p>Traverse left subtree, then root, then right subtree, and the values come
+    out in increasing order.</p>
+    <div class="code"><div class="cl">python</div><pre>def in_order(self) -&gt; list:
+    """Return the values of this BST in increasing order.
+
+    &gt;&gt;&gt; t = BST(5)
+    &gt;&gt;&gt; t.insert(3)
+    &gt;&gt;&gt; t.insert(8)
+    &gt;&gt;&gt; t.in_order()
+    [3, 5, 8]
+    """
+    if self.is_empty():
+        return []
+    return self._left.in_order() + [self._root] + self._right.in_order()</pre></div>
+    <p>This falls straight out of the invariant: everything left is smaller,
+    everything right is larger, so visiting in that order is
+    sorted.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Insertion</h3>
+  <div class="box eg"><div class="bl">Example <b>Descend to the right empty spot</b></div>
+    <div class="code"><div class="cl">python</div><pre>def insert(self, item) -&gt; None:
+    """Insert item into this BST, keeping the BST property.
+
+    Does nothing if item is already present.
+
+    &gt;&gt;&gt; t = BST(5)
+    &gt;&gt;&gt; t.insert(3)
+    &gt;&gt;&gt; 3 in t
+    True
+    """
+    if self.is_empty():
+        self._root = item
+        self._left = BST(None)
+        self._right = BST(None)
+    elif item &lt; self._root:
+        self._left.insert(item)
+    elif item &gt; self._root:
+        self._right.insert(item)
+    <i># equal: already present, nothing to do</i></pre></div>
+    <div class="step">The new value always becomes a leaf. The search path
+    determines where, so insertion costs the same as a
+    search.</div>
+    <div class="step">Duplicates are rejected here. Allowing them would need a
+    rule about which side they go on, and the invariant would have to change from
+    strict to non-strict.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Deletion</h3>
+  <div class="box thm"><div class="bl">Rule <b>Three cases, increasing in difficulty</b></div>
+    <div class="step"><strong>Leaf.</strong> Remove it. Nothing else
+    changes.</div>
+    <div class="step"><strong>One child.</strong> Replace the node with that
+    child. The ordering still holds, because everything in that subtree was
+    already on the correct side of the parent.</div>
+    <div class="step"><strong>Two children.</strong> Replace the value with its
+    <em>in-order predecessor</em> &mdash; the largest value in the left subtree
+    &mdash; then delete that value from the left subtree. It has at most one
+    child, so this reduces to an easier case.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why the predecessor works</b></div>
+    <p>Deleting $5$ from a tree whose left subtree holds $3$ and $4$, right
+    subtree $8$.</p>
+    <div class="step">The largest value on the left is $4$. Every remaining left
+    value is below it, and every right value is above it, so putting $4$ at the
+    root preserves the invariant exactly.</div>
+    <div class="step">Any other choice would break the ordering. The successor
+    &mdash; smallest on the right &mdash; works equally well for the mirror
+    reason.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Finding the predecessor</b></div>
+    <div class="code"><div class="cl">python</div><pre>def _largest(self):
+    """Return the largest value in this non-empty BST.
+
+    Preconditions: this tree is not empty.
+    """
+    if self._right.is_empty():
+        return self._root
+    return self._right._largest()</pre></div>
+    <p>Keep going right until you cannot. The largest value is always the
+    rightmost node, which is immediate from the
+    invariant.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>When it degrades</h3>
+  <div class="box warn"><div class="bl">$O(\log n)$ is the balanced case, not a guarantee</div>
+    <p>Insert $1, 2, 3, 4, 5$ in order into an empty BST. Each value is larger
+    than everything before it, so each goes to the far right and the tree becomes
+    a chain of five nodes &mdash; a linked list with extra steps.</p>
+    <div class="step">Height becomes $n$ rather than $\log_2 n$.</div>
+    <div class="step">Search, insert and delete all become $O(n)$.</div>
+    <p>Sorted input is the worst possible input, which is unfortunate because
+    sorted input is common.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Honest complexity</b></div>
+    <div class="step">Average case, random insertion order: $O(\log n)$.</div>
+    <div class="step">Worst case, sorted insertion: $O(n)$.</div>
+    <p>Self-balancing variants &mdash; AVL and red-black trees &mdash;
+    restructure on insertion to keep the height logarithmic and give a genuine
+    worst-case guarantee. Those come in later courses; knowing the plain BST does
+    <em>not</em> guarantee it is what matters here.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Checking the BST property only between a node and its immediate
+  children.<br>
+  &bull; Quoting $O(\log n)$ as though it were guaranteed.<br>
+  &bull; Getting the two-child deletion wrong by picking an arbitrary
+  replacement.<br>
+  &bull; Using <code>None</code> for empty subtrees and then needing a null check
+  in every method.<br>
+  &bull; Forgetting that in-order, not preorder, is the traversal that comes out
+  sorted.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Write out each answer before opening it. Original
+  exercises written for this guide in the style of the course's weekly
+  work.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · The property</div>
+      <p>State the BST invariant.</p>
+      <details><summary>Answer</summary><div class="ans">At every node, all
+      values in the left subtree are less than the root and all values in the
+      right subtree are greater.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Build one</div>
+      <p>Insert $5, 3, 8, 1$ into an empty BST. Describe the shape.</p>
+      <details><summary>Answer</summary><div class="ans">$5$ at the root, $3$ its
+      left child, $8$ its right child, $1$ the left child of $3$. Height
+      $3$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Sorted output</div>
+      <p>Which traversal gives increasing order, and why?</p>
+      <details><summary>Answer</summary><div class="ans">In-order. Everything
+      left is smaller and everything right is larger, so left-root-right visits
+      in increasing order.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Worst case</div>
+      <p>What input makes a BST degrade to $O(n)$?</p>
+      <details><summary>Answer</summary><div class="ans">Already-sorted input.
+      Every value goes to the same side and the tree becomes a
+      chain.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Minimum</div>
+      <p>Write a method returning the smallest value.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def smallest(self):
+    """Return the smallest value in this BST.
+
+    Preconditions: this tree is not empty.
+    """
+    if self._left.is_empty():
+        return self._root
+    return self._left.smallest()</pre></div>
+      Keep going left. The mirror of
+      <code>_largest</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Height</div>
+      <p>What is the minimum possible height for $15$ values?</p>
+      <details><summary>Answer</summary><div class="ans">$4$. A perfectly
+      balanced binary tree of height $h$ holds up to $2^h - 1$ values, and
+      $2^4 - 1 = 15$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Verify</div>
+      <p>Why is checking each node against its children insufficient?</p>
+      <details><summary>Answer</summary><div class="ans">Because a value deep in
+      the left subtree can exceed an ancestor while still being correctly placed
+      relative to its own parent. The invariant is about every value in the
+      subtree, not just the immediate child.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · BST or dictionary</div>
+      <p>When would you prefer a BST to a Python dictionary?</p>
+      <details><summary>Answer</summary><div class="ans">When you need the keys
+      in sorted order, or range queries such as "every value between $10$ and
+      $20$". A dictionary is faster for single lookups but has no order to
+      exploit.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC148H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The invariant.</strong> Stated over whole subtrees, not just
+    children.</li>
+    <li><strong>Search and insert.</strong> Descending by comparison, and why
+    both cost the height.</li>
+    <li><strong>Deletion.</strong> The three cases and the in-order predecessor
+    trick.</li>
+    <li><strong>Complexity honestly.</strong> $O(\log n)$ balanced, $O(n)$ worst
+    case, and what causes the worst case.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Binary search trees are the standard application of trees in this course.
+    Check Quercus for the assigned exercises; BST insertion and deletion are
+    common exam questions.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>An ordering rule turns a tree into a search structure. Every comparison
+    discards a subtree, so the cost is the height. Keeping the height small is a
+    separate problem, and the plain BST does not solve
+    it.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Draw the tree after every insertion when practising. Deletion with two
+    children is the case worth doing on paper several times, because it is where
+    marks are lost.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Cost driver</div>
+      <p>What determines the cost of a BST search?</p>
+      <details><summary>Guide</summary><div class="ans">The height of the tree,
+      not the number of values.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Replacement choice</div>
+      <p>Why the in-order predecessor when deleting a node with two
+      children?</p>
+      <details><summary>Guide</summary><div class="ans">It is larger than
+      everything remaining on the left and smaller than everything on the right,
+      so the invariant survives. The successor works
+      symmetrically.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Degradation</div>
+      <p>What causes the worst case?</p>
+      <details><summary>Guide</summary><div class="ans">Sorted or nearly sorted
+      insertion order, which produces a chain instead of a
+      tree.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Versus hashing</div>
+      <p>What does a BST offer that a hash table does not?</p>
+      <details><summary>Guide</summary><div class="ans">Order. Sorted traversal,
+      minimum and maximum, and range queries all come free; a hash table has no
+      order at all.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit07.html">← Unit 07<span>Trees</span></a>
+  <a href="unit09.html">Unit 09 →<span>Efficiency analysis</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
