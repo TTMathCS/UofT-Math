@@ -56,7 +56,7 @@
     course("ECO358H1", "Financial Economics I"),
     course("ECO359H1", "Financial Economics II"),
     course("ECO375H1", "Applied Econometrics I"),
-    course("ENG140Y1", "Literature for our Time"),
+    course("ENG140Y1", "Literature for our Time", "ENG140Y1/index.html", 10),
     course("ENV200H1"),
     course("HPS390H1"),
     course("HPS391H1"),
