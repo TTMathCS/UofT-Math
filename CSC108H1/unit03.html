@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 3 — Functions · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 3</div>
+<div class="unit-no reveal">Unit 3 · Intro to Programming</div>
+<h1 class="ch-title reveal">Functions</h1>
+<p class="ch-intro reveal">A function is a named, tested, reusable piece of
+behaviour with a written contract. In this course the contract &mdash; the type
+annotation and the docstring &mdash; is graded as heavily as the code, because
+it is what makes the code usable by anyone else.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Write a function with type annotations and a docstring containing
+    examples.</li>
+    <li>Explain the difference between a parameter and an argument.</li>
+    <li>Predict what a function returns, including when it returns
+    <code>None</code>.</li>
+    <li>Say why a local variable is invisible outside its function.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Without functions, a program is one long script where every change risks
+    breaking something unrelated. Functions draw boundaries: inside is an
+    implementation you can change freely, outside is a contract others rely
+    on.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every library you will ever import is a set of functions whose
+    docstrings are the only thing you read. Writing yours properly is practice
+    for the job, and in this course it is directly worth marks.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The design-recipe approach used here &mdash; contract, examples, then
+    body &mdash; comes from the <em>How to Design Programs</em> tradition, which
+    UofT's intro sequence has drawn on for years. The claim is that most
+    beginner difficulty is not syntax but not knowing what to write
+    next.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Anatomy of a function</h3>
+  <div class="box eg"><div class="bl">Example <b>Everything that belongs</b></div>
+    <div class="code"><div class="cl">python</div><pre>def area(width: float, height: float) -&gt; float:
+    """Return the area of a rectangle with the given width and height.
+
+    &gt;&gt;&gt; area(3.0, 4.0)
+    12.0
+    &gt;&gt;&gt; area(0.0, 5.0)
+    0.0
+    """
+    return width * height</pre></div>
+    <div class="step"><code>def</code> names the function; the parentheses hold
+    the <em>parameters</em>.</div>
+    <div class="step">The annotations <code>: float</code> and
+    <code>-&gt; float</code> state the type contract. Python does not enforce
+    them, but the course requires them and they document intent.</div>
+    <div class="step">The docstring starts with one imperative sentence
+    beginning "Return", then gives examples in <code>doctest</code> format &mdash;
+    runnable, as Unit 8 shows.</div>
+  </div>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>parameter</em> is the name in the definition; an <em>argument</em>
+    is the value supplied at the call. In <code>area(3.0, 4.0)</code>,
+    <code>width</code> is a parameter and <code>3.0</code> is an
+    argument.</p></div>
+  <div class="box warn"><div class="bl">Every function returns something</div>
+    <p>A function with no <code>return</code> returns <code>None</code>. So
+    <code>x = print('hi')</code> sets <code>x</code> to <code>None</code>:
+    <code>print</code> displays a value, it does not produce one. Confusing
+    printing with returning is the most common beginner error in this
+    course.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Print versus return</b></div>
+    <div class="code"><div class="cl">python</div><pre><i># wrong: caller gets None and cannot use the result</i>
+def double_bad(n: int) -&gt; None:
+    print(n * 2)
+
+<i># right: caller decides whether to print, store, or reuse</i>
+def double(n: int) -&gt; int:
+    """Return twice n."""
+    return n * 2
+
+print(double(5) + 1)   <i># 11 - only possible with the returning version</i></pre></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Scope</h3>
+  <div class="box thm"><div class="bl">Rule <b>Local names stay local</b></div>
+    <p>Names bound inside a function exist only while it runs. They are not
+    visible outside, and they do not clash with names elsewhere. Assigning to a
+    name inside a function always creates or updates a <em>local</em> name, even
+    if a global of the same name exists.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Two independent totals</b></div>
+    <div class="code"><div class="cl">python</div><pre>total = 100
+
+def add_up(xs: list) -&gt; int:
+    """Return the sum of xs."""
+    total = 0          <i># a NEW local, unrelated to the global</i>
+    for x in xs:
+        total = total + x
+    return total
+
+print(add_up([1, 2, 3]))   <i># 6</i>
+print(total)               <i># 100 - untouched</i></pre></div>
+    <p>This is a feature. It means you can write a function without auditing the
+    whole program for name collisions.</p></div>
+  <div class="box warn"><div class="bl">Avoid reaching for globals</div>
+    <p>Reading a global from inside a function works, and it is still a bad
+    habit: the function's behaviour then depends on something not in its
+    parameter list, so the contract is a lie. Pass what you need as an argument
+    and return what you produce.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Designing a function</h3>
+  <div class="box thm"><div class="bl">Rule <b>The order to write it in</b></div>
+    <div class="step">1. Name it and write the signature with types.</div>
+    <div class="step">2. Write the one-sentence docstring: what does it
+    <em>return</em>?</div>
+    <div class="step">3. Write two or three examples, including an edge case
+    &mdash; empty input, zero, a negative.</div>
+    <div class="step">4. Only now write the body, aiming to satisfy the examples
+    you just committed to.</div>
+    <p>Writing the examples first is not ceremony. It forces the ambiguous
+    decisions &mdash; what does this do with an empty list? &mdash; before the
+    code has hidden them.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The edge case shows up early</b></div>
+    <div class="code"><div class="cl">python</div><pre>def average(nums: list) -&gt; float:
+    """Return the mean of nums, or 0.0 if nums is empty.
+
+    &gt;&gt;&gt; average([1, 2, 3])
+    2.0
+    &gt;&gt;&gt; average([])
+    0.0
+    """
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)</pre></div>
+    <p>Without the second example, the empty case is a
+    <code>ZeroDivisionError</code> discovered by whoever calls it. Writing the
+    example forced a decision and documented it.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Printing instead of returning. The caller cannot do anything with
+  what was printed.<br>
+  &bull; Forgetting that code after <code>return</code> never runs.<br>
+  &bull; Writing a docstring that describes the implementation rather than the
+  result. Say what it returns, not how it loops.<br>
+  &bull; Mutable default arguments: <code>def f(xs=[])</code> reuses the
+  <em>same</em> list on every call. Use <code>None</code> as the default and
+  create the list inside.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · What is x?</div>
+      <p>What does <code>x</code> hold?</p>
+      <div class="code"><div class="cl">python</div><pre>def greet(name: str) -&gt; None:
+    print('Hi ' + name)
+
+x = greet('Sam')</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>None</code>. The
+      function prints but does not return, so the call evaluates to
+      <code>None</code>. "Hi Sam" appears on screen but is not
+      captured.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Unreachable code</div>
+      <p>What does this return for <code>[1, 2, 3]</code>?</p>
+      <div class="code"><div class="cl">python</div><pre>def f(xs: list) -&gt; int:
+    for x in xs:
+        return x
+    return 0</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>1</code>. The
+      <code>return</code> fires on the first iteration, so the loop never
+      continues. This is a common accident when a loop was meant to accumulate
+      something.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Scope</div>
+      <p>Does this print 5 or 10?</p>
+      <div class="code"><div class="cl">python</div><pre>n = 5
+def bump() -&gt; None:
+    n = 10
+bump()
+print(n)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>5</code>. The
+      assignment inside <code>bump</code> creates a local <code>n</code> that
+      disappears when the call ends.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Write it</div>
+      <p>Write <code>count_above(nums, k)</code> returning how many items exceed
+      <code>k</code>.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def count_above(nums: list, k: float) -&gt; int:
+    """Return how many values in nums are strictly greater than k.
+
+    &gt;&gt;&gt; count_above([1, 5, 9], 4)
+    2
+    &gt;&gt;&gt; count_above([], 0)
+    0
+    """
+    total = 0
+    for x in nums:
+        if x &gt; k:
+            total = total + 1
+    return total</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Mutable default</div>
+      <p>Why does this accumulate across calls?</p>
+      <div class="code"><div class="cl">python</div><pre>def add(item, bag=[]):
+    bag.append(item)
+    return bag</pre></div>
+      <details><summary>Answer</summary><div class="ans">The default list is
+      created once, when the <code>def</code> executes, and reused by every call
+      that omits <code>bag</code>. Use <code>bag=None</code> and
+      <code>if bag is None: bag = []</code> inside.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Docstring quality</div>
+      <p>Improve: <code>"""Loops through the list and adds."""</code></p>
+      <details><summary>Answer</summary><div class="ans"><code>"""Return the sum
+      of nums."""</code> — states the result, not the mechanism. The caller does
+      not care that a loop was involved.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Multiple returns</div>
+      <p>Return both the minimum and the maximum of a non-empty list.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def min_max(nums: list) -&gt; tuple:
+    """Return (smallest, largest) of non-empty nums.
+
+    &gt;&gt;&gt; min_max([3, 1, 4])
+    (1, 4)
+    """
+    return (min(nums), max(nums))</pre></div>
+      Python returns one object; a tuple lets that one object carry
+      several values, and the caller can unpack it with
+      <code>lo, hi = min_max(xs)</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Composition</div>
+      <p>Using <code>double</code> and <code>area</code> from this page, what is
+      <code>area(double(2), 3)</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>12</code>. The
+      inner call is evaluated first, giving <code>4</code>, then
+      <code>area(4, 3)</code>. Functions compose because they
+      return.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Definition and call.</strong> Parameters versus arguments,
+    annotations, return.</li>
+    <li><strong>Docstrings.</strong> One-sentence summary plus doctest
+    examples including an edge case.</li>
+    <li><strong>Scope.</strong> Local names, and why globals are a bad
+    habit.</li>
+    <li><strong>Design order.</strong> Contract and examples before body.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists functions under "program structure". Docstring and
+    annotation style is set by the course handout each term; follow that exactly,
+    since it is mechanically checked on assignments.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>A function packages behaviour behind a contract. Contracts make testing
+    possible (Unit 8) and make the object methods of Unit 7 comprehensible, since
+    a method is just a function that belongs to a type.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Never write a function body before its docstring examples. If you cannot
+    write an example, you do not yet know what the function should
+    do.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Default return</div>
+      <p>What does a function with no <code>return</code> give back?</p>
+      <details><summary>Guide</summary><div class="ans"><code>None</code>.
+      Always — there is no such thing as returning nothing.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Parameter versus argument</div>
+      <p>Distinguish them.</p>
+      <details><summary>Guide</summary><div class="ans">Parameter is the name in
+      the <code>def</code>; argument is the value passed at the
+      call.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Why examples first</div>
+      <p>What does writing docstring examples before the body buy you?</p>
+      <details><summary>Guide</summary><div class="ans">It forces the edge-case
+      decisions into the open while they are still cheap, and it gives you a
+      runnable test the moment the body exists.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Scope rule</div>
+      <p>What happens when you assign to a name inside a function?</p>
+      <details><summary>Guide</summary><div class="ans">You create or update a
+      local name. Any global of the same name is untouched.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit02.html">← Unit 02<span>Control flow</span></a>
+  <a href="unit04.html">Unit 04 →<span>Strings</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

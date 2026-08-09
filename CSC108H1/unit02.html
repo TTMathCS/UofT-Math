@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 2 — Control Flow · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 2</div>
+<div class="unit-no reveal">Unit 2 · Intro to Programming</div>
+<h1 class="ch-title reveal">Control Flow</h1>
+<p class="ch-intro reveal">So far every program has run top to bottom. Control
+flow lets it choose and repeat, which is where programs stop being calculators
+and start being algorithms &mdash; and where indentation stops being cosmetic
+and starts being syntax.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Write correct <code>if</code>/<code>elif</code>/<code>else</code>
+    chains.</li>
+    <li>Choose between <code>for</code> and <code>while</code> deliberately.</li>
+    <li>Trace nested loops and predict the output.</li>
+    <li>Diagnose an infinite loop and an off-by-one error.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A fixed sequence of steps can only ever do one thing. Branching and
+    repetition are what let a fixed-length program handle inputs of any size,
+    which is the whole idea of an algorithm.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every retry policy, every rate limiter, every game loop is control flow.
+    The 2012 Knight Capital loss of &#36;440 million in 45 minutes was a stale
+    branch condition sending orders nobody intended.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Dijkstra's 1968 letter "Go To Statement Considered Harmful" argued that
+    unrestricted jumps make programs impossible to reason about. Python has no
+    <code>goto</code> at all, which is that argument having won.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Conditionals</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>An <code>if</code> statement runs its block when the condition is truthy.
+    <code>elif</code> chains additional tests; <code>else</code> catches
+    everything remaining. At most one branch of a chain ever runs.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Order matters in a chain</b></div>
+    <div class="code"><div class="cl">python</div><pre>def grade(mark: int) -&gt; str:
+    """Return the letter grade for mark."""
+    if mark &gt;= 80:
+        return 'A'
+    elif mark &gt;= 70:
+        return 'B'
+    elif mark &gt;= 60:
+        return 'C'
+    else:
+        return 'F'</pre></div>
+    <div class="step">Because the chain stops at the first true test, a mark of
+    <code>85</code> returns <code>'A'</code> and never reaches the
+    <code>70</code> test.</div>
+    <div class="step">Reverse the order and it breaks: with <code>&gt;= 60</code>
+    first, every passing mark returns <code>'C'</code>. Chains must go from most
+    to least restrictive.</div>
+  </div>
+  <div class="box warn"><div class="bl">Separate ifs are not a chain</div>
+    <p>Replacing <code>elif</code> with <code>if</code> makes each test run
+    independently. With <code>return</code> inside, the behaviour happens to
+    match; without it, several branches execute and the last one wins. Use
+    <code>elif</code> when the cases are meant to be exclusive.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Truthiness</b></div>
+    <p>Python treats as false: <code>False</code>, <code>None</code>,
+    <code>0</code>, <code>0.0</code>, <code>''</code>, <code>[]</code>,
+    <code>{}</code>. Everything else is true. So <code>if items:</code> reads as
+    "if the list is non-empty", which is the idiomatic emptiness test &mdash;
+    prefer it to <code>if len(items) &gt; 0:</code>.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Loops</h3>
+  <div class="box thm"><div class="bl">Rule <b>Which loop to reach for</b></div>
+    <div class="step"><code>for</code> when you know what you are iterating over
+    &mdash; a list, a string, a range. This is the default in Python.</div>
+    <div class="step"><code>while</code> when you are waiting for a condition and
+    cannot say in advance how many rounds it takes.</div>
+    <p>If you find yourself writing <code>while i &lt; len(xs)</code> with a
+    manual counter, you wanted a <code>for</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The same sum, three ways</b></div>
+    <div class="code"><div class="cl">python</div><pre><i># idiomatic: iterate the values</i>
+total = 0
+for x in nums:
+    total = total + x
+
+<i># by index, when you need the position too</i>
+for i in range(len(nums)):
+    total = total + nums[i]
+
+<i># both at once</i>
+for i, x in enumerate(nums):
+    print(i, x)</pre></div>
+    <p>Reach for the first form unless the index is genuinely needed. Marks in
+    this course go to the version that says what it means.</p></div>
+  <div class="box eg"><div class="bl">Example <b>range has three forms</b></div>
+    <div class="code"><div class="cl">python</div><pre>range(5)        <i># 0 1 2 3 4      - stop only</i>
+range(2, 5)     <i># 2 3 4          - start, stop</i>
+range(2, 11, 3) <i># 2 5 8          - start, stop, step</i>
+range(5, 0, -1) <i># 5 4 3 2 1      - counting down</i></pre></div>
+    <p>The stop value is always excluded. That single convention is behind most
+    off-by-one errors, and it is also why
+    <code>range(len(xs))</code> gives exactly the valid indices.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Nested loops</b></div>
+    <div class="code"><div class="cl">python</div><pre>for i in range(3):
+    for j in range(2):
+        print(i, j)</pre></div>
+    <div class="step">The inner loop runs completely for each single step of the
+    outer, giving six lines: <code>0 0</code>, <code>0 1</code>,
+    <code>1 0</code>, <code>1 1</code>, <code>2 0</code>, <code>2 1</code>.</div>
+    <div class="step">Total work is the product, not the sum. Two nested loops
+    over $n$ items do $n^2$ steps &mdash; the first hint of Unit 9's
+    complexity.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>break, continue, and the loop that will not end</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><code>break</code> exits the innermost loop immediately.
+    <code>continue</code> skips to the next iteration. Both apply only to the
+    loop directly containing them.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Early exit</b></div>
+    <div class="code"><div class="cl">python</div><pre>def first_negative(nums: list) -&gt; int:
+    """Return the first negative value in nums, or 0 if there is none."""
+    for x in nums:
+        if x &lt; 0:
+            return x
+    return 0</pre></div>
+    <p>Returning from inside the loop is cleaner than <code>break</code> plus a
+    flag variable. Once the answer is known, leave.</p></div>
+  <div class="box warn"><div class="bl">Three ways to loop forever</div>
+    <p>&bull; Nothing in the body changes the condition.<br>
+    &bull; The change moves the wrong way, so the condition never becomes
+    false.<br>
+    &bull; The condition tests a float for exact equality, and floating point
+    steps past it &mdash; see Unit 10.</p>
+    <p>If a program hangs, interrupt it and read which line it stopped on. That
+    is almost always inside the offending loop.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Mixing tabs and spaces. Python counts indentation as syntax; set the
+  editor to spaces only.<br>
+  &bull; Forgetting the colon after <code>if</code>, <code>for</code>,
+  <code>while</code>, <code>def</code>.<br>
+  &bull; Modifying a list while iterating over it. Items get skipped; iterate a
+  copy with <code>for x in xs[:]</code> or build a new list.<br>
+  &bull; Comparing with <code>and</code>/<code>or</code> incorrectly:
+  <code>if x == 1 or 2:</code> is always true, because <code>2</code> is truthy.
+  Write <code>if x == 1 or x == 2:</code> or <code>if x in (1, 2):</code>.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Count the lines</div>
+      <p>How many lines does <code>for i in range(2, 10, 3)</code> print?</p>
+      <details><summary>Answer</summary><div class="ans">Three: <code>2</code>,
+      <code>5</code>, <code>8</code>. The next would be <code>11</code>, past the
+      excluded stop.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Chain order</div>
+      <p>What does <code>grade(85)</code> return if the chain tests
+      <code>&gt;= 60</code> first?</p>
+      <details><summary>Answer</summary><div class="ans"><code>'C'</code>. The
+      first true test wins, so a loose test placed early swallows everything
+      above it.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Trace nested</div>
+      <p>How many times does the inner body run?</p>
+      <div class="code"><div class="cl">python</div><pre>for i in range(4):
+    for j in range(i):
+        print(i, j)</pre></div>
+      <details><summary>Answer</summary><div class="ans">Six:
+      $0+1+2+3$. The inner range depends on <code>i</code>, so the count is a
+      triangular number rather than a product.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Write it</div>
+      <p>Write a function returning <code>True</code> if a list is sorted
+      ascending.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>def is_sorted(xs: list) -&gt; bool:
+    """Return whether xs is in non-decreasing order.
+
+    &gt;&gt;&gt; is_sorted([1, 2, 2, 5])
+    True
+    """
+    for i in range(len(xs) - 1):
+        if xs[i] &gt; xs[i + 1]:
+            return False
+    return True</pre></div>
+      Note <code>len(xs) - 1</code>: comparing each item to its successor means
+      stopping one early. An empty or one-item list correctly returns
+      <code>True</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Infinite loop</div>
+      <p>Why does this never end, and what is the fix?</p>
+      <div class="code"><div class="cl">python</div><pre>n = 10
+while n != 0:
+    n = n - 3</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>n</code> takes
+      values 10, 7, 4, 1, -2, ... and skips <code>0</code> entirely. Test
+      <code>while n &gt; 0:</code> instead. Prefer inequality to equality when
+      stepping by anything other than one.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Mutation during iteration</div>
+      <p>What goes wrong here?</p>
+      <div class="code"><div class="cl">python</div><pre>for x in xs:
+    if x &lt; 0:
+        xs.remove(x)</pre></div>
+      <details><summary>Answer</summary><div class="ans">Removing shifts every
+      later item down one while the loop's internal index keeps advancing, so
+      items get skipped. With <code>[-1, -2, 3]</code> the <code>-2</code>
+      survives. Build a new list:
+      <code>xs = [x for x in xs if x &gt;= 0]</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · while versus for</div>
+      <p>Which loop suits reading input until the user types
+      <code>quit</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>while</code>. The
+      number of rounds is unknown in advance, which is exactly the case
+      <code>while</code> exists for.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · FizzBuzz</div>
+      <p>Print 1 to 15, replacing multiples of 3 with Fizz, of 5 with Buzz, of
+      both with FizzBuzz.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>for n in range(1, 16):
+    if n % 15 == 0:
+        print('FizzBuzz')
+    elif n % 3 == 0:
+        print('Fizz')
+    elif n % 5 == 0:
+        print('Buzz')
+    else:
+        print(n)</pre></div>
+      Testing <code>% 15</code> first is the whole trick: the most restrictive
+      case has to come before the cases it also satisfies.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Conditionals.</strong> if/elif/else, chain ordering, and
+    truthiness.</li>
+    <li><strong>Loops.</strong> for over a sequence, while on a condition, and
+    when each is right.</li>
+    <li><strong>range.</strong> All three forms and the excluded stop.</li>
+    <li><strong>Loop control.</strong> break, continue, early return, and
+    diagnosing infinite loops.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "program structure: control flow" immediately after
+    the elementary types. Check the syllabus on Quercus for the week this lands
+    and for the assigned exercises.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Conditions choose; loops repeat; both are delimited by indentation. Unit
+    3 wraps these in functions so they can be named, tested and
+    reused.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Trace every loop on paper with a small input before running it. Predicting
+    output is a tested skill, and tracing is the only way to build it.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Chain semantics</div>
+      <p>How many branches of an if/elif/else chain run?</p>
+      <details><summary>Guide</summary><div class="ans">Exactly one, the first
+      whose test is true, or the <code>else</code> if none is.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Excluded stop</div>
+      <p>Why does <code>range(len(xs))</code> give valid indices?</p>
+      <details><summary>Guide</summary><div class="ans">Because the stop is
+      excluded, it yields $0$ through $n-1$ &mdash; exactly the legal positions
+      of an $n$-item list.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Loop choice</div>
+      <p>When is <code>while</code> the right choice?</p>
+      <details><summary>Guide</summary><div class="ans">When the number of
+      iterations is not known ahead of time and depends on a condition
+      re-evaluated each round.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Nested cost</div>
+      <p>Two nested loops over $n$ items do how many iterations?</p>
+      <details><summary>Guide</summary><div class="ans">$n^2$. Nesting
+      multiplies, and that is where quadratic running time comes
+      from.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit01.html">← Unit 01<span>Values, types &amp; variables</span></a>
+  <a href="unit03.html">Unit 03 →<span>Functions</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

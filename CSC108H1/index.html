@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>CSC108H1 — Introduction to Computer Programming · Course Guide</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="side">
+  <div class="brand"><span>CSC108H1</span></div>
+  <div class="sub">INTRO TO PROGRAMMING<br>COURSE GUIDE</div>
+  <a href="../index.html">All Courses</a>
+  <a href="#about" data-t>About</a>
+  <a href="#units" data-t>Chapters</a>
+  <a href="#assessment" data-t>How It Runs</a>
+  <a href="#practice" data-t>Practice Plan</a>
+  <a href="#resources" data-t>Resources</a>
+  <div class="foot">PYTHON · 36L<br>NO EXPERIENCE NEEDED<br>LEADS TO CSC148H1</div>
+</nav>
+
+<main>
+<header class="hero reveal">
+  <svg class="curve" viewBox="0 0 230 150" aria-hidden="true">
+    <line class="axis" x1="14" y1="135" x2="220" y2="135"/>
+    <line class="axis" x1="20" y1="8" x2="20" y2="142"/>
+    <path d="M35,120 L70,120 L70,90 L120,90 L120,60 L175,60 L175,30"/>
+    <circle cx="120" cy="90" r="4.5"/>
+  </svg>
+  <div class="kicker">U of T · Intro to Programming · Fall</div>
+  <h1>CSC108H1: write it, then make it <em>right</em>.</h1>
+  <p class="lede">Python from nothing: types, control flow, functions, lists,
+  dictionaries, classes. The course assumes no prior programming, but it moves
+  fast and it grades style as well as output, because the point is not code that
+  runs &mdash; it is code someone else can read.</p>
+</header>
+
+<div class="note reveal" id="about">
+  <div class="tag">About this course</div>
+  <h3>The on-ramp to everything computational.</h3>
+  <p>CSC108H1 "Introduction to Computer Programming", per the calendar:
+  programming in a language such as Python; elementary data types, lists, maps;
+  program structure &mdash; control flow, functions, classes, objects, methods;
+  algorithms and problem solving; searching, sorting, and complexity; unit
+  testing; floating-point numbers and numerical computation. No prior
+  programming experience required. Leads to
+  <a href="../CSC148H1/index.html">CSC148H1</a>, and the pair together satisfies
+  the programming requirement for most mathematics and statistics
+  programs.</p>
+  <p>Note the exclusions. You cannot take CSC108H1 after or alongside CSC110Y1,
+  CSC111H1, CSC120H1 or CSC148H1, so the CSC108H1 &rarr; CSC148H1 route and the
+  CSC110Y1 &rarr; CSC111H1 route are alternatives, not a menu to mix.</p>
+</div>
+
+<section id="units" class="reveal">
+  <div class="sec-head"><span class="no">01</span><h2>Chapters</h2></div>
+  <p class="sec-sub">In the order the calendar lists the topics. Each page has
+  definitions, worked code, common errors, and practice.</p>
+
+  <div class="chips">
+    <span class="chip teal"><b>CSC108H1</b><small>Intro Programming · Fall</small></span>
+    <span class="chip teal"><b>CSC148H1</b><small>Intro CS · Winter (sequel)</small></span>
+    <span class="chip"><b>Prereq</b><small>none</small></span>
+  </div>
+
+  <ol class="units">
+    <li><a href="unit01.html"><div><h4>Values, types &amp; variables</h4>
+      <p>int, float, str, bool; assignment and names.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit02.html"><div><h4>Control flow</h4>
+      <p>Conditionals, while and for loops, ranges.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit03.html"><div><h4>Functions</h4>
+      <p>Definition, parameters, return, scope, docstrings.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit04.html"><div><h4>Strings</h4>
+      <p>Indexing, slicing, methods, immutability.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit05.html"><div><h4>Lists &amp; aliasing</h4>
+      <p>Mutation, the aliasing trap, nested lists.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit06.html"><div><h4>Dictionaries &amp; sets</h4>
+      <p>Maps, keys, inverting, counting patterns.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit07.html"><div><h4>Classes, objects &amp; methods</h4>
+      <p>Defining a type; __init__, __str__, __eq__.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit08.html"><div><h4>Unit testing &amp; design</h4>
+      <p>doctest, unittest, and choosing test cases.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit09.html"><div><h4>Searching, sorting &amp; complexity</h4>
+      <p>Linear vs binary search; big-O as a growth rate.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit10.html"><div><h4>Floating point &amp; numerical computation</h4>
+      <p>Why $0.1+0.2\ne0.3$, and what to do about it.</p></div><span class="go">Open →</span></a></li>
+  </ol>
+</section>
+
+<section id="assessment" class="reveal">
+  <div class="sec-head"><span class="no">02</span><h2>How It Runs</h2></div>
+  <p class="sec-sub">Shape taken from the published Fall 2024 course outline.
+  Weights move year to year, so treat these as the pattern rather than the
+  numbers &mdash; check the syllabus on Quercus in September.</p>
+
+  <div class="context">
+    <div class="ctxh">The weekly rhythm</div>
+    <div class="ci"><div class="cl">Prepare, before lecture</div>
+      <p>Short videos with embedded exercises, due early in the week. These
+      carry marks, and skipping them means arriving at lecture unable to do the
+      activity.</p></div>
+    <div class="ci"><div class="cl">Perform, after lecture</div>
+      <p>A second exercise set due at the end of the week, submitted through the
+      course tooling. Best 10 of 11 typically counts, so one bad week is
+      survivable.</p></div>
+    <div class="ci"><div class="cl">Assignments and tests</div>
+      <p>Three assignments of increasing weight, a term test, and a final. The
+      assignments are where style and docstrings are actually graded.</p></div>
+  </div>
+
+  <div class="bp">
+    <div class="card"><div class="n">READ</div><h4>The error message first</h4>
+      <p>Python names the file, the line, and the kind of failure. Reading it
+      properly is the single highest-return habit in the course, and most
+      beginners skip straight to guessing.</p></div>
+    <div class="card"><div class="n">TRACE</div><h4>By hand, on paper</h4>
+      <p>Write out variable values line by line. Tests in this course ask you to
+      predict output, and tracing is the only reliable method.</p></div>
+    <div class="card"><div class="n">DESIGN</div><h4>Docstring before body</h4>
+      <p>Write the type contract and examples first, then the code that satisfies
+      them. It is graded, and it makes the body easier to write.</p></div>
+    <div class="card"><div class="n">SMALL</div><h4>One thing at a time</h4>
+      <p>Run after every few lines rather than writing fifty and debugging the
+      lot. Beginners lose more time to big-bang debugging than to any
+      concept.</p></div>
+  </div>
+</section>
+
+<section id="practice" class="reveal">
+  <div class="sec-head"><span class="no">03</span><h2>Practice Plan</h2></div>
+  <p class="sec-sub">Programming is not learned by reading. The unit pages give
+  exercises; use this course-level mix to build fluency.</p>
+
+  <div class="bp">
+    <div class="card"><div class="n">01</div><h4>Type it, do not copy it</h4>
+      <p>Retype every example from the guide rather than pasting. The typos you
+      make are the errors you will learn to read.</p></div>
+    <div class="card"><div class="n">02</div><h4>Predict, then run</h4>
+      <p>Before pressing run, write down what you expect. When it differs, you
+      have found a gap worth closing.</p></div>
+    <div class="card"><div class="n">03</div><h4>Break it deliberately</h4>
+      <p>Feed the empty list, the empty string, zero, and a negative number to
+      everything you write. That is also how the graders choose test
+      cases.</p></div>
+    <div class="card"><div class="n">04</div><h4>Reread your week-one code</h4>
+      <p>Every few weeks, reopen an early exercise and rewrite it with what you
+      now know. It is the fastest way to see progress.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Course-wide challenge bank</h3>
+    <p class="prac-intro">These mix tracing, writing and debugging in the style
+    the term test asks for.</p>
+    <div class="prac">
+      <div class="q"><div class="ql">Challenge 1 · Trace it</div>
+        <p>What does this print?</p>
+        <div class="code"><div class="cl">python</div><pre>xs = [1, 2, 3]
+ys = xs
+ys.append(4)
+print(len(xs))</pre></div>
+        <details><summary>Answer</summary><div class="ans"><code>4</code>.
+        <code>ys = xs</code> does not copy the list; both names refer to the same
+        object, so appending through one is visible through the other. This is
+        aliasing, and it is Unit 5's entire subject.</div></details></div>
+      <div class="q"><div class="ql">Challenge 2 · Write it</div>
+        <p>Write a function returning the number of vowels in a string.</p>
+        <details><summary>Solution</summary><div class="ans">
+        <div class="code"><div class="cl">python</div><pre>def count_vowels(s: str) -> int:
+    """Return the number of vowels in s.
+
+    &gt;&gt;&gt; count_vowels('hello')
+    2
+    """
+    return sum(1 for ch in s.lower() if ch in 'aeiou')</pre></div>
+        The docstring with an example is not decoration here; it is what
+        <code>doctest</code> runs and what the assignment marks.</div></details></div>
+      <div class="q"><div class="ql">Challenge 3 · Fix it</div>
+        <p>Why does this never stop?</p>
+        <div class="code"><div class="cl">python</div><pre>i = 0
+while i &lt; 5:
+    print(i)</pre></div>
+        <details><summary>Answer</summary><div class="ans">Nothing changes
+        <code>i</code>, so the condition stays true forever. Add
+        <code>i = i + 1</code> inside the loop. Every <code>while</code> needs
+        something in the body that moves it toward the exit
+        condition.</div></details></div>
+      <div class="q"><div class="ql">Challenge 4 · Explain it</div>
+        <p>Why is <code>0.1 + 0.2 == 0.3</code> False?</p>
+        <details><summary>Answer</summary><div class="ans">Floats are binary
+        fractions, and $0.1$ and $0.2$ have no exact binary representation, so
+        the stored values are slightly off and the sum lands slightly past
+        $0.3$. Compare with a tolerance instead:
+        <code>abs(a - b) &lt; 1e-9</code>. Unit 10 covers
+        this.</div></details></div>
+    </div>
+  </div>
+</section>
+
+<section id="resources" class="reveal">
+  <div class="sec-head"><span class="no">04</span><h2>Resources</h2></div>
+  <p class="src">
+    <a href="https://artsci.calendar.utoronto.ca/course/csc108h1">CSC108H1 — official calendar listing</a><br>
+    <a href="https://web.cs.toronto.edu/undergraduate">Department of Computer Science — undergraduate</a><br>
+    <a href="https://www.cs.toronto.edu/dcs/ugdocs/course-outlines/2024/Fall/CSC108H1F-Fall2024.pdf">Published Fall 2024 course outline (PDF)</a>
+  </p>
+  <p class="lic">Topic list quoted from the Arts &amp; Science calendar; course
+  structure taken from the published Fall 2024 outline. The department does not
+  publish a required textbook for every offering, and marking weights change
+  year to year. Verify everything against the syllabus posted on Quercus in the
+  first week.</p>
+</section>
+
+<footer class="end">
+  <span>CSC108H1 · INTRO TO PROGRAMMING · U OF T</span>
+  <span>SEQUEL: CSC148H1</span>
+</footer>
+</main>
+</div>
+
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

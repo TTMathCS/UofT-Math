@@ -31,7 +31,7 @@
         course("MAT240H1", "Algebra I", 0.5),
         course("CSC108H1", "Introduction to Computer Programming", 0.5),
         course("PHY131H1", "Introduction to Physics I", 0.5),
-        course("ENG140Y1", "Literary Traditions", 1)
+        course("ENG140Y1", "Literature for our Time", 1)
       ]),
       term("Winter 2027", "", [
         course("MAT159H1", "Analysis 1B", 0.5),
