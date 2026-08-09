@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 5 — Friction &amp; Circular Motion · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 5</div>
+<div class="unit-no reveal">Unit 5 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Friction &amp; Circular Motion</h1>
+<p class="ch-intro reveal">Two applications of Newton's laws that trip people up
+for opposite reasons. Friction because static and kinetic behave differently,
+and circular motion because the acceleration points somewhere counterintuitive
+&mdash; inward, even when the speed never changes.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Distinguish static from kinetic friction and use each correctly.</li>
+    <li>Explain why $f_s$ is an inequality and $f_k$ an equation.</li>
+    <li>Show that circular motion at constant speed still accelerates.</li>
+    <li>Solve banked curves and vertical circles.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Friction is what makes the real world differ from the frictionless
+    problems of Unit 4, and it is why walking, driving and holding anything is
+    possible at all. Circular motion is the first case where acceleration is not
+    along the velocity.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Antilock brakes exist because static friction exceeds kinetic: a rolling
+    tyre grips better than a skidding one, so preventing the skid shortens the
+    stop. Banked racetrack curves let cars turn faster than friction alone
+    allows.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Leonardo da Vinci found the friction laws around 1493, and Coulomb
+    rediscovered them nearly three centuries later. That friction is independent
+    of contact area is still surprising, and the microscopic explanation &mdash;
+    real contact happens only at scattered asperities &mdash; came only in the
+    twentieth century.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Friction</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><em>Static friction</em> acts on surfaces not sliding. It
+    takes whatever value is needed to prevent sliding, up to a maximum:
+    $f_s \le \mu_s N$.</div>
+    <div class="step"><em>Kinetic friction</em> acts on surfaces already
+    sliding, and has a fixed value: $f_k = \mu_k N$, directed opposite the
+    motion.</div>
+    <div class="step">Typically $\mu_s &gt; \mu_k$, so it takes more force to
+    start something moving than to keep it moving.</div></div>
+  <div class="box warn"><div class="bl">Static friction is an inequality</div>
+    <p>Writing $f_s = \mu_s N$ is wrong unless the object is on the verge of
+    slipping. A $10$ N push on a heavy crate that does not move produces
+    $10$ N of static friction, not $\mu_s N$. Static friction is a response, and
+    it only reaches its maximum at the instant sliding begins.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Will it move?</b></div>
+    <p>A $20$ kg crate on a floor with $\mu_s = 0.5$ and $\mu_k = 0.3$ is pushed
+    horizontally with $80$ N.</p>
+    <div class="step">$N = mg = 196$ N, so the maximum static friction is
+    $0.5 \times 196 = 98$ N.</div>
+    <div class="step">The push of $80$ N is less than $98$ N, so it does not
+    move, and the actual friction is $80$ N &mdash; exactly balancing the
+    push.</div>
+    <div class="step">Push with $100$ N instead and it slides. Friction then
+    drops to $f_k = 0.3 \times 196 = 59$ N, so the net force is
+    $41$ N and $a = 2.1$ m/s$^2$. The sudden jump from $98$ to $59$ N is why
+    heavy objects lurch when they finally give.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Angle of repose</b></div>
+    <p>At what incline angle does a block just begin to slide?</p>
+    <div class="step">Along the slope: $mg\sin\theta = f_s$. Perpendicular:
+    $N = mg\cos\theta$.</div>
+    <div class="step">At the point of slipping, $f_s = \mu_s N$, so
+    $mg\sin\theta = \mu_s mg\cos\theta$, giving
+    $\tan\theta = \mu_s$.</div>
+    <div class="step">The mass cancels. Tilting a surface until an object slides
+    measures $\mu_s$ directly, which is exactly how it is done in the
+    lab.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Circular motion</h3>
+  <div class="box thm"><div class="bl">Rule <b>Constant speed still means accelerating</b></div>
+    <p>Velocity is a vector, so changing direction changes velocity even when
+    the speed is fixed. For uniform circular motion the acceleration points to
+    the centre and has magnitude</p>
+    <div class="step">$a_c = \dfrac{v^2}{r}$</div>
+    <p>so the net force must also point inward, with
+    $\sum F = \dfrac{mv^2}{r}$.</p></div>
+  <div class="box warn"><div class="bl">There is no centrifugal force</div>
+    <p>Nothing pushes outward. The net force is inward, always. The outward
+    feeling in a turning car is your body continuing straight by the first law
+    while the car turns beneath you &mdash; inertia, not a force. Drawing an
+    outward arrow on a free-body diagram is the defining error of this
+    unit.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Centripetal force is a role, not a source</b></div>
+    <p>"Centripetal force" names the <em>job</em> of pointing inward, not a new
+    kind of force. Some real force always fills the role:</p>
+    <div class="step">Car turning &mdash; friction between tyres and road.</div>
+    <div class="step">Ball on a string &mdash; tension.</div>
+    <div class="step">Satellite &mdash; gravity.</div>
+    <div class="step">Bucket swung overhead at the top &mdash; gravity plus the
+    normal force from the bucket.</div>
+    <p>Never add a centripetal force to a diagram alongside the real ones. Set
+    the sum of the real inward forces equal to $mv^2/r$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Flat curve</b></div>
+    <p>How fast can a car take a curve of radius $50$ m with
+    $\mu_s = 0.7$?</p>
+    <div class="step">Friction supplies the inward force:
+    $\mu_s mg = mv^2/r$.</div>
+    <div class="step">Mass cancels: $v = \sqrt{\mu_s g r}
+    = \sqrt{0.7 \times 9.8 \times 50} = 18.5$ m/s, about $67$
+    km/h.</div>
+    <div class="step">Note it is <em>static</em> friction, since the tyres roll
+    rather than skid. Once they skid, $\mu_k$ takes over and the maximum speed
+    drops &mdash; the reason skidding into a turn makes it
+    worse.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Banked curve</b></div>
+    <p>On a frictionless banked curve at angle $\theta$, the normal force tilts
+    and its horizontal component turns the car.</p>
+    <div class="step">Vertical: $N\cos\theta = mg$. Horizontal:
+    $N\sin\theta = mv^2/r$.</div>
+    <div class="step">Dividing: $\tan\theta = v^2/(rg)$, so the design speed is
+    $v = \sqrt{rg\tan\theta}$.</div>
+    <div class="step">Mass cancels again, so the same bank works for a
+    motorcycle and a lorry. That is why banking is used in road design at
+    all.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Vertical circle, at the top</b></div>
+    <p>What is the minimum speed for water to stay in a bucket swung in a
+    vertical circle?</p>
+    <div class="step">At the top both gravity and the normal force point down,
+    toward the centre: $mg + N = mv^2/r$.</div>
+    <div class="step">The slowest case is $N = 0$, where the bucket no longer
+    pushes and gravity alone supplies the turning:
+    $v_{\min} = \sqrt{gr}$.</div>
+    <div class="step">Slower than that and the required inward force is less
+    than gravity, so the water leaves the circular path &mdash; it falls
+    out.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Writing $f_s = \mu_s N$ when the object is not on the verge of
+  slipping.<br>
+  &bull; Using $\mu_k$ for a rolling tyre. Rolling contact is
+  static.<br>
+  &bull; Drawing an outward force in circular motion.<br>
+  &bull; Adding "centripetal force" as an extra arrow instead of recognising
+  which real force does the job.<br>
+  &bull; Forgetting that $N$ changes on an incline, which changes friction
+  too.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Does it slide?</div>
+      <p>A $5$ kg box with $\mu_s = 0.4$ is pushed with $15$ N. Does it
+      move?</p>
+      <details><summary>Answer</summary><div class="ans">Maximum static friction
+      is $0.4 \times 49 = 19.6$ N, which exceeds $15$ N. It stays put, and
+      friction is $15$ N.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Angle of repose</div>
+      <p>A block slips at $25$ degrees. Find $\mu_s$.</p>
+      <details><summary>Answer</summary><div class="ans">$\mu_s = \tan 25 =
+      0.47$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Direction of acceleration</div>
+      <p>A car rounds a curve at constant speed. Which way does it
+      accelerate?</p>
+      <details><summary>Answer</summary><div class="ans">Toward the centre of
+      the curve. Constant speed does not mean zero acceleration when the
+      direction is changing.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Doubling speed</div>
+      <p>How does the required centripetal force change if speed doubles at
+      fixed radius?</p>
+      <details><summary>Answer</summary><div class="ans">Four times, since
+      $F = mv^2/r$. This is why speed limits on curves are strict.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Conical pendulum</div>
+      <p>A ball on a string swings in a horizontal circle, the string at angle
+      $\theta$ to the vertical. Find the speed.</p>
+      <details><summary>Solution</summary><div class="ans">Vertical:
+      $T\cos\theta = mg$. Horizontal: $T\sin\theta = mv^2/r$ with
+      $r = L\sin\theta$. Dividing and substituting gives
+      $v = \sqrt{gL\sin\theta\tan\theta}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Bottom of the loop</div>
+      <p>At the lowest point of a vertical circle, how does the normal force
+      compare with the weight?</p>
+      <details><summary>Solution</summary><div class="ans">Larger. Here up is
+      toward the centre, so $N - mg = mv^2/r$ and
+      $N = m(g + v^2/r)$. This is the pressed-into-your-seat feeling at the
+      bottom of a rollercoaster loop.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Why ABS works</div>
+      <p>Explain in terms of $\mu_s$ and $\mu_k$.</p>
+      <details><summary>Answer</summary><div class="ans">A rolling tyre uses
+      static friction, a skidding one kinetic, and $\mu_s > \mu_k$. Preventing
+      the skid keeps the larger coefficient in play, shortening the stop and
+      preserving steering.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Incline with friction</div>
+      <p>A block slides down a $30$-degree incline with $\mu_k = 0.2$. Find its
+      acceleration.</p>
+      <details><summary>Solution</summary><div class="ans">$N = mg\cos 30$, so
+      $f_k = 0.2mg\cos 30$. Along the slope:
+      $mg\sin 30 - 0.2mg\cos 30 = ma$, giving
+      $a = g(0.5 - 0.173) = 3.2$ m/s$^2$. Mass cancels, and the answer is less
+      than the frictionless $4.9$ m/s$^2$ as it must
+      be.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Static friction.</strong> An inequality; it takes whatever value
+    prevents sliding.</li>
+    <li><strong>Kinetic friction.</strong> Fixed at $\mu_k N$, opposing
+    motion.</li>
+    <li><strong>Centripetal acceleration.</strong> $v^2/r$ inward, even at
+    constant speed.</li>
+    <li><strong>Applications.</strong> Flat and banked curves, vertical circles,
+    and identifying which real force turns the body.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "friction" explicitly and circular motion follows from
+    the dynamics topics. Check the syllabus on Quercus for assigned
+    problems.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Both halves are Unit 4 applied. Friction adds a force whose size depends
+    on $N$; circular motion fixes the <em>direction</em> of the net force and
+    asks which real force supplies it.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    In any circular-motion problem, ask "what is pushing or pulling it toward the
+    centre?" before writing anything. Naming that force turns the problem into
+    ordinary Unit 4 work.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Static versus kinetic</div>
+      <p>Why is one an inequality?</p>
+      <details><summary>Guide</summary><div class="ans">Static friction adjusts
+      to whatever is needed to prevent sliding, up to a limit. Kinetic friction
+      has a single value once sliding starts.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Direction</div>
+      <p>Which way does net force point in uniform circular motion?</p>
+      <details><summary>Guide</summary><div class="ans">Toward the centre,
+      always, with magnitude $mv^2/r$.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Centrifugal</div>
+      <p>Is there an outward force?</p>
+      <details><summary>Guide</summary><div class="ans">No. The outward
+      sensation is inertia — your body continuing straight while the
+      constraint turns.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Mass cancellation</div>
+      <p>Why does mass drop out of the banked-curve and angle-of-repose
+      results?</p>
+      <details><summary>Guide</summary><div class="ans">Because every force
+      involved is proportional to $m$, so it divides out of
+      $\sum F = ma$. That is why one bank angle suits every
+      vehicle.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit04.html">← Unit 04<span>Newton's laws</span></a>
+  <a href="unit06.html">Unit 06 →<span>Work, energy &amp; power</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

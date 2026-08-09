@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 10 — Waves &amp; Sound · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 10</div>
+<div class="unit-no reveal">Unit 10 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Waves &amp; Sound</h1>
+<p class="ch-intro reveal">An oscillation that travels. Nothing material moves
+along with a wave &mdash; only the disturbance does, and with it the energy. The
+last unit of the course, and the one that sets up all of the optics in
+PHY132H1.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Use $v = f\lambda$ and say what sets each quantity.</li>
+    <li>Distinguish transverse from longitudinal waves.</li>
+    <li>Apply superposition to get interference and standing waves.</li>
+    <li>Compute beat frequencies and Doppler shifts.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Waves carry energy and information without carrying matter. That is how
+    you hear, see, and receive every signal ever transmitted. The mathematics is
+    identical whether the wave is on a string, in air, or
+    electromagnetic.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every musical instrument is a standing wave in a string or air column.
+    Noise-cancelling headphones use destructive interference. Ultrasound imaging,
+    radar and sonar are all reflection and timing.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Whether light was a wave or a stream of particles was argued for two
+    centuries. Young's double-slit experiment of 1801 settled it for the wave
+    side &mdash; until quantum mechanics showed the answer is
+    both.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Describing a wave</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><em>Wavelength</em> $\lambda$: distance between successive
+    identical points.</div>
+    <div class="step"><em>Frequency</em> $f$: cycles per second, in
+    hertz.</div>
+    <div class="step"><em>Period</em> $T = 1/f$.</div>
+    <div class="step"><em>Amplitude</em> $A$: maximum displacement. Intensity
+    goes as $A^2$.</div>
+    <div class="step"><em>Speed</em> $v = f\lambda$.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>The medium sets the speed</b></div>
+    <p>This is the most misunderstood point in the unit. Wave speed is fixed by
+    the <em>medium</em>, not by the source. The source sets the
+    <em>frequency</em>. Wavelength then follows from
+    $\lambda = v/f$.</p>
+    <div class="step">On a string, $v = \sqrt{F/\mu}$ &mdash; tension over mass
+    per unit length. Tightening a guitar string raises its speed and so its
+    pitch.</div>
+    <div class="step">In air, sound travels at about $343$ m/s at room
+    temperature, faster when warmer.</div>
+    <div class="step">When a wave crosses into a new medium its frequency stays
+    the same and its wavelength changes. Frequency is set at the source and
+    cannot change en route.</div></div>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><em>Transverse:</em> the medium oscillates perpendicular
+    to the travel direction. Waves on a string, light.</div>
+    <div class="step"><em>Longitudinal:</em> the medium oscillates along the
+    travel direction, making compressions and rarefactions. Sound.</div>
+    <p>Sound cannot be transverse in a gas, because gases have no resistance to
+    shear. This is why seismic S-waves, which are transverse, do not pass through
+    the Earth's liquid outer core &mdash; the observation that revealed the core
+    is liquid.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Superposition and interference</h3>
+  <div class="box thm"><div class="bl">Rule <b>Displacements add</b></div>
+    <p>When two waves overlap, the total displacement at each point is the sum
+    of the individual displacements. Afterwards both waves continue unchanged
+    &mdash; they pass through each other.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Constructive and destructive</b></div>
+    <div class="step"><em>In phase</em> (path difference a whole number of
+    wavelengths): crests align, amplitudes add. Constructive.</div>
+    <div class="step"><em>Out of phase</em> by half a wavelength: crest meets
+    trough and they cancel. Destructive.</div>
+    <div class="step">With equal amplitudes the cancellation is total. The energy
+    is not destroyed &mdash; it is redistributed to the constructive
+    regions.</div>
+  </div>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><em>Beats</em> arise when two close frequencies overlap. The amplitude
+    rises and falls at</p>
+    <div class="step">$f_{\text{beat}} = |f_1 - f_2|$</div>
+    <p>Musicians tune by this: adjust until the beating slows and stops, meaning
+    the frequencies match. A $440$ Hz and a $443$ Hz tone give $3$ beats per
+    second.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Standing waves</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A wave reflecting off a boundary interferes with itself. At the right
+    frequencies the pattern stands still: <em>nodes</em> never move,
+    <em>antinodes</em> oscillate maximally.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Boundaries select the frequencies</b></div>
+    <p>For a string fixed at both ends, of length $L$:</p>
+    <div class="step">$\lambda_n = \dfrac{2L}{n}$ and
+    $f_n = \dfrac{nv}{2L}$ for $n = 1, 2, 3, \dots$</div>
+    <p>$f_1$ is the fundamental; the rest are harmonics. Only these discrete
+    frequencies survive &mdash; everything else interferes with itself
+    destructively and dies out.</p>
+    <p>For a pipe open at both ends the formula is the same. For a pipe closed at
+    one end, only <em>odd</em> harmonics exist, and
+    $f_n = nv/(4L)$ with $n$ odd &mdash; which is why a clarinet sounds
+    different from a flute of the same length.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Guitar string</b></div>
+    <p>A $0.65$ m string carries waves at $400$ m/s.</p>
+    <div class="step">$f_1 = 400/(2 \times 0.65) = 308$ Hz.</div>
+    <div class="step">Harmonics at $616$, $924$ Hz and so on. The mix of
+    harmonics is what makes a guitar sound like a guitar rather than a
+    piano at the same pitch.</div>
+    <div class="step">Pressing a fret shortens $L$ and raises every frequency.
+    Tightening the string raises $v$ and does the same.</div>
+  </div>
+  <div class="box warn"><div class="bl">Standing waves transport no energy</div>
+    <p>The two travelling waves carry energy in opposite directions and the net
+    flow is zero. Energy sloshes between nodes but does not move along the
+    string.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The Doppler effect</h3>
+  <div class="box thm"><div class="bl">Rule <b>Relative motion shifts frequency</b></div>
+    <p>Motion between source and observer changes the observed frequency:</p>
+    <div class="step">$f' = f\dfrac{v \pm v_o}{v \mp v_s}$</div>
+    <p>with the upper signs when the motion is toward. Rather than memorise the
+    signs, remember the direction of the effect: <em>approaching raises the
+    pitch, receding lowers it</em>, and choose signs to match.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The ambulance</b></div>
+    <p>A siren at $600$ Hz approaches at $30$ m/s, with sound at $343$
+    m/s.</p>
+    <div class="step">Approaching: $f' = 600 \times 343/(343 - 30) = 658$ Hz
+    &mdash; higher, as expected.</div>
+    <div class="step">Receding: $f' = 600 \times 343/(343 + 30) = 552$ Hz.</div>
+    <div class="step">The drop as it passes is $106$ Hz, and it happens
+    <em>at</em> the moment of passing, not gradually.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Why it matters elsewhere</b></div>
+    <div class="step">Light from distant galaxies is shifted toward the red,
+    meaning they are receding &mdash; the observation behind the expanding
+    universe.</div>
+    <div class="step">Doppler radar measures the speed of vehicles and storms by
+    the shift in reflected waves.</div>
+    <div class="step">Medical ultrasound images blood flow by the shift off
+    moving cells.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Thinking the source sets the wave speed. The medium
+  does.<br>
+  &bull; Expecting frequency to change when a wave enters a new medium. The
+  wavelength changes instead.<br>
+  &bull; Thinking matter travels with the wave. Only the disturbance and its
+  energy do.<br>
+  &bull; Using the open-pipe formula for a closed pipe. Closed pipes have only
+  odd harmonics.<br>
+  &bull; Believing destructive interference destroys energy. It
+  redistributes it.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Wavelength</div>
+      <p>Sound at $440$ Hz travels at $343$ m/s. Find the wavelength.</p>
+      <details><summary>Answer</summary><div class="ans">$\lambda = 343/440 =
+      0.78$ m.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Crossing media</div>
+      <p>A sound wave passes from air into water, where it travels faster. What
+      changes?</p>
+      <details><summary>Answer</summary><div class="ans">Speed and wavelength
+      both increase; frequency is unchanged, being set at the
+      source.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Beats</div>
+      <p>Two tuning forks at $256$ and $260$ Hz sound together. What do you
+      hear?</p>
+      <details><summary>Answer</summary><div class="ans">A tone near $258$ Hz
+      pulsing $4$ times per second.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Fundamental</div>
+      <p>A $0.5$ m string carries waves at $200$ m/s. Find the first two
+      harmonics.</p>
+      <details><summary>Answer</summary><div class="ans">$f_1 = 200 = 200$ Hz and
+      $f_2 = 400$ Hz.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Closed pipe</div>
+      <p>Why does a pipe closed at one end lack even harmonics?</p>
+      <details><summary>Solution</summary><div class="ans">The closed end must be
+      a node and the open end an antinode. Only quarter-wavelength odd multiples
+      satisfy both boundary conditions, so
+      $f_n = nv/(4L)$ with $n$ odd.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Doppler</div>
+      <p>A train horn at $500$ Hz recedes at $25$ m/s. What do you hear?</p>
+      <details><summary>Solution</summary><div class="ans">$f' = 500 \times
+      343/(343 + 25) = 466$ Hz — lower, as receding
+      requires.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Tightening a string</div>
+      <p>What happens to the pitch if tension is quadrupled?</p>
+      <details><summary>Solution</summary><div class="ans">$v = \sqrt{F/\mu}$
+      doubles, so every $f_n = nv/(2L)$ doubles — the pitch rises by an
+      octave.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Where the energy goes</div>
+      <p>Two speakers cancel at a point. Is energy destroyed?</p>
+      <details><summary>Answer</summary><div class="ans">No. Energy is
+      redistributed to the constructive regions elsewhere, and the total over all
+      space is unchanged. Interference rearranges energy; it never removes
+      it.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Wave quantities.</strong> $v = f\lambda$, and which of the three
+    is set by the medium and which by the source.</li>
+    <li><strong>Wave types.</strong> Transverse versus longitudinal, and why
+    sound in a gas must be longitudinal.</li>
+    <li><strong>Superposition.</strong> Interference, beats, and standing
+    waves.</li>
+    <li><strong>Boundaries and Doppler.</strong> Harmonic series for open and
+    closed pipes, and the direction of the frequency shift.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar closes its topic list with "waves, sound". Check the
+    syllabus on Quercus for assigned problems; this material is the direct
+    foundation for the optics half of PHY132H1.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>A wave is Unit 9's oscillation set travelling. The medium fixes the speed,
+    the source fixes the frequency, superposition explains everything that
+    happens when waves meet, and boundaries select which frequencies can
+    persist.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For any wave question, write down which of $v$, $f$ and $\lambda$ is fixed by
+    the medium and which by the source. The third follows, and confusing the two
+    causes most errors here.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · What sets speed</div>
+      <p>Does a louder sound travel faster?</p>
+      <details><summary>Guide</summary><div class="ans">No. Amplitude does not
+      affect speed; the medium alone determines it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Crossing a boundary</div>
+      <p>Which quantity is unchanged?</p>
+      <details><summary>Guide</summary><div class="ans">Frequency. It is fixed
+      at the source, so speed and wavelength change
+      together.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Standing wave energy</div>
+      <p>Does a standing wave transport energy?</p>
+      <details><summary>Guide</summary><div class="ans">No. The two component
+      travelling waves carry equal energy in opposite directions and the net flow
+      is zero.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Doppler direction</div>
+      <p>How do you avoid memorising the sign convention?</p>
+      <details><summary>Guide</summary><div class="ans">Recall that approaching
+      raises pitch and receding lowers it, then pick the signs that produce the
+      right direction of shift.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit09.html">← Unit 09<span>Oscillations</span></a>
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

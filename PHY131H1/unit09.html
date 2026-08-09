@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 9 — Oscillations · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 9</div>
+<div class="unit-no reveal">Unit 9 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Oscillations</h1>
+<p class="ch-intro reveal">One condition &mdash; a restoring force proportional
+to displacement &mdash; produces the same motion everywhere it appears: a mass
+on a spring, a pendulum, an atom in a crystal, a bridge in the wind. Recognise
+that condition and the answer is already known.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the condition that produces simple harmonic motion.</li>
+    <li>Compute period and frequency for springs and pendulums.</li>
+    <li>Explain why amplitude does not affect the period.</li>
+    <li>Describe how energy moves between kinetic and potential.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Near any stable equilibrium, the restoring force is approximately
+    proportional to displacement. That makes simple harmonic motion the
+    universal small-vibration behaviour of essentially every physical
+    system.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Quartz watches keep time by a crystal oscillating $32{,}768$ times a
+    second. Car suspensions are damped oscillators tuned to absorb bumps without
+    bouncing. Buildings in earthquake zones are designed around their natural
+    frequency.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Galileo noticed a swinging cathedral lamp kept time against his pulse
+    regardless of how far it swung. That observation &mdash; period independent
+    of amplitude &mdash; led to the pendulum clock and to the first accurate
+    timekeeping in history.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The condition for SHM</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Simple harmonic motion occurs whenever the restoring force is proportional
+    to the displacement and directed back toward equilibrium:</p>
+    <div class="step">$F = -kx$</div>
+    <p>The minus sign is essential: it says the force always points back. With
+    $F = ma$ this gives $a = -(k/m)x$, so the acceleration is proportional to
+    displacement and opposite in sign.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>The resulting motion</b></div>
+    <div class="step">$x(t) = A\cos(\omega t + \phi)$, where $A$ is the
+    amplitude and $\phi$ sets the starting point.</div>
+    <div class="step">$\omega = \sqrt{k/m}$ is the angular frequency, in
+    rad/s.</div>
+    <div class="step">Period $T = 2\pi/\omega = 2\pi\sqrt{m/k}$, and frequency
+    $f = 1/T$.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Where the acceleration is largest</b></div>
+    <div class="step">At maximum displacement $x = \pm A$: speed is
+    <em>zero</em>, acceleration is <em>maximum</em>. All the energy is
+    potential.</div>
+    <div class="step">At equilibrium $x = 0$: speed is <em>maximum</em>
+    ($v_{\max} = A\omega$), acceleration is <em>zero</em>. All the energy is
+    kinetic.</div>
+    <div class="step">This is the opposite of what many expect. The object moves
+    fastest where the force on it is zero, exactly as at the top of a
+    throw in reverse.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Why amplitude does not matter</h3>
+  <div class="box thm"><div class="bl">Rule <b>Isochronism</b></div>
+    <p>The period $T = 2\pi\sqrt{m/k}$ contains no amplitude. Pull the mass
+    twice as far and it takes exactly as long to return.</p>
+    <p>The reason is that doubling the displacement doubles the restoring force,
+    so the object covers twice the distance at twice the acceleration &mdash;
+    and the two effects cancel exactly. This only works because the force is
+    <em>linear</em> in $x$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Mass on a spring</b></div>
+    <p>A $0.5$ kg mass on a spring with $k = 200$ N/m.</p>
+    <div class="step">$\omega = \sqrt{200/0.5} = 20$ rad/s.</div>
+    <div class="step">$T = 2\pi/20 = 0.314$ s, so $f = 3.18$ Hz.</div>
+    <div class="step">Pulled $0.1$ m and released, $v_{\max} = A\omega = 2$
+    m/s. Doubling the pull doubles the maximum speed but leaves the period
+    unchanged.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>The simple pendulum</b></div>
+    <p>For small swings, $T = 2\pi\sqrt{L/g}$ &mdash; the form Unit 1 derived by
+    dimensional analysis, now with its factor of $2\pi$.</p>
+    <div class="step">The mass does not appear. A heavy and a light pendulum of
+    the same length keep the same time.</div>
+    <div class="step">The restoring force is $-mg\sin\theta$, which is only
+    proportional to $\theta$ when $\theta$ is small enough that
+    $\sin\theta \approx \theta$. Beyond about $15$ degrees the approximation
+    fails and the period lengthens.</div></div>
+  <div class="box warn"><div class="bl">Isochronism is an approximation for pendulums</div>
+    <p>A spring is exactly isochronous because $F = -kx$ is exactly linear. A
+    pendulum only approximately so, because $\sin\theta$ is only approximately
+    $\theta$. Galileo's cathedral lamp was swinging through a small angle, which
+    is why his observation held.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Energy in oscillation</h3>
+  <div class="box thm"><div class="bl">Rule <b>Total energy is constant</b></div>
+    <p>With no damping, $E = \tfrac12kA^2$ throughout, exchanging between
+    forms:</p>
+    <div class="step">$U = \tfrac12kx^2$, maximum at the extremes.</div>
+    <div class="step">$K = \tfrac12mv^2$, maximum at the centre.</div>
+    <div class="step">$\tfrac12kx^2 + \tfrac12mv^2 = \tfrac12kA^2$ at every
+    instant, which gives $v = \omega\sqrt{A^2 - x^2}$ without needing
+    time.</div>
+    <p>Energy depends on $A^2$, so doubling the amplitude quadruples the
+    energy.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Speed at half amplitude</b></div>
+    <p>For the spring above with $A = 0.1$ m, find the speed at
+    $x = 0.05$ m.</p>
+    <div class="step">$v = 20\sqrt{0.01 - 0.0025} = 20 \times 0.0866 = 1.73$
+    m/s.</div>
+    <div class="step">That is $87$ per cent of the maximum speed, even though it
+    is halfway out. The speed falls off slowly near the centre and rapidly near
+    the ends.</div>
+  </div>
+  <div class="box def"><div class="bl">Definition</div>
+    <p><em>Damping</em> is a resistive force, usually proportional to velocity,
+    that removes energy. Three regimes:</p>
+    <div class="step"><em>Underdamped:</em> oscillates with amplitude decaying
+    over time. A guitar string.</div>
+    <div class="step"><em>Critically damped:</em> returns to equilibrium as fast
+    as possible without overshooting. Car suspension and door
+    closers.</div>
+    <div class="step"><em>Overdamped:</em> returns slowly, no
+    oscillation.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Resonance</b></div>
+    <p>Driving an oscillator at its natural frequency pumps energy in
+    efficiently, and the amplitude grows large.</p>
+    <div class="step">Pushing a swing at the right moment each cycle is the
+    everyday case.</div>
+    <div class="step">The Tacoma Narrows bridge collapse of 1940 is the standard
+    cautionary example, though the mechanism was aeroelastic flutter rather than
+    simple resonance &mdash; a distinction often lost in the retelling.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Thinking amplitude changes the period. It does not, for true
+  SHM.<br>
+  &bull; Putting the mass into the pendulum period. It cancels.<br>
+  &bull; Using $T = 2\pi\sqrt{L/g}$ for large swings.<br>
+  &bull; Confusing $\omega$ (rad/s) with $f$ (Hz). They differ by
+  $2\pi$.<br>
+  &bull; Assuming maximum speed and maximum acceleration happen at the same
+  place. They are at opposite points.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Period</div>
+      <p>A $2$ kg mass on a $50$ N/m spring. Find the period.</p>
+      <details><summary>Answer</summary><div class="ans">$T = 2\pi\sqrt{2/50} =
+      1.26$ s.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Pendulum length</div>
+      <p>How long is a pendulum with a $2$ s period?</p>
+      <details><summary>Answer</summary><div class="ans">$L = gT^2/(4\pi^2) =
+      0.99$ m — the classic one-metre seconds pendulum.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Where is it fastest</div>
+      <p>At what point of the motion is speed greatest?</p>
+      <details><summary>Answer</summary><div class="ans">At equilibrium,
+      $x = 0$, where the force and acceleration are zero.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Doubling amplitude</div>
+      <p>What happens to period and energy if amplitude doubles?</p>
+      <details><summary>Answer</summary><div class="ans">Period unchanged; energy
+      quadruples, since $E \propto A^2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Maximum speed</div>
+      <p>A $0.3$ kg mass on a $120$ N/m spring oscillates with $A = 0.05$ m.
+      Find $v_{\max}$.</p>
+      <details><summary>Solution</summary><div class="ans">$\omega =
+      \sqrt{120/0.3} = 20$ rad/s, so $v_{\max} = A\omega = 1$
+      m/s.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Pendulum on the Moon</div>
+      <p>A pendulum with a $1$ s period on Earth is taken to the Moon, where
+      $g$ is $1.6$ m/s$^2$. Find its new period.</p>
+      <details><summary>Solution</summary><div class="ans">$T \propto
+      1/\sqrt{g}$, so the period scales by $\sqrt{9.8/1.6} = 2.47$. The new
+      period is $2.5$ s.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Energy split</div>
+      <p>At what displacement is the energy half kinetic and half
+      potential?</p>
+      <details><summary>Solution</summary><div class="ans">Set
+      $\tfrac12kx^2 = \tfrac12(\tfrac12kA^2)$, giving
+      $x = A/\sqrt2 \approx 0.71A$ — further out than
+      halfway.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Vertical spring</div>
+      <p>Does hanging a mass on a vertical spring change its period compared
+      with a horizontal one?</p>
+      <details><summary>Answer</summary><div class="ans">No. Gravity shifts the
+      equilibrium position down by $mg/k$, but the restoring force about that
+      new equilibrium is still $-kx$, so $T = 2\pi\sqrt{m/k}$ is
+      unchanged.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The SHM condition.</strong> $F = -kx$ and what the minus sign
+    encodes.</li>
+    <li><strong>Period and frequency.</strong> Spring and pendulum formulas, and
+    what each does not depend on.</li>
+    <li><strong>Isochronism.</strong> Why amplitude cancels, and where the
+    pendulum approximation breaks.</li>
+    <li><strong>Energy.</strong> The exchange between $K$ and $U$, damping
+    regimes, and resonance.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "oscillations" here. Check the syllabus on Quercus for
+    assigned problems; this material leads directly into waves in Unit
+    10.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>A linear restoring force gives sinusoidal motion with a period set only by
+    $m$ and $k$. Energy sloshes between kinetic and potential. Unit 10 lets that
+    oscillation travel.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Identify $k$ and $m$ — or $L$ and $g$ — first, and the period follows
+    immediately. Most oscillation questions are one substitution once those are
+    named.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · The condition</div>
+      <p>What force law produces SHM?</p>
+      <details><summary>Guide</summary><div class="ans">$F = -kx$: restoring,
+      and proportional to displacement. Linearity is what makes the period
+      amplitude-independent.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · What the period depends on</div>
+      <p>Does the pendulum period depend on mass?</p>
+      <details><summary>Guide</summary><div class="ans">No. It depends only on
+      length and $g$. The mass cancels, since both the restoring force and the
+      inertia scale with it.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Extremes</div>
+      <p>Where are speed and acceleration each greatest?</p>
+      <details><summary>Guide</summary><div class="ans">Speed at equilibrium,
+      acceleration at maximum displacement — opposite
+      points.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Damping choice</div>
+      <p>Why is a car suspension critically damped?</p>
+      <details><summary>Guide</summary><div class="ans">To return to level as
+      fast as possible without oscillating. Underdamped would bounce;
+      overdamped would feel sluggish over bumps.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit08.html">← Unit 08<span>Rotation &amp; angular momentum</span></a>
+  <a href="unit10.html">Unit 10 →<span>Waves &amp; sound</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

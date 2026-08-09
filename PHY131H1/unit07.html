@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 7 — Momentum &amp; Collisions · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 7</div>
+<div class="unit-no reveal">Unit 7 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Momentum &amp; Collisions</h1>
+<p class="ch-intro reveal">The second conserved quantity, and the one that
+handles collisions. Momentum survives every collision without exception; kinetic
+energy usually does not. Knowing which is conserved when is the entire
+unit.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Relate impulse to change in momentum.</li>
+    <li>Say precisely when momentum is conserved.</li>
+    <li>Classify collisions as elastic, inelastic or perfectly inelastic.</li>
+    <li>Solve two-dimensional collisions by components.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>During a collision the forces are enormous, brief and unknown. Momentum
+    conservation sidesteps them entirely: you need only the states before and
+    after, never what happened in the microseconds
+    between.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Crumple zones extend the collision time, which reduces the force for the
+    same momentum change. Rockets work by momentum conservation and need nothing
+    to push against, which is why they function in vacuum.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Descartes proposed a conserved "quantity of motion" but used speed rather
+    than velocity, so his version failed for head-on collisions. Huygens fixed it
+    in the 1660s by making it a vector, and the sign is what makes the whole
+    thing work.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Momentum and impulse</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Momentum is $\vec{p} = m\vec{v}$ &mdash; a vector, in the direction of
+    motion, measured in kg·m/s.</p>
+    <p><em>Impulse</em> is $\vec{J} = \vec{F}\Delta t$ for a constant force, or
+    the area under a force-time graph in general.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Impulse-momentum theorem</b></div>
+    <p>$\vec{J} = \Delta\vec{p}$: impulse equals change in momentum.</p>
+    <p>This is Newton's second law rewritten. From $F = ma = m\Delta v/\Delta t$,
+    multiplying through by $\Delta t$ gives
+    $F\Delta t = m\Delta v = \Delta p$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why crumple zones work</b></div>
+    <p>A $1200$ kg car at $20$ m/s stops in a crash. The momentum change is
+    fixed at $24{,}000$ kg·m/s whatever happens.</p>
+    <div class="step">Rigid car, stopping in $0.1$ s:
+    $F = 24{,}000/0.1 = 240{,}000$ N.</div>
+    <div class="step">Crumple zone, stopping in $0.5$ s:
+    $F = 48{,}000$ N &mdash; a fifth as much.</div>
+    <div class="step">The impulse is the same; spreading it over more time
+    reduces the peak force. Airbags, helmets, landing mats and bending your
+    knees all exploit exactly this.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Conservation of momentum</h3>
+  <div class="box thm"><div class="bl">Rule <b>When it holds</b></div>
+    <p>The total momentum of a system is conserved when the net
+    <em>external</em> force is zero:</p>
+    <div class="step">$\sum \vec{p}_{\text{before}} =
+    \sum \vec{p}_{\text{after}}$</div>
+    <p>Internal forces cannot change total momentum, because by the third law
+    they come in equal and opposite pairs that cancel in the
+    sum.</p></div>
+  <div class="box warn"><div class="bl">During a collision, external forces are negligible</div>
+    <p>Gravity and friction act during a car crash, but the collision forces are
+    thousands of times larger and last only milliseconds. So momentum is treated
+    as conserved <em>through the collision</em> even though it is not conserved
+    over the following seconds.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Recoil</b></div>
+    <p>A $60$ kg skater throws a $2$ kg ball at $10$ m/s. How fast does she
+    recoil?</p>
+    <div class="step">Before, total momentum is zero. After, it must still be
+    zero.</div>
+    <div class="step">$0 = (2)(10) + (60)v$, so $v = -0.33$ m/s &mdash; opposite
+    to the throw.</div>
+    <div class="step">This is how rockets work. Nothing is pushed against; the
+    exhaust carries momentum one way and the rocket the
+    other.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Types of collision</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><strong>Elastic.</strong> Both momentum and kinetic energy
+    are conserved. Rare in practice &mdash; billiard balls and atoms come
+    close.</div>
+    <div class="step"><strong>Inelastic.</strong> Momentum conserved, kinetic
+    energy not. Most real collisions.</div>
+    <div class="step"><strong>Perfectly inelastic.</strong> The bodies stick
+    together and move as one. This loses the <em>most</em> kinetic energy
+    possible while still conserving momentum.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>Momentum always, energy sometimes</b></div>
+    <p>Momentum is conserved in every collision. Kinetic energy is conserved
+    only in elastic ones. Lost kinetic energy becomes heat, sound and permanent
+    deformation.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Perfectly inelastic</b></div>
+    <p>A $2$ kg cart at $6$ m/s hits a stationary $4$ kg cart and they
+    stick.</p>
+    <div class="step">Momentum: $(2)(6) = (6)v$, so $v = 2$ m/s.</div>
+    <div class="step">Kinetic energy before: $\tfrac12(2)(36) = 36$ J. After:
+    $\tfrac12(6)(4) = 12$ J.</div>
+    <div class="step">Two thirds lost &mdash; and yet momentum is exactly
+    conserved. The two quantities behave completely
+    differently.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Elastic, equal masses</b></div>
+    <p>A moving ball strikes an identical stationary one elastically,
+    head-on.</p>
+    <div class="step">Momentum: $mv = mv_1 + mv_2$. Energy:
+    $v^2 = v_1^2 + v_2^2$.</div>
+    <div class="step">The only solution with the balls not passing through each
+    other is $v_1 = 0$, $v_2 = v$: the first stops dead and the second leaves at
+    the original speed.</div>
+    <div class="step">This is the Newton's cradle result, and it needs
+    <em>both</em> conservation laws. Momentum alone would allow them to move off
+    together.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Two dimensions</b></div>
+    <p>Momentum conserves separately along each axis.</p>
+    <div class="step">A $3$ kg puck at $4$ m/s east strikes a $2$ kg puck at
+    rest; the first deflects $30$ degrees north of east at $2$ m/s. Find the
+    second puck's velocity.</div>
+    <div class="step">East: $(3)(4) = (3)(2\cos 30) + 2v_{2x}$, so
+    $v_{2x} = (12 - 5.2)/2 = 3.4$ m/s.</div>
+    <div class="step">North: $0 = (3)(2\sin 30) + 2v_{2y}$, so
+    $v_{2y} = -1.5$ m/s &mdash; south, as it must be to cancel the first puck's
+    northward momentum.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Assuming kinetic energy is conserved. Only in elastic
+  collisions.<br>
+  &bull; Dropping the sign on momentum. It is a vector; opposite directions must
+  carry opposite signs.<br>
+  &bull; Adding momenta in two dimensions as magnitudes. Resolve into components
+  first.<br>
+  &bull; Forgetting that "sticking together" is a physical statement giving both
+  bodies the same final velocity &mdash; that is the extra
+  equation.<br>
+  &bull; Applying conservation when a large external force acts, such as a ball
+  bouncing off a wall bolted to the Earth.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Impulse</div>
+      <p>A $0.15$ kg ball arrives at $30$ m/s and leaves at $20$ m/s the other
+      way. Find the impulse.</p>
+      <details><summary>Answer</summary><div class="ans">$\Delta p =
+      0.15(-20 - 30) = -7.5$ kg·m/s. The sign change is the whole point — this is
+      larger than for merely stopping the ball.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Sticking carts</div>
+      <p>A $1$ kg cart at $4$ m/s hits a stationary $3$ kg cart and sticks. Find
+      the final speed.</p>
+      <details><summary>Answer</summary><div class="ans">$v = 4/4 = 1$
+      m/s.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Energy lost</div>
+      <p>How much kinetic energy did that collision lose?</p>
+      <details><summary>Answer</summary><div class="ans">Before
+      $\tfrac12(1)(16) = 8$ J, after $\tfrac12(4)(1) = 2$ J. Six joules
+      lost.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Recoil</div>
+      <p>A $5$ kg rifle fires a $0.01$ kg bullet at $600$ m/s. Find the recoil
+      speed.</p>
+      <details><summary>Answer</summary><div class="ans">$v = -(0.01)(600)/5 =
+      -1.2$ m/s.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Which is conserved</div>
+      <p>Two lumps of clay collide and stick. Which quantities are
+      conserved?</p>
+      <details><summary>Answer</summary><div class="ans">Momentum, yes. Kinetic
+      energy, no — this is perfectly inelastic and loses the maximum possible.
+      Total energy is conserved, with the difference appearing as
+      heat.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Ballistic pendulum</div>
+      <p>A $0.02$ kg bullet embeds in a $2$ kg block hanging on a string, which
+      then swings up $0.1$ m. Find the bullet's speed.</p>
+      <details><summary>Solution</summary><div class="ans">Two stages, and they
+      need different laws. The swing is energy:
+      $v_{\text{after}} = \sqrt{2(9.8)(0.1)} = 1.4$ m/s. The embedding is
+      momentum: $0.02v = (2.02)(1.4)$, so $v = 141$ m/s. Using energy for the
+      collision would be wrong, since energy is lost
+      there.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Two dimensions</div>
+      <p>Why must you resolve into components?</p>
+      <details><summary>Answer</summary><div class="ans">Because momentum is a
+      vector and is conserved independently along each axis. Adding magnitudes
+      would lose the directional information the problem
+      depends on.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Explosion</div>
+      <p>A stationary $6$ kg object explodes into a $2$ kg piece at $9$ m/s and
+      a $4$ kg piece. Find the second piece's velocity.</p>
+      <details><summary>Solution</summary><div class="ans">Total momentum stays
+      zero: $0 = (2)(9) + 4v$, so $v = -4.5$ m/s, opposite. Kinetic energy
+      <em>increased</em> from zero — supplied by the explosive — which shows
+      energy need not be conserved even when momentum
+      is.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Momentum and impulse.</strong> Definitions and the
+    impulse-momentum theorem.</li>
+    <li><strong>Conservation.</strong> The condition for it, and why internal
+    forces cannot break it.</li>
+    <li><strong>Collision types.</strong> Elastic, inelastic, perfectly
+    inelastic, and what each conserves.</li>
+    <li><strong>Two dimensions.</strong> Independent conservation along each
+    axis.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "momentum" among the core topics. Check the syllabus
+    on Quercus for assigned problems; the ballistic pendulum, needing both
+    conservation laws in sequence, is a standard exam
+    question.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Impulse changes momentum; with no external force, total momentum holds.
+    Energy may or may not. Problems combining a collision with a swing or slide
+    need momentum for the collision and energy for the
+    rest.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every collision problem, write down which quantities are conserved before
+    solving. Half the marks are lost by applying energy conservation to an
+    inelastic collision.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Always conserved</div>
+      <p>Which quantity is conserved in every collision?</p>
+      <details><summary>Guide</summary><div class="ans">Momentum, provided the
+      net external force is negligible. Kinetic energy only in elastic
+      collisions.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Reducing force</div>
+      <p>How does extending collision time help?</p>
+      <details><summary>Guide</summary><div class="ans">The impulse is fixed by
+      the momentum change, so a longer time means a smaller average
+      force.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Maximum loss</div>
+      <p>Which collision loses the most kinetic energy?</p>
+      <details><summary>Guide</summary><div class="ans">Perfectly inelastic,
+      where the bodies stick. Momentum conservation sets a floor below which the
+      kinetic energy cannot fall.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Internal forces</div>
+      <p>Why can internal forces not change total momentum?</p>
+      <details><summary>Guide</summary><div class="ans">By the third law they
+      occur in equal and opposite pairs, so they cancel when summed over the
+      whole system.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit06.html">← Unit 06<span>Work, energy &amp; power</span></a>
+  <a href="unit08.html">Unit 08 →<span>Rotation &amp; angular momentum</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

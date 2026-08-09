@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 3 — Motion in Two Dimensions · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 3</div>
+<div class="unit-no reveal">Unit 3 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Motion in Two Dimensions</h1>
+<p class="ch-intro reveal">One idea carries the whole unit: horizontal and
+vertical motion are independent. A projectile falls exactly as though it had
+been dropped, while moving sideways exactly as though gravity were absent. Two
+one-dimensional problems, sharing only a clock.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Split a two-dimensional problem into independent axes.</li>
+    <li>Solve for range, maximum height and flight time.</li>
+    <li>Explain why $45$ degrees maximises range on level ground.</li>
+    <li>Convert between reference frames moving at constant velocity.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Independence of components is what makes vectors worth the trouble. Once
+    you accept that the axes do not talk to each other, every two-dimensional
+    problem reduces to Unit 2 done twice.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Ballistics tables, basketball arcs, water fountain design. Relative
+    motion is why an aircraft must aim upwind of its destination, and why the
+    ground speed shown to passengers differs from the airspeed the pilot
+    flies.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Galileo argued for independence with a thought experiment: a ball dropped
+    from a ship's mast lands at the mast's foot, not behind it, because it keeps
+    the ship's horizontal motion. The same reasoning answered why we do not feel
+    the Earth moving.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Independence of components</h3>
+  <div class="box thm"><div class="bl">Rule <b>The axes do not interact</b></div>
+    <p>For projectile motion with air resistance neglected:</p>
+    <div class="step"><em>Horizontal:</em> $a_x = 0$, so
+    $x = v_{0x} t$ &mdash; constant velocity.</div>
+    <div class="step"><em>Vertical:</em> $a_y = -g$, so all four
+    constant-acceleration equations from Unit 2 apply unchanged.</div>
+    <div class="step">The only thing shared is $t$. Solve one axis for time,
+    substitute into the other.</div></div>
+  <div class="box eg"><div class="bl">Example <b>The classic demonstration</b></div>
+    <p>One ball is dropped from a table; another is launched horizontally from
+    the same height at the same instant.</p>
+    <div class="step">Both have $v_{0y} = 0$ and $a_y = -g$, so both satisfy the
+    same vertical equation. They land at the same
+    <em>time</em>.</div>
+    <div class="step">The launched ball also travels sideways, so it lands
+    further away &mdash; but not later. Horizontal motion cannot affect vertical
+    fall.</div>
+  </div>
+  <div class="box warn"><div class="bl">Initial speed is not initial vertical speed</div>
+    <p>Launching at speed $v_0$ and angle $\theta$ means
+    $v_{0x} = v_0\cos\theta$ and $v_{0y} = v_0\sin\theta$. Feeding $v_0$ into a
+    vertical equation is the most frequent error in this unit. Resolve
+    first.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Projectile motion</h3>
+  <div class="box thm"><div class="bl">Rule <b>The standard results</b></div>
+    <p>Launched from ground level at speed $v_0$, angle $\theta$, landing at the
+    same height:</p>
+    <div class="step">Time of flight
+    $t = \dfrac{2v_0\sin\theta}{g}$</div>
+    <div class="step">Maximum height
+    $H = \dfrac{v_0^2\sin^2\theta}{2g}$</div>
+    <div class="step">Range
+    $R = \dfrac{v_0^2\sin 2\theta}{g}$</div>
+    <p>Derive rather than memorise: set $y = 0$ to find the flight time, set
+    $v_y = 0$ to find the peak, and substitute the flight time into the
+    horizontal equation for range.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why 45 degrees</b></div>
+    <div class="step">Range depends on $\sin 2\theta$, which is largest when
+    $2\theta = 90$ degrees, so $\theta = 45$.</div>
+    <div class="step">Because $\sin 2\theta$ is symmetric about that peak,
+    $30$ and $60$ degrees give the <em>same</em> range &mdash; one high and slow,
+    one flat and fast.</div>
+    <div class="step">This holds only for level ground with no air resistance.
+    Real projectiles peak nearer $35$ degrees, and throwing off a cliff shifts
+    the optimum lower still.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Off a cliff</b></div>
+    <p>A ball leaves a $45$ m cliff horizontally at $15$ m/s. Where does it
+    land?</p>
+    <div class="step">Vertical: $-45 = 0 - \tfrac12(9.8)t^2$, so
+    $t^2 = 9.18$ and $t = 3.03$ s.</div>
+    <div class="step">Horizontal: $x = 15 \times 3.03 = 45$ m from the base of
+    the cliff.</div>
+    <div class="step">Landing speed: $v_x = 15$ throughout, and
+    $v_y = -9.8 \times 3.03 = -29.7$ m/s, so
+    $|v| = \sqrt{15^2 + 29.7^2} = 33$ m/s. Combine components, never add
+    speeds.</div>
+  </div>
+  <div class="box warn"><div class="bl">The range formula has conditions</div>
+    <p>$R = v_0^2\sin 2\theta / g$ assumes launch and landing at the
+    <em>same height</em>. Off a cliff or into a basket it is wrong. When in
+    doubt, go back to the two axes and solve from scratch &mdash; it is four
+    lines.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Relative motion</h3>
+  <div class="box thm"><div class="bl">Rule <b>Velocities add as vectors</b></div>
+    <p>The velocity of A relative to C is the velocity of A relative to B plus
+    the velocity of B relative to C. Written with subscripts,
+    $\vec{v}_{AC} = \vec{v}_{AB} + \vec{v}_{BC}$ &mdash; the inner subscripts
+    match and cancel.</p>
+    <p>Also $\vec{v}_{BA} = -\vec{v}_{AB}$: reversing the frame reverses the
+    velocity.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Crossing a river</b></div>
+    <p>A boat moves at $4$ m/s relative to water; the current is $3$ m/s
+    downstream. The river is $100$ m wide.</p>
+    <div class="step"><em>Aimed straight across:</em> the crossing takes
+    $100/4 = 25$ s, and the current carries it $3 \times 25 = 75$ m downstream.
+    The current cannot affect crossing time, because it has no component across
+    the river.</div>
+    <div class="step"><em>To land directly opposite:</em> aim upstream so the
+    across-component is $\sqrt{16 - 9} = 2.65$ m/s. Crossing now takes
+    $100/2.65 = 37.8$ s &mdash; slower, because part of the boat's speed is
+    spent fighting the current.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Aircraft in wind</b></div>
+    <p>A plane flies at $200$ km/h relative to air; a $50$ km/h wind blows from
+    the west. To travel due north, which way should it point?</p>
+    <div class="step">The westerly wind pushes east, so the plane must aim west
+    of north by $\arcsin(50/200) = 14.5$ degrees.</div>
+    <div class="step">Ground speed is then
+    $\sqrt{200^2 - 50^2} = 194$ km/h &mdash; less than the airspeed. Any
+    crosswind costs you speed.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Using $v_0$ where $v_0\sin\theta$ belongs. Resolve before
+  substituting.<br>
+  &bull; Applying the range formula when launch and landing heights
+  differ.<br>
+  &bull; Thinking a projectile's horizontal velocity changes. Without air
+  resistance it is constant for the entire flight.<br>
+  &bull; Adding speeds instead of components when finding landing
+  speed.<br>
+  &bull; Getting relative-velocity subscripts backwards. Check that the inner
+  ones match.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Same time</div>
+      <p>A bullet is fired horizontally as another is dropped from the same
+      height. Which lands first?</p>
+      <details><summary>Answer</summary><div class="ans">Neither — they land
+      together. Vertical motion is unaffected by horizontal
+      velocity.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Components</div>
+      <p>A ball is launched at $20$ m/s, $30$ degrees. Find $v_{0x}$ and
+      $v_{0y}$.</p>
+      <details><summary>Answer</summary><div class="ans">$v_{0x} = 20\cos 30 =
+      17.3$ m/s, $v_{0y} = 20\sin 30 = 10$ m/s.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Flight time</div>
+      <p>For that ball on level ground, how long is it in the air?</p>
+      <details><summary>Answer</summary><div class="ans">$t = 2(10)/9.8 = 2.04$
+      s. Only the vertical component matters.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Equal ranges</div>
+      <p>Which other angle gives the same range as $25$ degrees?</p>
+      <details><summary>Answer</summary><div class="ans">$65$ degrees, since
+      $\sin 2\theta$ is symmetric about $45$. The pair always sums to
+      $90$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Off a table</div>
+      <p>A ball rolls off a $1.2$ m table at $3$ m/s. How far from the table
+      does it land?</p>
+      <details><summary>Solution</summary><div class="ans">Fall time from
+      $1.2 = \tfrac12(9.8)t^2$ is $t = 0.495$ s; horizontal distance
+      $3 \times 0.495 = 1.5$ m.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Landing speed</div>
+      <p>For that ball, what speed does it land at?</p>
+      <details><summary>Solution</summary><div class="ans">$v_x = 3$,
+      $v_y = 9.8 \times 0.495 = 4.85$ m/s, so
+      $|v| = \sqrt{9 + 23.5} = 5.7$ m/s. Faster than it left the table, because
+      it gained vertical speed.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · River crossing</div>
+      <p>Does a current change how long it takes to cross a river when aiming
+      straight across?</p>
+      <details><summary>Answer</summary><div class="ans">No. The current is
+      parallel to the bank and has no across-river component, so it only changes
+      where you land.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Into a window</div>
+      <p>A ball thrown at $25$ m/s and $50$ degrees must pass through a window
+      $12$ m up. Show it can, and find when.</p>
+      <details><summary>Solution</summary><div class="ans">$v_{0y} = 19.2$ m/s.
+      Solve $12 = 19.2t - 4.9t^2$: the quadratic gives $t = 0.83$ s and
+      $t = 3.09$ s — once rising, once falling. Two real roots confirm the ball
+      does reach that height; a negative discriminant would have meant it never
+      gets there.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Independence.</strong> Horizontal and vertical motion share only
+    the clock.</li>
+    <li><strong>Projectiles.</strong> Flight time, peak height, range, and the
+    conditions under which the range formula holds.</li>
+    <li><strong>Optimal angle.</strong> Why $45$ degrees, and why complementary
+    angles tie.</li>
+    <li><strong>Relative motion.</strong> Vector addition of velocities and the
+    subscript convention.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>This completes the calendar's "classical kinematics". Check the syllabus
+    on Quercus for assigned problems; projectile questions appear on essentially
+    every term test.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Resolve into components, apply Unit 2 to each axis separately, link them
+    through time, recombine at the end. That sequence solves every problem in
+    this unit and most of Unit 4.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Draw two columns, one per axis, and fill in what you know in each. The shared
+    time is the bridge, and seeing the columns side by side makes obvious which
+    axis to solve first.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Horizontal velocity</div>
+      <p>How does a projectile's horizontal velocity change during flight?</p>
+      <details><summary>Guide</summary><div class="ans">It does not, with air
+      resistance neglected. There is no horizontal force, so
+      $a_x = 0$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Range conditions</div>
+      <p>When does $R = v_0^2\sin 2\theta / g$ apply?</p>
+      <details><summary>Guide</summary><div class="ans">Only when launch and
+      landing are at the same height, with no air resistance.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Complementary angles</div>
+      <p>Why do $30$ and $60$ degrees give equal ranges?</p>
+      <details><summary>Guide</summary><div class="ans">Because
+      $\sin 2\theta$ takes the same value at both — $\sin 60$ equals
+      $\sin 120$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Frame subscripts</div>
+      <p>What is $\vec{v}_{AB}$ in terms of $\vec{v}_{BA}$?</p>
+      <details><summary>Guide</summary><div class="ans">Its negative. Swapping
+      which object is the reference reverses the relative
+      velocity.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit02.html">← Unit 02<span>Kinematics in one dimension</span></a>
+  <a href="unit04.html">Unit 04 →<span>Newton's laws</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
