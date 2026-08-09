@@ -38,7 +38,7 @@
         course("MAT247H1", "Algebra II", 0.5),
         course("CSC148H1", "Introduction to Computer Science", 0.5),
         course("PHY132H1", "Introduction to Physics II", 0.5),
-        course("ENG140Y1", "Literary Traditions", 1, true)
+        course("ENG140Y1", "Literature for our Time", 1, true)
       ])
     ])
   });

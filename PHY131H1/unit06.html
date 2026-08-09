@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 6 — Work, Energy &amp; Power · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 6</div>
+<div class="unit-no reveal">Unit 6 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Work, Energy &amp; Power</h1>
+<p class="ch-intro reveal">The first shortcut. Newton's laws work but need the
+force at every instant; energy methods need only the start and the end. Problems
+that would take a page of vector algebra collapse to one line of
+bookkeeping.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Compute work, including when force and displacement are not
+    aligned.</li>
+    <li>Apply the work-energy theorem.</li>
+    <li>Distinguish conservative from non-conservative forces.</li>
+    <li>Solve problems by conservation of mechanical energy.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Energy is a single number that survives complicated motion. A block
+    sliding down a curved track has a changing force and a changing direction,
+    both hopeless with Newton directly &mdash; but its speed at the bottom takes
+    one line.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every energy bill, engine rating and battery capacity is this unit.
+    Rollercoaster designers work almost entirely in energy, since the track
+    shape makes force analysis intractable.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Energy conservation was only accepted in the 1840s, after Joule showed
+    that mechanical work and heat are interchangeable. Before that, the energy
+    apparently lost to friction had no home, and the principle looked
+    false.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Work</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For a constant force $F$ acting through a displacement $d$ at angle
+    $\theta$ between them,</p>
+    <div class="step">$W = Fd\cos\theta$</div>
+    <p>measured in joules. Work is a <em>scalar</em> &mdash; it has a sign but no
+    direction.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Only the aligned component works</b></div>
+    <div class="step">$\theta = 0$: full work, $W = Fd$.</div>
+    <div class="step">$\theta = 90$ degrees: <em>no work at all</em>. A force
+    perpendicular to the motion does nothing.</div>
+    <div class="step">$\theta = 180$ degrees: negative work,
+    $W = -Fd$. Friction and braking do negative work.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Forces that do no work</b></div>
+    <div class="step">Carrying a box horizontally at constant speed: your upward
+    force is perpendicular to the motion, so the work is
+    <em>zero</em> &mdash; however tired you get. Your muscles consume energy
+    holding it, but that is physiology, not mechanics.</div>
+    <div class="step">The normal force on a sliding block: always perpendicular
+    to the surface, so it never does work.</div>
+    <div class="step">Centripetal force in uniform circular motion: perpendicular
+    to velocity, so no work is done and the speed cannot change. That is
+    consistent with the speed being constant.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Kinetic energy and the work-energy theorem</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Kinetic energy is $K = \tfrac12 mv^2$: a scalar, never negative, and
+    depending on speed only, not direction.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Work-energy theorem</b></div>
+    <p>The <em>net</em> work done on a body equals its change in kinetic
+    energy:</p>
+    <div class="step">$W_{\text{net}} = \Delta K = \tfrac12 mv_f^2 -
+    \tfrac12 mv_i^2$</div>
+    <p>This holds for any force, constant or not, along any path.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>From Newton, in one dimension</b></div>
+    <div class="step">$W = Fd = (ma)d$.</div>
+    <div class="step">From Unit 2, $v_f^2 = v_i^2 + 2ad$, so
+    $ad = \tfrac12(v_f^2 - v_i^2)$.</div>
+    <div class="step">Substituting, $W = \tfrac12 m(v_f^2 - v_i^2) = \Delta K$.
+    The theorem is Newton's second law with the time eliminated. &#8718;</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Braking, again</b></div>
+    <p>A $1200$ kg car at $25$ m/s brakes to rest in $40$ m. Find the braking
+    force.</p>
+    <div class="step">$\Delta K = 0 - \tfrac12(1200)(625) = -375{,}000$ J.</div>
+    <div class="step">$W = -Fd$, so $F = 375{,}000/40 = 9375$ N.</div>
+    <div class="step">Doubling the speed quadruples $K$ and so quadruples the
+    stopping distance &mdash; the same result as Unit 2, arrived at
+    differently.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Potential energy and conservation</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A force is <em>conservative</em> if the work it does depends only on the
+    endpoints, not the path taken &mdash; equivalently, if it does zero net work
+    around any closed loop. Gravity and spring forces are conservative; friction
+    and air resistance are not.</p>
+    <p>Only conservative forces get a potential energy:</p>
+    <div class="step">Gravitational: $U = mgh$, with $h$ measured from any
+    chosen reference.</div>
+    <div class="step">Spring: $U = \tfrac12 kx^2$, with $x$ the displacement
+    from the natural length.</div></div>
+  <div class="box thm"><div class="bl">Rule <b>Conservation of mechanical energy</b></div>
+    <p>If only conservative forces do work,</p>
+    <div class="step">$K_i + U_i = K_f + U_f$</div>
+    <p>With friction present, the shortfall is the work friction did:</p>
+    <div class="step">$K_i + U_i + W_{\text{friction}} = K_f + U_f$, where
+    $W_{\text{friction}}$ is negative.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Why the track shape does not matter</b></div>
+    <p>A block slides from rest down a frictionless track of height $h$, of any
+    shape.</p>
+    <div class="step">$mgh = \tfrac12 mv^2$, so $v = \sqrt{2gh}$.</div>
+    <div class="step">The mass cancels, and the shape never entered. A straight
+    ramp, a curve and a loop all give the same speed at the bottom, provided
+    friction is absent.</div>
+    <div class="step">Newton's laws would need the force at every point of the
+    curve. This is the argument for energy methods in one
+    example.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>With friction</b></div>
+    <p>The same block, now with $200$ J lost to friction, starting from
+    $mgh = 500$ J.</p>
+    <div class="step">$K_f = 500 - 200 = 300$ J, so the block arrives slower.
+    The missing $200$ J became heat in the track and the block.</div>
+    <div class="step">Total energy is still conserved &mdash; only
+    <em>mechanical</em> energy is not. That distinction is what took until the
+    1840s to establish.</div>
+  </div>
+  <div class="box warn"><div class="bl">Choose a reference height and keep it</div>
+    <p>$U = mgh$ has no absolute meaning; only differences matter. Pick $h = 0$
+    somewhere convenient, usually the lowest point, and use it consistently on
+    both sides of the equation.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Power</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Power is the rate of doing work: $P = W/t$, measured in watts. For a
+    force acting on a body moving at speed $v$ in the same direction,
+    $P = Fv$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Climbing stairs</b></div>
+    <p>A $70$ kg person climbs $3$ m in $5$ s.</p>
+    <div class="step">Work against gravity: $mgh = 70 \times 9.8 \times 3 =
+    2058$ J.</div>
+    <div class="step">Power: $2058/5 = 412$ W &mdash; about half a horsepower,
+    sustainable only briefly.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Cruising car</b></div>
+    <p>A car at $30$ m/s against $600$ N of drag needs
+    $P = Fv = 18{,}000$ W, about $24$ horsepower.</p>
+    <div class="step">Drag grows roughly as $v^2$, so power needed grows as
+    $v^3$. Going half again as fast needs more than three times the power, which
+    is why fuel economy collapses at high speed.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting $\cos\theta$ when force and displacement are not
+  aligned.<br>
+  &bull; Claiming work is done by a perpendicular force. It is
+  zero.<br>
+  &bull; Using conservation of mechanical energy when friction is
+  present.<br>
+  &bull; Changing the height reference partway through a problem.<br>
+  &bull; Treating kinetic energy as a vector. It is a scalar, and speeds do not
+  cancel the way velocities do.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Angled push</div>
+      <p>A $50$ N force at $60$ degrees to the horizontal drags a crate $10$ m
+      along the floor. Find the work.</p>
+      <details><summary>Answer</summary><div class="ans">$W = 50 \times 10 \times
+      \cos 60 = 250$ J.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Zero work</div>
+      <p>How much work does the normal force do on a sliding block?</p>
+      <details><summary>Answer</summary><div class="ans">Zero — it is
+      perpendicular to the motion throughout.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Speed at the bottom</div>
+      <p>A cart starts from rest at the top of a frictionless $8$ m hill. Find
+      its speed at the bottom.</p>
+      <details><summary>Answer</summary><div class="ans">$v = \sqrt{2(9.8)(8)} =
+      12.5$ m/s, whatever the shape of the hill.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Spring</div>
+      <p>A spring with $k = 400$ N/m is compressed $0.1$ m. How much energy is
+      stored?</p>
+      <details><summary>Answer</summary><div class="ans">$\tfrac12(400)(0.01) =
+      2$ J.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Launch from a spring</div>
+      <p>That spring launches a $0.2$ kg ball horizontally. Find its
+      speed.</p>
+      <details><summary>Solution</summary><div class="ans">All $2$ J becomes
+      kinetic: $\tfrac12(0.2)v^2 = 2$, so $v = 4.5$ m/s. Spring potential
+      converting to kinetic is the whole calculation.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · With friction</div>
+      <p>A $2$ kg block slides $5$ m down a $30$-degree incline with
+      $\mu_k = 0.25$. Find its speed at the bottom, from rest.</p>
+      <details><summary>Solution</summary><div class="ans">Height dropped is
+      $5\sin 30 = 2.5$ m, so $U$ released is $2(9.8)(2.5) = 49$ J. Friction is
+      $0.25 \times 2 \times 9.8 \times \cos 30 = 4.24$ N over $5$ m, taking
+      $21.2$ J. So $K = 27.8$ J and
+      $v = \sqrt{2(27.8)/2} = 5.3$ m/s.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Power to climb</div>
+      <p>A $1000$ kg lift rises $20$ m in $10$ s at constant speed. Find the
+      power.</p>
+      <details><summary>Answer</summary><div class="ans">$W = mgh = 196{,}000$ J,
+      so $P = 19{,}600$ W. Constant speed means no change in kinetic energy, so
+      all the work goes into potential.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Which method</div>
+      <p>Why solve a curved-track problem with energy rather than Newton?</p>
+      <details><summary>Answer</summary><div class="ans">Because the direction
+      and magnitude of the net force change continuously along the curve, so
+      Newton would need integration. Energy depends only on the endpoints, so
+      the path drops out entirely.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Work.</strong> $Fd\cos\theta$, its sign, and the perpendicular
+    case.</li>
+    <li><strong>Work-energy theorem.</strong> Net work equals change in kinetic
+    energy.</li>
+    <li><strong>Conservative forces.</strong> Path independence and the
+    potential energies that follow.</li>
+    <li><strong>Conservation.</strong> Mechanical energy with and without
+    friction, and power as a rate.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "energy, work, power" here. Check the syllabus on
+    Quercus for assigned problems; energy methods reappear throughout the rest
+    of the course.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Work transfers energy; net work changes kinetic energy; conservative
+    forces store it as potential. Conservation then relates any two moments
+    without touching what happened in between.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    When a problem mentions speeds and heights but not time, reach for energy.
+    When it mentions forces and time, reach for Newton or impulse. That single
+    triage saves more time than any algebra.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Perpendicular force</div>
+      <p>How much work does a force at $90$ degrees to the motion do?</p>
+      <details><summary>Guide</summary><div class="ans">None. $\cos 90 = 0$, so
+      the work is zero regardless of the force's size.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Conservative test</div>
+      <p>What makes a force conservative?</p>
+      <details><summary>Guide</summary><div class="ans">Its work depends only on
+      the endpoints, so it does zero work around any closed
+      path.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Missing energy</div>
+      <p>Where does energy go when friction acts?</p>
+      <details><summary>Guide</summary><div class="ans">Into heat. Total energy
+      is conserved; mechanical energy is not.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Reference height</div>
+      <p>Does the choice of $h = 0$ affect the answer?</p>
+      <details><summary>Guide</summary><div class="ans">No, provided it is used
+      consistently. Only differences in $U$ appear in the final
+      result.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit05.html">← Unit 05<span>Friction &amp; circular motion</span></a>
+  <a href="unit07.html">Unit 07 →<span>Momentum &amp; collisions</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

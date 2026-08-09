@@ -94,6 +94,7 @@ const mathSymbols = {
   parallel: ["mo", "∥"],
   perp: ["mo", "⟂"],
   pm: ["mo", "±"],
+  mp: ["mo", "∓"],
   propto: ["mo", "∝"],
   rangle: ["mo", "⟩"],
   rceil: ["mo", "⌉"],

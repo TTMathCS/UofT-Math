@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 8 — Rotation &amp; Angular Momentum · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 8</div>
+<div class="unit-no reveal">Unit 8 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Rotation &amp; Angular Momentum</h1>
+<p class="ch-intro reveal">Everything from Units 2 to 7, restated for spinning
+objects. Every linear quantity has a rotational twin, every linear equation a
+rotational copy. Learn the dictionary and the unit is mostly
+translation.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Translate between linear and rotational quantities.</li>
+    <li>Compute torque and use $\tau = I\alpha$.</li>
+    <li>Explain why moment of inertia depends on where the mass sits.</li>
+    <li>Apply angular momentum conservation to a spinning system.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A rigid body has parts moving at different speeds, so $F = ma$ cannot be
+    applied to it as a whole. Rotational quantities describe the object with a
+    single set of numbers, whatever its parts are
+    doing.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Flywheels store energy, gyroscopes hold direction, and a figure skater
+    pulling in her arms speeds up. Every engine, turbine and wheel is a
+    rotational dynamics problem.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Euler extended Newton's laws to rigid bodies in the 1750s, seventy years
+    after the <em>Principia</em>. Angular momentum conservation turns out to
+    follow from the fact that space has no preferred direction &mdash; a
+    connection Emmy Noether proved in 1918.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The dictionary</h3>
+  <div class="box thm"><div class="bl">Rule <b>Every linear quantity has a twin</b></div>
+    <div class="step">Position $x$ &rarr; angle $\theta$, in radians.</div>
+    <div class="step">Velocity $v$ &rarr; angular velocity $\omega$, with
+    $v = r\omega$.</div>
+    <div class="step">Acceleration $a$ &rarr; angular acceleration $\alpha$,
+    with $a = r\alpha$.</div>
+    <div class="step">Mass $m$ &rarr; moment of inertia $I$.</div>
+    <div class="step">Force $F$ &rarr; torque $\tau$.</div>
+    <div class="step">$F = ma$ &rarr; $\tau = I\alpha$.</div>
+    <div class="step">$p = mv$ &rarr; $L = I\omega$.</div>
+    <div class="step">$K = \tfrac12mv^2$ &rarr;
+    $K = \tfrac12I\omega^2$.</div>
+    <p>The constant-acceleration equations of Unit 2 carry over unchanged with
+    the substitutions above.</p></div>
+  <div class="box warn"><div class="bl">Radians are not optional</div>
+    <p>The relations $v = r\omega$ and $a = r\alpha$ hold only when angles are in
+    radians. Degrees give answers wrong by a factor of about $57$. Convert
+    first.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Torque</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Torque measures a force's ability to cause rotation:</p>
+    <div class="step">$\tau = rF\sin\theta$</div>
+    <p>where $r$ is the distance from the axis to the point of application and
+    $\theta$ the angle between $\vec{r}$ and $\vec{F}$. Equivalently
+    $\tau = r_\perp F$, using the perpendicular distance from the axis to the
+    force's line of action &mdash; the <em>lever arm</em>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why door handles are far from hinges</b></div>
+    <div class="step">Pushing at the handle, $0.8$ m from the hinge, with
+    $20$ N perpendicular gives $\tau = 16$ N·m.</div>
+    <div class="step">The same push $0.1$ m from the hinge gives
+    $\tau = 2$ N·m &mdash; eight times less.</div>
+    <div class="step">Pushing directly toward the hinge gives
+    $\sin\theta = 0$ and no torque at all, however hard you push. Direction
+    matters as much as distance.</div>
+  </div>
+  <div class="box thm"><div class="bl">Rule <b>Equilibrium needs both</b></div>
+    <p>A rigid body is in equilibrium when $\sum F = 0$ <em>and</em>
+    $\sum \tau = 0$. Balanced forces alone are not enough &mdash; two equal
+    opposite forces along different lines make a couple, which spins the object
+    while its centre stays put.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Moment of inertia</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For point masses, $I = \sum m_i r_i^2$. It plays the role of mass in
+    rotation, but unlike mass it depends on the <em>axis</em>: the same object
+    has different $I$ about different axes.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Standard shapes, all about the centre</b></div>
+    <div class="step">Hoop or thin ring: $I = mR^2$ &mdash; all the mass at the
+    full radius.</div>
+    <div class="step">Solid cylinder or disc:
+    $I = \tfrac12 mR^2$.</div>
+    <div class="step">Solid sphere: $I = \tfrac25 mR^2$.</div>
+    <div class="step">Rod about its centre: $I = \tfrac{1}{12}mL^2$; about one
+    end, $\tfrac13 mL^2$ &mdash; four times larger, because more mass sits far
+    from the axis.</div>
+    <p>The pattern: mass further from the axis contributes more, and it does so
+    as the square of the distance.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The rolling race</b></div>
+    <p>A hoop and a solid cylinder of equal mass and radius roll from rest down
+    the same incline. Which wins?</p>
+    <div class="step">Energy splits two ways:
+    $mgh = \tfrac12mv^2 + \tfrac12I\omega^2$, with
+    $\omega = v/R$ for rolling without slipping.</div>
+    <div class="step">Substituting $I = cmR^2$ gives
+    $v = \sqrt{\dfrac{2gh}{1+c}}$.</div>
+    <div class="step">Hoop has $c = 1$ and cylinder $c = \tfrac12$, so the
+    cylinder is faster. Neither mass nor radius appears &mdash; only the shape,
+    through $c$. A solid sphere, with $c = \tfrac25$, beats
+    both.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Angular momentum</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$L = I\omega$ for a rigid body, and $L = mvr\sin\theta$ for a point mass
+    about a chosen axis. It is a vector, along the rotation axis.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Conservation</b></div>
+    <p>When the net external <em>torque</em> is zero, total angular momentum is
+    conserved:</p>
+    <div class="step">$I_i\omega_i = I_f\omega_f$</div>
+    <p>Note this is a separate condition from linear momentum conservation. A
+    system can conserve one and not the other.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The spinning skater</b></div>
+    <p>A skater spinning with arms out at $2$ rev/s pulls them in, halving her
+    moment of inertia.</p>
+    <div class="step">$L$ is conserved, so halving $I$ doubles $\omega$: she
+    spins at $4$ rev/s.</div>
+    <div class="step">Kinetic energy is $\tfrac12I\omega^2$, which
+    <em>doubles</em>. That energy came from her muscles doing work pulling her
+    arms inward against the outward tendency &mdash; energy is not conserved
+    here, and it should not be expected to be.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Why a neutron star spins fast</b></div>
+    <p>A star of radius $700{,}000$ km collapses to $10$ km, keeping its
+    mass.</p>
+    <div class="step">$I \propto R^2$, so $I$ falls by a factor of about
+    $5 \times 10^9$.</div>
+    <div class="step">$\omega$ rises by the same factor. A star rotating once a
+    month ends up spinning many times a second &mdash; which is exactly what
+    pulsars do.</div>
+  </div>
+  <div class="box warn"><div class="bl">Zero net force does not mean zero net torque</div>
+    <p>Two equal opposite forces applied at different points sum to zero force
+    but a nonzero torque, and the object spins up while its centre of mass stays
+    at rest. Check both conditions separately.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Using degrees in $v = r\omega$.<br>
+  &bull; Quoting a moment of inertia without saying about which
+  axis.<br>
+  &bull; Forgetting rotational kinetic energy when a body rolls. It is
+  <em>both</em> translating and spinning.<br>
+  &bull; Expecting kinetic energy to be conserved when angular momentum
+  is.<br>
+  &bull; Assuming a force through the axis produces torque. Its lever arm is
+  zero.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Torque</div>
+      <p>A $30$ N force acts $0.4$ m from an axis, at $60$ degrees to the
+      radius. Find the torque.</p>
+      <details><summary>Answer</summary><div class="ans">$\tau = (0.4)(30)\sin 60
+      = 10.4$ N·m.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Zero torque</div>
+      <p>When does a force produce no torque?</p>
+      <details><summary>Answer</summary><div class="ans">When its line of action
+      passes through the axis, so the lever arm is zero — equivalently when
+      $\sin\theta = 0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Rolling race</div>
+      <p>A hoop, a disc and a sphere roll down an incline. Order them by arrival
+      time.</p>
+      <details><summary>Answer</summary><div class="ans">Sphere first
+      ($c = 0.4$), then disc ($0.5$), then hoop ($1$). Smaller $c$ means less
+      energy diverted into spinning.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Skater</div>
+      <p>A skater at $3$ rev/s reduces $I$ to a third. Find the new rate.</p>
+      <details><summary>Answer</summary><div class="ans">$9$ rev/s, since
+      $I\omega$ is fixed.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Rod on an axis</div>
+      <p>A uniform $2$ kg, $1$ m rod pivots at one end and is released
+      horizontally. Find its initial angular acceleration.</p>
+      <details><summary>Solution</summary><div class="ans">Torque from weight
+      acting at the centre: $\tau = mg(L/2) = 9.8$ N·m. With
+      $I = \tfrac13mL^2 = 0.667$ kg·m$^2$,
+      $\alpha = 9.8/0.667 = 14.7$ rad/s$^2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Rolling energy</div>
+      <p>What fraction of a rolling disc's kinetic energy is rotational?</p>
+      <details><summary>Solution</summary><div class="ans">Translational
+      $\tfrac12mv^2$; rotational
+      $\tfrac12(\tfrac12mR^2)(v/R)^2 = \tfrac14mv^2$. So rotational is a third of
+      the total.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Both conditions</div>
+      <p>Give a situation with zero net force but nonzero net torque.</p>
+      <details><summary>Answer</summary><div class="ans">Two equal opposite
+      forces applied at opposite ends of a rod — a couple. The centre of mass
+      stays still while the rod spins up.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Merry-go-round</div>
+      <p>A $40$ kg child runs at $3$ m/s tangentially and jumps onto the rim of
+      a stationary $200$ kg, $2$ m radius merry-go-round
+      ($I = \tfrac12MR^2$). Find the final angular speed.</p>
+      <details><summary>Solution</summary><div class="ans">Child's angular
+      momentum: $mvr = 40 \times 3 \times 2 = 240$ kg·m$^2$/s. Final moment of
+      inertia: $\tfrac12(200)(4) + (40)(4) = 560$ kg·m$^2$. So
+      $\omega = 240/560 = 0.43$ rad/s. This is a perfectly inelastic collision in
+      rotational form.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The dictionary.</strong> Linear to rotational correspondences
+    and the relations $v = r\omega$, $a = r\alpha$.</li>
+    <li><strong>Torque.</strong> Lever arm, the angle dependence, and rotational
+    equilibrium.</li>
+    <li><strong>Moment of inertia.</strong> Axis dependence and the standard
+    shapes.</li>
+    <li><strong>Angular momentum.</strong> Conservation when net torque is zero,
+    and why energy need not be conserved with it.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "angular momentum" explicitly. Check the syllabus on
+    Quercus for assigned problems; the rolling-body comparison is a standard
+    exam question.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Rotation reuses every earlier idea with new symbols. Torque drives
+    angular acceleration; moment of inertia resists it; angular momentum is
+    conserved when torque vanishes. The one genuinely new idea is that inertia
+    now depends on geometry, not just on how much mass there
+    is.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Write the linear equation first, then translate symbol by symbol. Almost
+    every rotational formula can be reconstructed that way rather than
+    memorised.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Axis dependence</div>
+      <p>Why does moment of inertia depend on the axis?</p>
+      <details><summary>Guide</summary><div class="ans">Because each mass
+      element contributes $mr^2$, and $r$ is measured from the axis. Move the
+      axis and every distance changes.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Rolling</div>
+      <p>Why does a hoop lose a rolling race?</p>
+      <details><summary>Guide</summary><div class="ans">Its mass is all at the
+      rim, giving the largest moment of inertia, so more of the released
+      potential energy goes into spinning rather than
+      moving.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Conservation condition</div>
+      <p>What must vanish for angular momentum to be conserved?</p>
+      <details><summary>Guide</summary><div class="ans">The net external
+      torque — not the net force. They are separate
+      conditions.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Energy in a spin-up</div>
+      <p>Why does a skater's kinetic energy rise when she pulls in her arms?</p>
+      <details><summary>Guide</summary><div class="ans">She does work pulling
+      them inward. Angular momentum is conserved; energy is supplied by her
+      muscles, so it is not.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit07.html">← Unit 07<span>Momentum &amp; collisions</span></a>
+  <a href="unit09.html">Unit 09 →<span>Oscillations</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

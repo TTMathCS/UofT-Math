@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 2 — Kinematics in One Dimension · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 2</div>
+<div class="unit-no reveal">Unit 2 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Kinematics in One Dimension</h1>
+<p class="ch-intro reveal">Describing motion without asking what causes it.
+Three quantities &mdash; position, velocity, acceleration &mdash; each the rate
+of change of the one before, and four equations that solve every
+constant-acceleration problem you will meet this term.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Distinguish distance from displacement and speed from velocity.</li>
+    <li>Read position, velocity and acceleration off each other's graphs.</li>
+    <li>Choose the right constant-acceleration equation for a problem.</li>
+    <li>Handle free fall, including the moment at the top of a throw.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Before you can explain motion you need a precise language for it.
+    Galileo's insight was that this description is separable from the causes:
+    the equations here hold whatever produces the acceleration.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Stopping distance on a highway is a constant-acceleration problem, and
+    the quadratic dependence on speed is why doubling your speed quadruples the
+    distance. Airbag timing, elevator comfort limits and sprint analysis are all
+    the same three quantities.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Galileo could not measure short times accurately, so he rolled balls down
+    inclines to slow the motion and timed them by weighing water. He established
+    that distance grows as the square of time without ever being able to time a
+    falling object directly.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The three quantities</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><em>Displacement</em> $\Delta x = x_f - x_i$ is the change
+    in position &mdash; a vector, so it carries a sign. <em>Distance</em> is the
+    total path length travelled and is never negative.</div>
+    <div class="step"><em>Average velocity</em> is $\Delta x / \Delta t$;
+    <em>instantaneous velocity</em> $v$ is its limit as $\Delta t \to 0$, the
+    slope of the position graph.</div>
+    <div class="step"><em>Acceleration</em> $a$ is the rate of change of
+    velocity, the slope of the velocity graph.</div></div>
+  <div class="box warn"><div class="bl">Distance and displacement differ</div>
+    <p>Walk $10$ m east then $10$ m west: distance $20$ m, displacement zero.
+    Average speed is distance over time and stays positive; average velocity is
+    displacement over time and here is zero. Exam questions exploit this
+    difference constantly.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Sign conventions</b></div>
+    <p>Choose a positive direction at the start and hold it. A negative velocity
+    means moving the other way; a negative acceleration does <em>not</em> mean
+    slowing down.</p>
+    <div class="step">Speeding up: $v$ and $a$ have the <em>same</em> sign.</div>
+    <div class="step">Slowing down: $v$ and $a$ have <em>opposite</em>
+    signs.</div>
+    <p>A ball thrown up has $a = -g$ throughout, but it speeds up only on the way
+    down.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Graphs</h3>
+  <div class="box thm"><div class="bl">Rule <b>Slopes go down, areas go up</b></div>
+    <div class="step">The slope of a position-time graph is velocity. The slope
+    of a velocity-time graph is acceleration.</div>
+    <div class="step">The area under a velocity-time graph is displacement. The
+    area under an acceleration-time graph is change in velocity.</div>
+    <p>Areas below the axis count as negative, which is exactly how a graph
+    encodes a return trip.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Reading a graph</b></div>
+    <p>A velocity-time graph rises linearly from $0$ to $20$ m/s over $4$ s,
+    then stays flat for $6$ s.</p>
+    <div class="step">Acceleration in the first phase is the slope,
+    $20/4 = 5$ m/s$^2$; in the second it is zero.</div>
+    <div class="step">Displacement in the first phase is the triangle,
+    $\tfrac12 (4)(20) = 40$ m; in the second the rectangle,
+    $(6)(20) = 120$ m. Total $160$ m.</div>
+    <div class="step">Note the position graph would be a parabola then a
+    straight line &mdash; curved where $a \ne 0$, straight where it is
+    zero.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>The constant-acceleration equations</h3>
+  <div class="box thm"><div class="bl">Rule <b>Four equations, five quantities</b></div>
+    <p>When $a$ is constant, with $v_0$ the initial velocity:</p>
+    <div class="step">$v = v_0 + at$ &mdash; no $\Delta x$</div>
+    <div class="step">$\Delta x = v_0 t + \tfrac12 a t^2$ &mdash; no $v$</div>
+    <div class="step">$v^2 = v_0^2 + 2a\Delta x$ &mdash; no $t$</div>
+    <div class="step">$\Delta x = \tfrac12 (v_0 + v) t$ &mdash; no $a$</div>
+    <p>Each omits exactly one of the five quantities
+    $\{v_0, v, a, t, \Delta x\}$. List what you know, note what you want, and
+    pick the equation missing the one you neither know nor
+    want.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Choosing well</b></div>
+    <p>A car at $30$ m/s brakes at $6$ m/s$^2$. How far to stop?</p>
+    <div class="step">Known: $v_0 = 30$, $v = 0$, $a = -6$. Wanted:
+    $\Delta x$. Not known and not wanted: $t$.</div>
+    <div class="step">So use the equation without $t$:
+    $0 = 30^2 + 2(-6)\Delta x$, giving
+    $\Delta x = 900/12 = 75$ m.</div>
+    <div class="step">Finding $t$ first would have worked but taken two steps.
+    Choosing the right equation is the whole skill.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Why stopping distance is quadratic</b></div>
+    <p>From $v^2 = v_0^2 + 2a\Delta x$ with $v = 0$, the stopping distance is
+    $\Delta x = v_0^2 / (2|a|)$.</p>
+    <div class="step">The dependence is on $v_0$ <em>squared</em>. Doubling
+    from $50$ to $100$ km/h quadruples the distance, not doubles
+    it.</div>
+    <div class="step">This is the single most useful result in the unit outside
+    an exam hall.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Free fall</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Neglecting air resistance, every object near Earth's surface accelerates
+    downward at $g = 9.8$ m/s$^2$ regardless of mass. With upward positive,
+    $a = -g$ throughout the motion &mdash; rising, at the top, and
+    falling.</p></div>
+  <div class="box warn"><div class="bl">At the top, $v = 0$ but $a \ne 0$</div>
+    <p>The most common misconception in the unit. At the peak of a throw the
+    velocity is momentarily zero, but the acceleration is still $-g$. If it were
+    zero the object would hang there permanently.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A throw, all the way up and back</b></div>
+    <p>A ball is thrown up at $20$ m/s. Find the peak height and the total
+    flight time.</p>
+    <div class="step">At the peak $v = 0$, so
+    $0 = 20^2 + 2(-9.8)h$ gives $h = 400/19.6 = 20.4$ m.</div>
+    <div class="step">Time to the peak: $0 = 20 - 9.8t$ gives
+    $t = 2.04$ s. By symmetry the fall takes the same, so the total is
+    $4.1$ s.</div>
+    <div class="step">It returns at $-20$ m/s: same speed, opposite direction.
+    That symmetry only holds without air resistance.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Believing negative acceleration always means slowing down. Compare
+  the signs of $v$ and $a$.<br>
+  &bull; Setting $a = 0$ at the top of a throw.<br>
+  &bull; Using the constant-acceleration equations when $a$ is not constant.
+  They are worthless then.<br>
+  &bull; Confusing distance with displacement in an average.<br>
+  &bull; Losing the sign of $g$ by switching conventions mid-problem.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Distance vs displacement</div>
+      <p>A runner does one lap of a $400$ m track in $60$ s. Find average speed
+      and average velocity.</p>
+      <details><summary>Answer</summary><div class="ans">Speed
+      $400/60 = 6.7$ m/s. Velocity zero, since the displacement is zero for a
+      complete lap.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Pick the equation</div>
+      <p>A car accelerates from rest at $3$ m/s$^2$ for $5$ s. How far does it
+      travel?</p>
+      <details><summary>Answer</summary><div class="ans">No $v$ needed, so use
+      $\Delta x = v_0t + \tfrac12at^2 = 0 + \tfrac12(3)(25) = 37.5$
+      m.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Stopping distance</div>
+      <p>By what factor does stopping distance change when speed triples?</p>
+      <details><summary>Answer</summary><div class="ans">Nine times, since
+      distance goes as $v_0^2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Top of the throw</div>
+      <p>What are $v$ and $a$ at the highest point of a vertical throw?</p>
+      <details><summary>Answer</summary><div class="ans">$v = 0$ and
+      $a = -9.8$ m/s$^2$. The acceleration never changes during free
+      fall.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Graph reading</div>
+      <p>A position-time graph is a downward parabola. Describe the motion.</p>
+      <details><summary>Answer</summary><div class="ans">Velocity starts
+      positive, decreases steadily through zero, then goes negative:
+      constant negative acceleration. It is a throw straight
+      up.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Two-phase motion</div>
+      <p>A train accelerates from rest at $1$ m/s$^2$ for $20$ s, then brakes to
+      rest at $2$ m/s$^2$. Total distance?</p>
+      <details><summary>Solution</summary><div class="ans">Phase one reaches
+      $20$ m/s over $\tfrac12(1)(400) = 200$ m. Phase two needs
+      $20^2/(2 \times 2) = 100$ m. Total $300$ m. Solve each phase separately —
+      the equations require constant $a$ within a phase.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Dropped versus thrown</div>
+      <p>Ball A is dropped; ball B is thrown down at $5$ m/s from the same
+      height. Which hits first, and do they have the same acceleration?</p>
+      <details><summary>Answer</summary><div class="ans">B hits first, having
+      started with downward speed. Both have acceleration $9.8$ m/s$^2$
+      downward the whole way — initial velocity does not change the
+      acceleration.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Reaction time</div>
+      <p>A driver at $25$ m/s takes $0.7$ s to react, then brakes at
+      $8$ m/s$^2$. Total stopping distance?</p>
+      <details><summary>Solution</summary><div class="ans">Reaction phase is
+      constant velocity: $25 \times 0.7 = 17.5$ m. Braking phase:
+      $25^2/16 = 39.1$ m. Total $56.6$ m. Forgetting the reaction distance is
+      the standard error, and it is a third of the answer
+      here.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Definitions.</strong> Displacement versus distance, velocity
+    versus speed, acceleration as a rate of change.</li>
+    <li><strong>Graphs.</strong> Slopes give the next derivative; areas give the
+    previous quantity.</li>
+    <li><strong>The four equations.</strong> Which quantity each omits, and how
+    to choose.</li>
+    <li><strong>Free fall.</strong> $a = -g$ throughout, and the behaviour at
+    the top of a throw.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar's "classical kinematics" begins here. Check the syllabus on
+    Quercus for the assigned problems; this material is normally covered in the
+    first two weeks.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Position, velocity and acceleration form a chain of rates of change.
+    Constant acceleration makes that chain solvable in closed form, which is why
+    four equations cover so much. Unit 3 applies the same equations
+    independently to each axis.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Before solving, write three lists: what you know, what you want, and what you
+    do not care about. The right equation is the one missing the third
+    list.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Sign of acceleration</div>
+      <p>Does negative acceleration mean slowing down?</p>
+      <details><summary>Guide</summary><div class="ans">Not necessarily. It
+      means slowing only if the velocity is positive. Same signs means speeding
+      up.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Graph areas</div>
+      <p>What does the area under a velocity-time graph represent?</p>
+      <details><summary>Guide</summary><div class="ans">Displacement, with area
+      below the axis counting negative.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Equation choice</div>
+      <p>Which equation has no time in it?</p>
+      <details><summary>Guide</summary><div class="ans">$v^2 = v_0^2 +
+      2a\Delta x$ — the one to reach for whenever time is neither given nor
+      wanted.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Validity</div>
+      <p>When do the four equations fail?</p>
+      <details><summary>Guide</summary><div class="ans">Whenever acceleration is
+      not constant — with air resistance, or a spring force. Split the motion
+      into constant-$a$ phases, or use calculus.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit01.html">← Unit 01<span>Units, vectors &amp; estimation</span></a>
+  <a href="unit03.html">Unit 03 →<span>Motion in two dimensions</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

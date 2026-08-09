@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 4 — Newton's Laws · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 4</div>
+<div class="unit-no reveal">Unit 4 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Newton's Laws</h1>
+<p class="ch-intro reveal">From describing motion to explaining it. Three laws,
+one equation, and one drawing habit &mdash; the free-body diagram &mdash; that
+does more for your marks than any amount of algebra. Nearly every dynamics error
+is a force drawn that does not exist, or one left out.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State all three laws precisely and say what each is for.</li>
+    <li>Draw a correct free-body diagram for any body in a system.</li>
+    <li>Identify action-reaction pairs and say why they never cancel.</li>
+    <li>Solve connected-body problems with tension.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Kinematics tells you what happens given the acceleration. Newton's second
+    law tells you what the acceleration <em>is</em>, from the forces. That link
+    closes the loop and makes mechanics predictive rather than
+    descriptive.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every structure, vehicle and machine is designed against these laws.
+    Seatbelts exist because of the first: in a crash the car stops and the
+    passenger, with no force on them, does not.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Newton published the laws in 1687. They stood unchallenged for two
+    centuries until relativity showed they fail near light speed, and quantum
+    mechanics showed they fail at atomic scale. Within those limits they remain
+    exact, which is why bridges are still designed with them.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The three laws</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <div class="step"><strong>First law.</strong> A body at rest stays at rest,
+    and a body in motion continues at constant velocity, unless a net external
+    force acts. This defines what a force <em>does</em>: it changes velocity, it
+    does not maintain it.</div>
+    <div class="step"><strong>Second law.</strong>
+    $\sum \vec{F} = m\vec{a}$. The net force equals mass times acceleration, and
+    the acceleration points along the net force.</div>
+    <div class="step"><strong>Third law.</strong> If A pushes B, then B pushes A
+    with equal magnitude and opposite direction. The two forces act on
+    <em>different bodies</em>.</div></div>
+  <div class="box warn"><div class="bl">Motion needs no force</div>
+    <p>The deepest misconception in physics is that keeping something moving
+    requires a force. It does not &mdash; a hockey puck on ice glides on. What
+    requires force is <em>changing</em> the motion. On Earth we push things
+    continuously only because friction is continuously opposing us.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Second law, componentwise</b></div>
+    <p>The second law is a vector equation, so it splits into one equation per
+    axis:</p>
+    <div class="step">$\sum F_x = ma_x$ and $\sum F_y = ma_y$.</div>
+    <div class="step">If a body slides horizontally, $a_y = 0$, so the vertical
+    forces must balance exactly. That is usually how you find the normal
+    force.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Free-body diagrams</h3>
+  <div class="box thm"><div class="bl">Rule <b>How to draw one</b></div>
+    <div class="step">Isolate <em>one</em> body. Draw it as a dot or a
+    box.</div>
+    <div class="step">Draw only forces acting <em>on</em> that body, as arrows
+    pointing away from it.</div>
+    <div class="step">Label each with its source: weight $mg$, normal $N$,
+    tension $T$, friction $f$, applied $F$.</div>
+    <div class="step">Choose axes, tilting them along the motion for an
+    incline.</div>
+    <div class="step">Write $\sum F = ma$ for each axis.</div></div>
+  <div class="box warn"><div class="bl">Forces that do not exist</div>
+    <p>Two things commonly get drawn that should not:</p>
+    <div class="step"><em>Centrifugal force.</em> There is no outward force on a
+    body moving in a circle. The net force points <em>inward</em>. The outward
+    feeling is inertia, not a force.</div>
+    <div class="step"><em>The force of motion.</em> A thrown ball has no forward
+    force on it once it leaves the hand. Only gravity acts. Its forward motion
+    persists by the first law.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Block on an incline</b></div>
+    <p>A block of mass $m$ rests on a frictionless incline at angle $\theta$.</p>
+    <div class="step">Forces: weight $mg$ straight down, normal $N$
+    perpendicular to the surface. That is all &mdash; there is no force pushing
+    it down the slope.</div>
+    <div class="step">Tilt the axes along the incline. Then
+    $mg$ resolves into $mg\sin\theta$ down the slope and $mg\cos\theta$ into
+    it.</div>
+    <div class="step">Perpendicular: $N - mg\cos\theta = 0$, so
+    $N = mg\cos\theta$ &mdash; less than $mg$, which is why a steep slope grips
+    poorly.</div>
+    <div class="step">Along: $mg\sin\theta = ma$, so
+    $a = g\sin\theta$. Independent of mass, and correctly giving $a = g$ at
+    $90$ degrees and $a = 0$ on the flat.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>The third law</h3>
+  <div class="box thm"><div class="bl">Rule <b>Pairs act on different bodies</b></div>
+    <p>Action and reaction never cancel, because they are not applied to the
+    same object. Only forces on the <em>same</em> body can cancel in
+    $\sum F = ma$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The horse and cart</b></div>
+    <p>If the cart pulls back on the horse as hard as the horse pulls the cart,
+    how does anything move?</p>
+    <div class="step">Those two forces act on different bodies, so they never
+    appear in the same equation.</div>
+    <div class="step">For the cart, the relevant forces are the horse's pull
+    forward and friction backward. If the pull wins, the cart
+    accelerates.</div>
+    <div class="step">The horse accelerates because the <em>ground</em> pushes
+    it forward &mdash; its reaction to the horse pushing back on the ground. The
+    cart's pull on the horse is a separate force
+    entirely.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Book on a table</b></div>
+    <div class="step">The weight $mg$ down and the normal $N$ up are
+    <em>not</em> a third-law pair, even though they are equal and opposite. Both
+    act on the book, and they balance only because the book is not
+    accelerating.</div>
+    <div class="step">The genuine pairs are: Earth pulls book down / book pulls
+    Earth up; table pushes book up / book pushes table down. Each pair has one
+    force on each of two different bodies.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Connected bodies</h3>
+  <div class="box thm"><div class="bl">Rule <b>One diagram per body</b></div>
+    <p>For bodies joined by a rope over a pulley:</p>
+    <div class="step">Draw a separate free-body diagram for each.</div>
+    <div class="step">An ideal rope has the same tension throughout, and a
+    massless frictionless pulley only changes its direction.</div>
+    <div class="step">Connected bodies share the same acceleration magnitude.
+    Choose the positive direction to follow the expected motion so both get the
+    same sign.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Atwood machine</b></div>
+    <p>Masses $m_1$ and $m_2$ hang either side of a pulley, with
+    $m_1 &gt; m_2$.</p>
+    <div class="step">For $m_1$ (taking down as positive):
+    $m_1 g - T = m_1 a$.</div>
+    <div class="step">For $m_2$ (taking up as positive):
+    $T - m_2 g = m_2 a$.</div>
+    <div class="step">Adding eliminates $T$:
+    $a = \dfrac{(m_1 - m_2)g}{m_1 + m_2}$.</div>
+    <div class="step">Check the limits. Equal masses give $a = 0$. If
+    $m_2 = 0$ then $a = g$, free fall. Both correct, so the algebra is
+    probably right.</div>
+  </div>
+  <div class="box warn"><div class="bl">Tension is not weight</div>
+    <p>In the Atwood machine the tension is <em>not</em> $m_1 g$. If it were,
+    the net force on $m_1$ would be zero and nothing would move. Solving gives
+    $T = 2m_1m_2g/(m_1+m_2)$, which lies between the two weights.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Drawing a centrifugal force. Circular motion needs an inward net
+  force.<br>
+  &bull; Drawing a "force of motion" on a projectile.<br>
+  &bull; Treating weight and normal force as a third-law pair.<br>
+  &bull; Assuming $N = mg$ always. On an incline it is $mg\cos\theta$; in an
+  accelerating elevator it is different again.<br>
+  &bull; Using one diagram for a two-body system. Draw each
+  separately.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Constant velocity</div>
+      <p>A crate slides at constant velocity across a floor. What is the net
+      force on it?</p>
+      <details><summary>Answer</summary><div class="ans">Zero. Constant velocity
+      means zero acceleration, so by the second law the net force
+      vanishes — even though individual forces like push and friction are
+      present.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Incline</div>
+      <p>Find the acceleration of a block on a frictionless $30$-degree
+      incline.</p>
+      <details><summary>Answer</summary><div class="ans">$a = g\sin 30 = 4.9$
+      m/s$^2$ down the slope, independent of mass.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Normal force</div>
+      <p>A $2$ kg book sits on a table. Someone presses down with $10$ N. Find
+      the normal force.</p>
+      <details><summary>Answer</summary><div class="ans">$N = mg + 10 = 19.6 +
+      10 = 29.6$ N. The normal force adjusts to whatever keeps the vertical
+      acceleration zero.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Third law</div>
+      <p>A truck hits a mosquito. Which experiences the larger force?</p>
+      <details><summary>Answer</summary><div class="ans">Neither — the forces are
+      equal and opposite. The mosquito's <em>acceleration</em> is enormous
+      because its mass is tiny, which is a second-law consequence, not a
+      third-law one.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Elevator</div>
+      <p>You stand on a scale in an elevator accelerating upward at $2$
+      m/s$^2$. Does the reading rise or fall?</p>
+      <details><summary>Solution</summary><div class="ans">Rises. The scale
+      reads $N$, and $N - mg = ma$ gives $N = m(g + a)$. For a $70$ kg person
+      that is $826$ N instead of $686$ N. Accelerating downward would lower it,
+      and free fall would give zero — apparent
+      weightlessness.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Two blocks</div>
+      <p>Blocks of $3$ kg and $2$ kg touch on a frictionless floor. A $10$ N
+      force pushes the $3$ kg one. Find the contact force between them.</p>
+      <details><summary>Solution</summary><div class="ans">Whole system:
+      $a = 10/5 = 2$ m/s$^2$. For the $2$ kg block alone the only horizontal
+      force is the contact force, so $F = 2 \times 2 = 4$ N. Analysing the
+      smaller block is the shortcut.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Atwood check</div>
+      <p>For $m_1 = 5$ kg and $m_2 = 3$ kg, find $a$ and $T$.</p>
+      <details><summary>Solution</summary><div class="ans">$a = (2)(9.8)/8 =
+      2.45$ m/s$^2$; $T = 2(5)(3)(9.8)/8 = 36.75$ N. Note $T$ sits between the
+      two weights, $29.4$ N and $49$ N, as it must.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Rope with mass</div>
+      <p>Why is tension the same throughout an ideal rope, and when does that
+      fail?</p>
+      <details><summary>Solution</summary><div class="ans">Applying the second
+      law to any segment of a <em>massless</em> rope gives net force zero, so the
+      tensions at its two ends match. With a real, heavy rope each segment has
+      weight, so tension is largest at the top where it supports the most rope
+      below it.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The three laws.</strong> Statements, and what each is used
+    for.</li>
+    <li><strong>Free-body diagrams.</strong> One body at a time, real forces
+    only, axes chosen to suit the motion.</li>
+    <li><strong>Third-law pairs.</strong> Why they act on different bodies and
+    never cancel.</li>
+    <li><strong>Connected systems.</strong> Tension, shared acceleration, and
+    eliminating unknowns.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "dynamics, force" here. Free-body diagrams are the
+    single most examined skill in the course; check the syllabus on Quercus for
+    assigned problems.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Forces cause acceleration; acceleration feeds Unit 2's kinematics. The
+    free-body diagram is the translation step between the physical situation and
+    the equations, and every later unit assumes you can draw
+    one.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every force you draw, name the object exerting it. If you cannot, the
+    force does not exist and should be erased. This single test removes
+    centrifugal force and the force of motion
+    permanently.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · First law</div>
+      <p>What does a net force of zero imply?</p>
+      <details><summary>Guide</summary><div class="ans">Constant velocity, which
+      includes rest as a special case. Not necessarily
+      stillness.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Pair identification</div>
+      <p>Are weight and normal force a third-law pair?</p>
+      <details><summary>Guide</summary><div class="ans">No. Both act on the same
+      body. A third-law pair always has one force on each of two different
+      bodies.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Normal force</div>
+      <p>Is $N$ always equal to $mg$?</p>
+      <details><summary>Guide</summary><div class="ans">No. On an incline it is
+      $mg\cos\theta$; in an accelerating elevator it is $m(g \pm a)$. Solve for
+      it from the vertical equation each time.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Massless rope</div>
+      <p>Why is tension uniform in an ideal rope?</p>
+      <details><summary>Guide</summary><div class="ans">Because a massless
+      segment has $ma = 0$, so the forces at its ends must
+      balance.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit03.html">← Unit 03<span>Motion in two dimensions</span></a>
+  <a href="unit05.html">Unit 05 →<span>Friction &amp; circular motion</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

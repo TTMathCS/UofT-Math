@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — Units, Vectors &amp; Estimation · PHY131H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">PHY131H1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Introduction to Physics I</div>
+<h1 class="ch-title reveal">Units, Vectors &amp; Estimation</h1>
+<p class="ch-intro reveal">The unglamorous unit that pays for itself all term.
+Dimensional analysis catches wrong answers in seconds, vector components turn
+geometry into arithmetic, and an order-of-magnitude estimate tells you whether
+the calculator is lying to you.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Check any equation for dimensional consistency.</li>
+    <li>Resolve a vector into components and add vectors correctly.</li>
+    <li>Carry significant figures through a calculation.</li>
+    <li>Estimate an answer to an order of magnitude before computing it.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Physics equations relate <em>quantities</em>, not numbers. A length can
+    never equal a time, so an equation that says so is wrong before you check
+    the algebra. That single observation is the fastest error detector in the
+    course.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>NASA lost the 125-million-dollar Mars Climate Orbiter in 1999 because one
+    team supplied thrust in pound-seconds and the other read it as
+    newton-seconds. The arithmetic was flawless; the units were
+    not.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The SI base units were redefined in 2019 so that all of them derive from
+    fixed constants of nature rather than physical objects. The last artefact,
+    the platinum-iridium kilogram in Paris, had been measurably drifting for a
+    century.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Dimensional analysis</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Every mechanical quantity is built from three dimensions: length $L$,
+    mass $M$ and time $T$. Speed is $L/T$, acceleration is $L/T^2$, force is
+    $ML/T^2$, energy is $ML^2/T^2$.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Both sides must match</b></div>
+    <p>An equation is only possible if every term has the same dimensions. Terms
+    that are added must match; a mismatch proves the equation
+    wrong.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Catching an error instantly</b></div>
+    <div class="step">Is $v^2 = 2ax$ dimensionally possible? Left side is
+    $(L/T)^2 = L^2/T^2$. Right side is $(L/T^2)(L) = L^2/T^2$. They match, so
+    the equation survives the test.</div>
+    <div class="step">Is $v = 2ax$? Left is $L/T$, right is $L^2/T^2$. No match,
+    so this is wrong &mdash; established without knowing any
+    physics.</div>
+    <div class="step">Dimensional analysis cannot catch a missing factor of
+    $2$, since pure numbers have no dimensions. It rules equations out, never
+    in.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Deriving a form</b></div>
+    <p>Guess the period of a pendulum from its length $L$, mass $m$ and $g$.</p>
+    <div class="step">Try $T = L^a m^b g^c$. Dimensions:
+    $T = L^a M^b (L/T^2)^c$.</div>
+    <div class="step">Matching $M$: $b = 0$, so the mass cannot appear.
+    Matching $T$: $1 = -2c$, so $c = -\tfrac12$. Matching $L$:
+    $0 = a + c$, so $a = \tfrac12$.</div>
+    <div class="step">So $T \propto \sqrt{L/g}$ &mdash; the correct form, from
+    dimensions alone. Only the factor $2\pi$ is missing, and Unit 9 supplies
+    it.</div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Vectors</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>scalar</em> has size only: mass, time, energy, speed. A
+    <em>vector</em> has size and direction: displacement, velocity,
+    acceleration, force. Vectors are written $\vec{A}$ and their magnitude
+    $|\vec{A}|$ or $A$.</p></div>
+  <div class="box thm"><div class="bl">Rule <b>Add by components, never by magnitudes</b></div>
+    <p>Resolve each vector onto axes, add the components separately, then
+    recombine:</p>
+    <div class="step">$A_x = A\cos\theta$ and $A_y = A\sin\theta$, with
+    $\theta$ measured from the $+x$ axis.</div>
+    <div class="step">$R_x = A_x + B_x$ and $R_y = A_y + B_y$.</div>
+    <div class="step">$R = \sqrt{R_x^2 + R_y^2}$ and
+    $\theta = \arctan(R_y / R_x)$.</div></div>
+  <div class="box warn"><div class="bl">Magnitudes do not add</div>
+    <p>Two forces of $3$ N and $4$ N do not make $7$ N unless they point the
+    same way. At right angles the result is $5$ N; in opposition it is $1$ N.
+    Only components add.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A full addition</b></div>
+    <p>Add $\vec{A}$ of magnitude $5$ at $37$ degrees to $\vec{B}$ of magnitude
+    $3$ at $180$ degrees.</p>
+    <div class="step">$A_x = 5\cos 37 = 4.0$, $A_y = 5\sin 37 = 3.0$.</div>
+    <div class="step">$B_x = 3\cos 180 = -3.0$, $B_y = 0$.</div>
+    <div class="step">$R_x = 1.0$, $R_y = 3.0$, so $R = \sqrt{1 + 9} = 3.2$ at
+    $\arctan(3.0/1.0) = 72$ degrees.</div>
+  </div>
+  <div class="box warn"><div class="bl">The arctan quadrant trap</div>
+    <p>A calculator's $\arctan$ returns angles between $-90$ and $+90$ degrees,
+    so it cannot distinguish the second quadrant from the fourth. Always sketch
+    the resultant and check the answer lies in the quadrant the components
+    imply, adding $180$ degrees if not.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Significant figures and estimation</h3>
+  <div class="box thm"><div class="bl">Rule <b>Precision does not improve</b></div>
+    <div class="step">Multiplying or dividing: the result keeps as many
+    significant figures as the <em>least</em> precise input.</div>
+    <div class="step">Adding or subtracting: the result keeps as many decimal
+    places as the least precise input.</div>
+    <div class="step">Round only at the end. Rounding intermediate values
+    accumulates error, exactly as in floating-point
+    arithmetic.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Reporting sensibly</b></div>
+    <p>A distance of $12.5$ m measured in $2.1$ s gives
+    $12.5 / 2.1 = 5.952380...$ on the calculator.</p>
+    <div class="step">Both inputs have two or three significant figures, so
+    report $6.0$ m/s. Writing $5.95$ claims a precision the measurement never
+    had.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Order-of-magnitude estimate</b></div>
+    <p>Roughly how many breaths does a person take in a lifetime?</p>
+    <div class="step">About $15$ breaths per minute, so about $10^4$ per day
+    &mdash; $15 \times 60 \times 24$ is around $20{,}000$.</div>
+    <div class="step">Times $365$ days is about $10^7$ per year; times $80$
+    years is about $10^9$.</div>
+    <div class="step">A billion breaths. The point is not the exact figure but
+    that the answer is nearer $10^9$ than $10^6$ or $10^{12}$ &mdash; enough to
+    catch a calculator slip of three orders of magnitude.</div>
+  </div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Mixing units in one equation. Convert everything to SI first: metres,
+  kilograms, seconds.<br>
+  &bull; Adding vector magnitudes instead of components.<br>
+  &bull; Trusting $\arctan$ without checking the quadrant.<br>
+  &bull; Measuring the angle from the wrong axis. $\cos$ goes with the axis the
+  angle is measured from; if the angle is from $y$, the roles
+  swap.<br>
+  &bull; Reporting ten digits from two-digit data.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Work each fully before opening the answer. Original
+  exercises written for this guide in the style of the course's problem
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Dimensional check</div>
+      <p>Is $x = \tfrac12 a t^2$ dimensionally consistent?</p>
+      <details><summary>Answer</summary><div class="ans">Yes. Right side is
+      $(L/T^2)(T^2) = L$, matching the left. The $\tfrac12$ is dimensionless and
+      invisible to this test.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Components</div>
+      <p>Resolve a force of $20$ N at $60$ degrees above horizontal.</p>
+      <details><summary>Answer</summary><div class="ans">$F_x = 20\cos 60 = 10$
+      N, $F_y = 20\sin 60 = 17.3$ N.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Vector sum</div>
+      <p>Add $6$ N east and $8$ N north.</p>
+      <details><summary>Answer</summary><div class="ans">$\sqrt{36 + 64} = 10$ N
+      at $\arctan(8/6) = 53$ degrees north of east.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Opposing vectors</div>
+      <p>What is the range of possible magnitudes when adding a $5$ N and a
+      $3$ N force?</p>
+      <details><summary>Answer</summary><div class="ans">From $2$ N (opposed) to
+      $8$ N (aligned), any value between depending on the angle. At right angles
+      it is $\sqrt{34} = 5.8$ N.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Derive a form</div>
+      <p>Use dimensions to find how orbital speed depends on $G$, $M$ and
+      $r$.</p>
+      <details><summary>Solution</summary><div class="ans">$G$ has dimensions
+      $L^3/(MT^2)$. Trying $v = G^a M^b r^c$ and matching gives
+      $a = b = \tfrac12$ and $c = -\tfrac12$, so
+      $v \propto \sqrt{GM/r}$ — correct, with the numerical factor being
+      exactly $1$ here.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Significant figures</div>
+      <p>A car travels $150$ m in $8.2$ s. Report the speed.</p>
+      <details><summary>Answer</summary><div class="ans">$18$ m/s. The
+      calculator says $18.29$, but $8.2$ carries only two significant
+      figures.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Estimate</div>
+      <p>Roughly how many litres of water does Toronto use in a day?</p>
+      <details><summary>Solution</summary><div class="ans">About $3$ million
+      people at roughly $200$ litres each is about $6 \times 10^8$ litres. Any
+      answer within a factor of a few is a success; the goal is the
+      exponent.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Quadrant</div>
+      <p>A vector has $R_x = -2$ and $R_y = 2$. Find its direction.</p>
+      <details><summary>Solution</summary><div class="ans">$\arctan(2/-2)$ gives
+      $-45$ degrees on a calculator, but the components put the vector in the
+      second quadrant, so the true direction is
+      $-45 + 180 = 135$ degrees. Sketching it first would have made this
+      obvious.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  PHY131H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>SI units.</strong> Base quantities and converting to them before
+    computing.</li>
+    <li><strong>Dimensional analysis.</strong> Checking consistency and
+    deriving proportionalities.</li>
+    <li><strong>Vectors.</strong> Components, addition, magnitude and direction,
+    quadrant care.</li>
+    <li><strong>Precision.</strong> Significant figures and
+    order-of-magnitude estimation.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar's topic list begins with classical kinematics, which assumes
+    this material. Most introductory texts cover it in an opening chapter; check
+    the syllabus on Quercus for the assigned reading.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Quantities carry dimensions, so equations can be checked before they are
+    solved. Directional quantities need components, so geometry becomes
+    arithmetic. Both tools are used in every unit that follows.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Check units on every final answer, without exception. It costs ten seconds
+    and catches a substantial fraction of mistakes before they reach a
+    marker.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · What dimensions prove</div>
+      <p>Can dimensional analysis confirm an equation is right?</p>
+      <details><summary>Guide</summary><div class="ans">No. It can only rule
+      equations out. Dimensionless factors like $\tfrac12$ or $2\pi$ are
+      invisible to it.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Scalar or vector</div>
+      <p>Is speed a vector?</p>
+      <details><summary>Guide</summary><div class="ans">No — speed is the
+      magnitude of velocity, so it is a scalar. Velocity carries
+      direction.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Component rule</div>
+      <p>When is $A_x = A\cos\theta$ correct?</p>
+      <details><summary>Guide</summary><div class="ans">When $\theta$ is
+      measured from the $x$ axis. Measured from $y$, the cosine and sine
+      swap.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Why estimate</div>
+      <p>What does an order-of-magnitude estimate buy you?</p>
+      <details><summary>Guide</summary><div class="ans">A check on the exponent.
+      It catches unit-conversion and calculator errors that produce answers
+      wrong by factors of a thousand.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+  <a href="unit02.html">Unit 02 →<span>Kinematics in one dimension</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
