@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — Values, Types &amp; Variables · CSC108H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">CSC108H1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Intro to Programming</div>
+<h1 class="ch-title reveal">Values, Types &amp; Variables</h1>
+<p class="ch-intro reveal">Everything Python touches is a value, and every value
+has a type. Most beginner bugs are type confusion wearing a disguise, so this
+page spends its time on what the types actually are and what happens when you
+mix them.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Name the four core types and predict which one an expression
+    produces.</li>
+    <li>Explain what assignment actually does to a name.</li>
+    <li>Read a <code>TypeError</code> and say what caused it.</li>
+    <li>Convert between types deliberately rather than by accident.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>A computer stores bits. Types are the agreement about what a particular
+    pile of bits means &mdash; the same bytes could be a number or a letter.
+    Python tracks that agreement for you, which is why it can catch
+    <code>"3" + 4</code> and stop.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>The 1999 Mars Climate Orbiter was lost because one team worked in pounds
+    and another in newtons. No type system caught it. Modern code adds type
+    annotations for exactly that reason, and this course grades you on writing
+    them.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Python was released by Guido van Rossum in 1991 and named after Monty
+    Python. Its "everything is an object" design means even an integer has
+    methods, which is why <code>(5).bit_length()</code> works and surprises
+    people.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The four core types</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>CSC108H1 starts with four:</p>
+    <div class="step"><code>int</code> &mdash; whole numbers, unbounded in
+    Python: <code>3</code>, <code>-17</code>, <code>10**100</code>.</div>
+    <div class="step"><code>float</code> &mdash; approximate real numbers:
+    <code>3.0</code>, <code>-0.5</code>, <code>2e10</code>. Approximate is not a
+    typo; Unit 10 is about the consequences.</div>
+    <div class="step"><code>str</code> &mdash; text: <code>'hello'</code>,
+    <code>"a"</code>, <code>''</code>. Quotes are part of the notation, not the
+    value.</div>
+    <div class="step"><code>bool</code> &mdash; <code>True</code> or
+    <code>False</code>, capitalised.</div>
+    <p>Ask Python directly with <code>type(x)</code>.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Type follows the operation</b></div>
+    <div class="code"><div class="cl">python</div><pre>type(7)        # int
+type(7.0)      # float
+type(7 + 1)    # int
+type(7 / 1)    # float   <b>&lt;- division always gives float</b>
+type(7 // 2)   # int     <b>&lt;- floor division keeps int</b>
+type(7 == 7)   # bool</pre></div>
+    <p>That fourth line catches people every year. In Python 3,
+    <code>/</code> is <em>true division</em> and always produces a
+    <code>float</code>, even when the answer is whole.</p></div>
+  <div class="box warn"><div class="bl">Integer division has two forms</div>
+    <p><code>7 / 2</code> is <code>3.5</code>; <code>7 // 2</code> is
+    <code>3</code>; <code>7 % 2</code> is <code>1</code>. Floor division rounds
+    <em>down</em>, not toward zero, so <code>-7 // 2</code> is
+    <code>-4</code>, not <code>-3</code>.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Variables are names, not boxes</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Assignment <code>x = 5</code> binds the <em>name</em> <code>x</code> to
+    the <em>value</em> <code>5</code>. It does not create a box called
+    <code>x</code> that holds a number. Rebinding just points the name
+    elsewhere.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Trace the names</b></div>
+    <div class="code"><div class="cl">python</div><pre>x = 5
+y = x        <i># y now names the same value</i>
+x = 10       <i># x is rebound; y is untouched</i>
+print(y)     <i># 5</i></pre></div>
+    <p>For immutable values like <code>int</code> this feels obvious. In Unit 5
+    the same rule applied to lists produces the aliasing trap, and it will not
+    feel obvious at all.</p></div>
+  <div class="box warn"><div class="bl">Names have rules</div>
+    <p>Letters, digits and underscores; not starting with a digit; case
+    sensitive, so <code>Total</code> and <code>total</code> differ. Avoid
+    shadowing built-ins &mdash; naming a variable <code>list</code> or
+    <code>str</code> breaks the function of that name for the rest of the
+    program, and the resulting error is baffling.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Mixing types</h3>
+  <div class="box thm"><div class="bl">Rule <b>What combines with what</b></div>
+    <div class="step"><code>int</code> and <code>float</code> mix freely; the
+    result is a <code>float</code>.</div>
+    <div class="step"><code>str + str</code> concatenates;
+    <code>str * int</code> repeats.</div>
+    <div class="step"><code>str + int</code> is a <code>TypeError</code>. Python
+    refuses to guess whether you meant text or arithmetic.</div>
+    <div class="step"><code>bool</code> is a subtype of <code>int</code>, so
+    <code>True + True</code> is <code>2</code>. Useful for counting, confusing
+    when accidental.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Read the error</b></div>
+    <div class="code"><div class="cl">python</div><pre>age = input('Age: ')   <i># input ALWAYS returns str</i>
+print(age + 1)</pre></div>
+    <div class="code"><div class="cl">traceback</div><pre>TypeError: can only concatenate str (not "int") to str</pre></div>
+    <div class="step">The message names the types. <code>age</code> is a
+    <code>str</code> because <code>input</code> always returns one, even when the
+    user types digits.</div>
+    <div class="step">Fix by converting: <code>age = int(input('Age: '))</code>.
+    Convert at the point of entry, not scattered through the
+    program.</div>
+  </div>
+  <div class="box eg"><div class="bl">Example <b>Conversions that fail</b></div>
+    <div class="code"><div class="cl">python</div><pre>int('42')      <i># 42</i>
+int('42.7')    <i># ValueError - int() will not parse a decimal string</i>
+int(42.7)      <i># 42 - truncates toward zero, does not round</i>
+float('42')    <i># 42.0</i>
+str(42)        <i># '42'</i></pre></div>
+    <p>Note the second and third lines differ. <code>int()</code> of a
+    <em>string</em> demands a clean integer; <code>int()</code> of a
+    <em>float</em> truncates.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Expecting <code>/</code> to give an integer. It never does in
+  Python 3; use <code>//</code>.<br>
+  &bull; Forgetting <code>input</code> returns a string. Every numeric input
+  needs an explicit conversion.<br>
+  &bull; Writing <code>true</code> or <code>TRUE</code>. Python wants
+  <code>True</code>.<br>
+  &bull; Using <code>=</code> where <code>==</code> is meant. Assignment is not
+  comparison, and inside an <code>if</code> it is a syntax error rather than a
+  silent bug &mdash; which is a mercy.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Predict each answer before running it. Original
+  exercises written for this guide in the style of the course's weekly
+  sets.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Predict the type</div>
+      <p>What are the types of <code>3 * 2</code>, <code>3 * 2.0</code>,
+      <code>'3' * 2</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>int</code> (6),
+      <code>float</code> (6.0), <code>str</code> ('33'). The last repeats the
+      string rather than multiplying.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Floor division</div>
+      <p>What is <code>-7 // 2</code>?</p>
+      <details><summary>Answer</summary><div class="ans"><code>-4</code>. Floor
+      division rounds down toward negative infinity, not toward zero. Check with
+      <code>-7 % 2</code>, which is <code>1</code>, since
+      <code>-4 * 2 + 1 = -7</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Trace</div>
+      <p>What prints?</p>
+      <div class="code"><div class="cl">python</div><pre>a = 2
+b = a
+a = a + 3
+print(a, b)</pre></div>
+      <details><summary>Answer</summary><div class="ans"><code>5 2</code>.
+      <code>b</code> was bound to the value <code>2</code> and never rebound;
+      changing <code>a</code> does not reach it.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Fix the error</div>
+      <p>Repair this so it prints the total.</p>
+      <div class="code"><div class="cl">python</div><pre>price = input('Price: ')
+qty = input('Quantity: ')
+print(price * qty)</pre></div>
+      <details><summary>Solution</summary><div class="ans">Both are strings, so
+      <code>price * qty</code> is a <code>TypeError</code>. Convert at entry:
+      <div class="code"><div class="cl">python</div><pre>price = float(input('Price: '))
+qty = int(input('Quantity: '))
+print(price * qty)</pre></div></div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Booleans are ints</div>
+      <p>What is <code>True + True + False</code>, and where is that
+      useful?</p>
+      <details><summary>Answer</summary><div class="ans"><code>2</code>. It is
+      useful for counting how many conditions hold:
+      <code>sum(x &gt; 0 for x in nums)</code> counts positives without an
+      explicit loop.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Conversion order</div>
+      <p>Why does <code>int('3.9')</code> fail while <code>int(3.9)</code>
+      works?</p>
+      <details><summary>Answer</summary><div class="ans"><code>int()</code>
+      parsing a string requires the whole string to be a valid integer literal,
+      and <code>'3.9'</code> is not. Applied to a float it truncates instead.
+      Route through <code>int(float('3.9'))</code> if you need
+      <code>3</code>.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Naming</div>
+      <p>Why is <code>str = 'hello'</code> a bad idea?</p>
+      <details><summary>Answer</summary><div class="ans">It rebinds the built-in
+      <code>str</code>, so any later <code>str(42)</code> raises
+      <code>TypeError: 'str' object is not callable</code> &mdash; an error that
+      points nowhere near the real cause.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Swap</div>
+      <p>Swap two variables without a temporary.</p>
+      <details><summary>Solution</summary><div class="ans">
+      <div class="code"><div class="cl">python</div><pre>a, b = b, a</pre></div>
+      The right side is evaluated fully first, into a tuple, then unpacked into
+      the names on the left. This is why no temporary is needed.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  CSC108H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Elementary data types.</strong> int, float, str, bool, and
+    <code>type()</code> to check.</li>
+    <li><strong>Operators.</strong> Arithmetic including <code>//</code> and
+    <code>%</code>, and what each returns.</li>
+    <li><strong>Assignment.</strong> Names bound to values, not boxes holding
+    them.</li>
+    <li><strong>Conversion.</strong> Deliberate use of <code>int()</code>,
+    <code>float()</code>, <code>str()</code>, and where each fails.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>The calendar lists "elementary data types" first, and every offering
+    starts here. The department does not publish a fixed textbook for every
+    term; check the syllabus on Quercus in week one for readings and the exact
+    Python version.</p></div>
+  <div class="box eg"><div class="bl">Core idea map</div>
+    <p>Values have types; types decide which operations are legal; names refer
+    to values. Every later unit is that trio applied to a richer kind of
+    value.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Keep a Python shell open beside the notes. Every claim on this page takes
+    under ten seconds to verify, and verifying is how it sticks.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They push on
+  definitions and edge cases rather than routine calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Division</div>
+      <p>Which operator gives an <code>int</code> result for
+      <code>7</code> and <code>2</code>?</p>
+      <details><summary>Guide</summary><div class="ans"><code>//</code>, floor
+      division. <code>/</code> always returns a float in Python
+      3.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · input</div>
+      <p>What type does <code>input()</code> return?</p>
+      <details><summary>Guide</summary><div class="ans">Always
+      <code>str</code>, regardless of what the user typed. Convert
+      explicitly.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Assignment semantics</div>
+      <p>What does <code>x = y</code> actually do?</p>
+      <details><summary>Guide</summary><div class="ans">Binds the name
+      <code>x</code> to whatever value <code>y</code> currently refers to. No
+      copying happens, which matters enormously once values are
+      mutable.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Reading a TypeError</div>
+      <p>What does a <code>TypeError</code> tell you?</p>
+      <details><summary>Guide</summary><div class="ans">That an operation was
+      applied to types it does not accept. The message names both the operation
+      and the offending types, so it usually points straight at a missing
+      conversion.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+  <a href="unit02.html">Unit 02 →<span>Control flow</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

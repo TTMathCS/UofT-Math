@@ -38,6 +38,14 @@ def supported(runtime_path):
 def check(path, ok):
     html = open(path).read()
     problems = []
+    # inside <pre>, only a "<" that is not opening a real tag breaks parsing.
+    # <b>/<i>/<s> are used for highlighting, so strip tags before looking.
+    for block in re.findall(r'<pre>(.*?)</pre>', html, re.S):
+        stripped = re.sub(r'</?[a-z]+>', '', block)
+        if "<" in stripped:
+            bad = stripped[max(0, stripped.index("<") - 30):stripped.index("<") + 30]
+            problems.append("unescaped < inside <pre>, use &lt; — near: "
+                            + bad.replace("\n", " "))
     spans = re.findall(r'\$([^$]+)\$', html)
     if html.count("$") % 2:
         problems.append("odd number of $ delimiters — an unclosed span")
