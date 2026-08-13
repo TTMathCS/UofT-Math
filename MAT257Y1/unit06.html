@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 6 — The Inverse Function Theorem · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 6</div>
+<div class="unit-no reveal">Unit 6 · Analysis II</div>
+<h1 class="ch-title reveal">The Inverse Function Theorem</h1>
+<p class="ch-intro reveal">If the linear approximation to $f$ at $a$ is
+invertible, then $f$ itself is invertible near $a$. That sentence is the
+theorem, and it is the first place in the course where a statement about the
+derivative &mdash; an infinitesimal object &mdash; buys you a statement about
+$f$ on an actual neighbourhood.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the theorem precisely, including every word of "local".</li>
+    <li>Prove the contraction mapping principle and use it to build the
+    inverse.</li>
+    <li>Explain why $C^1$ is needed and why $\det Jf(a)\ne0$ alone is not
+    enough for a global inverse.</li>
+    <li>Differentiate an inverse you cannot write down.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Solving $f(x)=y$ for $x$ is impossible in closed form for almost every
+    $f$. The theorem says you do not need a formula: an invertible derivative is
+    already a guarantee that a solution exists, is unique nearby, and depends
+    smoothly on $y$.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Newton's method is the proof turned into an algorithm, and its quadratic
+    convergence comes from the same estimate. Coordinate changes in mechanics,
+    the change of variables formula in Unit 10, and the chart maps of Unit 13 all
+    invoke it.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Banach's fixed point theorem (1922) is what made the modern proof short,
+    and the same argument runs unchanged in Banach spaces, giving the
+    infinite-dimensional version used for differential equations. Whether a
+    global version can hold under a determinant condition alone is the still-open
+    Jacobian conjecture in the polynomial setting.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The contraction mapping principle</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Banach fixed point</b></div>
+    <p>Let $X$ be a nonempty closed subset of $\mathbb{R}^n$ and
+    $T:X\to X$ satisfy $\|T(x)-T(y)\|\le c\|x-y\|$ for a constant $c&lt;1$. Then
+    $T$ has exactly one fixed point in $X$.</p>
+    <div class="step">Pick any $x_0$ and iterate $x_{k+1}=T(x_k)$. Then
+    $\|x_{k+1}-x_k\|\le c^k\|x_1-x_0\|$, so the tail sums are dominated by a
+    geometric series and $(x_k)$ is Cauchy.</div>
+    <div class="step">$\mathbb{R}^n$ is complete and $X$ is closed, so
+    $x_k\to x\in X$. Contractions are continuous, so
+    $T(x)=\lim T(x_k)=\lim x_{k+1}=x$.</div>
+    <div class="step">If $T(x)=x$ and $T(y)=y$ then
+    $\|x-y\|\le c\|x-y\|$, and $c&lt;1$ forces $\|x-y\|=0$. &#8718;</div>
+    <p>Completeness is doing the real work. This is why the theorem lives in
+    analysis and not in algebra.</p></div>
+  <div class="checkpoint"><b>Rewriting an equation as a fixed point is the move.</b>
+    Solving $f(x)=y$ becomes finding a fixed point of
+    $T(x)=x+Df(a)^{-1}(y-f(x))$: the correction term vanishes exactly when
+    $f(x)=y$. Everything after this is showing $T$ contracts.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Statement and proof</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Inverse function theorem</b></div>
+    <p>Let $f:A\to\mathbb{R}^n$ be $C^1$ on an open $A\subseteq\mathbb{R}^n$, and
+    suppose $Df(a)$ is invertible. Then there are open sets $U$ containing $a$
+    and $V$ containing $f(a)$ such that $f:U\to V$ is a bijection, the inverse
+    $f^{-1}:V\to U$ is $C^1$, and</p>
+    <div class="step">$D(f^{-1})(y)=\big(Df(f^{-1}(y))\big)^{-1}$ for
+    $y\in V$.</div>
+    <p>Note the domain and codomain have the <em>same</em> dimension. Nothing
+    here applies to $f:\mathbb{R}^2\to\mathbb{R}^3$.</p></div>
+  <div class="box eg"><div class="bl">Proof sketch <b>Four steps</b></div>
+    <div class="step"><em>Normalise.</em> Replacing $f$ by
+    $Df(a)^{-1}\circ(f-f(a))$ and translating, assume $a=0$, $f(0)=0$, and
+    $Df(0)=I$. Neither operation changes invertibility.</div>
+    <div class="step"><em>Contract.</em> Let $g(x)=x-f(x)$, so $Dg(0)=0$. Since
+    $f$ is $C^1$, $\|Dg\|\le\tfrac12$ on some closed ball $\bar B_r$, and the
+    mean value inequality gives $\|g(x)-g(x')\|\le\tfrac12\|x-x'\|$ there.</div>
+    <div class="step"><em>Solve.</em> For $\|y\|&lt;r/2$ the map
+    $T_y(x)=y+g(x)$ sends $\bar B_r$ into itself and contracts, so it has a
+    unique fixed point &mdash; and $T_y(x)=x$ says exactly $f(x)=y$. This gives a
+    well-defined inverse on $V=B_{r/2}$, with $U=f^{-1}(V)\cap B_r$ open by
+    continuity.</div>
+    <div class="step"><em>Differentiate.</em> The contraction estimate also gives
+    $\|f(x)-f(x')\|\ge\tfrac12\|x-x'\|$, so $f^{-1}$ is Lipschitz. Feeding that
+    into the definition of the derivative shows $f^{-1}$ is differentiable with
+    the stated derivative, and the formula shows the derivative is continuous
+    because matrix inversion is. &#8718;</div></div>
+  <div class="box eg"><div class="bl">Example <b>Polar coordinates</b></div>
+    <p>$g(r,\theta)=(r\cos\theta,r\sin\theta)$ has $\det Jg=r$, nonzero whenever
+    $r&gt;0$. So $g$ is locally invertible away from the origin. It is not
+    globally injective &mdash; $\theta$ and $\theta+2\pi$ collide &mdash; which
+    is precisely the gap between local and global that the theorem does not
+    close.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Local but never global</b></div>
+    <p>$f(x,y)=(e^x\cos y,\,e^x\sin y)$ has $\det Jf=e^{2x}&gt;0$ everywhere, so
+    it is locally invertible at every point of $\mathbb{R}^2$, yet it is
+    $2\pi$-periodic in $y$ and therefore infinitely-to-one. This is the complex
+    exponential, and it is the standard demonstration that "invertible
+    derivative everywhere" and "invertible" are different claims.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>What each hypothesis is buying</h3>
+  <div class="box thm"><div class="bl">Theorem <b>$C^1$ cannot be dropped</b></div>
+    <p>$f(x)=x+2x^2\sin(1/x)$ with $f(0)=0$ has $f'(0)=1\ne0$, but $f'$ is
+    discontinuous at $0$ and takes negative values in every neighbourhood. So $f$
+    is not monotone near $0$ and has no local inverse there.</p>
+    <p>Differentiability at the single point $a$ is not enough. The proof used
+    control of $Df$ on a whole ball, and this example shows that use was not
+    laziness.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Open mapping</b></div>
+    <p>If $f$ is $C^1$ on $A$ and $Df(x)$ is invertible for every $x\in A$, then
+    $f(A)$ is open, and more generally $f$ maps open subsets of $A$ to open sets.
+    Apply the theorem at each point: every image point has an open $V$ around it
+    inside the image.</p></div>
+  <div class="checkpoint"><b>Local means local.</b>
+    The theorem produces a neighbourhood and says nothing about its size. When
+    you need a quantitative radius you must reread the proof and track the
+    constants; the statement alone will not give you one.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Concluding $f$ is injective on all of $A$ from an everywhere-nonzero
+  Jacobian determinant. The complex exponential above refutes it.<br>
+  &bull; Using the theorem when domain and codomain have different dimensions.
+  That case is the rank theorem, not this one.<br>
+  &bull; Checking only that $Df(a)\ne0$. The condition is that $Df(a)$ is
+  <em>invertible</em>, that is $\det Jf(a)\ne0$.<br>
+  &bull; Assuming differentiability at $a$ suffices. The hypothesis is $C^1$ on
+  a neighbourhood.<br>
+  &bull; Forgetting the inverse inherits smoothness: if $f$ is $C^k$ so is
+  $f^{-1}$, which follows by induction on the formula for
+  $D(f^{-1})$.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Where it applies</div>
+      <p>For $f(x,y)=(x^2-y^2,\,2xy)$, at which points does the theorem
+      apply?</p>
+      <details><summary>Solution</summary><div class="ans">$\det Jf=4(x^2+y^2)$,
+      nonzero except at the origin. So $f$ is locally invertible everywhere but
+      the origin. Globally it is two-to-one, since $f(-x,-y)=f(x,y)$: this is
+      $z\mapsto z^2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Derivative of an inverse</div>
+      <p>With the same $f$, compute $D(f^{-1})$ at $f(1,1)=(0,2)$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $Jf(1,1)=\begin{smallmatrix}2&amp;-2\\2&amp;2\end{smallmatrix}$ with
+      determinant $8$, so the inverse is
+      $\tfrac18\begin{smallmatrix}2&amp;2\\-2&amp;2\end{smallmatrix}$. No formula
+      for $f^{-1}$ was needed.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · A contraction</div>
+      <p>Show $T(x)=\tfrac12\cos x$ has a unique fixed point on
+      $\mathbb{R}$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $|T'(x)|=\tfrac12|\sin x|\le\tfrac12$, so $T$ is a contraction with
+      $c=\tfrac12$ by the mean value theorem, and $\mathbb{R}$ is closed and
+      complete. One fixed point, and iterating from any start converges to
+      it.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Newton's method</div>
+      <p>Explain why $x_{k+1}=x_k-Df(x_k)^{-1}f(x_k)$ is the proof made
+      computational.</p>
+      <details><summary>Solution</summary><div class="ans">It is fixed-point
+      iteration for $T(x)=x-Df(x)^{-1}f(x)$, whose fixed points are the roots of
+      $f$. Freezing the Jacobian at $a$ gives the map used in the proof; updating
+      it each step is what upgrades linear convergence to
+      quadratic.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Determinant zero</div>
+      <p>Does $f(x)=x^3$ on $\mathbb{R}$ contradict the theorem at $0$?</p>
+      <details><summary>Solution</summary><div class="ans">No. $f'(0)=0$, so the
+      hypothesis fails; the theorem simply does not apply. That $f$ happens to be
+      a bijection anyway shows the condition is sufficient, not
+      necessary.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Smoothness transfers</div>
+      <p>If $f$ is $C^\infty$ with invertible derivative, is $f^{-1}$ smooth?</p>
+      <details><summary>Solution</summary><div class="ans">Yes. From
+      $D(f^{-1})(y)=Jf(f^{-1}(y))^{-1}$, the right side is a composition of
+      smooth maps whenever $f^{-1}$ is $C^k$, so $f^{-1}$ is $C^{k+1}$. Induct
+      from $k=1$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Spherical coordinates</div>
+      <p>Compute $\det Jg$ for
+      $g(\rho,\varphi,\theta)=(\rho\sin\varphi\cos\theta,\rho\sin\varphi\sin\theta,\rho\cos\varphi)$
+      and say where $g$ is a local diffeomorphism.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\det Jg=\rho^2\sin\varphi$. It is nonzero when $\rho&gt;0$ and
+      $\varphi\notin\{0,\pi\}$, so $g$ is a local diffeomorphism away from the
+      polar axis. That determinant is the $\rho^2\sin\varphi$ factor in every
+      spherical integral.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Injective on a compact set</div>
+      <p>If $f$ is $C^1$ and injective on a compact $K$ with invertible
+      derivative throughout, must $f^{-1}$ be continuous on $f(K)$?</p>
+      <details><summary>Solution</summary><div class="ans">Yes, and compactness
+      alone gives it: a continuous bijection from a compact space to a Hausdorff
+      space is a homeomorphism, because closed subsets of $K$ are compact and
+      their images are compact hence closed.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Contraction mapping.</strong> Statement, proof, and the role of
+    completeness.</li>
+    <li><strong>Inverse function theorem.</strong> Full statement, the four-step
+    proof, and the formula for the inverse's derivative.</li>
+    <li><strong>Local versus global.</strong> The complex exponential, and why
+    the theorem cannot be upgraded.</li>
+    <li><strong>Hypothesis audit.</strong> Why $C^1$ on a neighbourhood, and why
+    equal dimensions.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak proves the theorem with a compactness argument rather than a
+    contraction; Munkres uses the fixed point route given here. Both are worth
+    reading, and the syllabus decides which one is examinable.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Completeness gives the contraction principle, which gives the inverse
+    function theorem, which gives the implicit function theorem in Unit 7, which
+    gives the manifold charts in Unit 13. This is the longest single chain of
+    dependence in the course.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Be able to reproduce the reduction to $Df(0)=I$ and the definition of
+    $T_y$ from memory. Everything else in the proof is estimate-chasing that
+    follows once those two lines are on the page.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · One-sentence statement</div>
+      <p>State the theorem in one sentence.</p>
+      <details><summary>Guide</summary><div class="ans">A $C^1$ map with
+      invertible derivative at a point is a $C^1$ bijection between some
+      neighbourhood of that point and some neighbourhood of its
+      image.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · The contraction in disguise</div>
+      <p>Which map is contracted in the proof, and why does its fixed point solve
+      the equation?</p>
+      <details><summary>Guide</summary><div class="ans">$T_y(x)=x+Df(a)^{-1}(y-f(x))$.
+      Its fixed points are exactly the $x$ with $f(x)=y$, since
+      $Df(a)^{-1}$ is injective.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Failure of globality</div>
+      <p>Give the standard map with invertible derivative everywhere that is not
+      injective.</p>
+      <details><summary>Guide</summary><div class="ans">
+      $(x,y)\mapsto(e^x\cos y,e^x\sin y)$, periodic in $y$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Dimension mismatch</div>
+      <p>What replaces the theorem when the derivative has constant rank but is
+      not square?</p>
+      <details><summary>Guide</summary><div class="ans">The rank theorem: near
+      such a point $f$ looks, in suitable local coordinates on both sides, like a
+      linear projection followed by an inclusion.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit05.html">← Unit 05<span>Chain rule &amp; higher derivatives</span></a>
+  <a href="unit07.html">Unit 07 →<span>The implicit function theorem</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

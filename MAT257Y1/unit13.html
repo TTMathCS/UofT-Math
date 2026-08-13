@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 13 — Manifolds in R^n · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 13</div>
+<div class="unit-no reveal">Unit 13 · Analysis II</div>
+<h1 class="ch-title reveal">Manifolds in $\mathbb{R}^n$</h1>
+<p class="ch-intro reveal">A $k$-manifold is a subset of $\mathbb{R}^n$ that
+looks locally like $\mathbb{R}^k$. Three definitions &mdash; local graph, local
+parametrisation, regular level set &mdash; describe the same thing, and the
+implicit function theorem is what proves it. Once orientation is added, a
+$k$-form can be integrated over a $k$-manifold, and the last piece of Stokes'
+theorem is in place.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Give the three equivalent definitions and move between them.</li>
+    <li>Compute a tangent space as an image or as a kernel.</li>
+    <li>Say what an orientation is and when a manifold admits one.</li>
+    <li>Define $\int_M\omega$ using charts and a partition of unity, and check it
+    is well defined.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Spheres, tori, configuration spaces of linkages and solution sets of
+    equations are not vector spaces, but calculus still needs to run on them.
+    Local flatness is the minimum assumption that makes derivatives and integrals
+    meaningful, and it is exactly what the definition captures.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>The state space of a robot arm is a torus; the space of rotations is a
+    three-manifold; constraint surfaces in optimisation are level sets. Numerical
+    methods that stay on a manifold &mdash; geodesic optimisers, Lie group
+    integrators &mdash; are written directly in this language.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Riemann proposed manifolds in 1854; Whitney proved in 1936 that any
+    abstract manifold embeds in some $\mathbb{R}^n$, which is why the concrete
+    definition used here loses no generality. Classifying manifolds is open in
+    dimension four and solved in every other dimension.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Three equivalent definitions</h3>
+  <div class="box def"><div class="bl">Definition <b>$k$-manifold</b></div>
+    <p>$M\subseteq\mathbb{R}^n$ is a <em>$k$-dimensional $C^r$ manifold</em> if
+    each $p\in M$ has an open neighbourhood $W$ in $\mathbb{R}^n$ for which one
+    (hence all) of the following holds:</p>
+    <div class="step"><em>Graph.</em> After permuting coordinates,
+    $M\cap W=\{(x,g(x))\}$ for a $C^r$ map $g$ from an open subset of
+    $\mathbb{R}^k$ to $\mathbb{R}^{n-k}$.</div>
+    <div class="step"><em>Parametrisation.</em> There is an open
+    $U\subseteq\mathbb{R}^k$ and a $C^r$ map $\alpha:U\to\mathbb{R}^n$ that is a
+    homeomorphism onto $M\cap W$ with $D\alpha$ of rank $k$ everywhere.</div>
+    <div class="step"><em>Level set.</em> There is a $C^r$ map
+    $F:W\to\mathbb{R}^{n-k}$ with $M\cap W=F^{-1}(0)$ and $JF$ of rank $n-k$
+    throughout.</div></div>
+  <div class="box eg"><div class="bl">Proof <b>Why they agree</b></div>
+    <div class="step">Graph gives parametrisation: take
+    $\alpha(x)=(x,g(x))$, whose derivative has an identity block and so rank
+    $k$.</div>
+    <div class="step">Graph gives level set: take $F(x,y)=y-g(x)$, whose Jacobian
+    contains an identity block of size $n-k$.</div>
+    <div class="step">Level set gives graph: that is exactly the implicit
+    function theorem of Unit 7.</div>
+    <div class="step">Parametrisation gives graph: $D\alpha$ has rank $k$, so
+    some $k$ rows are independent; the inverse function theorem applied to those
+    $k$ components makes them local coordinates, and the rest become functions of
+    them. &#8718;</div>
+    <p>Each of the two big theorems from the middle of the course is used once.
+    This is the payoff for Units 6 and 7.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The sphere three ways</b></div>
+    <p>$S^2\subseteq\mathbb{R}^3$: as a level set, $F(x)=\|x\|^2-1$ with
+    $\nabla F=2x\ne0$ on $S^2$; as graphs, six hemispherical caps
+    $z=\pm\sqrt{1-x^2-y^2}$ and their permutations; as parametrisations,
+    spherical coordinates on the complement of a meridian. No single chart covers
+    it, and that is typical rather than exceptional.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Not a manifold</b></div>
+    <p>The cone $z^2=x^2+y^2$ fails at the apex: no neighbourhood of it is a
+    graph over any pair of coordinates in a $C^1$ way. Removing one point repairs
+    it. Similarly the union of the two axes in $\mathbb{R}^2$ fails at the
+    crossing, where the set is locally two lines rather than one.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Tangent spaces and manifolds with boundary</h3>
+  <div class="box def"><div class="bl">Definition <b>Tangent space</b></div>
+    <p>$T_pM$ is the set of $\gamma'(0)$ over $C^1$ curves $\gamma$ in $M$ with
+    $\gamma(0)=p$. It is a $k$-dimensional subspace, computable two ways:</p>
+    <div class="step">$T_pM=\operatorname{im}D\alpha(u)$ for a parametrisation
+    $\alpha$ with $\alpha(u)=p$;</div>
+    <div class="step">$T_pM=\ker JF(p)$ for a defining map $F$.</div>
+    <p>Image of the parametrisation, kernel of the constraint. Which is easier
+    depends on how $M$ was handed to you.</p></div>
+  <div class="box def"><div class="bl">Definition <b>Manifold with boundary</b></div>
+    <p>Allow charts modelled on the half space
+    $H^k=\{u\in\mathbb{R}^k:u_k\ge0\}$. Points mapping to $u_k=0$ form the
+    <em>boundary</em> $\partial M$, which is itself a manifold of dimension
+    $k-1$, and it is empty or has no boundary of its own &mdash;
+    $\partial(\partial M)=\emptyset$. That fact is the geometric half of
+    $d^2=0$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Boundaries</b></div>
+    <p>The closed unit ball in $\mathbb{R}^3$ is a $3$-manifold with boundary
+    $S^2$. The closed upper hemisphere is a $2$-manifold with boundary the
+    equator. $S^2$ itself has no boundary, which is why the manifold boundary and
+    the topological boundary of a set must not be confused: as a subset of
+    $\mathbb{R}^3$, $S^2$ equals its topological boundary.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Orientation and integration</h3>
+  <div class="box def"><div class="bl">Definition <b>Orientation</b></div>
+    <p>An <em>orientation</em> of a $k$-manifold is a continuous choice of
+    orientation of each tangent space &mdash; equivalently, an atlas of charts
+    whose transition maps all have positive Jacobian determinant. A manifold
+    admitting one is <em>orientable</em>.</p>
+    <p>Equivalently again: an orientation is a nowhere-vanishing $k$-form on
+    $M$, called a volume form. Existence of such a form is the cleanest test.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The M&ouml;bius band</b></div>
+    <p>Transport a chosen normal once around the core circle of a M&ouml;bius
+    band and it comes back reversed. No continuous choice exists, so the band is
+    not orientable, and no integral of a $2$-form over it can be defined. The
+    Klein bottle is the closed example.</p></div>
+  <div class="box def"><div class="bl">Definition <b>The integral of a form</b></div>
+    <p>For an oriented $k$-manifold $M$ and a $k$-form $\omega$ supported inside
+    one orientation-preserving chart $\alpha:U\to M$,</p>
+    <div class="step">$\displaystyle\int_M\omega=\int_U\alpha^{*}\omega,$</div>
+    <p>the right side being an ordinary integral of a function over
+    $U\subseteq\mathbb{R}^k$. In general, take a partition of unity
+    $\{\rho_i\}$ subordinate to a cover by charts and set
+    $\int_M\omega=\sum_i\int_M\rho_i\omega$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>It is well defined</b></div>
+    <p>Two orientation-preserving charts differ by a transition map $\varphi$
+    with $\det J\varphi&gt;0$. Pulling back a top form multiplies by
+    $\det J\varphi$ (Unit 11), and the change of variables formula (Unit 10)
+    divides by $|\det J\varphi|$. Positivity makes the two cancel exactly.
+    Independence of the partition of unity follows from bilinearity and local
+    finiteness. &#8718;</p>
+    <p>This single computation is why orientation is a hypothesis and not a
+    convenience: with $\det J\varphi&lt;0$ allowed, the two charts would give
+    answers differing in sign.</p></div>
+  <div class="checkpoint"><b>Every tool in the course meets here.</b>
+    Charts come from the implicit function theorem, the gluing comes from
+    partitions of unity, the consistency comes from change of variables, and the
+    integrand comes from the exterior algebra. Nothing in the definition of
+    $\int_M\omega$ is new; it is all assembly.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Confusing the manifold boundary with the topological boundary of a
+  subset of $\mathbb{R}^n$. For $S^2$ they are completely different.<br>
+  &bull; Assuming a parametrisation covers the whole manifold. Compact manifolds
+  usually need several charts.<br>
+  &bull; Forgetting the rank condition on $D\alpha$. Without it,
+  $t\mapsto(t^2,t^3)$ parametrises a cusp.<br>
+  &bull; Integrating a $j$-form over a $k$-manifold with $j\ne k$. Only matching
+  degrees make sense.<br>
+  &bull; Assuming orientability. The M&ouml;bius band is the standing
+  counterexample and it is not exotic.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Level set check</div>
+      <p>Show the torus $(\sqrt{x^2+y^2}-2)^2+z^2=1$ is a $2$-manifold.</p>
+      <details><summary>Solution</summary><div class="ans">Let $F$ be the left
+      side minus $1$. Away from the $z$-axis, $F$ is smooth and
+      $\nabla F\ne0$ on the level set: the $z$-component is $2z$ and the radial
+      component is $2(\sqrt{x^2+y^2}-2)$, and both vanish only when
+      $\sqrt{x^2+y^2}=2$ and $z=0$, which is not on the surface. Rank $1$
+      throughout, so it is a $2$-manifold.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Tangent plane</div>
+      <p>Find $T_pS^2$ at $p=(0,0,1)$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\ker\nabla F(p)$ with $\nabla F=2p=(0,0,2)$, so the tangent space is the
+      $xy$-plane.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Rank matters</div>
+      <p>Why is $t\mapsto(t^2,t^3)$ not a manifold parametrisation?</p>
+      <details><summary>Solution</summary><div class="ans">Its derivative
+      $(2t,3t^2)$ vanishes at $t=0$, so the rank condition fails there. The image
+      has a cusp at the origin and is not a $1$-manifold.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Graph of anything smooth</div>
+      <p>Show the graph of any $C^1$ map
+      $g:\mathbb{R}^k\to\mathbb{R}^{n-k}$ is a $k$-manifold.</p>
+      <details><summary>Solution</summary><div class="ans">It is globally a
+      graph, which is the first definition with a single chart. Alternatively
+      $F(x,y)=y-g(x)$ has full rank everywhere.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Orthogonal matrices</div>
+      <p>Show $O(n)=\{A:A^{T}A=I\}$ is a manifold and find its
+      dimension.</p>
+      <details><summary>Solution</summary><div class="ans">$F(A)=A^{T}A-I$ maps
+      into the symmetric matrices, of dimension $n(n+1)/2$. Its derivative
+      $H\mapsto A^{T}H+H^{T}A$ is surjective onto the symmetric matrices at each
+      $A\in O(n)$: given symmetric $S$, take $H=\tfrac12AS$. So $O(n)$ has
+      dimension $n^2-n(n+1)/2=n(n-1)/2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Boundary of a boundary</div>
+      <p>Why is $\partial(\partial M)$ empty?</p>
+      <details><summary>Solution</summary><div class="ans">Near a boundary point
+      the manifold looks like $H^k$, and $\partial H^k$ is a copy of
+      $\mathbb{R}^{k-1}$, which has no boundary. The claim is local and this is
+      the local picture.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Integrating over a circle</div>
+      <p>Compute $\int_{S^1}(-y\,dx+x\,dy)$ with the counterclockwise
+      orientation.</p>
+      <details><summary>Solution</summary><div class="ans">Parametrise by
+      $\alpha(t)=(\cos t,\sin t)$ on $[0,2\pi]$. The pullback is
+      $(\sin^2t+\cos^2t)\,dt=dt$, so the integral is $2\pi$. This is the angle
+      form from Unit 12, and the answer is why it is not exact.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Orientability by volume form</div>
+      <p>Exhibit a nowhere-zero $2$-form on $S^2$.</p>
+      <details><summary>Solution</summary><div class="ans">Restrict
+      $\omega=x\,dy\wedge dz+y\,dz\wedge dx+z\,dx\wedge dy$ to $S^2$. On a
+      tangent basis it evaluates to the determinant with the outward normal $p$,
+      which is nonzero since $\|p\|=1$. So $S^2$ is
+      orientable.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Three definitions.</strong> Graph, parametrisation, level set,
+    and the proofs that they coincide.</li>
+    <li><strong>Tangent space.</strong> As an image and as a kernel.</li>
+    <li><strong>Boundary.</strong> Half-space charts and
+    $\partial(\partial M)=\emptyset$.</li>
+    <li><strong>Orientation and integration.</strong> Positive transition
+    determinants, charts plus partition of unity, well-definedness.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak defines manifolds through the local diffeomorphism condition and
+    moves fast; Munkres separates the three characterisations and proves the
+    equivalences in detail. Match the syllabus for which definition is
+    primary.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Implicit and inverse function theorems give the equivalence of the three
+    definitions. Change of variables plus positive transition determinants make
+    $\int_M\omega$ well defined. Unit 14 pairs it with $d$ and the boundary.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every surface you meet, write down a defining $F$, a parametrisation, and
+    the tangent space computed both ways. When the two tangent spaces agree you
+    have understood the equivalence rather than memorised it.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Which theorem</div>
+      <p>Which theorem proves level sets are locally graphs?</p>
+      <details><summary>Guide</summary><div class="ans">The implicit function
+      theorem, applied where the Jacobian has full rank.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Two formulas for one space</div>
+      <p>Give the tangent space as image and as kernel.</p>
+      <details><summary>Guide</summary><div class="ans">
+      $\operatorname{im}D\alpha$ for a parametrisation, $\ker JF$ for a defining
+      map.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Orientation test</div>
+      <p>What is the cleanest criterion for orientability?</p>
+      <details><summary>Guide</summary><div class="ans">Existence of a
+      nowhere-vanishing top-degree form on the manifold.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Why partitions of unity</div>
+      <p>Why is a partition of unity needed to define $\int_M\omega$?</p>
+      <details><summary>Guide</summary><div class="ans">Because one chart rarely
+      covers $M$. The partition splits $\omega$ into chart-sized pieces whose
+      integrals add, independently of the splitting chosen.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit12.html">← Unit 12<span>The exterior derivative</span></a>
+  <a href="unit14.html">Unit 14 →<span>Stokes' theorem</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

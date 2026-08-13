@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 4 — The Derivative as a Linear Map · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 4</div>
+<div class="unit-no reveal">Unit 4 · Analysis II</div>
+<h1 class="ch-title reveal">The Derivative as a Linear Map</h1>
+<p class="ch-intro reveal">In one variable the derivative is a number, and the
+number happens to be the slope of the best linear approximation. In $n$
+variables the number is gone and only the approximation survives. The
+derivative of $f$ at $a$ is the linear map that fits $f$ best near $a$, and
+every theorem in the next five units is a statement about that map.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State differentiability as a limit that says "the error is $o(\|h\|)$".</li>
+    <li>Show the derivative is unique, and that it forces continuity.</li>
+    <li>Compute the Jacobian matrix and know when it represents a derivative.</li>
+    <li>Give the standard example where all partials exist and $f$ is still
+    not differentiable.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Partial derivatives are easy to compute and prove almost nothing. They
+    look along $n$ directions and say nothing about the other infinitely many.
+    The linear-map definition is the one that supports a chain rule, an inverse
+    function theorem, and integration on manifolds.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every gradient-based optimiser, every Newton step, and every backward pass
+    in a neural network is this definition applied numerically. Automatic
+    differentiation propagates linear maps, not numbers, which is exactly why it
+    composes.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Fr&eacute;chet gave this definition in 1911, and it works verbatim in
+    infinite-dimensional normed spaces, which is where it is now mostly used. The
+    weaker G&acirc;teaux derivative &mdash; directional derivatives in every
+    direction &mdash; came from the same period and is genuinely weaker: the two
+    disagree on functions you meet in this unit.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The definition</h3>
+  <div class="box def"><div class="bl">Definition <b>Differentiable at a point</b></div>
+    <p>Let $A\subseteq\mathbb{R}^n$ be open, $f:A\to\mathbb{R}^m$, and $a\in A$.
+    Then $f$ is <em>differentiable at</em> $a$ if there is a linear map
+    $Df(a):\mathbb{R}^n\to\mathbb{R}^m$ with</p>
+    <div class="step">$\displaystyle\lim_{h\to0}
+    \frac{\|f(a+h)-f(a)-Df(a)h\|}{\|h\|}=0.$</div>
+    <p>Equivalently $f(a+h)=f(a)+Df(a)h+r(h)$ where the remainder satisfies
+    $r(h)/\|h\|\to0$. The whole content is that the error vanishes <em>faster
+    than linearly</em>, not merely that it vanishes.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>The derivative is unique</b></div>
+    <p>At most one linear map can satisfy the definition.</p>
+    <div class="step">Suppose $L$ and $L'$ both work. Then
+    $\|(L-L')h\|/\|h\|\to0$ as $h\to0$.</div>
+    <div class="step">Fix a unit vector $u$ and put $h=tu$ with $t\to0$. By
+    linearity $\|(L-L')(tu)\|/\|tu\|=\|(L-L')u\|$, a constant in $t$. A constant
+    with limit $0$ is $0$.</div>
+    <div class="step">So $(L-L')u=0$ for every unit $u$, hence $L=L'$. &#8718;</div>
+  </div>
+  <div class="box thm"><div class="bl">Theorem <b>Differentiable implies continuous</b></div>
+    <p>$f(a+h)-f(a)=Df(a)h+r(h)$. As $h\to0$ the first term goes to $0$ because
+    linear maps on $\mathbb{R}^n$ are bounded, and the second goes to $0$ because
+    it is $o(\|h\|)$.</p></div>
+  <div class="checkpoint"><b>Read the definition as a claim about error.</b>
+    "Differentiable" means the affine function $x\mapsto f(a)+Df(a)(x-a)$ is not
+    just close to $f$ near $a$ &mdash; it is close to <em>first order</em>. That
+    single word is what all the later theorems consume.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Directional and partial derivatives</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>The <em>directional derivative</em> of $f$ at $a$ in direction $u$ is</p>
+    <div class="step">$\displaystyle D_uf(a)=\lim_{t\to0}\frac{f(a+tu)-f(a)}{t},$</div>
+    <p>when the limit exists. Taking $u=e_j$, the $j$-th standard basis vector,
+    gives the <em>partial derivative</em> $\partial f/\partial x_j$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Differentiability determines all directional derivatives</b></div>
+    <p>If $f$ is differentiable at $a$ then $D_uf(a)=Df(a)u$ for every $u$.</p>
+    <p>Put $h=tu$ in the definition: $f(a+tu)-f(a)=tDf(a)u+r(tu)$, and
+    $r(tu)/t\to0$ since $\|tu\|=|t|\,\|u\|$. Divide by $t$ and let $t\to0$.</p>
+    <p>So the derivative, a single linear map, packages every directional
+    derivative at once. The converse is false, which is the point of the next
+    box.</p></div>
+  <div class="box eg"><div class="bl">Example <b>All directional derivatives, still not differentiable</b></div>
+    <p>Let $f(x,y)=\dfrac{x^2y}{x^4+y^2}$ for $(x,y)\ne(0,0)$ and $f(0,0)=0$.</p>
+    <div class="step">Along the line $(tu_1,tu_2)$ with $u_2\ne0$ the quotient is
+    $t u_1^2u_2/(t^2u_1^4+u_2^2)\to0$, and along the $x$-axis it is $0$. So every
+    directional derivative at the origin exists and equals $0$.</div>
+    <div class="step">If $f$ were differentiable, $Df(0)$ would have to be the
+    zero map, so $f(h)/\|h\|\to0$. But along the parabola $y=x^2$ we get
+    $f(x,x^2)=\tfrac12$ for all $x\ne0$, so $f$ is not even continuous at the
+    origin.</div>
+    <p>Directional derivatives probe along straight lines. Differentiability is a
+    statement about <em>every</em> approach, including curved ones.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The Jacobian matrix</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Write $f=(f_1,\dots,f_m)$. The <em>Jacobian matrix</em> of $f$ at $a$ is
+    the $m\times n$ matrix $Jf(a)$ with entries
+    $\partial f_i/\partial x_j$ evaluated at $a$.</p>
+    <p>If $f$ is differentiable at $a$, then $Jf(a)$ is the matrix of $Df(a)$ in
+    the standard bases: column $j$ is $Df(a)e_j=\partial f/\partial x_j$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Continuous partials imply differentiable</b></div>
+    <p>If every $\partial f_i/\partial x_j$ exists on a neighbourhood of $a$ and
+    is continuous at $a$, then $f$ is differentiable at $a$. Such an $f$ is
+    called $C^1$.</p>
+    <div class="step">It is enough to prove it for $m=1$, since $f$ is
+    differentiable exactly when each $f_i$ is.</div>
+    <div class="step">Walk from $a$ to $a+h$ one coordinate at a time, giving
+    $n$ increments. Each is a one-variable change, so the mean value theorem
+    supplies a point $c_j$ on that segment with increment
+    $\partial f/\partial x_j(c_j)\,h_j$.</div>
+    <div class="step">Summing,
+    $f(a+h)-f(a)=\sum_j\partial f/\partial x_j(c_j)\,h_j$. Subtract
+    $\sum_j\partial f/\partial x_j(a)h_j$; each term is bounded by
+    $|h_j|$ times the oscillation of a partial, which continuity makes small.
+    Divide by $\|h\|\ge|h_j|$ and the quotient tends to $0$. &#8718;</div>
+    <p>This is the theorem you actually use. Nobody verifies the limit
+    definition on a formula built from elementary functions &mdash; they check
+    the partials are continuous and stop.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A Jacobian</b></div>
+    <p>For $f(x,y)=(x^2-y^2,\,2xy)$, the Jacobian is
+    $\begin{smallmatrix}2x&amp;-2y\\2y&amp;2x\end{smallmatrix}$ with determinant
+    $4(x^2+y^2)$. The partials are polynomials, so $f$ is $C^1$ everywhere and
+    the matrix genuinely is $Df$. Note the determinant vanishes only at the
+    origin &mdash; a fact Unit 6 will turn into a statement about
+    invertibility.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The gradient, and what it is not</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For $f:A\to\mathbb{R}$, the <em>gradient</em> $\nabla f(a)$ is the vector
+    representing the linear functional $Df(a)$ through the dot product:
+    $Df(a)h=\nabla f(a)\cdot h$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Steepest ascent</b></div>
+    <p>Among unit vectors $u$, the directional derivative
+    $D_uf(a)=\nabla f(a)\cdot u$ is largest when $u$ points along $\nabla f(a)$,
+    by Cauchy&ndash;Schwarz, and the largest value is $\|\nabla f(a)\|$.</p></div>
+  <div class="checkpoint"><b>The gradient is a translation, not the derivative.</b>
+    $Df(a)$ is a map $\mathbb{R}^n\to\mathbb{R}$; $\nabla f(a)$ is a vector in
+    $\mathbb{R}^n$. They correspond only because the dot product identifies a
+    space with its dual. On a manifold with no preferred inner product that
+    identification is not free, which is why Unit 11 works with the linear
+    functional directly and calls it a $1$-form.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Calling the matrix of partials "the derivative" without checking
+  differentiability. The matrix can exist when the derivative does not.<br>
+  &bull; Testing differentiability along lines only. Curved approaches such as
+  $y=x^2$ break examples that all lines pass.<br>
+  &bull; Forgetting the domain must be open. At a boundary point the limit
+  $h\to0$ has no room to run in every direction.<br>
+  &bull; Writing $\nabla f$ for vector-valued $f$. The gradient is defined for
+  scalar-valued functions; the general object is the Jacobian.<br>
+  &bull; Treating $C^1$ as equivalent to differentiable. It is strictly
+  stronger: $x^2\sin(1/x)$ is differentiable everywhere with a discontinuous
+  derivative.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Straight from the definition</div>
+      <p>Show $f(x,y)=x^2+3xy$ is differentiable at $(1,2)$ and find
+      $Df(1,2)$.</p>
+      <details><summary>Solution</summary><div class="ans">Partials are
+      $2x+3y=8$ and $3x=3$, so the candidate is $L(h,k)=8h+3k$. Expanding,
+      $f(1+h,2+k)-f(1,2)-8h-3k=h^2+3hk$, and
+      $|h^2+3hk|\le4\|(h,k)\|^2$, which over $\|(h,k)\|$ tends to $0$. So
+      $Df(1,2)=(8,3)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Linear maps</div>
+      <p>What is the derivative of a linear map $L$ at any point?</p>
+      <details><summary>Answer</summary><div class="ans">$L$ itself.
+      $L(a+h)-L(a)-Lh=0$ exactly, so the remainder is not merely $o(\|h\|)$ but
+      identically zero. Affine maps behave the same way, with the constant
+      dropping out.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Partials exist, function is wild</div>
+      <p>Let $f(x,y)=1$ when $xy=0$ and $f(x,y)=0$ otherwise. What are the
+      partials at the origin? Is $f$ differentiable there?</p>
+      <details><summary>Solution</summary><div class="ans">Both partials are $0$:
+      along either axis $f$ is constantly $1$. But $f$ is discontinuous at the
+      origin, so not differentiable. Partials see only the axes, and this
+      function was designed to be constant exactly there.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Norm at the origin</div>
+      <p>Is $f(x)=\|x\|$ differentiable at $0$ in $\mathbb{R}^n$? Elsewhere?</p>
+      <details><summary>Solution</summary><div class="ans">Not at $0$: the
+      directional derivative in direction $u$ is $\|u\|=1$ and in direction $-u$
+      is also $1$, but a linear map must give opposite signs. Away from $0$ it is
+      differentiable with $\nabla f(x)=x/\|x\|$, since
+      $\|x\|=\sqrt{x\cdot x}$ is a composition of smooth maps where
+      $x\ne0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Products</div>
+      <p>Prove $f(x,y)=xy$ from $\mathbb{R}^2$ to $\mathbb{R}$ is differentiable
+      with $Df(a,b)(h,k)=bh+ak$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $(a+h)(b+k)-ab-bh-ak=hk$, and $|hk|\le\tfrac12\|(h,k)\|^2$, so the
+      remainder over $\|(h,k)\|$ tends to $0$. This one computation is the
+      product rule.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Continuity is not enough</div>
+      <p>Give a continuous function on $\mathbb{R}^2$ that is not differentiable
+      at the origin, with all partials existing there.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $f(x,y)=\dfrac{x^3}{x^2+y^2}$, with $f(0,0)=0$. It is continuous since
+      $|f|\le\|(x,y)\|$. Partials at the origin are $1$ and $0$, so the candidate
+      derivative is $(h,k)\mapsto h$; but $f(h,h)-h=-h/2$, which over
+      $\|(h,h)\|$ does not tend to $0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · $C^1$ is strictly stronger</div>
+      <p>Show $f(x)=x^2\sin(1/x)$, $f(0)=0$, is differentiable everywhere but not
+      $C^1$.</p>
+      <details><summary>Solution</summary><div class="ans">At $0$ the difference
+      quotient is $x\sin(1/x)\to0$, so $f'(0)=0$. For $x\ne0$,
+      $f'(x)=2x\sin(1/x)-\cos(1/x)$, which oscillates between roughly $-1$ and
+      $1$ as $x\to0$ and so has no limit. The derivative exists everywhere and is
+      discontinuous at one point.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Jacobian of polar coordinates</div>
+      <p>For $g(r,\theta)=(r\cos\theta,\,r\sin\theta)$, compute $Jg$ and its
+      determinant.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $Jg=\begin{smallmatrix}\cos\theta&amp;-r\sin\theta\\
+      \sin\theta&amp;r\cos\theta\end{smallmatrix}$ with determinant $r$. It
+      vanishes exactly at $r=0$, the one place polar coordinates fail to be a
+      local change of variables &mdash; and the factor $r$ that appears in every
+      polar integral in Unit 10.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>The definition.</strong> The $o(\|h\|)$ condition, uniqueness,
+    and why differentiability forces continuity.</li>
+    <li><strong>Directional and partial derivatives.</strong> Recovered from
+    $Df(a)$, but not sufficient to produce it.</li>
+    <li><strong>The Jacobian.</strong> Matrix of partials; the $C^1$ criterion
+    that makes it a derivative.</li>
+    <li><strong>Gradient.</strong> Steepest ascent, and the inner product that
+    turns a functional into a vector.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak's <em>Calculus on Manifolds</em> opens its differentiation chapter
+    with exactly this definition; Munkres' <em>Analysis on Manifolds</em> spends
+    considerably longer on the $C^1$ theorem and is worth reading first. Check
+    the assigned text against the current syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Differentiable gives continuous and gives all directional derivatives.
+    Continuous partials give differentiable. Neither arrow reverses, and the
+    counterexamples in this unit are the standard proofs of that.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For each example you meet, decide which of the four boxes it lives in:
+    partials exist or not, differentiable or not. The interesting functions are
+    the ones in the "partials but no derivative" corner, and you should be able
+    to write one down from memory.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · What is being approximated</div>
+      <p>State in one sentence what $Df(a)$ approximates.</p>
+      <details><summary>Guide</summary><div class="ans">The increment
+      $f(a+h)-f(a)$, to within an error small compared with $\|h\|$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Why openness</div>
+      <p>Why must the domain be open in the definition?</p>
+      <details><summary>Guide</summary><div class="ans">The limit $h\to0$ must
+      range over all directions. At a boundary point some directions leave the
+      domain and the quotient is undefined there.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Bilinear maps</div>
+      <p>What is the derivative of a bilinear map $B$ at $(a,b)$?</p>
+      <details><summary>Guide</summary><div class="ans">$(h,k)\mapsto
+      B(a,k)+B(h,b)$. The leftover $B(h,k)$ is quadratic in $\|(h,k)\|$, hence
+      $o(\|(h,k)\|)$. Practice 5 is the case $B(x,y)=xy$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Where the gradient points</div>
+      <p>Why is $\nabla f(a)$ perpendicular to the level set through $a$?</p>
+      <details><summary>Guide</summary><div class="ans">Along a curve inside the
+      level set, $f$ is constant, so the chain rule gives
+      $\nabla f(a)\cdot\gamma'(0)=0$. Every tangent direction to the level set
+      arises this way.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit03.html">← Unit 03<span>Continuity &amp; connectedness</span></a>
+  <a href="unit05.html">Unit 05 →<span>Chain rule &amp; higher derivatives</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

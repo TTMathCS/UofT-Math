@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 14 — Stokes' Theorem · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 14</div>
+<div class="unit-no reveal">Unit 14 · Analysis II</div>
+<h1 class="ch-title reveal">Stokes' Theorem</h1>
+<p class="ch-intro reveal">Everything in the course converges on one line:
+$\int_Md\omega=\int_{\partial M}\omega$. Differentiating inside and taking the
+boundary outside are adjoint operations. The fundamental theorem of calculus,
+Green's theorem, the divergence theorem and classical Stokes are the cases
+$k=1,2,3$ in various dimensions &mdash; not analogues of each other, but the
+same statement.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the theorem with all its hypotheses and the induced boundary
+    orientation.</li>
+    <li>Follow the proof: reduce by a partition of unity, then compute on a half
+    space.</li>
+    <li>Recover each classical theorem as a special case.</li>
+    <li>Use the theorem to prove a form is not exact, and to compute integrals
+    that resist direct evaluation.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Conservation laws are boundary statements: what accumulates inside equals
+    what crosses the surface. Writing that once, in a form independent of
+    dimension and coordinates, is what makes it usable in general relativity, in
+    fluid mechanics, and on any manifold at all.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Gauss's law, the continuity equation, circulation and lift, and every
+    finite-volume numerical scheme are applications. The discrete analogue &mdash;
+    exterior calculus on meshes &mdash; is used to build numerical methods that
+    conserve exactly rather than approximately.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>The classical version appeared on an 1854 Cambridge exam set by Stokes,
+    who had it in a letter from Kelvin. Cartan's general form arrived around
+    1899. The pairing between $d$ and $\partial$ became de Rham cohomology, and
+    the same duality reappears in Poincar&eacute; duality and in Hodge
+    theory.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Statement</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Stokes</b></div>
+    <p>Let $M$ be a compact oriented $k$-manifold with boundary, and let
+    $\omega$ be a $C^1$ $(k-1)$-form on $M$. Give $\partial M$ the induced
+    orientation. Then</p>
+    <div class="step">$\displaystyle\int_Md\omega=\int_{\partial M}\omega.$</div>
+    <p>If $\partial M=\emptyset$, the right side is zero, so every exact form
+    integrates to zero over a closed manifold. Compactness can be traded for
+    compact support; without one of the two the theorem is false, as
+    $\int_0^\infty$ of a derivative shows.</p></div>
+  <div class="box def"><div class="bl">Definition <b>Induced orientation</b></div>
+    <p>At a boundary point, choose an outward-pointing vector $\nu$. A basis
+    $(v_1,\dots,v_{k-1})$ of the boundary tangent space is positively oriented
+    when $(\nu,v_1,\dots,v_{k-1})$ is positively oriented in $M$. "Outward normal
+    first" is the whole rule, and every sign convention in classical vector
+    calculus is a consequence of it.</p>
+    <p>In dimension one this says the right endpoint counts $+$ and the left
+    endpoint $-$, which is where the $F(b)-F(a)$ of the fundamental theorem comes
+    from.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>Two steps</b></div>
+    <div class="step"><em>Localise.</em> Take a partition of unity $\{\rho_i\}$
+    subordinate to a cover of $M$ by charts. Both sides are linear in $\omega$
+    and $\omega=\sum_i\rho_i\omega$, a finite sum by compactness, so it suffices
+    to prove the theorem for a form supported inside one chart.</div>
+    <div class="step"><em>Compute on the model.</em> In a chart the problem
+    becomes a form with compact support on the half space $H^k$. Write
+    $\omega=\sum_j a_j\,dx_1\wedge\dots\widehat{dx_j}\dots\wedge dx_k$, the hat
+    meaning omit. Then
+    $d\omega=\sum_j(-1)^{j-1}\dfrac{\partial a_j}{\partial x_j}
+    dx_1\wedge\dots\wedge dx_k$.</div>
+    <div class="step">Integrate by Fubini, doing the $x_j$ integral first. For
+    $j&lt;k$ the variable ranges over all of $\mathbb{R}$ and compact support
+    makes the inner integral zero. For $j=k$ it ranges over $[0,\infty)$ and the
+    fundamental theorem leaves the boundary value at $x_k=0$.</div>
+    <div class="step">What survives is exactly $\int_{\partial H^k}\omega$, with
+    the sign matching the outward-normal-first convention. &#8718;</div>
+    <p>Under the machinery, the theorem is the one-variable fundamental theorem
+    applied once, in the right coordinate, with everything else arranged so that
+    only that one application is needed.</p></div>
+  <div class="checkpoint"><b>The two halves are $d^2=0$ and
+    $\partial\partial=\emptyset$.</b> Apply Stokes twice:
+    $\int_Md(d\omega)=\int_{\partial M}d\omega=\int_{\partial\partial M}\omega$.
+    The left side is zero because $d^2=0$ and the right because a boundary has no
+    boundary. The algebra and the geometry are the same fact.</div>
+</div>
+
+<div class="block reveal">
+  <h3>The classical theorems</h3>
+  <div class="box eg"><div class="bl">Case <b>Fundamental theorem of calculus</b></div>
+    <p>$M=[a,b]$, a $1$-manifold with boundary $\{a,b\}$; $\omega=f$ a $0$-form.
+    Then $d\omega=f'\,dx$ and the induced orientation gives $b$ the sign $+$ and
+    $a$ the sign $-$:</p>
+    <div class="step">$\displaystyle\int_a^bf'\,dx=f(b)-f(a).$</div></div>
+  <div class="box eg"><div class="bl">Case <b>Green's theorem</b></div>
+    <p>$M\subseteq\mathbb{R}^2$ a region with boundary curve, $\omega=P\,dx+Q\,dy$.
+    Then $d\omega=(Q_x-P_y)\,dx\wedge dy$ and</p>
+    <div class="step">$\displaystyle\iint_M(Q_x-P_y)\,dA=\oint_{\partial M}
+    P\,dx+Q\,dy,$</div>
+    <p>with the boundary traversed counterclockwise &mdash; which is what the
+    outward-normal-first rule produces in the plane.</p></div>
+  <div class="box eg"><div class="bl">Case <b>Divergence theorem</b></div>
+    <p>$M\subseteq\mathbb{R}^3$ a solid region, $\omega$ the $2$-form
+    corresponding to a field $F$. Then $d\omega=(\nabla\cdot F)\,dV$ and</p>
+    <div class="step">$\displaystyle\iiint_M\nabla\cdot F\,dV
+    =\iint_{\partial M}F\cdot n\,dS,$</div>
+    <p>with $n$ the outward normal &mdash; again straight from the induced
+    orientation.</p></div>
+  <div class="box eg"><div class="bl">Case <b>Classical Stokes</b></div>
+    <p>$M$ an oriented surface in $\mathbb{R}^3$ with boundary curve, $\omega$
+    the $1$-form of a field $F$. Then $d\omega$ corresponds to
+    $\nabla\times F$ and</p>
+    <div class="step">$\displaystyle\iint_M(\nabla\times F)\cdot n\,dS
+    =\oint_{\partial M}F\cdot dr,$</div>
+    <p>the curve oriented by the right-hand rule relative to $n$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Four theorems, one proof</b></div>
+    <p>Each case above is the same identity with $k=1,2,3$ and the appropriate
+    degree of $\omega$. The apparent differences &mdash; a difference of values,
+    a line integral, a flux integral &mdash; come entirely from the vector
+    calculus dictionary of Unit 12 and the coincidence
+    $\binom32=3$ in $\mathbb{R}^3$.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Using it</h3>
+  <div class="box eg"><div class="bl">Example <b>Area from the boundary</b></div>
+    <p>Taking $\omega=\tfrac12(-y\,dx+x\,dy)$ gives $d\omega=dx\wedge dy$, so the
+    area of a plane region equals $\tfrac12\oint(-y\,dx+x\,dy)$ over its
+    boundary. That integral is what a planimeter mechanically evaluates, and it
+    is the shoelace formula in the polygonal case.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Proving non-exactness</b></div>
+    <p>The angle form $\omega$ on the punctured plane is closed with
+    $\oint_{S^1}\omega=2\pi$. If it were exact, say $\omega=df$, then Stokes on
+    the circle &mdash; a closed manifold &mdash; would give $\oint\omega=0$.
+    So it is not exact, and the obstruction is the puncture.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Closed manifolds kill exact forms</b></div>
+    <p>$\int_{S^2}d\eta=0$ for every $1$-form $\eta$, since $S^2$ has no
+    boundary. Consequently the volume form of $S^2$, whose integral is $4\pi$, is
+    not exact &mdash; a statement about the topology of the sphere obtained by
+    pure calculus.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Where cohomology starts</b></div>
+    <p>Define $H^k_{dR}(M)$ as closed $k$-forms modulo exact ones. Stokes says
+    integration over a closed $k$-manifold is well defined on this quotient, and
+    de Rham's theorem says the quotient computes the topology of $M$. That is the
+    doorway out of this course, into MAT327H1 and beyond.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Getting the induced orientation wrong. Outward normal first, every
+  time; the classical right-hand rules are consequences, not extra
+  conventions.<br>
+  &bull; Dropping compactness or compact support. Both sides can then be
+  infinite or unequal.<br>
+  &bull; Applying it across a singularity. The punctured disc is not a manifold
+  with boundary containing the puncture, which is exactly why the angle form
+  survives.<br>
+  &bull; Mismatching degrees. On a $k$-manifold, $\omega$ must be a
+  $(k-1)$-form.<br>
+  &bull; Concluding a form is exact because its integral vanishes over one
+  cycle. It must vanish over every cycle, and even then the conclusion needs de
+  Rham.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Green by hand</div>
+      <p>Evaluate $\oint_C(y^2\,dx+x^2\,dy)$ over the unit circle
+      counterclockwise, two ways.</p>
+      <details><summary>Solution</summary><div class="ans">By Green:
+      $\iint(2x-2y)\,dA=0$ by symmetry of the disc. Directly: substitute
+      $x=\cos t$, $y=\sin t$ and both integrals over $[0,2\pi]$
+      vanish.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Flux through a sphere</div>
+      <p>Compute the flux of $F=(x,y,z)$ out of the unit sphere.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\nabla\cdot F=3$, so the flux is $3\cdot\tfrac43\pi=4\pi$. Directly,
+      $F\cdot n=1$ on the sphere and the area is $4\pi$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Area of an ellipse from its boundary</div>
+      <p>Use the boundary formula on $x=a\cos t$, $y=b\sin t$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\tfrac12\oint(-y\,dx+x\,dy)=\tfrac12\int_0^{2\pi}ab\,dt=\pi ab$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Closed surface, zero curl flux</div>
+      <p>Why is $\iint_{S}(\nabla\times F)\cdot n\,dS=0$ for a closed surface
+      $S$?</p>
+      <details><summary>Solution</summary><div class="ans">$S$ has no boundary,
+      so Stokes gives zero. Equivalently the field is a curl, hence divergence
+      free, and the divergence theorem gives zero.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Two surfaces, one boundary</div>
+      <p>Two surfaces share a boundary curve. Compare the flux of a curl through
+      each.</p>
+      <details><summary>Solution</summary><div class="ans">Equal, provided the
+      orientations induce the same orientation on the curve. Both equal the line
+      integral. Their difference is a closed surface, over which the flux of a
+      curl is zero.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · The winding obstruction</div>
+      <p>Let $C$ be a loop in the punctured plane winding twice around the
+      origin. Compute $\oint_C\omega$ for the angle form.</p>
+      <details><summary>Solution</summary><div class="ans">$4\pi$. The integral
+      counts $2\pi$ per turn, and Stokes on the region between $C$ and two small
+      circles shows the answer depends only on the winding
+      number.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Integration by parts</div>
+      <p>Derive $\int_M d\alpha\wedge\beta
+      =\int_{\partial M}\alpha\wedge\beta-(-1)^{k}\int_M\alpha\wedge d\beta$ for
+      a $k$-form $\alpha$.</p>
+      <details><summary>Solution</summary><div class="ans">Apply Stokes to
+      $\alpha\wedge\beta$ and expand $d(\alpha\wedge\beta)$ with the graded
+      Leibniz rule. This is the differential-forms version of integration by
+      parts, and the source of every Green's identity.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Volume from the boundary</div>
+      <p>Show the volume of a solid $M\subseteq\mathbb{R}^3$ equals
+      $\tfrac13\iint_{\partial M}(x,y,z)\cdot n\,dS$.</p>
+      <details><summary>Solution</summary><div class="ans">The position field has
+      divergence $3$, so the divergence theorem gives
+      $3\,\mathrm{vol}(M)$ for the flux. Divide by three. This is how volumes are
+      computed from triangulated surface meshes.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Statement.</strong> Hypotheses, induced orientation, and the
+    closed-manifold corollary.</li>
+    <li><strong>Proof.</strong> Partition of unity reduction, then the half-space
+    computation via Fubini.</li>
+    <li><strong>Classical cases.</strong> Fundamental theorem, Green, divergence,
+    classical Stokes.</li>
+    <li><strong>Applications.</strong> Area and volume from boundaries,
+    non-exactness, the start of de Rham cohomology.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak's final chapter states and proves the theorem in the form given
+    here, then derives the classical cases; Munkres does the same at greater
+    length with more attention to the orientation bookkeeping. Confirm which
+    classical cases the syllabus expects you to derive.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Manifolds and orientation give the left and right sides meaning.
+    Partitions of unity reduce the proof to a chart. The fundamental theorem of
+    calculus finishes it. $d^2=0$ paired with
+    $\partial\partial=\emptyset$ is what the whole framework was built to
+    express.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Derive each classical theorem from the general statement, on paper, without
+    looking. If the orientation conventions come out right you have understood
+    the induced orientation; if they do not, that is the part to
+    reread.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · The statement</div>
+      <p>Write Stokes' theorem in one line and say what each side means.</p>
+      <details><summary>Guide</summary><div class="ans">
+      $\int_Md\omega=\int_{\partial M}\omega$: the total derivative over the
+      region equals the form's total over the edge.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Orientation rule</div>
+      <p>State the induced boundary orientation.</p>
+      <details><summary>Guide</summary><div class="ans">Outward normal first,
+      then a positively oriented basis of the boundary tangent
+      space.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · No boundary</div>
+      <p>What does the theorem give on a closed manifold?</p>
+      <details><summary>Guide</summary><div class="ans">$\int_Md\omega=0$: exact
+      forms integrate to zero, which is how non-exactness gets
+      proved.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Duality</div>
+      <p>Which two facts are dual to each other under the theorem?</p>
+      <details><summary>Guide</summary><div class="ans">$d^2=0$ and
+      $\partial\partial=\emptyset$. Applying Stokes twice turns either one into
+      the other.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit13.html">← Unit 13<span>Manifolds in $\mathbb{R}^n$</span></a>
+  <a class="n" href="index.html">Back to Index<span>All chapters</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

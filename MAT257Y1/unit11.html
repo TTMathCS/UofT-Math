@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 11 — Tensors &amp; Differential Forms · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 11</div>
+<div class="unit-no reveal">Unit 11 · Analysis II</div>
+<h1 class="ch-title reveal">Tensors &amp; Differential Forms</h1>
+<p class="ch-intro reveal">A $k$-form is the thing you can integrate over a
+$k$-dimensional piece of space. That is the whole motivation, and everything
+technical here &mdash; alternating multilinear maps, the wedge product, the
+$dx_{i_1}\wedge\dots\wedge dx_{i_k}$ basis &mdash; exists because signed volume
+is antisymmetric and forms are built to be exactly as antisymmetric as volume
+is.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Define multilinear and alternating tensors and count the dimension of
+    each space.</li>
+    <li>Compute wedge products and use $\omega\wedge\eta=(-1)^{kl}\eta\wedge\omega$.</li>
+    <li>Write any $k$-form in the standard basis and read off its
+    components.</li>
+    <li>Pull a form back along a map and see why the Jacobian determinant
+    appears.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Vector fields, line integrals, surface integrals and flux are four
+    notations for two ideas, and in $\mathbb{R}^3$ the coincidence that a plane
+    has a normal line hides the difference. Forms separate them, and the reward
+    is that grad, curl, div and the three classical integral theorems collapse
+    into one operator and one theorem.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Maxwell's equations are two equations in the language of forms. Symplectic
+    forms carry all of Hamiltonian mechanics; work and flux are $1$- and
+    $2$-forms; thermodynamic relations are statements about which forms are
+    exact.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Grassmann invented the exterior algebra in 1844 and was ignored for
+    decades. &Eacute;lie Cartan turned it into the calculus of differential forms
+    around 1900, and de Rham's theorem in 1931 showed the forms on a space see
+    its topology &mdash; the beginning of a subject the last two units only
+    touch.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Multilinear and alternating tensors</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>$k$-tensor</em> on $V=\mathbb{R}^n$ is a map
+    $T:V^k\to\mathbb{R}$ linear in each slot with the others fixed. It is
+    <em>alternating</em> if swapping any two arguments flips the sign:
+    $T(\dots,v,\dots,w,\dots)=-T(\dots,w,\dots,v,\dots)$. Write $\Lambda^k(V)$
+    for the alternating $k$-tensors.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Immediate consequences</b></div>
+    <div class="step">An alternating $T$ vanishes whenever two arguments are
+    equal &mdash; swap them and get $T=-T$.</div>
+    <div class="step">Hence $T$ vanishes on any linearly dependent list.</div>
+    <div class="step">Hence $\Lambda^k(V)=0$ for $k&gt;n$: in $\mathbb{R}^n$ any
+    $k&gt;n$ vectors are dependent.</div></div>
+  <div class="box thm"><div class="bl">Theorem <b>Dimension</b></div>
+    <p>$\dim\Lambda^k(\mathbb{R}^n)=\binom{n}{k}$, with basis the
+    $dx_{i_1}\wedge\dots\wedge dx_{i_k}$ over increasing index tuples
+    $i_1&lt;\dots&lt;i_k$.</p>
+    <p>An alternating tensor is determined by its values on basis tuples, and
+    antisymmetry means only the increasing tuples carry independent information.
+    For $n=3$ the dimensions are $1,3,3,1$ &mdash; and the middle two both being
+    $3$ is the coincidence that lets $\mathbb{R}^3$ get away with vector calculus
+    for so long.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Determinant as a top form</b></div>
+    <p>$\det:(\mathbb{R}^n)^n\to\mathbb{R}$ is alternating and $n$-linear in its
+    columns. Since $\dim\Lambda^n(\mathbb{R}^n)=1$, every alternating $n$-tensor
+    is a scalar multiple of it. That one-dimensionality is the real content of
+    "the determinant is the unique normalised signed volume".</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The wedge product</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For $\omega\in\Lambda^k$ and $\eta\in\Lambda^l$, the wedge
+    $\omega\wedge\eta\in\Lambda^{k+l}$ is the alternation of the tensor product,
+    normalised so that</p>
+    <div class="step">$dx_{i_1}\wedge\dots\wedge dx_{i_k}(v_1,\dots,v_k)
+    =\det\big[(v_j)_{i_m}\big],$</div>
+    <p>the determinant of the $k\times k$ matrix of the chosen coordinates of the
+    chosen vectors. Different books insert different constants; only consistency
+    matters.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Algebra of the wedge</b></div>
+    <div class="step">Bilinear over $\mathbb{R}$, and associative:
+    $(\omega\wedge\eta)\wedge\zeta=\omega\wedge(\eta\wedge\zeta)$.</div>
+    <div class="step">Graded commutative:
+    $\omega\wedge\eta=(-1)^{kl}\eta\wedge\omega$.</div>
+    <div class="step">Consequently $\omega\wedge\omega=0$ whenever $k$ is
+    odd &mdash; in particular $dx\wedge dx=0$ &mdash; but not in general for even
+    $k$.</div></div>
+  <div class="box eg"><div class="bl">Example <b>A wedge in $\mathbb{R}^3$</b></div>
+    <p>With $\omega=dx+2dy$ and $\eta=3dy-dz$:</p>
+    <div class="step">$\omega\wedge\eta=3\,dx\wedge dy-dx\wedge dz
+    +6\,dy\wedge dy-2\,dy\wedge dz
+    =3\,dx\wedge dy-dx\wedge dz-2\,dy\wedge dz.$</div>
+    <p>The $dy\wedge dy$ term dies. Expand mechanically, then delete repeats and
+    sort indices, picking up a sign for each transposition.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Even degree need not square to zero</b></div>
+    <p>In $\mathbb{R}^4$, $\omega=dx_1\wedge dx_2+dx_3\wedge dx_4$ gives
+    $\omega\wedge\omega=2\,dx_1\wedge dx_2\wedge dx_3\wedge dx_4\ne0$. This
+    $\omega$ is the standard symplectic form and the non-vanishing of its powers
+    is why phase-space volume is preserved.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Differential forms and pullback</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>A <em>differential $k$-form</em> on an open $U\subseteq\mathbb{R}^n$ is a
+    map assigning to each $x\in U$ an element $\omega(x)\in\Lambda^k$. In
+    coordinates,</p>
+    <div class="step">$\omega=\sum_{i_1&lt;\dots&lt;i_k}
+    a_{i_1\dots i_k}(x)\,dx_{i_1}\wedge\dots\wedge dx_{i_k},$</div>
+    <p>and $\omega$ is smooth when its coefficient functions are. A $0$-form is
+    just a function.</p></div>
+  <div class="box def"><div class="bl">Definition <b>Pullback</b></div>
+    <p>For a smooth $g:U\to V$ and a $k$-form $\omega$ on $V$, the
+    <em>pullback</em> $g^{*}\omega$ is the $k$-form on $U$ given by</p>
+    <div class="step">$(g^{*}\omega)(x)(v_1,\dots,v_k)
+    =\omega(g(x))\big(Dg(x)v_1,\dots,Dg(x)v_k\big).$</div>
+    <p>Push the vectors forward with the derivative, then evaluate. Forms pull
+    back along maps while vector fields do not push forward &mdash; the main
+    practical reason forms are the better object.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Pullback is algebraic</b></div>
+    <div class="step">$g^{*}(\omega\wedge\eta)=g^{*}\omega\wedge g^{*}\eta$.</div>
+    <div class="step">$g^{*}(df)=d(f\circ g)$, so on functions pullback is just
+    composition.</div>
+    <div class="step">$(h\circ g)^{*}=g^{*}\circ h^{*}$: pullback reverses
+    order.</div>
+    <p>In practice this means: to pull back, substitute $y_i=g_i(x)$ everywhere
+    and expand $dy_i=\sum_j(\partial g_i/\partial x_j)\,dx_j$ using the wedge
+    rules.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Top forms and the determinant</b></div>
+    <p>For $g:U\to\mathbb{R}^n$ with $U\subseteq\mathbb{R}^n$,</p>
+    <div class="step">$g^{*}(dy_1\wedge\dots\wedge dy_n)
+    =\det Jg(x)\;dx_1\wedge\dots\wedge dx_n.$</div>
+    <p>The change of variables factor was a determinant all along, and here it
+    appears <em>with its sign</em>. Unit 10 needed an absolute value only because
+    unoriented volume had nowhere to record orientation.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Pulling back to polar coordinates</b></div>
+    <p>With $x=r\cos\theta$, $y=r\sin\theta$:
+    $dx=\cos\theta\,dr-r\sin\theta\,d\theta$ and
+    $dy=\sin\theta\,dr+r\cos\theta\,d\theta$. Wedging,</p>
+    <div class="step">$dx\wedge dy=(\cos^2\theta+\sin^2\theta)\,r\,
+    dr\wedge d\theta=r\,dr\wedge d\theta.$</div>
+    <p>Three lines of algebra reproduce the polar area element, no geometric
+    picture required.</p></div>
+  <div class="checkpoint"><b>Forms are integrands, not functions.</b>
+    A $k$-form eats $k$ vectors and returns the signed $k$-volume they span,
+    weighted by position. That is precisely the data you need to integrate over a
+    $k$-dimensional surface, which is why the definition looks the way it
+    does.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Forgetting antisymmetry when sorting indices.
+  $dy\wedge dx=-dx\wedge dy$, always.<br>
+  &bull; Writing $\omega\wedge\omega=0$ for even-degree forms. It holds for odd
+  degree only.<br>
+  &bull; Mixing normalisation conventions for the wedge between sources. Pick
+  one and check your text.<br>
+  &bull; Treating a $2$-form in $\mathbb{R}^3$ as a vector field without saying
+  which identification you used. It works in $\mathbb{R}^3$ and nowhere
+  else.<br>
+  &bull; Trying to push a form forward. Forms pull back; only diffeomorphisms let
+  you go the other way, via the inverse.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Dimension count</div>
+      <p>What is $\dim\Lambda^2(\mathbb{R}^4)$, and list a basis.</p>
+      <details><summary>Solution</summary><div class="ans">$\binom42=6$, with
+      basis $dx_1\wedge dx_2$, $dx_1\wedge dx_3$, $dx_1\wedge dx_4$,
+      $dx_2\wedge dx_3$, $dx_2\wedge dx_4$,
+      $dx_3\wedge dx_4$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · A wedge</div>
+      <p>Compute $(dx+dy)\wedge(dy+dz)$ in $\mathbb{R}^3$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $dx\wedge dy+dx\wedge dz+dy\wedge dy+dy\wedge dz
+      =dx\wedge dy+dx\wedge dz+dy\wedge dz$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Evaluating a $2$-form</div>
+      <p>Evaluate $dx\wedge dy$ on $v=(1,2,0)$ and $w=(3,1,0)$.</p>
+      <details><summary>Solution</summary><div class="ans">The determinant of
+      $\begin{smallmatrix}1&amp;3\\2&amp;1\end{smallmatrix}$, which is $-5$. That
+      is the signed area of the parallelogram they span in the
+      $xy$-plane.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Pullback</div>
+      <p>Pull back $x\,dy$ under $g(u,v)=(u^2,uv)$.</p>
+      <details><summary>Solution</summary><div class="ans">$x=u^2$ and
+      $dy=v\,du+u\,dv$, so $g^{*}(x\,dy)=u^2v\,du+u^3\,dv$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Dependence detector</div>
+      <p>Show $v_1\wedge\dots\wedge v_k=0$ exactly when the $v_i$ are
+      dependent.</p>
+      <details><summary>Solution</summary><div class="ans">If dependent, expand
+      one vector in the others; every resulting term repeats a factor and dies.
+      If independent, extend to a basis; the wedge is then a nonzero multiple of
+      a basis element of $\Lambda^k$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Graded commutativity</div>
+      <p>For a $1$-form $\alpha$ and a $2$-form $\beta$, relate
+      $\alpha\wedge\beta$ and $\beta\wedge\alpha$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $(-1)^{1\cdot2}=1$, so they are equal. Odd against odd is the only case
+      that produces a sign flip.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Volume form of a sphere</div>
+      <p>Pull $dx\wedge dy\wedge dz$ back to spherical coordinates.</p>
+      <details><summary>Solution</summary><div class="ans">The determinant of the
+      spherical Jacobian is $\rho^2\sin\varphi$, so the pullback is
+      $\rho^2\sin\varphi\,d\rho\wedge d\varphi\wedge d\theta$. Same factor as
+      Unit 10, now derived algebraically.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Forms versus vector fields</div>
+      <p>Why is the identification of $2$-forms with vector fields special to
+      $\mathbb{R}^3$?</p>
+      <details><summary>Solution</summary><div class="ans">It needs
+      $\binom{n}{2}=n$, which holds only for $n=3$. In $\mathbb{R}^4$ there are
+      six independent $2$-forms and four coordinate directions, so no such
+      identification exists.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Alternating tensors.</strong> Definition, vanishing on dependent
+    lists, dimension $\binom{n}{k}$.</li>
+    <li><strong>Wedge product.</strong> Associativity, graded commutativity, and
+    computation in the standard basis.</li>
+    <li><strong>Differential forms.</strong> Coefficient functions, smoothness,
+    $0$-forms as functions.</li>
+    <li><strong>Pullback.</strong> Definition, algebraic rules, and the
+    determinant identity for top forms.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak's chapter on integration on chains develops tensors and forms
+    compactly; Munkres gives a longer treatment of the alternating algebra first.
+    Conventions for the wedge constant differ between texts &mdash; match the
+    syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Antisymmetry gives the dimension count, which makes top forms
+    one-dimensional, which makes the determinant appear under pullback, which is
+    where the change of variables factor comes from. Unit 12 adds the derivative
+    of a form, and Unit 14 integrates it.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Compute wedge products by hand until the sign bookkeeping is automatic.
+    Almost every lost mark in the last third of the course is a sign, and there
+    is no way to get fast at it except repetition.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why alternating</div>
+      <p>Why insist on antisymmetry?</p>
+      <details><summary>Guide</summary><div class="ans">Because signed volume is
+      antisymmetric: swapping two edges of a parallelepiped reverses its
+      orientation.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Top degree</div>
+      <p>Why is $\Lambda^n(\mathbb{R}^n)$ one-dimensional?</p>
+      <details><summary>Guide</summary><div class="ans">$\binom nn=1$. Every
+      alternating $n$-tensor is a multiple of the determinant.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Direction of transport</div>
+      <p>Do forms push forward or pull back?</p>
+      <details><summary>Guide</summary><div class="ans">Pull back, along any
+      smooth map. Pushing forward needs an inverse.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Where the Jacobian comes from</div>
+      <p>Why does $\det Jg$ appear when pulling back a top form?</p>
+      <details><summary>Guide</summary><div class="ans">Because the top exterior
+      power is one-dimensional, so $Dg$ acts on it by a single scalar, and that
+      scalar is by definition the determinant.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit10.html">← Unit 10<span>Partitions of unity &amp; change of variables</span></a>
+  <a href="unit12.html">Unit 12 →<span>The exterior derivative</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 9 — The Riemann Integral in R^n · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 9</div>
+<div class="unit-no reveal">Unit 9 · Analysis II</div>
+<h1 class="ch-title reveal">The Riemann Integral in $\mathbb{R}^n$</h1>
+<p class="ch-intro reveal">Integration over a box is the one-variable
+construction with rectangles replaced by boxes and nothing else changed.
+The two real questions are which functions are integrable &mdash; answered
+exactly, by a measure-zero condition &mdash; and how to compute the thing,
+answered by Fubini, which reduces an $n$-dimensional integral to $n$
+one-dimensional ones.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Build upper and lower sums over a partition of a box and define the
+    integral.</li>
+    <li>State and use the Riemann criterion, and prove continuous functions are
+    integrable.</li>
+    <li>Define measure zero and content zero, and say precisely how they
+    differ.</li>
+    <li>State Lebesgue's criterion and Fubini's theorem, and use both.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Volume, mass, probability and flux are all integrals over regions rather
+    than intervals. The construction has to come before any of the theorems about
+    changing variables or integrating over surfaces, and its limits are what
+    motivated the Lebesgue theory that follows in MAT357H1.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Every numerical quadrature scheme approximates exactly these sums, and the
+    convergence rate depends on the smoothness assumptions this unit isolates.
+    Monte Carlo integration exists because the box-partition approach costs
+    exponentially in $n$.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Riemann's 1854 definition was already known to be too fragile by the
+    1890s: pointwise limits of integrable functions need not be integrable.
+    Lebesgue's 1902 thesis fixed it, and the criterion in this unit &mdash;
+    integrable exactly when the discontinuities have measure zero &mdash; is the
+    precise statement of what Riemann's theory can and cannot see.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Building the integral</h3>
+  <div class="box def"><div class="bl">Definition <b>Boxes, partitions, sums</b></div>
+    <p>A <em>closed box</em> is $Q=[a_1,b_1]\times\dots\times[a_n,b_n]$ with
+    volume $v(Q)=\prod_i(b_i-a_i)$. A <em>partition</em> $P$ of $Q$ subdivides
+    each edge, cutting $Q$ into finitely many subboxes $R$. For bounded
+    $f:Q\to\mathbb{R}$ set</p>
+    <div class="step">$L(f,P)=\sum_R\Big(\inf_Rf\Big)v(R),\qquad
+    U(f,P)=\sum_R\Big(\sup_Rf\Big)v(R).$</div>
+    <p>$f$ is <em>integrable</em> if $\sup_PL(f,P)=\inf_PU(f,P)$, and the common
+    value is $\int_Qf$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Riemann criterion</b></div>
+    <p>A bounded $f$ is integrable on $Q$ iff for every $\varepsilon&gt;0$ there
+    is a partition $P$ with $U(f,P)-L(f,P)&lt;\varepsilon$.</p>
+    <p>Refining a partition raises $L$ and lowers $U$, and any two partitions have
+    a common refinement, so every lower sum is at most every upper sum. The
+    supremum and infimum therefore exist with $\sup L\le\inf U$, and the criterion
+    is exactly the statement that no gap remains.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Continuous implies integrable</b></div>
+    <p>A continuous $f$ on a closed box $Q$ is integrable.</p>
+    <div class="step">$Q$ is compact, so $f$ is uniformly continuous by Unit 3:
+    given $\varepsilon$ there is $\delta$ with
+    $|f(x)-f(y)|&lt;\varepsilon/v(Q)$ whenever $\|x-y\|&lt;\delta$.</div>
+    <div class="step">Take a partition with every subbox of diameter below
+    $\delta$. On each, $\sup-\inf\le\varepsilon/v(Q)$, so
+    $U-L\le\varepsilon$. &#8718;</div>
+    <p>Uniform continuity is the load-bearing step, and it is the reason
+    compactness had to come first.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Measure zero and content zero</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$A\subseteq\mathbb{R}^n$ has <em>measure zero</em> if for every
+    $\varepsilon&gt;0$ it can be covered by <em>countably</em> many boxes of total
+    volume less than $\varepsilon$. It has <em>content zero</em> if
+    <em>finitely</em> many suffice.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>How they differ</b></div>
+    <div class="step">Content zero implies measure zero, trivially.</div>
+    <div class="step">$\mathbb{Q}\cap[0,1]$ has measure zero &mdash; enumerate it
+    and put an interval of length $\varepsilon2^{-k}$ around the $k$-th point
+    &mdash; but not content zero, since finitely many intervals covering a dense
+    set must cover $[0,1]$.</div>
+    <div class="step">For <em>compact</em> sets the two coincide: extract a
+    finite subcover from the countable one.</div></div>
+  <div class="box thm"><div class="bl">Theorem <b>Standard measure-zero sets</b></div>
+    <p>A countable union of measure-zero sets has measure zero (split
+    $\varepsilon$ as $\sum\varepsilon2^{-k}$). Any hyperplane, any graph of a
+    continuous function on a box, and any smooth surface of dimension less than
+    $n$ has measure zero in $\mathbb{R}^n$. A box of positive volume does
+    not.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Lebesgue's criterion</b></div>
+    <p>A bounded $f$ on a box $Q$ is Riemann integrable <em>if and only if</em>
+    its set of discontinuities has measure zero.</p>
+    <p>This is the sharp statement. It immediately gives: continuous functions
+    are integrable; functions with finitely or countably many jumps are
+    integrable; the indicator of $\mathbb{Q}\cap[0,1]$ is not, because it is
+    discontinuous everywhere.</p></div>
+  <div class="checkpoint"><b>Measure zero is about the discontinuities, not the
+    function values.</b> A function can be wildly discontinuous on a measure-zero
+    set and still integrate perfectly. What kills integrability is discontinuity
+    spread over a set of positive volume.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Integrating over more general sets, and Fubini</h3>
+  <div class="box def"><div class="bl">Definition <b>Jordan measurable</b></div>
+    <p>For a bounded $S\subseteq\mathbb{R}^n$, put $S$ inside a box $Q$ and
+    define $\int_Sf=\int_Qf\chi_S$, where $\chi_S$ is the indicator function. The
+    definition works when $f\chi_S$ is integrable, and by Lebesgue's criterion
+    that needs $\partial S$ to have measure zero. Such an $S$ is called
+    <em>Jordan measurable</em>, and $v(S)=\int_S1$ is its volume.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A set with no volume</b></div>
+    <p>$S=\mathbb{Q}^n\cap[0,1]^n$ has boundary all of $[0,1]^n$, which does not
+    have measure zero. So $\chi_S$ is not integrable and $S$ has no Jordan
+    volume, even though it is countable. Lebesgue measure assigns it $0$; this is
+    one of the gaps Riemann's theory leaves.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Fubini</b></div>
+    <p>Let $Q=A\times B$ with $A\subseteq\mathbb{R}^n$, $B\subseteq\mathbb{R}^m$
+    boxes, and let $f$ be integrable on $Q$. Then</p>
+    <div class="step">$\displaystyle\int_Qf=\int_A\left(\int_Bf(x,y)\,dy\right)dx,$</div>
+    <p>where the inner integral is interpreted as a lower or upper integral at
+    the (measure-zero set of) $x$ where $y\mapsto f(x,y)$ fails to be integrable.
+    If $f$ is continuous no such care is needed and the two iterated orders
+    agree.</p>
+    <p>The proof partitions $Q$ as a product of partitions of $A$ and $B$, and
+    observes that the upper and lower sums factor. Everything else is
+    bookkeeping.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Why the caveat exists</b></div>
+    <p>Both iterated integrals can exist and differ when $f$ is not integrable on
+    the product. The standard example on $[0,1]^2$ is
+    $f(x,y)=\dfrac{x^2-y^2}{(x^2+y^2)^2}$, for which the two orders give
+    $\pi/4$ and $-\pi/4$. Fubini needs integrability on the product as a
+    hypothesis, not as a conclusion.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Region between graphs</b></div>
+    <p>For $S=\{(x,y):a\le x\le b,\ \varphi(x)\le y\le\psi(x)\}$ with $\varphi$,
+    $\psi$ continuous, the boundary is two graphs and two segments, all of
+    measure zero, so $S$ is Jordan measurable and</p>
+    <div class="step">$\displaystyle\int_Sf=\int_a^b\int_{\varphi(x)}^{\psi(x)}
+    f(x,y)\,dy\,dx.$</div>
+    <p>This is the "type I region" recipe from first-year calculus, now with a
+    reason attached.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Confusing measure zero with content zero. They differ exactly for
+  non-compact sets, and $\mathbb{Q}\cap[0,1]$ is the example.<br>
+  &bull; Using Fubini without knowing $f$ is integrable on the product. Equality
+  of iterated integrals is the conclusion, not the hypothesis.<br>
+  &bull; Assuming every bounded set has a volume. It needs a measure-zero
+  boundary.<br>
+  &bull; Thinking countable implies content zero. The rationals are countable and
+  dense.<br>
+  &bull; Forgetting that changing $f$ on a measure-zero set changes neither
+  integrability nor the integral.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Dirichlet in two variables</div>
+      <p>Is $\chi_{\mathbb{Q}^2}$ integrable on $[0,1]^2$?</p>
+      <details><summary>Solution</summary><div class="ans">No. Every subbox
+      contains both rational and irrational points, so $L=0$ and $U=1$ for every
+      partition. The discontinuity set is the whole square, which does not have
+      measure zero.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · One bad line</div>
+      <p>Let $f=1$ on $[0,1]^2$ except $f=0$ on the segment $y=\tfrac12$. Is $f$
+      integrable, and what is the integral?</p>
+      <details><summary>Solution</summary><div class="ans">Integrable, with
+      integral $1$. The discontinuity set is a line segment, which has measure
+      zero in $\mathbb{R}^2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Swap the order</div>
+      <p>Evaluate $\int_0^1\int_x^1 e^{y^2}\,dy\,dx$.</p>
+      <details><summary>Solution</summary><div class="ans">The inner integral has
+      no elementary antiderivative. Swap: the region is
+      $0\le x\le y\le1$, so the integral is
+      $\int_0^1\int_0^ye^{y^2}dx\,dy=\int_0^1ye^{y^2}dy=\tfrac12(e-1)$. The
+      integrand is continuous on a compact region, so Fubini
+      applies.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Measure zero of a graph</div>
+      <p>Prove the graph of a continuous $g:[0,1]\to\mathbb{R}$ has measure zero
+      in $\mathbb{R}^2$.</p>
+      <details><summary>Solution</summary><div class="ans">$g$ is uniformly
+      continuous, so given $\varepsilon$ split $[0,1]$ into $N$ intervals on which
+      $g$ varies by less than $\varepsilon$. The graph sits in $N$ boxes of area
+      at most $(1/N)\varepsilon$, total $\varepsilon$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Volume of a simplex</div>
+      <p>Compute the volume of $\{x_i\ge0,\ x_1+x_2+x_3\le1\}$.</p>
+      <details><summary>Solution</summary><div class="ans">Iterate:
+      $\int_0^1\int_0^{1-x}\int_0^{1-x-y}dz\,dy\,dx=\tfrac16$. In general the
+      $n$-simplex has volume $1/n!$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Countable union</div>
+      <p>Show a countable union of measure-zero sets has measure zero.</p>
+      <details><summary>Solution</summary><div class="ans">Cover the $k$-th set
+      by countably many boxes of total volume below $\varepsilon2^{-k}$. The union
+      of all these families is countable with total volume below
+      $\varepsilon$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Integrable but nowhere continuous?</div>
+      <p>Can an integrable function be discontinuous on a dense set?</p>
+      <details><summary>Solution</summary><div class="ans">Yes. Thomae's
+      function &mdash; $1/q$ at rationals $p/q$ in lowest terms, $0$ at
+      irrationals &mdash; is discontinuous exactly on the rationals, a
+      measure-zero set, and integrates to $0$. Dense and measure zero are
+      compatible.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Boundary of a ball</div>
+      <p>Show the closed unit ball is Jordan measurable.</p>
+      <details><summary>Solution</summary><div class="ans">Its boundary is the
+      unit sphere, the union of two graphs
+      $z=\pm\sqrt{1-x^2-y^2}$ over the closed unit disc, each of measure zero by
+      the graph argument. So $\chi_S$ is discontinuous only on a measure-zero
+      set.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Construction.</strong> Boxes, partitions, upper and lower sums,
+    the Riemann criterion.</li>
+    <li><strong>Measure zero.</strong> Definition, contrast with content zero,
+    countable unions, graphs.</li>
+    <li><strong>Lebesgue's criterion.</strong> The exact characterisation of
+    Riemann integrability.</li>
+    <li><strong>Fubini.</strong> Iterated integrals, the integrability
+    hypothesis, and regions between graphs.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak's integration chapter is the reference for measure zero and
+    Lebesgue's criterion; Munkres develops the same material with more worked
+    detail on Jordan measurability. Verify the assigned text against the
+    syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Compactness gives uniform continuity gives integrability of continuous
+    functions. Lebesgue's criterion generalises that completely. Fubini turns the
+    definition into something computable, and Unit 10 adds the last tool, the
+    change of variables.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For each function you test, name its discontinuity set and decide whether it
+    has measure zero. That single question settles Riemann integrability, and
+    everything else in the unit is machinery for answering it.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Exact criterion</div>
+      <p>State exactly when a bounded function on a box is Riemann
+      integrable.</p>
+      <details><summary>Guide</summary><div class="ans">Exactly when its set of
+      discontinuities has measure zero.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Measure versus content</div>
+      <p>Give a set with measure zero but not content zero.</p>
+      <details><summary>Guide</summary><div class="ans">The rationals in
+      $[0,1]$: countable, hence measure zero, but dense, so no finite cover works.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Fubini's hypothesis</div>
+      <p>What must be assumed before equating iterated integrals?</p>
+      <details><summary>Guide</summary><div class="ans">Integrability of $f$ on
+      the product region. Existence of both iterated integrals is not
+      enough.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · When does a set have volume</div>
+      <p>Which bounded sets are Jordan measurable?</p>
+      <details><summary>Guide</summary><div class="ans">Those whose boundary has
+      measure zero.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit08.html">← Unit 08<span>Extrema &amp; Lagrange multipliers</span></a>
+  <a href="unit10.html">Unit 10 →<span>Partitions of unity &amp; change of variables</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

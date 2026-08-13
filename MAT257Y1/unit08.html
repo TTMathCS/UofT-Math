@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 8 — Extrema &amp; Lagrange Multipliers · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 8</div>
+<div class="unit-no reveal">Unit 8 · Analysis II</div>
+<h1 class="ch-title reveal">Extrema &amp; Lagrange Multipliers</h1>
+<p class="ch-intro reveal">Finding a maximum is two separate problems: locating
+the candidates, and deciding which is which. The first is a first-derivative
+condition, the second a second-derivative one, and both change shape when the
+domain carries a constraint. The multiplier method turns a constrained problem
+into an unconstrained one, and the implicit function theorem is what makes it
+legal.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Prove that an interior extremum forces $\nabla f=0$.</li>
+    <li>Classify a critical point from the definiteness of the Hessian, and know
+    when the test is silent.</li>
+    <li>Derive the Lagrange condition $\nabla f=\sum\lambda_i\nabla g_i$ from the
+    tangent space picture.</li>
+    <li>Run a full constrained optimisation on a compact set, boundary
+    included.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Optimisation under constraints is most of applied mathematics. Solving
+    the constraint and substituting works only when you can solve it; the
+    multiplier method never needs to, which is why it survives into settings
+    where the constraint is a differential equation.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Support vector machines, portfolio optimisation, maximum entropy
+    distributions, and the equilibrium conditions of thermodynamics are all
+    multiplier computations. The multiplier itself usually has a meaning: a
+    price, a temperature, a marginal cost.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Lagrange introduced the method in his 1788 <em>M&eacute;canique
+    analytique</em> as a way to handle mechanical constraints. The inequality
+    version &mdash; the Karush&ndash;Kuhn&ndash;Tucker conditions of the
+    1940s&ndash;50s &mdash; is the foundation of modern nonlinear programming and
+    is where the subject went next.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Unconstrained extrema</h3>
+  <div class="box thm"><div class="bl">Theorem <b>First-order condition</b></div>
+    <p>If $f$ is differentiable at an interior point $a$ of its domain and $a$ is
+    a local maximum or minimum, then $Df(a)=0$.</p>
+    <p>For each direction $u$, the function $t\mapsto f(a+tu)$ has an interior
+    extremum at $t=0$, so its one-variable derivative $Df(a)u$ vanishes. True for
+    every $u$, so $Df(a)=0$. Such an $a$ is called a <em>critical point</em>.</p></div>
+  <div class="box def"><div class="bl">Definition <b>Definiteness</b></div>
+    <p>A symmetric matrix $H$ is <em>positive definite</em> if $h^{T}Hh&gt;0$ for
+    all $h\ne0$, <em>negative definite</em> if the inequality reverses, and
+    <em>indefinite</em> if $h^{T}Hh$ takes both signs. By the spectral theorem
+    from MAT247H1, the sign pattern of the eigenvalues decides which.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Second-order test</b></div>
+    <p>Let $f$ be $C^2$ with $\nabla f(a)=0$.</p>
+    <div class="step">$Hf(a)$ positive definite gives a strict local minimum.</div>
+    <div class="step">$Hf(a)$ negative definite gives a strict local maximum.</div>
+    <div class="step">$Hf(a)$ indefinite gives a saddle: neither.</div>
+    <div class="step">$Hf(a)$ singular but semidefinite: no conclusion.</div>
+    <p>The proof is Taylor. With $\nabla f(a)=0$,
+    $f(a+h)-f(a)=\tfrac12h^{T}Hf(a)h+o(\|h\|^2)$. If $H$ is positive definite its
+    smallest eigenvalue $\mu&gt;0$ gives $h^{T}Hh\ge\mu\|h\|^2$, and for small
+    $h$ that beats the remainder. Indefinite: pick eigenvectors of opposite sign
+    and the two restrictions of $f$ go opposite ways.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The degenerate case is genuinely undecided</b></div>
+    <p>All of $x^4+y^4$, $-x^4-y^4$ and $x^4-y^4$ have zero gradient and zero
+    Hessian at the origin, and the origin is a minimum, a maximum and a saddle
+    respectively. When the Hessian is singular, the second-order test cannot
+    possibly decide, and you must look at $f$ itself.</p></div>
+  <div class="checkpoint"><b>In $\mathbb{R}^2$ use the discriminant.</b>
+    With $D=f_{xx}f_{yy}-f_{xy}^2$: $D&gt;0$ and $f_{xx}&gt;0$ is a minimum,
+    $D&gt;0$ and $f_{xx}&lt;0$ a maximum, $D&lt;0$ a saddle, $D=0$ no
+    information. It is the determinant and trace of a $2\times2$ symmetric matrix
+    in disguise.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Constrained extrema</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Lagrange multipliers</b></div>
+    <p>Let $f$ and $g_1,\dots,g_k$ be $C^1$ near $a$, let
+    $M=\{x:g_1(x)=\dots=g_k(x)=0\}$, and suppose the gradients
+    $\nabla g_1(a),\dots,\nabla g_k(a)$ are linearly independent. If $f$
+    restricted to $M$ has a local extremum at $a$, then there are scalars
+    $\lambda_1,\dots,\lambda_k$ with</p>
+    <div class="step">$\nabla f(a)=\lambda_1\nabla g_1(a)+\dots
+    +\lambda_k\nabla g_k(a).$</div></div>
+  <div class="box eg"><div class="bl">Proof <b>Via the tangent space</b></div>
+    <div class="step">Independence of the $\nabla g_i$ means $Jg(a)$ has rank
+    $k$, so by Unit 7 the set $M$ is near $a$ a graph, and its tangent space is
+    $T=\ker Jg(a)$.</div>
+    <div class="step">Take any $v\in T$. There is a $C^1$ curve $\gamma$ in $M$
+    with $\gamma(0)=a$ and $\gamma'(0)=v$ &mdash; run along the graph. Then
+    $f\circ\gamma$ has an extremum at $0$, so
+    $\nabla f(a)\cdot v=0$.</div>
+    <div class="step">So $\nabla f(a)$ annihilates $\ker Jg(a)$, which by linear
+    algebra means it lies in the row space of $Jg(a)$: a linear combination of
+    the $\nabla g_i$. &#8718;</div>
+    <p>The geometry in one line: at a constrained extremum the level set of $f$
+    is tangent to $M$, so their normals are parallel.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Largest product on a sphere</b></div>
+    <p>Maximise $f(x,y,z)=xyz$ on $x^2+y^2+z^2=3$. The condition
+    $\nabla f=\lambda\nabla g$ reads $yz=2\lambda x$, $xz=2\lambda y$,
+    $xy=2\lambda z$. Multiplying the three by $x,y,z$ and comparing gives
+    $x^2=y^2=z^2=1$, so the candidates are the eight points $(\pm1,\pm1,\pm1)$.
+    The maximum value is $1$, attained where an even number of coordinates are
+    negative.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The AM&ndash;GM inequality</b></div>
+    <p>Maximise $x_1\cdots x_n$ subject to $x_1+\dots+x_n=s$ with all
+    $x_i&gt;0$. The multiplier equations force all $x_i$ equal, so the maximum of
+    the product is $(s/n)^n$. Rearranged, that is exactly
+    $\sqrt[n]{x_1\cdots x_n}\le(x_1+\dots+x_n)/n$.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Global extrema on a compact set</h3>
+  <div class="box thm"><div class="bl">Method <b>Three places to look</b></div>
+    <p>A continuous $f$ on a compact $K$ attains its maximum, by Unit 3. To find
+    it:</p>
+    <div class="step">(1) Interior critical points: solve $\nabla f=0$ inside.</div>
+    <div class="step">(2) Boundary: parametrise it or run Lagrange with the
+    boundary equation as constraint.</div>
+    <div class="step">(3) Corners and edges where the boundary is not smooth, and
+    points where the rank condition fails. These carry no derivative test at all;
+    evaluate $f$ directly.</div>
+    <p>Then compare finitely many values. No second-order test is needed: the
+    extreme value theorem already promised the maximum exists, so the largest
+    candidate is it.</p></div>
+  <div class="box eg"><div class="bl">Example <b>On a square</b></div>
+    <p>Maximise $f(x,y)=x^2-y^2+2x$ on $[-1,1]^2$. Interior: $\nabla f=(2x+2,-2y)$
+    vanishes at $(-1,0)$, which is on the boundary, so there is no interior
+    critical point. Edges: on $x=1$, $f=3-y^2$ with maximum $3$ at $y=0$; on
+    $x=-1$, $f=-1-y^2$ with maximum $-1$; on $y=\pm1$, $f=x^2+2x-1$ with maximum
+    $2$ at $x=1$. Largest value $3$ at $(1,0)$.</p></div>
+  <div class="checkpoint"><b>Multipliers find candidates, not answers.</b>
+    The method produces necessary conditions. Deciding which candidate is the
+    maximum needs either compactness plus comparison, or a second-order
+    condition on the tangent space &mdash; the bordered Hessian test.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Applying the first-order condition at a boundary point. It holds at
+  interior points only; the maximum of $x$ on $[0,1]$ has nonzero
+  derivative.<br>
+  &bull; Concluding "saddle" from a singular Hessian. Singular means the test is
+  silent, not that the point is a saddle.<br>
+  &bull; Forgetting to check that the constraint gradients are independent.
+  Where they are dependent the multiplier equation can fail outright.<br>
+  &bull; Solving the multiplier equations and forgetting the constraint itself.
+  It is one of the equations of the system.<br>
+  &bull; Assuming a critical point exists. On a non-compact set $f$ may have no
+  extremum at all, and $e^x$ on $\mathbb{R}$ has neither.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Classify</div>
+      <p>Find and classify the critical points of $f(x,y)=x^3-3xy+y^3$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\nabla f=(3x^2-3y,\,-3x+3y^2)=0$ gives $y=x^2$ and $x=y^2$, so
+      $x^4=x$: $x=0$ or $x=1$. Points $(0,0)$ and $(1,1)$. The Hessian is
+      $\begin{smallmatrix}6x&amp;-3\\-3&amp;6y\end{smallmatrix}$, with
+      determinant $36xy-9$: at $(0,0)$ it is $-9&lt;0$, a saddle; at $(1,1)$ it is
+      $27&gt;0$ with $f_{xx}=6&gt;0$, a local minimum.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Closest point</div>
+      <p>Find the point of the plane $x+2y+3z=6$ nearest the origin.</p>
+      <details><summary>Solution</summary><div class="ans">Minimise
+      $\|x\|^2$ subject to the plane. $\nabla f=2(x,y,z)=\lambda(1,2,3)$, so
+      $(x,y,z)$ is a multiple of $(1,2,3)$; substituting into the constraint gives
+      $t\cdot14=6$, so the point is $\tfrac37(1,2,3)$ with distance
+      $6/\sqrt{14}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Two constraints</div>
+      <p>Maximise $x+y+z$ on the intersection of $x^2+y^2=1$ and $z=x+y$.</p>
+      <details><summary>Solution</summary><div class="ans">Substitute:
+      maximise $2(x+y)$ on the unit circle, which is
+      $2\sqrt2$ at $x=y=1/\sqrt2$, so $z=\sqrt2$. Multipliers give the same
+      answer; substitution is legitimate here because the second constraint
+      solves cleanly.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Degenerate Hessian</div>
+      <p>Classify the origin for $f(x,y)=x^2y^2$.</p>
+      <details><summary>Solution</summary><div class="ans">Gradient and Hessian
+      both vanish. But $f\ge0$ with $f(0,0)=0$, so the origin is a (non-strict)
+      global minimum. The test was silent; direct inspection
+      answered.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Rectangle in an ellipse</div>
+      <p>Find the largest-area axis-aligned rectangle inscribed in
+      $x^2/a^2+y^2/b^2=1$.</p>
+      <details><summary>Solution</summary><div class="ans">Maximise $4xy$ subject
+      to the ellipse. Multipliers give $x=a/\sqrt2$, $y=b/\sqrt2$, area $2ab$.
+      For a circle of radius $r$ that is $2r^2$, the inscribed
+      square.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Independence fails</div>
+      <p>Minimise $x$ on $\{y^2=x^3\}$ and explain why the multiplier equation
+      breaks.</p>
+      <details><summary>Solution</summary><div class="ans">The minimum is at the
+      origin, where $\nabla g=(-3x^2,2y)=(0,0)$ is not independent of anything.
+      The equation $\nabla f=\lambda\nabla g$ reads $(1,0)=\lambda(0,0)$, which
+      has no solution. The hypothesis failed, so the conclusion is not
+      available.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Meaning of the multiplier</div>
+      <p>If the constraint is $g(x)=c$, show $\lambda=dM/dc$ where $M(c)$ is the
+      constrained maximum value.</p>
+      <details><summary>Solution</summary><div class="ans">Let $x(c)$ be the
+      maximiser. Then $M(c)=f(x(c))$ and
+      $M'(c)=\nabla f\cdot x'(c)=\lambda\nabla g\cdot x'(c)$. Differentiating
+      $g(x(c))=c$ gives $\nabla g\cdot x'(c)=1$, so $M'(c)=\lambda$. The
+      multiplier is the shadow price of the constraint.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Extreme eigenvalues</div>
+      <p>Show the maximum of $x^{T}Ax$ on the unit sphere, for symmetric $A$, is
+      the largest eigenvalue.</p>
+      <details><summary>Solution</summary><div class="ans">Multipliers give
+      $2Ax=2\lambda x$, so critical points are unit eigenvectors and the value
+      there is $x^{T}Ax=\lambda$. The sphere is compact, so the maximum is
+      attained, and it is the largest eigenvalue. This is the variational
+      characterisation behind the spectral theorem.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>First-order condition.</strong> Interior extrema are critical
+    points; the boundary is excluded for a reason.</li>
+    <li><strong>Second-order test.</strong> Definiteness of the Hessian, the
+    $2\times2$ discriminant, and the degenerate case.</li>
+    <li><strong>Lagrange multipliers.</strong> Statement, the tangent space
+    proof, and the independence hypothesis.</li>
+    <li><strong>Global optimisation.</strong> Interior, boundary, corners, then
+    compare.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak treats maxima briefly and Lagrange multipliers as an exercise;
+    Munkres gives the tangent space argument in full. For the second-order
+    constrained test, look up the bordered Hessian in an optimisation text.
+    Confirm what the syllabus expects.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Implicit function theorem gives the tangent space, which gives Lagrange.
+    Taylor gives the second-order test. Extreme value theorem is what guarantees
+    the maximum you are hunting for exists at all.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Write every constrained problem twice: once by substitution, once by
+    multipliers. Where substitution is impossible you will see exactly what the
+    method is buying, and where it is possible you get a free
+    check.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why interior</div>
+      <p>Why does the first-order condition need an interior point?</p>
+      <details><summary>Guide</summary><div class="ans">The one-variable argument
+      needs to move in both directions along each line. At a boundary point one
+      direction leaves the domain.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Geometry of the multiplier</div>
+      <p>State the Lagrange condition geometrically.</p>
+      <details><summary>Guide</summary><div class="ans">At a constrained
+      extremum the level set of $f$ is tangent to the constraint set, so
+      $\nabla f$ is normal to the constraint set.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Silent test</div>
+      <p>When does the second-order test say nothing?</p>
+      <details><summary>Guide</summary><div class="ans">When the Hessian is
+      singular. Then the quadratic term does not dominate the remainder in every
+      direction.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Existence first</div>
+      <p>Why check compactness before hunting for a maximum?</p>
+      <details><summary>Guide</summary><div class="ans">Without it the maximum
+      may not exist, and a list of critical points then proves nothing. With it,
+      the largest candidate value is the answer.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit07.html">← Unit 07<span>The implicit function theorem</span></a>
+  <a href="unit09.html">Unit 09 →<span>The Riemann integral in $\mathbb{R}^n$</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

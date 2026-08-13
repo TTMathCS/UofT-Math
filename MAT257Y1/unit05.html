@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 5 — Chain Rule &amp; Higher Derivatives · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 5</div>
+<div class="unit-no reveal">Unit 5 · Analysis II</div>
+<h1 class="ch-title reveal">Chain Rule &amp; Higher Derivatives</h1>
+<p class="ch-intro reveal">Once the derivative is a linear map, the chain rule
+stops being a formula to memorise and becomes the only thing it could be: the
+derivative of a composition is the composition of the derivatives. Higher
+derivatives then arrive as multilinear maps, and the surprise of the unit is
+that mixed partials commute &mdash; but only under a hypothesis, and there is a
+function that shows why.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Prove the chain rule from the $o(\|h\|)$ definition, not from
+    coordinates.</li>
+    <li>Translate $D(g\circ f)(a)=Dg(f(a))\,Df(a)$ into a matrix product and
+    back.</li>
+    <li>Prove Clairaut's theorem on equality of mixed partials, and state where
+    it fails.</li>
+    <li>Write the second-order Taylor expansion with the Hessian and control the
+    remainder.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Almost nothing you differentiate is given directly; it is built by
+    composing simpler maps. A chain rule that is a clean algebraic statement
+    about linear maps is what lets you differentiate anything assembled from
+    pieces, in any number of variables, without a new argument each time.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Backpropagation is the chain rule applied right-to-left through a
+    composition of hundreds of maps; the cost saving over left-to-right is
+    entirely a statement about matrix shapes. Change of variables in physics is
+    the same identity read the other way.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Clairaut asserted the equality of mixed partials in 1740; a hypothesis-free
+    version is false, and Schwarz gave the continuity condition that repairs it
+    in 1873. Peano's counterexample from the 1890s is the one still used, and it
+    is in this unit.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>The chain rule</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Chain rule</b></div>
+    <p>Let $f:A\to\mathbb{R}^m$ be differentiable at $a$ with $A$ open in
+    $\mathbb{R}^n$, and let $g:B\to\mathbb{R}^p$ be differentiable at $b=f(a)$
+    with $f(A)\subseteq B$ open. Then $g\circ f$ is differentiable at $a$ and</p>
+    <div class="step">$D(g\circ f)(a)=Dg(b)\circ Df(a).$</div>
+    <p>In matrices, $J(g\circ f)(a)=Jg(b)\,Jf(a)$: a $p\times m$ times an
+    $m\times n$, giving $p\times n$. The shapes only fit one way, which is a
+    useful memory aid.</p></div>
+  <div class="box eg"><div class="bl">Proof</div>
+    <div class="step">Write $L=Df(a)$ and $M=Dg(b)$. By definition
+    $f(a+h)=b+Lh+r(h)$ with $r(h)=o(\|h\|)$, and
+    $g(b+k)=g(b)+Mk+s(k)$ with $s(k)=o(\|k\|)$.</div>
+    <div class="step">Put $k=k(h)=Lh+r(h)$, so
+    $g(f(a+h))=g(b)+M(Lh+r(h))+s(k(h))$. Subtracting $g(b)+MLh$ leaves
+    $Mr(h)+s(k(h))$; we must show this is $o(\|h\|)$.</div>
+    <div class="step">$\|Mr(h)\|\le\|M\|\,\|r(h)\|=o(\|h\|)$ since $M$ is
+    bounded.</div>
+    <div class="step">For the second term, $\|k(h)\|\le(\|L\|+1)\|h\|$ once $h$ is
+    small. Given $\varepsilon&gt;0$ choose $\eta$ with
+    $\|s(k)\|\le\varepsilon\|k\|$ for $\|k\|&lt;\eta$; then for small $h$,
+    $\|s(k(h))\|\le\varepsilon(\|L\|+1)\|h\|$. Since $\varepsilon$ was arbitrary
+    this is $o(\|h\|)$. &#8718;</div>
+    <p>Note where the proof would break if we only knew directional
+    derivatives: $k(h)$ does not travel along a line.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Polar coordinates</b></div>
+    <p>Let $u(r,\theta)=f(r\cos\theta,r\sin\theta)$. Then
+    $Ju=Jf\cdot Jg$ with $g$ the polar map of Unit 4, giving</p>
+    <div class="step">$\partial u/\partial r=f_x\cos\theta+f_y\sin\theta,\qquad
+    \partial u/\partial\theta=-f_xr\sin\theta+f_yr\cos\theta.$</div>
+    <p>Every "chain rule in several variables" formula from a first calculus
+    course is one row of one matrix product.</p></div>
+  <div class="checkpoint"><b>Compose maps, then read off entries.</b>
+    Doing the matrix product first and interpreting afterwards is faster and far
+    less error-prone than chasing subscripts through
+    $\partial u/\partial r=\sum_j(\partial f/\partial x_j)(\partial x_j/\partial r)$.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Higher derivatives</h3>
+  <div class="box def"><div class="bl">Definition <b>$C^k$</b></div>
+    <p>$f$ is $C^k$ on an open set if all partial derivatives up to order $k$
+    exist and are continuous there; $C^\infty$ (or smooth) if this holds for
+    every $k$. Since $Df$ is itself a map into the space of matrices, $D^2f(a)$
+    is a linear map into linear maps &mdash; equivalently a bilinear map
+    $\mathbb{R}^n\times\mathbb{R}^n\to\mathbb{R}^m$.</p></div>
+  <div class="box def"><div class="bl">Definition <b>Hessian</b></div>
+    <p>For scalar $f$, the <em>Hessian</em> at $a$ is the $n\times n$ matrix
+    $Hf(a)$ with entries $\partial^2f/\partial x_i\partial x_j$. It represents
+    the bilinear form $(h,k)\mapsto D^2f(a)(h,k)$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Clairaut / Schwarz</b></div>
+    <p>If $\partial^2f/\partial x\,\partial y$ and $\partial^2f/\partial y\,\partial x$
+    exist near $a$ and are continuous at $a$, they agree at $a$. Hence the
+    Hessian of a $C^2$ function is symmetric.</p>
+    <div class="step">Consider the second difference
+    $\Delta(h,k)=f(a+he_1+ke_2)-f(a+he_1)-f(a+ke_2)+f(a)$, which is visibly
+    symmetric in the two coordinates.</div>
+    <div class="step">Apply the mean value theorem in $x$ then in $y$:
+    $\Delta=hk\,\partial^2f/\partial y\,\partial x(c)$ for some $c$ in the
+    rectangle. Doing it in the other order gives
+    $\Delta=hk\,\partial^2f/\partial x\,\partial y(c')$.</div>
+    <div class="step">Divide by $hk$ and let $(h,k)\to0$. Both $c$ and $c'$ tend
+    to $a$, so continuity of the two second partials at $a$ forces the values to
+    coincide. &#8718;</div></div>
+  <div class="box eg"><div class="bl">Example <b>Peano: mixed partials that disagree</b></div>
+    <p>$f(x,y)=xy\dfrac{x^2-y^2}{x^2+y^2}$ with $f(0,0)=0$.</p>
+    <div class="step">On the $y$-axis $f(0,y)=0$, so
+    $\partial f/\partial x(0,y)=\lim_{h\to0}f(h,y)/h=-y$. Differentiating in $y$
+    gives $\partial^2f/\partial y\,\partial x(0,0)=-1$.</div>
+    <div class="step">By the symmetry $f(x,y)=-f(y,x)$ the other order gives
+    $+1$.</div>
+    <p>Both mixed partials exist at the origin and differ. Neither is continuous
+    there, so Clairaut is not contradicted &mdash; it is illustrated.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Taylor's theorem in $\mathbb{R}^n$</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Second-order Taylor</b></div>
+    <p>If $f$ is $C^2$ on a ball around $a$, then for $h$ in that ball</p>
+    <div class="step">$f(a+h)=f(a)+\nabla f(a)\cdot h
+    +\tfrac12\,h^{T}Hf(a+\theta h)\,h$ for some $\theta\in(0,1),$</div>
+    <p>and consequently
+    $f(a+h)=f(a)+\nabla f(a)\cdot h+\tfrac12h^{T}Hf(a)h+o(\|h\|^2)$.</p>
+    <p>The proof is the one-variable Taylor theorem applied to
+    $\varphi(t)=f(a+th)$ on $[0,1]$; the chain rule supplies
+    $\varphi'(t)=\nabla f(a+th)\cdot h$ and
+    $\varphi''(t)=h^{T}Hf(a+th)h$.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A quadratic is its own expansion</b></div>
+    <p>$f(x,y)=x^2+4xy+y^2$ has $\nabla f(0,0)=(0,0)$ and constant Hessian
+    $\begin{smallmatrix}2&amp;4\\4&amp;2\end{smallmatrix}$. The expansion at the
+    origin reproduces $f$ exactly with zero remainder, as it must: every
+    derivative of order three and higher vanishes.</p></div>
+  <div class="checkpoint"><b>Order matters more than the formula.</b>
+    The linear term decides whether $a$ is critical; the quadratic term decides
+    what kind of critical point it is. Unit 8 does nothing but read that second
+    term carefully.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Writing the chain rule in the wrong order. $Df(a)\,Dg(b)$ usually
+  does not even have compatible shapes.<br>
+  &bull; Applying Clairaut without continuity of the second partials. Peano's
+  function is the standing counterexample.<br>
+  &bull; Assuming $C^1$ implies $C^2$. Each level of smoothness is a genuinely
+  stronger hypothesis.<br>
+  &bull; Treating the Hessian as a linear map. It is a bilinear form; the matrix
+  looks the same but the change-of-basis rule does not.<br>
+  &bull; Expanding to second order and calling the remainder $o(\|h\|)$. It is
+  $o(\|h\|^2)$, and the sharper statement is the one you need.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Composition by hand</div>
+      <p>With $f(t)=(t,t^2)$ and $g(x,y)=x^2y$, compute $(g\circ f)'(1)$ two
+      ways.</p>
+      <details><summary>Solution</summary><div class="ans">Directly:
+      $g(f(t))=t^4$, so the derivative at $1$ is $4$. By the chain rule,
+      $Jg=(2xy,\,x^2)=(2,1)$ at $(1,1)$, and $Jf=(1,2t)^T=(1,2)^T$, and
+      $(2,1)\cdot(1,2)=4$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Derivative of the inverse</div>
+      <p>If $f$ is invertible near $a$ with differentiable inverse, what is
+      $D(f^{-1})(f(a))$?</p>
+      <details><summary>Solution</summary><div class="ans">Differentiate
+      $f^{-1}\circ f=\mathrm{id}$ at $a$: the chain rule gives
+      $D(f^{-1})(f(a))\,Df(a)=I$, so the derivative of the inverse is
+      $Df(a)^{-1}$. Unit 6 supplies the missing hypothesis &mdash; that the
+      inverse exists and is differentiable at all.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Radial functions</div>
+      <p>For $u(x)=\varphi(\|x\|)$ on $\mathbb{R}^n$ minus the origin, compute
+      $\nabla u$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\nabla\|x\|=x/\|x\|$, so $\nabla u(x)=\varphi'(\|x\|)\,x/\|x\|$. The
+      gradient of a radial function is radial, which is the whole reason radial
+      symmetry simplifies PDEs.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Mixed partials</div>
+      <p>Verify Clairaut for $f(x,y)=x^3y^2+e^{xy}$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $f_x=3x^2y^2+ye^{xy}$, so $f_{xy}=6x^2y+e^{xy}+xye^{xy}$. And
+      $f_y=2x^3y+xe^{xy}$, so $f_{yx}=6x^2y+e^{xy}+xye^{xy}$. Equal, as
+      guaranteed: $f$ is smooth.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Euler's relation</div>
+      <p>Suppose $f$ is differentiable and homogeneous of degree $d$, meaning
+      $f(tx)=t^df(x)$ for $t&gt;0$. Show $x\cdot\nabla f(x)=df(x)$.</p>
+      <details><summary>Solution</summary><div class="ans">Differentiate both
+      sides in $t$ at $t=1$. The left side gives $\nabla f(x)\cdot x$ by the
+      chain rule, the right side gives $df(x)$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · A Hessian and its signature</div>
+      <p>Find the Hessian of $f(x,y)=x^3-3xy^2$ at the origin and describe the
+      critical point.</p>
+      <details><summary>Solution</summary><div class="ans">All second partials
+      vanish at the origin, so the Hessian is zero and the second-order test says
+      nothing. Looking at $f$ directly: along the $x$-axis it is $x^3$, which
+      changes sign, so the origin is neither a maximum nor a minimum. Third-order
+      behaviour decided it.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Chain rule with a curve</div>
+      <p>If $\gamma$ is a differentiable curve inside the level set
+      $\{f=c\}$, what is $\nabla f(\gamma(t))\cdot\gamma'(t)$?</p>
+      <details><summary>Solution</summary><div class="ans">Zero.
+      $f\circ\gamma$ is constant, and the chain rule gives its derivative as that
+      dot product. This is the proof that the gradient is normal to level
+      sets.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Laplacian in polar coordinates</div>
+      <p>Show $\Delta u=u_{rr}+\tfrac1ru_r+\tfrac1{r^2}u_{\theta\theta}$.</p>
+      <details><summary>Solution</summary><div class="ans">Apply the chain rule
+      twice to $u(r,\theta)=f(r\cos\theta,r\sin\theta)$. The first derivatives
+      are in the example above; differentiating again and using
+      $\cos^2+\sin^2=1$ collapses the cross terms, leaving
+      $f_{xx}+f_{yy}$ on one side and the stated combination on the other. It is
+      a long computation and worth doing once carefully.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Chain rule.</strong> Statement as composition of linear maps,
+    the $o(\|h\|)$ proof, matrix form.</li>
+    <li><strong>Higher derivatives.</strong> $C^k$, the second derivative as a
+    bilinear map, the Hessian.</li>
+    <li><strong>Clairaut.</strong> Proof by second differences, and Peano's
+    counterexample when continuity fails.</li>
+    <li><strong>Taylor.</strong> Second-order expansion with an explicit
+    remainder and the $o(\|h\|^2)$ form.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak proves the chain rule in about a page; Munkres separates the
+    partial-derivative bookkeeping from the linear-map argument and is easier to
+    follow the first time. Confirm the assigned text and problem numbers against
+    the current syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Chain rule builds every later computation. Clairaut makes the Hessian
+    symmetric, which is what lets Unit 8 diagonalise it. Taylor is the bridge
+    between the derivative and the classification of critical points.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Redo every multivariable chain rule you met in first-year calculus as a
+    matrix product. When the two answers agree you have converted a memorised
+    formula into a consequence.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why the order is forced</div>
+      <p>Explain by shapes why $Dg(b)\,Df(a)$ and not the reverse.</p>
+      <details><summary>Guide</summary><div class="ans">$Df(a)$ is $m\times n$
+      and $Dg(b)$ is $p\times m$. Only $p\times m$ times $m\times n$
+      multiplies.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Hypothesis in Clairaut</div>
+      <p>Which hypothesis fails in Peano's example?</p>
+      <details><summary>Guide</summary><div class="ans">Continuity of the mixed
+      second partials at the origin. Existence alone is not
+      enough.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Remainder order</div>
+      <p>To what order is the second-order Taylor remainder small?</p>
+      <details><summary>Guide</summary><div class="ans">$o(\|h\|^2)$ for $C^2$
+      functions, and $O(\|h\|^3)$ if $f$ is $C^3$ on a neighbourhood.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Smoothness of compositions</div>
+      <p>Is a composition of $C^k$ maps $C^k$?</p>
+      <details><summary>Guide</summary><div class="ans">Yes. Each derivative of
+      the composition is a polynomial in derivatives of the pieces, by repeated
+      chain and product rules, and continuity is preserved by those
+      operations.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit04.html">← Unit 04<span>The derivative as a linear map</span></a>
+  <a href="unit06.html">Unit 06 →<span>The inverse function theorem</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

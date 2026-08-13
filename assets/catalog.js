@@ -593,9 +593,11 @@
 
   setCount("program-count", programs.length);
   setCount("course-count", courses.length);
-  setCount("guide-count", guides.filter(hasGuide).length);
-  setCount("chapter-count", guides.reduce(function (total, course) {
-    return total + course.chapters;
+  // count the whole merged list: the CSC, PHY and ENG guides are registered in
+  // other-courses.js and belong in the totals too
+  setCount("guide-count", courses.filter(hasGuide).length);
+  setCount("chapter-count", courses.reduce(function (total, course) {
+    return total + (hasGuide(course) ? course.chapters : 0);
   }, 0));
 
   search.addEventListener("input", renderCourses);

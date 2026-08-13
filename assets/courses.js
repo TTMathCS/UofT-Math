@@ -95,7 +95,16 @@
       "Theoretical linear algebra: inner products, adjoints, the spectral theorem, and canonical forms.",
       ["Inner products", "Adjoints", "Spectral theorem", "Jordan form", "Quadratic forms"]
     ),
-    planned("MAT257Y1", "Analysis II", "Analysis", "Year 2", "Specialist multivariable analysis, manifolds, integration, and Stokes' theorem.", ["Topology", "Manifolds", "Stokes theorem"]),
+    guide(
+      "MAT257Y1",
+      "Analysis II",
+      "MAT257Y1/index.html",
+      "Analysis",
+      "Year 2",
+      14,
+      "Specialist multivariable analysis: topology of R^n, differentiation, integration, forms, manifolds, and Stokes' theorem.",
+      ["Topology", "Inverse function theorem", "Integration", "Differential forms", "Manifolds"]
+    ),
     planned("MAT267H1", "Advanced Ordinary Differential Equations", "Applied Math", "Year 2", "Theoretical ODEs, existence/uniqueness, power series, and qualitative theory.", ["ODE theory", "Stability", "Power series"]),
 
     planned("MAT301H1", "Groups and Symmetries", "Algebra", "Year 3", "Group theory through symmetries, actions, quotient groups, and examples.", ["Groups", "Actions", "Quotients"]),
