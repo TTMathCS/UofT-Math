@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 12 — The Exterior Derivative · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 12</div>
+<div class="unit-no reveal">Unit 12 · Analysis II</div>
+<h1 class="ch-title reveal">The Exterior Derivative</h1>
+<p class="ch-intro reveal">One operator $d$ takes $k$-forms to
+$(k+1)$-forms, and in $\mathbb{R}^3$ it is gradient, curl and divergence
+depending on what you feed it. It satisfies $d^2=0$, which encodes both
+"curl of a gradient is zero" and "divergence of a curl is zero" in a single
+line. The gap between $d\omega=0$ and $\omega=d\eta$ is where topology enters
+the course.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Compute $d\omega$ in coordinates for forms of any degree.</li>
+    <li>Prove $d^2=0$ and recognise the classical identities it contains.</li>
+    <li>Distinguish closed from exact and give the standard non-exact closed
+    form.</li>
+    <li>State the Poincar&eacute; lemma and say exactly what hypothesis it
+    needs.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Three unrelated-looking differential operators, three unrelated-looking
+    integral theorems, and a pile of vector identities all turn out to be one
+    operator and one theorem. The unification is not cosmetic: it is what lets
+    the whole apparatus move to manifolds, where grad, curl and div do not
+    individually make sense.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>A conservative force field is an exact $1$-form; the potential is the
+    $0$-form it comes from. In thermodynamics, heat is a $1$-form that is not
+    exact and entropy is what an integrating factor makes exact. Maxwell's
+    $dF=0$ is three of the four equations at once.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Poincar&eacute; proved the lemma in the 1880s while studying differential
+    equations. That closed-minus-exact measures holes became de Rham cohomology,
+    which computes topological invariants by pure calculus &mdash; a bridge
+    between analysis and topology that is still one of the central tools in
+    geometry.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Definition and rules</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>For a $0$-form $f$, $df=\sum_j\dfrac{\partial f}{\partial x_j}dx_j$. For a
+    general $k$-form
+    $\omega=\sum_Ia_I\,dx_I$, where $I$ runs over increasing index tuples,</p>
+    <div class="step">$d\omega=\sum_I da_I\wedge dx_I
+    =\sum_I\sum_j\dfrac{\partial a_I}{\partial x_j}\,dx_j\wedge dx_I.$</div>
+    <p>Differentiate each coefficient and wedge the result on the left. That is
+    the entire computational content.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Characterising properties</b></div>
+    <div class="step">$d$ is linear over $\mathbb{R}$.</div>
+    <div class="step">On $0$-forms, $d$ is the usual differential.</div>
+    <div class="step">Graded Leibniz rule: for a $k$-form $\omega$,
+    $d(\omega\wedge\eta)=d\omega\wedge\eta+(-1)^k\omega\wedge d\eta$.</div>
+    <div class="step">$d\circ d=0$.</div>
+    <p>These four properties determine $d$ uniquely, which is why every text's
+    definition agrees despite differing wedge conventions.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>$d^2=0$</b></div>
+    <p>For a $0$-form, $d(df)=\sum_{i,j}\dfrac{\partial^2f}{\partial x_i\partial x_j}
+    dx_i\wedge dx_j$. The second partials are symmetric in $i,j$ by Clairaut,
+    while $dx_i\wedge dx_j$ is antisymmetric, so the terms cancel in pairs and
+    the diagonal terms vanish outright.</p>
+    <p>The general case follows from the Leibniz rule by induction. Note the
+    hypothesis: $\omega$ must be $C^2$, so Clairaut applies. Smoothness is not
+    decoration here.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>$d$ commutes with pullback</b></div>
+    <p>$g^{*}(d\omega)=d(g^{*}\omega)$ for smooth $g$.</p>
+    <p>On $0$-forms this is the chain rule; the general case follows from the
+    Leibniz rule and the fact that pullback respects wedges. This identity is
+    what makes $d$ a genuinely geometric operator: it does not depend on the
+    coordinates you compute it in, which is what will let Unit 13 define it on a
+    manifold.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Vector calculus, translated</h3>
+  <div class="box eg"><div class="bl">Dictionary <b>In $\mathbb{R}^3$</b></div>
+    <div class="step">$0$-forms are functions $f$; $df$ has components
+    $\nabla f$.</div>
+    <div class="step">$1$-forms $P\,dx+Q\,dy+R\,dz$ correspond to vector fields
+    $(P,Q,R)$; $d$ of one has components $\nabla\times(P,Q,R)$.</div>
+    <div class="step">$2$-forms $A\,dy\wedge dz+B\,dz\wedge dx+C\,dx\wedge dy$
+    also correspond to vector fields; $d$ of one is
+    $(\nabla\cdot(A,B,C))\,dx\wedge dy\wedge dz$.</div>
+    <div class="step">$3$-forms are functions again, times the volume
+    form.</div>
+    <p>So $d^2=0$ read on $0$-forms says $\nabla\times\nabla f=0$, and read on
+    $1$-forms says $\nabla\cdot(\nabla\times F)=0$. Two identities usually
+    verified by grinding through components are one theorem.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A curl computation</b></div>
+    <p>Let $\omega=xy\,dx+yz\,dy+zx\,dz$. Then</p>
+    <div class="step">$d\omega=(y\,dy)\wedge dx+(z\,dy+y\,dz)\wedge dy
+    +(z\,dx+x\,dz)\wedge dz$</div>
+    <div class="step">$=-y\,dx\wedge dy-y\,dy\wedge dz-z\,dz\wedge dx.$</div>
+    <p>Reading off components gives the curl $(-y,-z,-x)$, and it agrees with the
+    determinant formula &mdash; but with no formula to memorise.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Closed, exact, and the hole in the plane</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>$\omega$ is <em>closed</em> if $d\omega=0$, and <em>exact</em> if
+    $\omega=d\eta$ for some form $\eta$. Since $d^2=0$, every exact form is
+    closed. The converse is a question about the shape of the domain.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The angle form</b></div>
+    <p>On $\mathbb{R}^2$ minus the origin, let</p>
+    <div class="step">$\omega=\dfrac{-y\,dx+x\,dy}{x^2+y^2}.$</div>
+    <div class="step">A direct computation gives $d\omega=0$: it is closed.</div>
+    <div class="step">But integrating $\omega$ once around the unit circle gives
+    $2\pi$. An exact form integrates to zero around any closed loop, by the
+    fundamental theorem. So $\omega$ is not exact.</div>
+    <p>Locally $\omega=d\theta$, where $\theta$ is the polar angle. Globally
+    there is no single-valued $\theta$ on the punctured plane, and the failure is
+    caused entirely by the puncture.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Poincar&eacute; lemma</b></div>
+    <p>On a <em>star-shaped</em> open set &mdash; one containing the segment from
+    some fixed point to each of its points &mdash; every closed form is exact.</p>
+    <p>The proof constructs an explicit homotopy operator $K$ with
+    $dK+Kd=\mathrm{id}$ on forms of positive degree, by integrating the form along
+    the radial segments. Applied to a closed $\omega$, this reads
+    $\omega=d(K\omega)$.</p>
+    <p>Every open set is <em>locally</em> star-shaped, so closed always implies
+    locally exact. The punctured plane shows the global statement needs the
+    hypothesis.</p></div>
+  <div class="checkpoint"><b>Closed is local, exact is global.</b>
+    Checking $d\omega=0$ is a calculation at each point. Producing a potential is
+    a statement about the whole domain. The size of the gap is a topological
+    invariant of the domain, and computing it is what de Rham cohomology
+    does.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Dropping the sign in the graded Leibniz rule. The
+  $(-1)^k$ depends on the degree of the <em>left</em> factor.<br>
+  &bull; Concluding exact from closed without checking the domain. The angle
+  form is the counterexample to keep in mind.<br>
+  &bull; Applying $d^2=0$ to a form whose coefficients are not $C^2$. The proof
+  needs Clairaut.<br>
+  &bull; Wedging $da_I$ on the right instead of the left. It changes the sign in
+  odd degree.<br>
+  &bull; Believing the vector calculus dictionary works outside $\mathbb{R}^3$.
+  Only the form language survives.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Compute $d$</div>
+      <p>Find $d\omega$ for $\omega=x^2y\,dx+e^z\,dy$ in $\mathbb{R}^3$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $d\omega=x^2\,dy\wedge dx+e^z\,dz\wedge dy
+      =-x^2\,dx\wedge dy-e^z\,dy\wedge dz$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Closed but not exact</div>
+      <p>Verify the angle form is closed.</p>
+      <details><summary>Solution</summary><div class="ans">With
+      $P=-y/(x^2+y^2)$ and $Q=x/(x^2+y^2)$, both $\partial Q/\partial x$ and
+      $\partial P/\partial y$ equal $(y^2-x^2)/(x^2+y^2)^2$. Their difference is
+      the coefficient of $dx\wedge dy$ in $d\omega$, so
+      $d\omega=0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Find a potential</div>
+      <p>Is $\omega=(2xy+z)\,dx+x^2\,dy+x\,dz$ exact on $\mathbb{R}^3$? If so
+      find $f$.</p>
+      <details><summary>Solution</summary><div class="ans">$d\omega=0$ by
+      inspection, and $\mathbb{R}^3$ is star-shaped, so it is exact. Integrating
+      the first component, $f=x^2y+xz+C$, and the other two components
+      check.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Leibniz</div>
+      <p>For a $1$-form $\alpha$ and $2$-form $\beta$, expand
+      $d(\alpha\wedge\beta)$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $d\alpha\wedge\beta-\alpha\wedge d\beta$, since the left factor has odd
+      degree.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Divergence</div>
+      <p>Compute $d$ of $\omega=x\,dy\wedge dz+y\,dz\wedge dx+z\,dx\wedge dy$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $3\,dx\wedge dy\wedge dz$. The corresponding field is the position field
+      with divergence $3$, matching.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Star-shaped but not convex</div>
+      <p>Give a star-shaped set that is not convex, and one that is not
+      star-shaped.</p>
+      <details><summary>Solution</summary><div class="ans">A plus-sign region is
+      star-shaped about its centre and not convex. An annulus is neither, and
+      indeed the angle form restricted to it is closed and not
+      exact.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Pullback commutes</div>
+      <p>Check $g^{*}(df)=d(g^{*}f)$ directly for $f(x,y)=xy$ and
+      $g(u,v)=(u+v,u-v)$.</p>
+      <details><summary>Solution</summary><div class="ans">$df=y\,dx+x\,dy$;
+      pulling back gives $(u-v)(du+dv)+(u+v)(du-dv)=2u\,du-2v\,dv$. Meanwhile
+      $g^{*}f=u^2-v^2$, whose differential is $2u\,du-2v\,dv$.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Integrating factor</div>
+      <p>Show $\omega=y\,dx-x\,dy$ is not closed, but $\omega/y^2$ is exact on
+      $y&gt;0$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $d\omega=dy\wedge dx-dx\wedge dy=-2\,dx\wedge dy\ne0$. Dividing by $y^2$
+      gives $y^{-1}dx-xy^{-2}dy$, which is $d(x/y)$ &mdash; exact, hence closed.
+      The factor $y^{-2}$ is an integrating factor, the same device used to solve
+      non-exact first-order ODEs.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Definition of $d$.</strong> Coordinate formula and the four
+    characterising properties.</li>
+    <li><strong>$d^2=0$.</strong> Proof from Clairaut, and the classical
+    identities it contains.</li>
+    <li><strong>Naturality.</strong> $d$ commutes with pullback, which is why it
+    is coordinate-free.</li>
+    <li><strong>Closed and exact.</strong> The angle form, the Poincar&eacute;
+    lemma, and what the gap measures.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak defines $d$ and proves the Poincar&eacute; lemma with the explicit
+    homotopy operator; Munkres gives more detail on the vector calculus
+    dictionary. Check which proof the syllabus expects.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Clairaut gives $d^2=0$, which makes "exact implies closed" free. The
+    Poincar&eacute; lemma gives the converse on star-shaped sets. Unit 14 pairs
+    $d$ with the boundary operator, and the pairing is Stokes' theorem.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Translate every vector identity you know into form language and check it
+    becomes trivial. If it does not, you have translated it
+    incorrectly.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · One line for two identities</div>
+      <p>Which vector identities does $d^2=0$ contain?</p>
+      <details><summary>Guide</summary><div class="ans">
+      $\nabla\times\nabla f=0$ and $\nabla\cdot(\nabla\times F)=0$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Closed versus exact</div>
+      <p>State the implication that always holds and the one that does not.</p>
+      <details><summary>Guide</summary><div class="ans">Exact implies closed
+      always. Closed implies exact only on suitable domains, star-shaped ones for
+      instance.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · The standard counterexample</div>
+      <p>Name a closed non-exact form and its domain.</p>
+      <details><summary>Guide</summary><div class="ans">
+      $(-y\,dx+x\,dy)/(x^2+y^2)$ on the punctured plane; its integral around the
+      unit circle is $2\pi$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Why naturality matters</div>
+      <p>Why does $g^{*}d=dg^{*}$ matter for manifolds?</p>
+      <details><summary>Guide</summary><div class="ans">Because it means $d$
+      computed in one chart agrees with $d$ computed in another on the overlap,
+      so the operator is well defined on the manifold.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit11.html">← Unit 11<span>Tensors &amp; differential forms</span></a>
+  <a href="unit13.html">Unit 13 →<span>Manifolds in $\mathbb{R}^n$</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

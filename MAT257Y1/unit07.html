@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 7 — The Implicit Function Theorem · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 7</div>
+<div class="unit-no reveal">Unit 7 · Analysis II</div>
+<h1 class="ch-title reveal">The Implicit Function Theorem</h1>
+<p class="ch-intro reveal">An equation $F(x,y)=0$ describes a set. The theorem
+says when that set is locally the graph of a function &mdash; when you can
+solve for $y$ in terms of $x$ without ever writing the solution down. It is the
+inverse function theorem wearing different clothes, and it is the reason a
+level set deserves to be called a surface.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>State the theorem with the correct block of the Jacobian.</li>
+    <li>Derive it from the inverse function theorem in three lines.</li>
+    <li>Differentiate an implicitly defined function without solving for it.</li>
+    <li>Identify exactly the points where a level set fails to be a graph.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Most interesting sets are given by equations, not parametrisations: a
+    sphere is $\|x\|^2=1$, an energy level is $H=E$. To do calculus on such a set
+    you need to know it is a graph locally, and this theorem is the only general
+    tool that says so.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Comparative statics in economics is this theorem: differentiate the
+    equilibrium condition implicitly to see how the equilibrium moves when a
+    parameter does. Constraint solvers, kinematic chains in robotics, and
+    continuation methods for nonlinear systems all sit on it.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Dini gave the standard modern proof in the 1870s, which is why the theorem
+    carries his name in Italian texts. The regularity question &mdash; how little
+    smoothness suffices &mdash; is still active, with Lipschitz and
+    set-valued versions developed through the twentieth century for optimisation
+    and control.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Statement</h3>
+  <div class="box def"><div class="bl">Setup <b>Splitting the variables</b></div>
+    <p>Write points of $\mathbb{R}^{n+m}$ as $(x,y)$ with $x\in\mathbb{R}^n$ and
+    $y\in\mathbb{R}^m$. For $F:\mathbb{R}^{n+m}\to\mathbb{R}^m$, split the
+    Jacobian into blocks $JF=[\,\partial F/\partial x\ \ \partial F/\partial y\,]$
+    of sizes $m\times n$ and $m\times m$. The square block is the one that has to
+    be invertible.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Implicit function theorem</b></div>
+    <p>Let $F$ be $C^1$ near $(a,b)$ with $F(a,b)=0$, and suppose
+    $\partial F/\partial y(a,b)$ is invertible. Then there are open sets
+    $U$ containing $a$ in $\mathbb{R}^n$ and $W$ containing $(a,b)$, and a $C^1$ map
+    $g:U\to\mathbb{R}^m$ with $g(a)=b$, such that</p>
+    <div class="step">$\{(x,y)\in W:F(x,y)=0\}=\{(x,g(x)):x\in U\}.$</div>
+    <p>Moreover, differentiating $F(x,g(x))=0$ gives</p>
+    <div class="step">$Dg(x)=-\Big(\dfrac{\partial F}{\partial y}\Big)^{-1}
+    \dfrac{\partial F}{\partial x},$</div>
+    <p>with both blocks evaluated at $(x,g(x))$. The count is worth noticing:
+    $m$ equations remove $m$ of the $n+m$ variables, leaving $n$ free.</p></div>
+  <div class="box eg"><div class="bl">Proof <b>From the inverse function theorem</b></div>
+    <div class="step">Define $\Phi(x,y)=(x,F(x,y))$, a $C^1$ map from
+    $\mathbb{R}^{n+m}$ to itself.</div>
+    <div class="step">Its Jacobian is block triangular,
+    $\begin{smallmatrix}I&amp;0\\ \partial F/\partial x&amp;\partial F/\partial y
+    \end{smallmatrix}$, with determinant $\det(\partial F/\partial y)\ne0$. So
+    $\Phi$ is locally invertible near $(a,b)$.</div>
+    <div class="step">The inverse has the form $\Phi^{-1}(x,z)=(x,h(x,z))$ because
+    $\Phi$ leaves the first block alone. Set $g(x)=h(x,0)$. Then
+    $F(x,g(x))=0$, and any solution in the small neighbourhood is the image of
+    $(x,0)$ under $\Phi^{-1}$, hence equals $(x,g(x))$. &#8718;</div>
+    <p>The two theorems are the same theorem. Which one is "the" result is a
+    matter of taste; several texts prove the implicit version first and deduce
+    the inverse one.</p></div>
+  <div class="checkpoint"><b>Check the right block.</b>
+    The variables you solve for are the ones whose block must be invertible. If
+    $\partial F/\partial y$ is singular but $\partial F/\partial x$ is not, solve
+    for $x$ instead &mdash; the set is still a graph, just over the other
+    axis.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Reading the theorem geometrically</h3>
+  <div class="box eg"><div class="bl">Example <b>The circle</b></div>
+    <p>$F(x,y)=x^2+y^2-1$ has $\partial F/\partial y=2y$, invertible exactly when
+    $y\ne0$. So near every point of the circle except $(\pm1,0)$ the circle is a
+    graph $y=g(x)$, and indeed $g(x)=\pm\sqrt{1-x^2}$ with the sign fixed by which
+    point you started at.</p>
+    <p>At $(\pm1,0)$ the circle is vertical and no function of $x$ can describe
+    it. But $\partial F/\partial x=2x=\pm2\ne0$ there, so it is a graph $x=g(y)$
+    instead. The circle is a curve everywhere; only the choice of axis
+    changes.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Implicit differentiation without a formula</b></div>
+    <p>Let $F(x,y)=y^5+xy-1$. Then $\partial F/\partial y=5y^4+x$, which at
+    $(0,1)$ is $5\ne0$, so near $x=0$ there is a $C^1$ function $g$ with
+    $g(0)=1$. Differentiating,</p>
+    <div class="step">$g'(x)=-\dfrac{\partial F/\partial x}{\partial F/\partial y}
+    =-\dfrac{y}{5y^4+x},\qquad g'(0)=-\tfrac15.$</div>
+    <p>The quintic has no solution formula. The derivative does.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Regular level sets</b></div>
+    <p>If $F:\mathbb{R}^{n+m}\to\mathbb{R}^m$ is $C^1$ and $JF(p)$ has rank $m$
+    at every $p$ in the level set $F^{-1}(0)$, then that level set is locally a
+    graph over $n$ of the coordinates, and its tangent space at $p$ is
+    $\ker JF(p)$, of dimension $n$.</p>
+    <p>Full rank means <em>some</em> $m\times m$ block is invertible; relabel the
+    coordinates so it is the last one and apply the theorem. This statement is
+    the definition of a manifold that Unit 13 will adopt.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Where regularity fails</b></div>
+    <p>$F(x,y)=y^2-x^3$ has $\nabla F=(-3x^2,2y)$, vanishing at the origin, which
+    is on the curve. And the curve $y^2=x^3$ has a cusp there &mdash; it is not
+    locally a graph in <em>either</em> variable in a $C^1$ way. Rank failure is
+    not a technicality; it is where the geometry actually breaks.</p></div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Checking $\nabla F\ne0$ when $m&gt;1$. The condition is that the
+  $m\times m$ block is invertible, that is $JF$ has full rank $m$.<br>
+  &bull; Expecting a global solution. The graph exists on some neighbourhood;
+  the circle is the standing reminder that it cannot be all of the level
+  set.<br>
+  &bull; Solving for the wrong variables and concluding the level set is
+  singular. Try the other block first.<br>
+  &bull; Forgetting to evaluate the derivative formula at $(x,g(x))$ rather than
+  at $(x,b)$.<br>
+  &bull; Assuming rank failure implies a singular point. $F(x,y)=y^2$ has
+  $\nabla F=0$ along its zero set, which is a perfectly smooth line. The
+  condition is sufficient, not necessary.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Solvable points</div>
+      <p>For $F(x,y)=x^2+y^3-xy-3$, where can you solve for $y$ near a solution
+      point?</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\partial F/\partial y=3y^2-x$, so wherever $x\ne3y^2$. At $(1,\ldots)$ you
+      would check the specific solution; the condition is a curve in the plane
+      that the theorem simply avoids.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Implicit derivative</div>
+      <p>With $x^2+y^2+z^2=3$, find $\partial z/\partial x$ at $(1,1,1)$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\partial F/\partial z=2z=2\ne0$, so $z$ is a function of $(x,y)$ nearby,
+      and $\partial z/\partial x=-2x/2z=-1$ at that point.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Two equations</div>
+      <p>Given $x+y+z=0$ and $x^2+y^2+z^2=2$, can you solve for $(y,z)$ as
+      functions of $x$ near $(0,1,-1)$?</p>
+      <details><summary>Solution</summary><div class="ans">The block is
+      $\begin{smallmatrix}1&amp;1\\2y&amp;2z\end{smallmatrix}
+      =\begin{smallmatrix}1&amp;1\\2&amp;-2\end{smallmatrix}$, determinant $-4\ne0$.
+      Yes, locally.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Cusp</div>
+      <p>Why does the theorem fail for $y^2=x^3$ at the origin, and what does the
+      set look like?</p>
+      <details><summary>Solution</summary><div class="ans">Both partials vanish
+      there, so no block is invertible. The set has a cusp: it is
+      $y=\pm x^{3/2}$, continuous but with unbounded curvature and no
+      $C^1$ graph description in either variable.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Tangent plane</div>
+      <p>Find the tangent plane to $x^2+2y^2+3z^2=6$ at $(1,1,1)$.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $\nabla F=(2x,4y,6z)=(2,4,6)$, so the tangent plane is
+      $2(x-1)+4(y-1)+6(z-1)=0$, that is $x+2y+3z=6$. The tangent space is
+      $\ker JF$, and the gradient is its normal.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Second derivative</div>
+      <p>For $x^2+y^2=1$ with $y&gt;0$, compute $g''$ by implicit
+      differentiation.</p>
+      <details><summary>Solution</summary><div class="ans">From $2x+2yg'=0$,
+      $g'=-x/y$. Differentiating again, $2+2(g')^2+2yg''=0$, so
+      $g''=-(1+(g')^2)/y=-1/y^3$. Negative, as a concave upper semicircle
+      demands.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Comparative statics</div>
+      <p>Suppose equilibrium is defined by $F(q,p)=0$ with
+      $\partial F/\partial q\ne0$. How does $q$ respond to $p$?</p>
+      <details><summary>Solution</summary><div class="ans">
+      $dq/dp=-(\partial F/\partial p)/(\partial F/\partial q)$. The sign of the
+      response is decided by the signs of two partials, with no need to solve the
+      equilibrium condition at all. This is the entire technique of comparative
+      statics.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Rank without singularity</div>
+      <p>Show $F(x,y)=y^2$ has a smooth zero set even though $\nabla F$ vanishes
+      on it.</p>
+      <details><summary>Solution</summary><div class="ans">The zero set is the
+      $x$-axis, a smooth line. The theorem's hypothesis fails but its conclusion
+      happens to hold; the level set of a function that touches zero without
+      crossing it can still be nice.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Statement.</strong> Variable splitting, the invertible block,
+    and the dimension count.</li>
+    <li><strong>Proof.</strong> The map $\Phi(x,y)=(x,F(x,y))$ and its block
+    triangular Jacobian.</li>
+    <li><strong>Derivative formula.</strong> Implicit differentiation as a
+    consequence, not a separate technique.</li>
+    <li><strong>Regular level sets.</strong> Full rank gives a local graph and a
+    tangent space $\ker JF$.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak deduces the implicit theorem from the inverse one exactly as here;
+    Munkres treats both at length with the block algebra written out. Check the
+    assigned text and exercises against the current syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Inverse function theorem gives implicit function theorem gives the local
+    graph description of regular level sets, which is what makes a level set a
+    manifold in Unit 13 and what makes Lagrange multipliers legitimate in Unit
+    8.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    For every level set you meet, find the points where the rank condition fails
+    before doing anything else. Those points are where the geometry is
+    interesting and where every exam question lives.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Which block</div>
+      <p>Solving $F(x,y)=0$ for $y$, which block must be invertible?</p>
+      <details><summary>Guide</summary><div class="ans">$\partial F/\partial y$,
+      the square $m\times m$ block in the variables being solved
+      for.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Dimension count</div>
+      <p>$m$ equations in $n+m$ unknowns leaves what dimension?</p>
+      <details><summary>Guide</summary><div class="ans">$n$, provided the rank
+      is full. Each independent equation costs exactly one
+      dimension.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Tangent space</div>
+      <p>What is the tangent space to a regular level set?</p>
+      <details><summary>Guide</summary><div class="ans">$\ker JF(p)$. For a
+      single equation that is the hyperplane orthogonal to
+      $\nabla F(p)$.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Both directions fail</div>
+      <p>Give a level set that is a graph in neither variable near a point.</p>
+      <details><summary>Guide</summary><div class="ans">The cusp $y^2=x^3$ at the
+      origin, or the crossing $xy=0$ at the origin, where two branches
+      meet.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit06.html">← Unit 06<span>The inverse function theorem</span></a>
+  <a href="unit08.html">Unit 08 →<span>Extrema &amp; Lagrange multipliers</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

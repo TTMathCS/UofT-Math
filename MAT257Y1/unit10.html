@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 10 — Partitions of Unity &amp; Change of Variables · MAT257Y1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT257Y1</a><span>/</span>Unit 10</div>
+<div class="unit-no reveal">Unit 10 · Analysis II</div>
+<h1 class="ch-title reveal">Partitions of Unity &amp; Change of Variables</h1>
+<p class="ch-intro reveal">Two tools that look like technical apparatus and are
+not. A partition of unity chops a global problem into local ones and glues the
+answers back together with no seams; it is the device that will make
+integration on manifolds possible at all. Change of variables explains where
+the Jacobian factor in every polar and spherical integral comes from: it is the
+local volume distortion of the substitution.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Build a smooth bump function and explain why one exists.</li>
+    <li>State what a $C^\infty$ partition of unity subordinate to a cover
+    is.</li>
+    <li>State the change of variables theorem with its exact hypotheses.</li>
+    <li>Compute integrals in polar, cylindrical and spherical coordinates and
+    say where the extra factor came from.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Local statements are the ones you can prove; global ones are the ones you
+    want. A partition of unity is the standard bridge, and it is available in
+    smooth geometry precisely because smooth bump functions exist &mdash;
+    something that fails in the analytic or holomorphic categories.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Finite element methods build global basis functions exactly this way.
+    Blending weights in graphics, mixture models, and domain decomposition in
+    numerical PDE all use the same partition-of-unity idea. Change of variables
+    is behind every density transformation in probability.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Euler and Lagrange used substitution freely; a correct general proof took
+    until the nineteenth century, and it is still one of the harder theorems in
+    an undergraduate course. Partitions of unity became standard with Whitney and
+    the rise of differential topology in the 1930s.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Bump functions</h3>
+  <div class="box thm"><div class="bl">Theorem <b>A smooth function that dies</b></div>
+    <p>Let $\varphi(t)=e^{-1/t}$ for $t&gt;0$ and $\varphi(t)=0$ for $t\le0$.
+    Then $\varphi$ is $C^\infty$ on $\mathbb{R}$.</p>
+    <p>Every derivative on $t&gt;0$ has the form $p(1/t)e^{-1/t}$ for a
+    polynomial $p$, and $e^{-1/t}$ beats every polynomial as $t\to0^{+}$. So all
+    derivatives extend continuously by $0$. Note $\varphi$ is not analytic at
+    $0$: its Taylor series there is identically zero and does not represent
+    it.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Bump on a ball</b></div>
+    <p>From $\varphi$ build
+    $\psi(x)=\varphi(1-\|x\|^2)$: smooth, strictly positive on the open unit
+    ball, and identically zero outside it. Rescaling and translating gives a
+    smooth bump supported in any ball you like, and normalising makes it $1$ on a
+    smaller concentric ball.</p></div>
+  <div class="checkpoint"><b>This is why smooth is easier than analytic.</b>
+    A nonzero analytic function cannot vanish on an open set. Everything in this
+    unit &mdash; and everything about manifolds later &mdash; depends on smooth
+    functions being able to.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Partitions of unity</h3>
+  <div class="box def"><div class="bl">Definition</div>
+    <p>Let $A\subseteq\mathbb{R}^n$ and let $\mathcal{O}$ be an open cover of
+    $A$. A <em>$C^\infty$ partition of unity on $A$ subordinate to
+    $\mathcal{O}$</em> is a collection $\Phi$ of smooth functions
+    $\rho:\mathbb{R}^n\to[0,1]$ such that</p>
+    <div class="step">(1) each $x\in A$ has a neighbourhood on which all but
+    finitely many $\rho$ vanish;</div>
+    <div class="step">(2) $\sum_{\rho\in\Phi}\rho(x)=1$ for every $x\in A$ &mdash;
+    a finite sum at each point, by (1);</div>
+    <div class="step">(3) each $\rho$ has support inside some member of
+    $\mathcal{O}$.</div></div>
+  <div class="box thm"><div class="bl">Theorem <b>Existence</b></div>
+    <p>For any $A\subseteq\mathbb{R}^n$ and any open cover, such a partition
+    exists.</p>
+    <p>Sketch: exhaust $A$ by compact pieces, cover each piece by finitely many
+    balls each inside a member of the cover, take a bump function for each ball,
+    and normalise by dividing by the (locally finite) sum. Local finiteness is
+    what makes the sum a genuine function.</p></div>
+  <div class="box eg"><div class="bl">Example <b>What it buys</b></div>
+    <p>To define $\int_Af$ when $A$ is not a box: write
+    $\int_Af=\sum_\rho\int\rho f$. Each $\rho f$ is supported in one small set
+    where you already know what to do, the sum is locally finite, and the answer
+    is independent of the partition chosen. This is exactly the argument Unit 13
+    will use to integrate over a manifold covered by charts.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Change of variables</h3>
+  <div class="box thm"><div class="bl">Theorem <b>Change of variables</b></div>
+    <p>Let $U\subseteq\mathbb{R}^n$ be open and $g:U\to\mathbb{R}^n$ be an
+    injective $C^1$ map with $\det Jg(x)\ne0$ on $U$. Then for every integrable
+    $f$ on $g(U)$,</p>
+    <div class="step">$\displaystyle\int_{g(U)}f=\int_U(f\circ g)\,|\det Jg|.$</div>
+    <p>The absolute value matters: volume is unsigned, and orientation is not
+    tracked here. Unit 13 will drop the absolute value once forms give it a place
+    to record the sign.</p></div>
+  <div class="box eg"><div class="bl">Why the Jacobian <b>The linear case first</b></div>
+    <div class="step">For a linear $T$, the image of the unit cube is a
+    parallelepiped of volume $|\det T|$ &mdash; that is what the determinant
+    measures, and it can be proved by reducing $T$ to elementary matrices, each
+    of which scales volume in an obvious way.</div>
+    <div class="step">A $C^1$ map is locally close to its derivative, so a small
+    box near $x$ maps to something of volume approximately
+    $|\det Jg(x)|$ times the box's volume.</div>
+    <div class="step">Summing over a fine partition and passing to the limit gives
+    the theorem. The genuine proof does this carefully with a partition of unity
+    to reduce to small neighbourhoods, plus the inverse function theorem to make
+    $g$ a diffeomorphism there.</div></div>
+  <div class="box eg"><div class="bl">Example <b>Polar coordinates</b></div>
+    <p>$g(r,\theta)=(r\cos\theta,r\sin\theta)$ has $\det Jg=r$, so</p>
+    <div class="step">$\displaystyle\int_{D}f\,dx\,dy
+    =\int_0^{2\pi}\!\!\int_0^{R}f(r\cos\theta,r\sin\theta)\,r\,dr\,d\theta$</div>
+    <p>for the disc of radius $R$. The factor $r$ is not a convention: it is the
+    rate at which polar boxes stretch as you move outwards.</p></div>
+  <div class="box eg"><div class="bl">Example <b>The Gaussian integral</b></div>
+    <p>Let $I=\int_{\mathbb{R}}e^{-x^2}dx$. Then $I^2$ is a double integral over
+    the plane, and in polar coordinates it becomes
+    $\int_0^{2\pi}\int_0^\infty e^{-r^2}r\,dr\,d\theta=2\pi\cdot\tfrac12=\pi$.
+    So $I=\sqrt\pi$. The whole trick is the $r$ from the Jacobian, which makes
+    the radial integral elementary.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Spherical coordinates</b></div>
+    <p>With
+    $g(\rho,\varphi,\theta)=(\rho\sin\varphi\cos\theta,\rho\sin\varphi\sin\theta,\rho\cos\varphi)$
+    the determinant is $\rho^2\sin\varphi$, so the volume of the ball of radius
+    $R$ is
+    $\int_0^{2\pi}\int_0^{\pi}\int_0^{R}\rho^2\sin\varphi\,d\rho\,d\varphi\,d\theta
+    =\tfrac43\pi R^3$.</p></div>
+  <div class="checkpoint"><b>Hypotheses can fail on a measure-zero set.</b>
+    Polar coordinates are not injective at $r=0$ and spherical ones degenerate on
+    the polar axis. Both are measure zero, so the formula survives &mdash; a
+    standard extension of the theorem, and the reason nobody worries about it in
+    practice.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Dropping the absolute value on $\det Jg$. Without it, an
+  orientation-reversing substitution flips the sign of a volume.<br>
+  &bull; Substituting into the integrand but forgetting the Jacobian
+  factor.<br>
+  &bull; Using a non-injective substitution over a set of positive measure. The
+  formula then counts part of the image twice.<br>
+  &bull; Forgetting to transform the region as well as the integrand. The new
+  limits are $g^{-1}$ of the old region.<br>
+  &bull; Treating a partition of unity as an infinite sum problem. Local
+  finiteness makes every evaluation a finite sum.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Spivak and Munkres exercises. Write a full solution before opening the
+  answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Area of an ellipse</div>
+      <p>Use $x=au$, $y=bv$ to find the area of
+      $x^2/a^2+y^2/b^2\le1$.</p>
+      <details><summary>Solution</summary><div class="ans">$\det Jg=ab$, and the
+      region pulls back to the unit disc of area $\pi$. So the area is
+      $\pi ab$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · A linear substitution</div>
+      <p>Evaluate $\int_S(x+y)\,dA$ where $S$ is the parallelogram with vertices
+      $(0,0),(1,1),(2,1),(1,0)$.</p>
+      <details><summary>Solution</summary><div class="ans">Put $u=x-y$, $v=y$, so
+      $x=u+v$, $y=v$ and $\det=1$. The region becomes $0\le u\le1$,
+      $0\le v\le1$, and the integrand is $u+2v$. The integral is
+      $\int_0^1\int_0^1(u+2v)\,du\,dv=\tfrac12+1=\tfrac32$.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Bump function</div>
+      <p>Construct a smooth function that is $1$ on $\|x\|\le1$ and $0$ for
+      $\|x\|\ge2$.</p>
+      <details><summary>Solution</summary><div class="ans">With $\varphi$ as
+      above, set
+      $h(t)=\dfrac{\varphi(2-t)}{\varphi(2-t)+\varphi(t-1)}$. The denominator is
+      never zero, $h=1$ for $t\le1$ and $h=0$ for $t\ge2$. Take
+      $x\mapsto h(\|x\|)$; smoothness at the origin holds because $h$ is constant
+      near $t=0$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Volume of an $n$-ball</div>
+      <p>Set up the integral for the volume of the unit ball in $\mathbb{R}^n$
+      and find it for $n=4$.</p>
+      <details><summary>Solution</summary><div class="ans">Slice:
+      $V_n=\int_{-1}^{1}V_{n-1}(1-t^2)^{(n-1)/2}dt$. With $V_2=\pi$ this gives
+      $V_3=\tfrac43\pi$ and $V_4=\tfrac{\pi^2}{2}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Where injectivity fails</div>
+      <p>Why is the polar map still usable despite failing injectivity?</p>
+      <details><summary>Solution</summary><div class="ans">It fails only at
+      $r=0$ and along the identified edge $\theta=0$ versus $2\pi$, both of
+      measure zero. Integrals are blind to measure-zero sets, so the formula holds
+      on the complement and extends.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · A hyperbolic region</div>
+      <p>Evaluate $\int_S xy\,dA$ over the region bounded by $xy=1$, $xy=4$,
+      $y=x$, $y=4x$ in the first quadrant.</p>
+      <details><summary>Solution</summary><div class="ans">Put $u=xy$,
+      $v=y/x$. Then $\partial(u,v)/\partial(x,y)=2y/x=2v$, so the Jacobian of the
+      inverse is $1/(2v)$. The integral becomes
+      $\int_1^4\int_1^4 u\cdot\tfrac{1}{2v}\,dv\,du
+      =\tfrac{15}{2}\cdot\tfrac12\ln4=\tfrac{15}{2}\ln2$.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Locally finite</div>
+      <p>Why must a partition of unity be locally finite?</p>
+      <details><summary>Solution</summary><div class="ans">Otherwise
+      $\sum\rho(x)$ is an infinite series whose convergence and smoothness are not
+      automatic. Local finiteness makes it a finite sum near each point, so it is
+      smooth term by term.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Density of a transformed variable</div>
+      <p>If $X$ has density $p$ on $\mathbb{R}^n$ and $Y=g(X)$ for a
+      diffeomorphism $g$, what is the density of $Y$?</p>
+      <details><summary>Solution</summary><div class="ans">
+      $q(y)=p(g^{-1}(y))\,|\det Jg^{-1}(y)|$. It is the change of variables
+      formula with $f$ the density, and it is the reason normalising flows in
+      machine learning track log-determinants.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT257Y1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Bump functions.</strong> $e^{-1/t}$, smooth but not analytic,
+    and bumps supported in a ball.</li>
+    <li><strong>Partitions of unity.</strong> Definition, local finiteness,
+    subordination, existence, and the localisation argument.</li>
+    <li><strong>Change of variables.</strong> Statement, hypotheses, and why
+    $|\det Jg|$ is the volume factor.</li>
+    <li><strong>Standard coordinates.</strong> Polar, cylindrical, spherical, and
+    the Gaussian integral.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Spivak proves change of variables in full and it is one of the longest
+    arguments in the book; Munkres splits it into digestible lemmas. Both build
+    partitions of unity first. Check the syllabus for which proof is
+    examinable.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Bump functions give partitions of unity, which localise the change of
+    variables proof and later make integration on manifolds well defined. The
+    inverse function theorem supplies the local diffeomorphisms that both
+    arguments run on.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Recompute the polar, cylindrical and spherical Jacobians from scratch until
+    they are automatic. Those three determinants account for most of the
+    computational marks in the integration half of the course.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They are designed
+  to force definition-level reasoning, theorem selection, and mixed application
+  rather than routine calculation only.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Role of the determinant</div>
+      <p>What does $|\det Jg(x)|$ measure?</p>
+      <details><summary>Guide</summary><div class="ans">The factor by which $g$
+      scales volume near $x$, to first order.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Smooth but not analytic</div>
+      <p>Why can no analytic function be a bump function?</p>
+      <details><summary>Guide</summary><div class="ans">An analytic function
+      vanishing on an open set vanishes identically on a connected domain, by the
+      identity theorem.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Subordinate</div>
+      <p>What does "subordinate to a cover" mean?</p>
+      <details><summary>Guide</summary><div class="ans">Each function of the
+      partition has support contained in one member of the
+      cover.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Absolute value</div>
+      <p>Why the absolute value on the determinant?</p>
+      <details><summary>Guide</summary><div class="ans">Because volume is
+      unsigned. Forms in Unit 11 keep the sign instead and integrate over
+      oriented regions.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="unit09.html">← Unit 09<span>The Riemann integral in $\mathbb{R}^n$</span></a>
+  <a href="unit11.html">Unit 11 →<span>Tensors &amp; differential forms</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
