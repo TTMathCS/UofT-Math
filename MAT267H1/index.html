@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>MAT267H1 — Advanced Ordinary Differential Equations · Course Guide</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="side">
+  <div class="brand"><span>MAT267H1</span></div>
+  <div class="sub">ADVANCED ODEs · WINTER<br>COURSE GUIDE</div>
+  <a href="../index.html">All Courses</a>
+  <a href="#about" data-t>About</a>
+  <a href="#units" data-t>Chapters</a>
+  <a href="#textbook" data-t>Textbook Spine</a>
+  <a href="#practice" data-t>Practice Plan</a>
+  <a href="#resources" data-t>Resources</a>
+  <div class="foot">EXISTENCE · FLOWS · STABILITY<br>TEXT: TESCHL &amp; HIRSCH-SMALE<br>0.5 CREDIT · 36L/12T</div>
+</nav>
+
+<main>
+<header class="hero reveal">
+  <svg class="curve" viewBox="0 0 230 150" aria-hidden="true">
+    <line class="axis" x1="14" y1="135" x2="220" y2="135"/>
+    <line class="axis" x1="20" y1="8" x2="20" y2="142"/>
+    <path d="M30,120 C70,110 90,40 120,75 C150,110 180,60 210,40"/>
+    <path d="M30,95 C80,95 110,30 150,55 C185,77 195,110 215,115"/>
+    <circle cx="120" cy="75" r="4.5"/>
+  </svg>
+  <div class="kicker">U of T · Advanced ODEs · Winter</div>
+  <h1>MAT267H1: solutions you <em>never write down</em>.</h1>
+  <p class="lede">The applied course asks you to solve differential equations.
+  This one asks whether a solution exists, whether it is the only one, how far
+  it extends, and what it does after a long time &mdash; questions you can
+  answer for equations no formula will ever crack.</p>
+</header>
+
+<div class="note reveal" id="about">
+  <div class="tag">About this course</div>
+  <h3>The theory course behind the solution methods.</h3>
+  <p>MAT267H1 "Advanced Ordinary Differential Equations": first order equations
+  and the standard integration tricks; existence and uniqueness by Picard
+  iteration, continuation and dependence on initial data; linear systems,
+  fundamental matrices and the matrix exponential; higher order equations,
+  series solutions and regular singular points; then the qualitative half of
+  the course &mdash; phase planes, linearisation, Lyapunov stability, limit
+  cycles and Poincar&eacute;&ndash;Bendixson. Prerequisites:
+  <a href="../MAT159H1/index.html">MAT159H1</a> (or MAT157Y1) and
+  <a href="../MAT247H1/index.html">MAT247H1</a>. The linear algebra earns its
+  place immediately: a constant-coefficient system is solved by putting a
+  matrix in Jordan form. This guide follows Teschl's <em>Ordinary Differential
+  Equations and Dynamical Systems</em>, with Hirsch, Smale and Devaney for the
+  geometry.</p>
+</div>
+
+<section id="units" class="reveal">
+  <div class="sec-head"><span class="no">01</span><h2>Chapters</h2></div>
+  <p class="sec-sub">In course order. Each page has definitions, theorems with
+  the proof reasoning spelled out, worked examples, pitfalls, and practice.</p>
+
+  <div class="chips">
+    <span class="chip teal"><b>MAT267H1</b><small>Advanced ODEs · winter</small></span>
+    <span class="chip teal"><b>MAT159H1</b><small>Analysis 1B · prerequisite</small></span>
+    <span class="chip teal"><b>MAT247H1</b><small>Algebra II · prerequisite</small></span>
+  </div>
+
+  <ol class="units">
+    <li><a href="unit01.html"><div><h4>First order equations</h4>
+      <p>Separable, linear, exact; integrating factors and what they cost.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit02.html"><div><h4>Existence &amp; uniqueness</h4>
+      <p>Picard iteration, the contraction principle, Lipschitz conditions.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit03.html"><div><h4>Continuation &amp; dependence on data</h4>
+      <p>Maximal intervals, blow-up, Gronwall's inequality.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit04.html"><div><h4>Linear systems</h4>
+      <p>Solution spaces, the Wronskian, fundamental matrices.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit05.html"><div><h4>The matrix exponential</h4>
+      <p>Constant coefficients through Jordan form and generalised eigenvectors.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit06.html"><div><h4>Higher order &amp; nonhomogeneous equations</h4>
+      <p>Companion systems, variation of parameters, resonance.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit07.html"><div><h4>Series solutions</h4>
+      <p>Ordinary points, Frobenius method, regular singular points.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit08.html"><div><h4>The phase plane</h4>
+      <p>Planar classification, trajectories, linearisation at an equilibrium.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit09.html"><div><h4>Stability &amp; Lyapunov functions</h4>
+      <p>Stability without solving; energy arguments made rigorous.</p></div><span class="go">Open →</span></a></li>
+    <li><a href="unit10.html"><div><h4>Periodic orbits</h4>
+      <p>Limit cycles, Poincar&eacute;&ndash;Bendixson, Bendixson&ndash;Dulac.</p></div><span class="go">Open →</span></a></li>
+  </ol>
+</section>
+
+<section id="textbook" class="reveal">
+  <div class="sec-head"><span class="no">02</span><h2>Textbook Spine</h2></div>
+  <p class="sec-sub">Teschl's book is free from the author's page and covers the
+  whole course in the same order. Hirsch, Smale and Devaney is the standard
+  reference for the qualitative half and is far more pictorial. Coddington and
+  Levinson is where to go when a proof in the first half looks too quick. Check
+  the current syllabus for the assigned text.</p>
+
+  <div class="context">
+    <div class="ctxh">Unit-to-textbook alignment</div>
+    <div class="ci"><div class="cl">Solving and proving</div>
+      <p>Units 1-3 pair with Teschl's opening chapters. Unit 1 is the only place
+      the course looks like the applied version; from Unit 2 the subject is
+      analysis, and the fixed point theorem does the work.</p></div>
+    <div class="ci"><div class="cl">Linear theory</div>
+      <p>Units 4-7 are the linear-algebra chapters. Everything computable in the
+      course lives here, and the matrix exponential is the single most useful
+      object you will take away.</p></div>
+    <div class="ci"><div class="cl">Qualitative theory</div>
+      <p>Units 8-10 pair with Hirsch&ndash;Smale&ndash;Devaney. No solution
+      formulas at all: the questions are about long-run behaviour, and the
+      answers come from geometry.</p></div>
+    <div class="ci"><div class="cl">What the course leaves out</div>
+      <p>Bifurcation theory, chaos and higher-dimensional dynamics are
+      MAT335H1's material. This course stops at the plane, where
+      Poincar&eacute;&ndash;Bendixson still holds.</p></div>
+  </div>
+
+  <div class="bp">
+    <div class="card"><div class="n">EXISTENCE</div><h4>Prove it before solving it</h4>
+      <p>The first question about any equation is whether a solution exists and
+      is unique. Get used to checking the Lipschitz condition before you start
+      integrating.</p></div>
+    <div class="card"><div class="n">LINEARISE</div><h4>Matrices decide everything</h4>
+      <p>For linear systems the eigenvalues are the whole answer, and near an
+      equilibrium a nonlinear system usually behaves like its linearisation.
+      MAT247H1 is not a formality here.</p></div>
+    <div class="card"><div class="n">PICTURE</div><h4>Draw the phase plane</h4>
+      <p>A sketch with nullclines and arrows answers most qualitative questions
+      faster than any calculation, and it catches sign errors instantly.</p></div>
+    <div class="card"><div class="n">ESTIMATE</div><h4>Inequalities beat formulas</h4>
+      <p>Gronwall, energy functions and comparison arguments give real
+      conclusions about equations with no closed-form solution. That is the
+      point of the whole course.</p></div>
+  </div>
+</section>
+
+<section id="practice" class="reveal">
+  <div class="sec-head"><span class="no">03</span><h2>Practice Plan</h2></div>
+  <p class="sec-sub">A half-credit course that moves quickly. The unit pages
+  carry the guided questions; use this mix across the term.</p>
+
+  <div class="bp">
+    <div class="card"><div class="n">01</div><h4>Two-column habit</h4>
+      <p>For every equation write the solution method on one side and the
+      existence-uniqueness justification on the other. Exams ask for both, and
+      the second is where marks are lost.</p></div>
+    <div class="card"><div class="n">02</div><h4>Exponentials by hand</h4>
+      <p>Compute $e^{At}$ for a diagonalisable matrix, a defective one, and a
+      rotation. Three examples cover every case you will meet.</p></div>
+    <div class="card"><div class="n">03</div><h4>Sketch first</h4>
+      <p>Before any phase-plane question, draw nullclines, mark equilibria, put
+      arrows in each region. The classification then confirms a picture you
+      already have.</p></div>
+    <div class="card"><div class="n">04</div><h4>Counterexample file</h4>
+      <p>Non-unique solutions, finite-time blow-up, a centre that linearisation
+      gets wrong. The theory is defined by what it cannot promise.</p></div>
+  </div>
+
+  <div class="block">
+    <h3>Course-wide challenge bank</h3>
+    <p class="prac-intro">Original problems in the style of a theory-track
+    problem set. Write a full solution before opening the answer.</p>
+    <div class="prac">
+      <div class="q"><div class="ql">Challenge 1 · Uniqueness fails</div>
+        <p>Show $y'=y^{2/3}$, $y(0)=0$ has more than one solution, and say
+        exactly which hypothesis breaks.</p>
+        <details><summary>Solution sketch</summary><div class="ans">$y\equiv0$
+        works, and so does $y=(t/3)^3$; you can even glue them, staying at zero
+        until any time $c$ and then leaving. The right side is continuous, so
+        existence holds, but $y^{2/3}$ is not Lipschitz at $0$ &mdash; its
+        difference quotient blows up there &mdash; and uniqueness is exactly
+        what the Lipschitz condition buys.</div></details></div>
+      <div class="q"><div class="ql">Challenge 2 · Finite-time blow-up</div>
+        <p>Solve $y'=y^2$, $y(0)=1$, and explain why a global solution was never
+        promised.</p>
+        <details><summary>Solution sketch</summary><div class="ans">
+        $y=1/(1-t)$, which escapes at $t=1$. Picard's theorem is local: it gives
+        a solution on some interval around $0$, and the continuation theorem
+        says the solution runs until it leaves every compact set. Here it leaves
+        by going to infinity in finite time.</div></details></div>
+      <div class="q"><div class="ql">Challenge 3 · Defective matrix</div>
+        <p>Compute $e^{At}$ for $A=\begin{smallmatrix}2&amp;1\\0&amp;2\end{smallmatrix}$.</p>
+        <details><summary>Solution sketch</summary><div class="ans">Write
+        $A=2I+N$ with $N=\begin{smallmatrix}0&amp;1\\0&amp;0\end{smallmatrix}$,
+        $N^2=0$. The two commute, so
+        $e^{At}=e^{2t}e^{Nt}=e^{2t}(I+Nt)
+        =e^{2t}\begin{smallmatrix}1&amp;t\\0&amp;1\end{smallmatrix}$. The factor
+        of $t$ is the signature of a repeated eigenvalue with only one
+        eigenvector.</div></details></div>
+      <div class="q"><div class="ql">Challenge 4 · Linearisation is not enough</div>
+        <p>The system $x'=-y+ax(x^2+y^2)$, $y'=x+ay(x^2+y^2)$ linearises to a
+        centre. What actually happens?</p>
+        <details><summary>Solution sketch</summary><div class="ans">In polar
+        coordinates $r'=ar^3$ and $\theta'=1$. The origin is a stable spiral for
+        $a&lt;0$, an unstable spiral for $a&gt;0$, and a true centre only when
+        $a=0$. Purely imaginary eigenvalues are the case where linearisation
+        decides nothing.</div></details></div>
+    </div>
+  </div>
+</section>
+
+<section id="resources" class="reveal">
+  <div class="sec-head"><span class="no">04</span><h2>Resources</h2></div>
+  <p class="src">
+    <a href="https://artsci.calendar.utoronto.ca/course/mat267h1">MAT267H1 — official calendar listing</a><br>
+    <a href="https://www.math.toronto.edu/">Department of Mathematics</a>
+  </p>
+  <p class="lic">Companion texts used by this guide: Teschl, <em>Ordinary
+  Differential Equations and Dynamical Systems</em>; Hirsch, Smale and Devaney,
+  <em>Differential Equations, Dynamical Systems, and an Introduction to
+  Chaos</em>; Coddington and Levinson, <em>Theory of Ordinary Differential
+  Equations</em>. The calendar confirms the topic list but does not publish a
+  current instructor textbook. Verify the assigned text, edition and problem
+  numbers against the active syllabus each year.</p>
+</section>
+
+<footer class="end">
+  <span>MAT267H1 · ADVANCED ODEs · U OF T</span>
+  <span>PREREQ: MAT159H1 + MAT247H1</span>
+</footer>
+</main>
+</div>
+
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>

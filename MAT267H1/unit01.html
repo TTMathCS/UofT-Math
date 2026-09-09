@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Unit 1 — First Order Equations · MAT267H1</title>
+<link rel="stylesheet" href="style.css">
+<script src="../assets/theme.js?v=20260807-11"></script>
+</head>
+<body>
+<div class="container">
+
+<div class="crumb reveal"><a href="index.html">MAT267H1</a><span>/</span>Unit 1</div>
+<div class="unit-no reveal">Unit 1 · Advanced ODEs</div>
+<h1 class="ch-title reveal">First Order Equations</h1>
+<p class="ch-intro reveal">The handful of first order equations that can be
+solved by an integral. This is the one unit that looks like the applied course,
+and it is worth doing carefully for a reason that only becomes clear in Unit 2:
+every method here is really a change of variables that turns the equation into
+$\frac{d}{dt}(\text{something})=0$, and knowing which "something" is the whole
+skill.</p>
+
+<div class="goals reveal">
+  <div class="gl">By the end you can</div>
+  <ul>
+    <li>Recognise separable, linear, exact and homogeneous equations on sight.</li>
+    <li>Derive the integrating factor rather than quoting it.</li>
+    <li>Test exactness and construct the potential function.</li>
+    <li>Say what an implicit solution does and does not tell you.</li>
+  </ul>
+</div>
+
+<div class="context reveal">
+  <div class="ctxh">Why it matters &amp; where it comes from</div>
+  <div class="ci"><div class="cl">Why it exists</div>
+    <p>Almost no differential equation has a closed-form solution. The ones in
+    this unit are the exceptions, and they are the examples every later theorem
+    is tested against &mdash; when Unit 2 claims a unique solution exists, you
+    want equations where you can look at it.</p></div>
+  <div class="ci"><div class="cl">In the real world</div>
+    <p>Linear first order equations are the whole of single-compartment
+    modelling: drug clearance, RC circuits, radioactive decay, Newton's law of
+    cooling. The logistic equation is separable, which is why population models
+    start there.</p></div>
+  <div class="ci"><div class="cl">Story &amp; open questions</div>
+    <p>Integrating factors are Euler's, from the 1730s. The modern question is
+    not how to find them by hand but when they exist at all: differential
+    Galois theory settles which equations have solutions in elementary terms,
+    and the answer is almost none.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>What a first order equation asks</h3>
+  <div class="box def"><div class="bl">Definition <b>Initial value problem</b></div>
+    <p>Given $f$ on a region of $\mathbb{R}^2$, a solution of</p>
+    <div class="step">$y'=f(t,y),\qquad y(t_0)=y_0$</div>
+    <p>is a differentiable function $y$ on an interval $I$ containing $t_0$ with
+    $(t,y(t))$ in the region and $y'(t)=f(t,y(t))$ for every $t\in I$. The
+    interval is part of the answer. A "solution" with no interval attached is
+    an incomplete statement.</p></div>
+  <div class="box def"><div class="bl">Definition <b>Direction field</b></div>
+    <p>At each point $(t,y)$ draw a short segment of slope $f(t,y)$. A solution
+    is a curve whose tangent matches the field everywhere. Nothing about this
+    picture needs a formula, which is exactly why it survives into the
+    qualitative half of the course.</p></div>
+  <div class="checkpoint"><b>Autonomous or not.</b>
+    If $f(t,y)=f(y)$ the equation is autonomous and the direction field does not
+    change with $t$: shifting a solution in time gives another solution. That
+    single fact is what makes phase-line and phase-plane pictures possible in
+    Units 8-10.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Separable equations</h3>
+  <div class="box thm"><div class="bl">Method <b>Separation of variables</b></div>
+    <p>If $y'=g(t)h(y)$ and $h(y_0)\ne0$, then near $t_0$</p>
+    <div class="step">$\int\frac{dy}{h(y)}=\int g(t)\,dt+C.$</div>
+    <p>The justification is the chain rule, not algebra with differentials: let
+    $H$ be an antiderivative of $1/h$. Then $\frac{d}{dt}H(y(t))=y'/h(y)=g(t)$,
+    so $H(y(t))-\int g$ is constant. The condition $h(y_0)\ne0$ is what keeps
+    $1/h$ integrable near the starting value.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Logistic growth</b></div>
+    <p>$y'=ry(1-y/K)$ with $0&lt;y_0&lt;K$. Partial fractions give</p>
+    <div class="step">$\int\Big(\frac1y+\frac{1/K}{1-y/K}\Big)dy=rt+C
+    \implies\ln\frac{y}{1-y/K}=rt+C,$</div>
+    <p>so $y(t)=\dfrac{K}{1+Ae^{-rt}}$ with $A=(K-y_0)/y_0$. The two constant
+    solutions $y\equiv0$ and $y\equiv K$ are exactly the roots of $h$, the
+    values separation had to exclude.</p></div>
+  <div class="box warn"><div class="bl">Where the constant solutions go</div>
+    <p>Dividing by $h(y)$ deletes every root of $h$ from the solution set. Those
+    roots are equilibria and are usually the most important solutions in the
+    problem. Always list them separately before dividing.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Linear equations and the integrating factor</h3>
+  <div class="box thm"><div class="bl">Theorem <b>First order linear</b></div>
+    <p>For $y'+p(t)y=q(t)$ with $p,q$ continuous on an interval $I$ containing
+    $t_0$, set $\mu(t)=\exp\big(\int_{t_0}^tp(s)\,ds\big)$. Then
+    $(\mu y)'=\mu(y'+py)=\mu q$, so</p>
+    <div class="step">$y(t)=\frac{1}{\mu(t)}\Big(y_0+\int_{t_0}^t\mu(s)q(s)\,ds\Big),$</div>
+    <p>and this solution exists on all of $I$ &mdash; the whole interval where
+    the coefficients are continuous, with no shrinking. Linear equations never
+    blow up in finite time; Unit 3 shows how special that is.</p></div>
+  <div class="box eg"><div class="bl">Derivation <b>Where $\mu$ comes from</b></div>
+    <div class="step">Look for $\mu$ making the left side a single derivative:
+    want $(\mu y)'=\mu y'+\mu'y$ to equal $\mu(y'+py)$.</div>
+    <div class="step">Comparing the $y$ terms forces $\mu'=p\mu$, a separable
+    equation for $\mu$ with solution $\mu=e^{\int p}$.</div>
+    <div class="step">Any nonzero multiple of $\mu$ works, so no constant of
+    integration is needed. &#8718;</div>
+    <p>Nothing was memorised. The factor is forced by asking the product rule to
+    fit.</p></div>
+  <div class="box eg"><div class="bl">Example <b>A drug dose</b></div>
+    <p>$y'=-ky+d$ with constant infusion $d$: $\mu=e^{kt}$, and</p>
+    <div class="step">$y(t)=\frac dk+\Big(y_0-\frac dk\Big)e^{-kt}.$</div>
+    <p>Every solution runs to $d/k$ at rate $k$, whatever the starting dose.
+    Unit 9 will call $d/k$ an asymptotically stable equilibrium; here you can
+    just read it off.</p></div>
+</div>
+
+<div class="block reveal">
+  <h3>Exact equations</h3>
+  <div class="box def"><div class="bl">Definition <b>Exact</b></div>
+    <p>$M(t,y)\,dt+N(t,y)\,dy=0$ is exact on a region if there is $F$ with
+    $F_t=M$ and $F_y=N$. Then $\frac{d}{dt}F(t,y(t))=M+Ny'=0$, so solutions are
+    the level curves $F(t,y)=C$.</p></div>
+  <div class="box thm"><div class="bl">Theorem <b>Exactness test</b></div>
+    <p>On a simply connected region with $M,N$ continuously differentiable, the
+    equation is exact if and only if</p>
+    <div class="step">$\frac{\partial M}{\partial y}=\frac{\partial N}{\partial t}.$</div>
+    <p>Necessity is equality of mixed partials for $F$. Sufficiency is the
+    Poincar&eacute; lemma; MAT257Y1 proves it in the language of closed and
+    exact forms, and this is the same statement in dimension two.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Building $F$</b></div>
+    <p>$(2ty+1)\,dt+(t^2+3y^2)\,dy=0$ has $M_y=2t=N_t$, so it is exact.
+    Integrate $M$ in $t$: $F=t^2y+t+\varphi(y)$. Differentiate in $y$:
+    $t^2+\varphi'(y)=N=t^2+3y^2$, so $\varphi=y^3$ and</p>
+    <div class="step">$F(t,y)=t^2y+t+y^3=C.$</div>
+    <p>The solution is implicit and that is all you get. Solving for $y$ would
+    mean solving a cubic, and past this example it is usually impossible.</p></div>
+  <div class="box eg"><div class="bl">Example <b>Integrating factor, general form</b></div>
+    <p>$y\,dt+2t\,dy=0$ is not exact: $M_y=1$, $N_t=2$. Multiplying by $\mu(t,y)$
+    and asking for exactness gives a partial differential equation for $\mu$ in
+    general, but if the combination $(M_y-N_t)/N$ depends on $t$ alone the
+    factor is a function of $t$ alone. Here $(1-2)/(2t)=-1/(2t)$, giving
+    $\mu=t^{-1/2}$ and the exact equation $yt^{-1/2}dt+2t^{1/2}dy=0$ with
+    $F=2t^{1/2}y$.</p></div>
+  <div class="checkpoint"><b>Everything here is one idea.</b>
+    Separable, linear and exact are all "find $F$ with $\frac{d}{dt}F=0$ along
+    solutions". Unit 9 keeps the idea and drops the equality: a function that
+    only decreases along solutions is a Lyapunov function, and it settles
+    stability for equations nothing here can solve.</div>
+</div>
+
+<div class="box warn reveal"><div class="bl">Common pitfalls</div>
+  <p>&bull; Losing the equilibrium solutions when dividing by $h(y)$.<br>
+  &bull; Treating an implicit solution $F(t,y)=C$ as if it defined $y$
+  globally. It defines $y$ only near points where $F_y\ne0$ &mdash; the
+  implicit function theorem again.<br>
+  &bull; Writing $\mu=e^{\int p}$ with $p$ discontinuous somewhere in the
+  interval. The formula is valid only on an interval where $p$ is
+  continuous.<br>
+  &bull; Applying the exactness test on a region with a hole. Simple
+  connectedness is a real hypothesis.<br>
+  &bull; Reporting a solution with no interval of existence attached.</p></div>
+
+<div class="block reveal">
+  <h3>Practice</h3>
+  <p class="prac-intro">Original problems written for this guide in the style of
+  Teschl's exercises. Write a full solution before opening the answer.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Practice 1 · Separable with equilibria</div>
+      <p>Solve $y'=y(1-y)$, $y(0)=\tfrac12$, and list every constant
+      solution.</p>
+      <details><summary>Solution</summary><div class="ans">Constants are
+      $y\equiv0$ and $y\equiv1$. Otherwise partial fractions give
+      $\ln\frac{y}{1-y}=t+C$, and $y(0)=\tfrac12$ gives $C=0$, so
+      $y=\dfrac{e^t}{1+e^t}$, rising from $0$ to $1$.</div></details></div>
+    <div class="q"><div class="ql">Practice 2 · Linear, non-constant coefficient</div>
+      <p>Solve $ty'+2y=t^3$ for $t&gt;0$.</p>
+      <details><summary>Solution</summary><div class="ans">Divide by $t$:
+      $y'+\frac2ty=t^2$, so $\mu=t^2$ and $(t^2y)'=t^4$. Then
+      $y=\dfrac{t^3}{5}+\dfrac{C}{t^2}$. The interval must avoid $t=0$, where
+      the coefficient blows up.</div></details></div>
+    <div class="q"><div class="ql">Practice 3 · Exactness</div>
+      <p>Is $(3t^2y+y^2)\,dt+(t^3+2ty)\,dy=0$ exact? Solve it.</p>
+      <details><summary>Solution</summary><div class="ans">
+      $M_y=3t^2+2y=N_t$, so yes. Integrating $M$ in $t$ gives
+      $F=t^3y+ty^2+\varphi(y)$; matching $F_y=t^3+2ty$ forces $\varphi'=0$. The
+      solutions are $t^3y+ty^2=C$.</div></details></div>
+    <div class="q"><div class="ql">Practice 4 · Bernoulli</div>
+      <p>Solve $y'+y=y^3$ by substituting $v=y^{-2}$.</p>
+      <details><summary>Solution</summary><div class="ans">$v'=-2y^{-3}y'$, so
+      dividing the equation by $y^3$ gives $-\tfrac12v'+v=1$, that is
+      $v'-2v=-2$. Then $v=1+Ce^{2t}$ and $y=(1+Ce^{2t})^{-1/2}$. The
+      substitution is the standard trick for $y'+py=qy^n$.</div></details></div>
+    <div class="q"><div class="ql">Practice 5 · Homogeneous of degree zero</div>
+      <p>Solve $y'=\dfrac{t+y}{t}$ for $t&gt;0$.</p>
+      <details><summary>Solution</summary><div class="ans">The right side is
+      $1+y/t$, a function of $y/t$ alone. Put $v=y/t$, so $y=tv$ and
+      $y'=v+tv'$. Then $v+tv'=1+v$, giving $v'=1/t$, $v=\ln t+C$ and
+      $y=t\ln t+Ct$.</div></details></div>
+    <div class="q"><div class="ql">Practice 6 · Interval of validity</div>
+      <p>Solve $y'=y^2$, $y(0)=y_0&gt;0$, and give the largest interval on which
+      the solution lives.</p>
+      <details><summary>Solution</summary><div class="ans">Separating,
+      $y=\dfrac{y_0}{1-y_0t}$, valid on $(-\infty,1/y_0)$. The right side is a
+      polynomial, perfectly smooth everywhere, and the solution still escapes in
+      finite time. Smoothness of $f$ buys local existence only.</div></details></div>
+    <div class="q"><div class="ql">Practice 7 · Integrating factor in $y$</div>
+      <p>$2y\,dt+(t+y)\,dy=0$ is not exact. Find a factor depending on $y$
+      alone.</p>
+      <details><summary>Solution</summary><div class="ans">$M_y=2$, $N_t=1$, so
+      $(N_t-M_y)/M=-1/(2y)$ depends on $y$ only, giving $\mu=y^{-1/2}$. The
+      equation $2y^{1/2}dt+(t+y)y^{-1/2}dy=0$ is exact with
+      $F=2ty^{1/2}+\tfrac23y^{3/2}$.</div></details></div>
+    <div class="q"><div class="ql">Practice 8 · Reading a direction field</div>
+      <p>For $y'=y-t$, which straight line is a solution, and what do nearby
+      solutions do?</p>
+      <details><summary>Solution</summary><div class="ans">Try $y=t+1$:
+      $y'=1$ and $y-t=1$, so it solves. The general solution is $y=t+1+Ce^t$, so
+      every other solution leaves it exponentially fast. This is a repelling
+      particular solution &mdash; the direction field shows it as the ridge
+      trajectories fall away from.</div></details></div>
+  </div>
+</div>
+
+<div class="block reveal">
+  <h3>Expanded topic checklist</h3>
+  <p><strong>Course coverage.</strong> This unit is part of the complete
+  MAT267H1 topic map. It should cover the following items before you move
+  on:</p>
+  <ul>
+    <li><strong>Setup.</strong> Initial value problems, direction fields,
+    autonomous equations, intervals of existence.</li>
+    <li><strong>Separable.</strong> The chain rule justification and the
+    equilibria that division removes.</li>
+    <li><strong>Linear.</strong> The integrating factor derived, and existence
+    on the whole coefficient interval.</li>
+    <li><strong>Exact.</strong> The $M_y=N_t$ test, construction of $F$, and
+    factors that restore exactness.</li>
+  </ul>
+  <div class="box thm"><div class="bl">Textbook/source alignment</div>
+    <p>Teschl treats this material briskly in his first chapter, since the
+    course's real content starts with existence theory. Any standard applied
+    text covers the mechanics in more detail if the methods are new. Check the
+    assigned text and exercises against the current syllabus.</p></div>
+  <div class="box eg"><div class="bl">Core theorem map</div>
+    <p>Every method here produces a conserved quantity. Unit 2 replaces "solve
+    it" with "prove a solution exists", Unit 3 asks how long it lasts, and Unit
+    9 keeps only the conserved-quantity idea, weakened to a function that
+    decreases.</p></div>
+  <div class="checkpoint"><b>Study routine.</b>
+    Classify before you compute. Given any first order equation, decide in one
+    line whether it is separable, linear, exact, or none of the three &mdash;
+    "none" is the common answer, and it is what makes the rest of the course
+    necessary.</div>
+</div>
+
+<div class="block reveal">
+  <h3>Deep practice extensions</h3>
+  <p class="prac-intro">Use these after the main practice set. They force
+  definition-level reasoning and method selection rather than routine
+  calculation.</p>
+  <div class="prac">
+    <div class="q"><div class="ql">Extension 1 · Why $\mu'=p\mu$</div>
+      <p>Explain in one sentence why the integrating factor solves that
+      equation.</p>
+      <details><summary>Guide</summary><div class="ans">Because matching
+      $(\mu y)'$ with $\mu(y'+py)$ forces the coefficients of $y$ to agree, and
+      that comparison is $\mu'=p\mu$.</div></details></div>
+    <div class="q"><div class="ql">Extension 2 · Linear versus nonlinear</div>
+      <p>Why can a linear equation never blow up in finite time inside its
+      coefficient interval?</p>
+      <details><summary>Guide</summary><div class="ans">The explicit formula
+      involves only integrals of continuous functions on a compact
+      subinterval, so it is bounded there. Nonlinear equations have no such
+      formula and $y'=y^2$ shows what happens instead.</div></details></div>
+    <div class="q"><div class="ql">Extension 3 · Exactness and topology</div>
+      <p>Where does simple connectedness get used?</p>
+      <details><summary>Guide</summary><div class="ans">In building $F$ by
+      integrating along a path: without it the integral can depend on the path.
+      The angle form on the punctured plane is the standard
+      counterexample.</div></details></div>
+    <div class="q"><div class="ql">Extension 4 · Implicit solutions</div>
+      <p>What does $F(t,y)=C$ tell you about $y$ near a point where
+      $F_y=0$?</p>
+      <details><summary>Guide</summary><div class="ans">Nothing directly. The
+      implicit function theorem needs $F_y\ne0$ to produce a function $y$ of
+      $t$; where it vanishes the level curve can turn vertical or
+      cross.</div></details></div>
+  </div>
+</div>
+
+<div class="navrow reveal">
+  <a href="index.html">← Chapters<span>MAT267H1</span></a>
+  <a href="unit02.html">Unit 02 →<span>Existence &amp; uniqueness</span></a>
+</div>
+
+</div>
+<script src="../assets/course-runtime.js?v=20260807-11"></script>
+</body>
+</html>
